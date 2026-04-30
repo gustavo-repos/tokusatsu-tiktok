@@ -1,0 +1,22 @@
+[
+  {
+    "guid": {
+      "a": "eb52dd5f-a55e-5a96-e821-333963bbeac8",
+      "b": ""
+    },
+    "extraType": "ResItemMP3",
+    "name": "hit",
+    "version": "0.1.0",
+    "rttiType": "AudioAsset",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": true
+    },
+    "mccState": "SUCCESS",
+    "objGuid": "",
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto cat-game\\audio\\hit.mp3",
+    "references": []
+  }
+]

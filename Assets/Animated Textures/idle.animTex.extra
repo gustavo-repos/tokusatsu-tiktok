@@ -1,0 +1,26 @@
+[
+  {
+    "guid": {
+      "a": "4728abb1-c45f-858f-900a-b8d54b470067",
+      "b": ""
+    },
+    "extraType": "ResItemAnimatedTexture",
+    "name": "idle",
+    "version": "0.2.0",
+    "rttiType": "Texture",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "objGuid": "",
+    "resourceFilePath": "C:\\Users\\gbroc\\AppData\\Local\\Effect House\\Resources\\BuiltinResource\\assets\\jsAssets\\default.animTex",
+    "references": [
+      {
+        "guid": "65f8f5dc-4068-d71f-027a-f5a07aca7c2f",
+        "propertyName": "textureSequence"
+      }
+    ]
+  }
+]

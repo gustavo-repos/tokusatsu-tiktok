@@ -1,0 +1,25 @@
+[
+  {
+    "guid": {
+      "a": "e6a5c752-2e5a-2966-0562-872a74bdc875",
+      "b": ""
+    },
+    "extraType": "ResItemTextureSequence",
+    "name": "walk",
+    "version": "0.2.0",
+    "rttiType": "TextureSequence",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "compressionType": 0,
+    "compressQuality": 0,
+    "compressMaxResolution": 512,
+    "premultiplyAlpha": false,
+    "objGuid": "",
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\walk.otextureseq",
+    "references": []
+  }
+]

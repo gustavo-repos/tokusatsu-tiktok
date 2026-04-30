@@ -1,0 +1,24 @@
+[
+  {
+    "guid": {
+      "a": "65f8f5dc-4068-d71f-027a-f5a07aca7c2f",
+      "b": ""
+    },
+    "extraType": "ResItemTextureSequence",
+    "name": "idle",
+    "objGuid": "",
+    "version": "0.2.0",
+    "rttiType": "TextureSequence",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "compressionType": 0,
+    "compressQuality": 0,
+    "compressMaxResolution": 512,
+    "premultiplyAlpha": false,
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\idle1.otextureseq"
+  }
+]

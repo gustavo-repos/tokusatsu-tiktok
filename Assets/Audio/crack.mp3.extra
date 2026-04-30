@@ -1,0 +1,22 @@
+[
+  {
+    "guid": {
+      "a": "28d81500-a65a-8a3e-d1ff-9dd01b9fd655",
+      "b": ""
+    },
+    "extraType": "ResItemMP3",
+    "name": "crack",
+    "version": "0.1.0",
+    "rttiType": "AudioAsset",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": true
+    },
+    "mccState": "SUCCESS",
+    "objGuid": "",
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto cat-game\\audio\\crack.mp3",
+    "references": []
+  }
+]
