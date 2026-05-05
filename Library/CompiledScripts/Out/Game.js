@@ -19,7 +19,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Game = exports.snapX = exports.snapY = exports.checkRectOverlap = exports.getElementRect = exports.move = exports.collisionState = exports.conect = exports.fixedTime = exports.grounds = exports.solids = exports.platforms = exports.rightPressed = exports.leftPressed = exports.jumpPressed = exports.PPU = exports.gravity = void 0;
+exports.Game = exports.snapX = exports.snapY = exports.checkRectOverlap = exports.getElementRect = exports.teleport = exports.move = exports.collisionState = exports.conect = exports.fixedTime = exports.grounds = exports.solids = exports.platforms = exports.rightPressed = exports.leftPressed = exports.jumpPressed = exports.PPU = exports.gravity = void 0;
 exports.gravity = -65;
 exports.PPU = 32;
 exports.jumpPressed = false;
@@ -36,6 +36,13 @@ function move(el, dx, dy) {
     el.getTransform().localPosition = pos;
 }
 exports.move = move;
+function teleport(el, x, y) {
+    var pos = el.getTransform().localPosition;
+    pos.x = x;
+    pos.y = y;
+    el.getTransform().localPosition = pos;
+}
+exports.teleport = teleport;
 function getElementRect(el, dx) {
     var centerX = el.getTransform().getWorldPosition().x + dx;
     var centerY = el.getTransform().getWorldPosition().y;

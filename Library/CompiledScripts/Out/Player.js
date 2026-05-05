@@ -54,18 +54,6 @@ let Player = class Player extends APJS.BasicScriptComponent {
         // return [centerX, centerY, this.width * 0.4, this.height * 0.875]
         return [centerX, centerY, this.width * 0.55, this.height * 0.9];
     }
-    // getPlayerCoreRectBottom (nextValue: number) {
-    //   var centerX = this.getSceneObject().getTransform().getWorldPosition().x
-    //   var centerY = nextValue
-    //   // return [centerX, centerY + 1.875, this.width * 0.8, this.height * 0.0625]
-    //   return [centerX, centerY + 1.875, this.width * 0.8, this.height * 0.0625]
-    // }
-    // getPlayerCoreRectTop (nextValue: number) {
-    //   var centerX = this.getSceneObject().getTransform().getWorldPosition().x
-    //   var centerY = nextValue
-    //   // return [centerX, centerY + 1.875, this.width * 0.8, this.height * 0.0625]
-    //   return [centerX, centerY - 1.875, this.width * 0.8, this.height * 0.0625]
-    // }
     setSubstate() {
         if (this.state == 0) {
             if (Game_1.leftPressed || Game_1.rightPressed) {
@@ -153,7 +141,6 @@ let Player = class Player extends APJS.BasicScriptComponent {
             this.nextY = this.getSceneObject().getTransform().localPosition.y + (this.velocityY * Game_1.fixedTime);
             if (this.state == 1) {
                 for (let i = 0; i < Game_1.platforms.length; i++) {
-                    // if (checkRectOverlap(this.getPlayerCoreRect(this.nextY), getElementRect(platforms[i], 0))) {
                     if ((0, Game_1.checkRectOverlap)(this.getPlayerCoreRect(this.nextY), (0, Game_1.getElementRect)(Game_1.platforms[i], 0))) {
                         if (this.velocityY < 0) {
                             this.state = 0;
@@ -162,7 +149,6 @@ let Player = class Player extends APJS.BasicScriptComponent {
                             this.landedIn = Game_1.platforms[i];
                             break;
                         }
-                        // if (checkRectOverlap(this.getPlayerCoreRect(this.nextY), getElementRect(platforms[i], 0))) {
                         if (this.velocityY > 0) {
                             console.log(this.playerPosY, this.halfPlayerSize, this.halfPlatSize);
                             this.state = 1;

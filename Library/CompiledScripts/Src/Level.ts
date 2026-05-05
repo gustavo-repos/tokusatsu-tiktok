@@ -11,14 +11,6 @@ export class Level extends APJS.BasicScriptComponent {
   accumulator = 0
   playerObj: any
 
-  // getPlayerBodyRect () {
-  //   var center = this.playerObj.getTransform().getWorldPosition()
-  //   if (center) {
-  //     // return [center.x, center.y, this.playerWidth * 0.8, this.playerHeight * 0.875]
-  //     return [center.x, center.y, this.playerWidth * 0.8, this.playerHeight * 0.5]
-  //   }
-  // }
-
   getPlayerBodyRect () {
     var center = this.playerObj.getTransform().getWorldPosition()
     if (center) {

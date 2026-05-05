@@ -32,10 +32,6 @@ export class Player extends APJS.BasicScriptComponent {
   leftLimit!: number
   rightLimit!: number
   playerX: any
-  // idle: any
-  // walk: any
-  // fall: any
-  // jump: any
   playerSprite: any
   accumulator = 0
   jumpSound: any
@@ -50,20 +46,6 @@ export class Player extends APJS.BasicScriptComponent {
     // return [centerX, centerY, this.width * 0.4, this.height * 0.875]
     return [centerX, centerY, this.width * 0.55, this.height * 0.9]
   }
-
-  // getPlayerCoreRectBottom (nextValue: number) {
-  //   var centerX = this.getSceneObject().getTransform().getWorldPosition().x
-  //   var centerY = nextValue
-  //   // return [centerX, centerY + 1.875, this.width * 0.8, this.height * 0.0625]
-  //   return [centerX, centerY + 1.875, this.width * 0.8, this.height * 0.0625]
-  // }
-
-  // getPlayerCoreRectTop (nextValue: number) {
-  //   var centerX = this.getSceneObject().getTransform().getWorldPosition().x
-  //   var centerY = nextValue
-  //   // return [centerX, centerY + 1.875, this.width * 0.8, this.height * 0.0625]
-  //   return [centerX, centerY - 1.875, this.width * 0.8, this.height * 0.0625]
-  // }
 
   setSubstate () {
 
@@ -122,7 +104,7 @@ export class Player extends APJS.BasicScriptComponent {
     if (this.frameCounter < 30) { this.frameCounter++; return }
 
     deltaTime = Math.min(deltaTime, 0.25)
-    this.accumulator += deltaTime;
+    this.accumulator += deltaTime
 
     while (this.accumulator >= fixedTime) {
       this.setSubstate()
@@ -159,7 +141,6 @@ export class Player extends APJS.BasicScriptComponent {
       this.nextY = this.getSceneObject().getTransform().localPosition.y + (this.velocityY * fixedTime)
       if (this.state == 1) {
         for (let i = 0; i < platforms.length; i++) {
-          // if (checkRectOverlap(this.getPlayerCoreRect(this.nextY), getElementRect(platforms[i], 0))) {
           if (checkRectOverlap(this.getPlayerCoreRect(this.nextY), getElementRect(platforms[i], 0))) {
             if (this.velocityY < 0) {
               this.state = 0
@@ -168,7 +149,6 @@ export class Player extends APJS.BasicScriptComponent {
               this.landedIn = platforms[i]
               break
             }
-          // if (checkRectOverlap(this.getPlayerCoreRect(this.nextY), getElementRect(platforms[i], 0))) {
             if (this.velocityY > 0) {
               console.log(this.playerPosY, this.halfPlayerSize, this.halfPlatSize)
               this.state = 1

@@ -20,16 +20,61 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Enemy = void 0;
+const Game_1 = require("Game");
 let Enemy = class Enemy extends APJS.BasicScriptComponent {
-    /**
-     * Called before the first frame update
-     */
-    onStart() {
+    constructor() {
+        super(...arguments);
+        this.accumulator = 0;
+        this.spawnTimer = 0;
+        this.spawnInterval = 2;
+        this.spawnSpots = [[117 / Game_1.PPU, 104 / Game_1.PPU], [396 / Game_1.PPU, 104 / Game_1.PPU], [-396 / Game_1.PPU, 104 / Game_1.PPU], [-117 / Game_1.PPU, 104 / Game_1.PPU], [-256 / Game_1.PPU, 333 / Game_1.PPU], [256 / Game_1.PPU, 333 / Game_1.PPU]];
+        this.enemyWasHit = false;
+        this.points = 0;
     }
-    /**
-     * Called once per frame
-     */
+    getPlayerRect() {
+        var center = this.playerObj.getTransform().getWorldPosition();
+        if (center) {
+            return [center.x, center.y, this.playerWidth * 0.75, this.playerHeight];
+        }
+    }
+    getRandomItem(el) {
+        return el[Math.floor(Math.random() * el.length)];
+    }
+    setCurrentSpot(el) {
+        var newSpot = this.getRandomItem(el);
+        if (newSpot != this.currentSpot) {
+            this.currentSpot = newSpot;
+        }
+        else {
+            this.setCurrentSpot(el);
+        }
+    }
+    onStart() {
+        this.playerObj = this.getSceneObject().scene.findSceneObject('player');
+        this.transform = this.playerObj.getComponent('ScreenTransform');
+        this.playerWidth = this.transform.sizeDelta.x / Game_1.PPU;
+        this.playerHeight = this.transform.sizeDelta.y / Game_1.PPU;
+    }
     onUpdate(deltaTime) {
+        deltaTime = Math.min(deltaTime, 0.25);
+        this.accumulator += deltaTime;
+        while (this.accumulator >= Game_1.fixedTime) {
+            this.spawnTimer += Game_1.fixedTime;
+            if (!this.enemyWasHit && (0, Game_1.checkRectOverlap)(this.getPlayerRect(), (0, Game_1.getElementRect)(this.getSceneObject(), 0))) {
+                console.log('hit');
+                this.points++;
+                Game_1.conect.name = this.points.toString();
+                this.enemyWasHit = true;
+            }
+            if (this.spawnTimer >= this.spawnInterval) {
+                // this.currentSpot = this.getRandomItem(this.spawnSpots)
+                this.setCurrentSpot(this.spawnSpots);
+                (0, Game_1.teleport)(this.getSceneObject(), this.currentSpot[0], this.currentSpot[1]);
+                this.spawnTimer = 0;
+                this.enemyWasHit = false;
+            }
+            this.accumulator -= Game_1.fixedTime;
+        }
     }
 };
 Enemy = __decorate([

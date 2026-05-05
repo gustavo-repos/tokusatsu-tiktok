@@ -1,19 +1,73 @@
+import { fixedTime, teleport, PPU, checkRectOverlap, getElementRect, conect } from "Game"
+
 @component()
 export class Enemy extends APJS.BasicScriptComponent {
 
-  /**
-   * Called before the first frame update
-   */
+  accumulator = 0
+  spawnTimer = 0
+  spawnInterval = 2
+  spawnSpots = [[117 / PPU, 104 / PPU], [396 / PPU, 104 / PPU], [-396 / PPU, 104 / PPU], [-117 / PPU, 104 / PPU], [-256 / PPU, 333 / PPU], [256 / PPU, 333 / PPU]]
+  currentSpot: any
+  transform: any
+  playerObj: any
+  playerWidth: any
+  playerHeight: any
+  enemyWasHit = false
+  points = 0
+
+  getPlayerRect() {
+    var center = this.playerObj.getTransform().getWorldPosition()
+    if (center) {
+      return [center.x, center.y, this.playerWidth * 0.75, this.playerHeight]
+    }
+  }
+
+  getRandomItem(el: any) {
+    return el[Math.floor(Math.random() * el.length)]
+  }
+
+  setCurrentSpot(el: any) {
+    var newSpot = this.getRandomItem(el)
+    if (newSpot != this.currentSpot) {
+      this.currentSpot = newSpot
+    } else {
+      this.setCurrentSpot(el)
+    }
+  }
+
   onStart() {
-
+    this.playerObj = this.getSceneObject().scene.findSceneObject('player')
+    this.transform = this.playerObj.getComponent('ScreenTransform') as APJS.ScreenTransform
+    this.playerWidth = this.transform.sizeDelta.x / PPU
+    this.playerHeight = this.transform.sizeDelta.y / PPU
   }
 
-  /**
-   * Called once per frame
-   */
   onUpdate(deltaTime: number) {
-  
-  }
 
-  // Insert more for your logic
+    deltaTime = Math.min(deltaTime, 0.25)
+    this.accumulator += deltaTime
+
+    while (this.accumulator >= fixedTime) {
+
+      this.spawnTimer += fixedTime
+
+      if (!this.enemyWasHit && checkRectOverlap(this.getPlayerRect(), getElementRect(this.getSceneObject(), 0))) {
+        console.log('hit')
+        this.points++
+        conect.name = this.points.toString()
+        this.enemyWasHit = true
+      } 
+
+      if (this.spawnTimer >= this.spawnInterval) {
+        // this.currentSpot = this.getRandomItem(this.spawnSpots)
+        this.setCurrentSpot(this.spawnSpots)
+        teleport(this.getSceneObject(), this.currentSpot[0], this.currentSpot[1])
+        this.spawnTimer = 0
+        this.enemyWasHit = false
+      }
+  
+      this.accumulator -= fixedTime
+    }
+
+  }
 }

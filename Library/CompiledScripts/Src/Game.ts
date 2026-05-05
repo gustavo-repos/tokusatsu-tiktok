@@ -3,11 +3,10 @@ export const PPU = 32
 export var jumpPressed = false  
 export var leftPressed = false
 export var rightPressed = false
-export var platforms: any // grounds também são plataformas
+export var platforms: any
 export var solids: any
 export var grounds: any
 export const fixedTime = 0.02
-// export const fixedTime =  0.01666
 export var conect: any
 export const collisionState = {
   touchSidePlat: false
@@ -17,6 +16,13 @@ export function move (el: any, dx: number, dy: number) {
   var pos = el.getTransform().localPosition
   pos.x += dx
   pos.y += dy
+  el.getTransform().localPosition = pos
+}
+
+export function teleport (el: any, x: number, y: number) {
+  var pos = el.getTransform().localPosition
+  pos.x = x
+  pos.y = y
   el.getTransform().localPosition = pos
 }
 

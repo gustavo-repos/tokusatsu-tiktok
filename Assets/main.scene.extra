@@ -1004,16 +1004,16 @@
   },
   {
     "guid": {
-      "a": "33337ccb-b561-746b-536e-c40efee8dfa9",
+      "a": "5c460624-5936-643e-6fcc-408c7a6c70e5",
       "b": ""
     },
-    "objGuid": "Guid(4739040146464633638, 14544927620324092327)",
+    "objGuid": "Guid(5665671300861197992, 11651950207292842400)",
     "extraType": "UserComponentEditor",
     "name": "Enemy",
     "version": "0.1.0",
     "rttiType": "Enemy",
     "editable": true,
-    "_lazyUpgrateVersion": "0.0.0",
+    "_lazyUpgrateVersion": "0.1.0",
     "extendedInfo": {
       "isVisibleInInspector": true,
       "expanded": true
@@ -1237,7 +1237,7 @@
     "name": "player",
     "version": "0.1.0",
     "rttiType": "SceneObject",
-    "expanded": false,
+    "expanded": true,
     "type": "none",
     "isAnimatorBound": false,
     "modelGUID": "",

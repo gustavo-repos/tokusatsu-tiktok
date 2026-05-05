@@ -27,13 +27,6 @@ let Level = class Level extends APJS.BasicScriptComponent {
         this.frameCounter = 0;
         this.accumulator = 0;
     }
-    // getPlayerBodyRect () {
-    //   var center = this.playerObj.getTransform().getWorldPosition()
-    //   if (center) {
-    //     // return [center.x, center.y, this.playerWidth * 0.8, this.playerHeight * 0.875]
-    //     return [center.x, center.y, this.playerWidth * 0.8, this.playerHeight * 0.5]
-    //   }
-    // }
     getPlayerBodyRect() {
         var center = this.playerObj.getTransform().getWorldPosition();
         if (center) {
