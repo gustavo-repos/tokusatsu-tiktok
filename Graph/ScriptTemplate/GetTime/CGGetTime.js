@@ -1,0 +1,1 @@
+let BaseNode=require("../Utils/BaseNode").BaseNode,APJS=require("../../../amazingpro");class CGGetTime extends BaseNode{constructor(){super(),this.runtimeCount=0}onUpdate(e,t){this.runtimeCount=this.runtimeCount+t,this.outputs[0]=this.runtimeCount,this.outputs[1]=t}resetOnRecord(e){this.runtimeCount=0}}exports.CGGetTime=CGGetTime;

@@ -84,7 +84,7 @@
     "name": "General",
     "version": "0.1.0",
     "rttiType": "SceneObject",
-    "expanded": false,
+    "expanded": true,
     "type": "none",
     "isAnimatorBound": false,
     "modelGUID": "",
@@ -1442,7 +1442,7 @@
     "version": "0.1.0",
     "rttiType": "ScreenTransform",
     "editable": true,
-    "_lazyUpgrateVersion": "0.0.0",
+    "_lazyUpgrateVersion": "0.1.0",
     "extendedInfo": {
       "isVisibleInInspector": true,
       "expanded": true
@@ -1463,13 +1463,13 @@
     "version": "1.1.0",
     "rttiType": "Text",
     "editable": true,
-    "_lazyUpgrateVersion": "1.0.0",
+    "_lazyUpgrateVersion": "1.1.0",
     "extendedInfo": {
       "isVisibleInInspector": true,
       "expanded": true
     },
     "artTextNameDropdown": "00000000-0000-0000-0000-000000008000",
-    "boxDimension": 0,
+    "boxDimension": 2,
     "totalAnimationTime": 0,
     "inAnimationAssetID": "",
     "loopAnimationAssetID": "",
@@ -1518,5 +1518,23 @@
     "verticalConstraint": 2,
     "linkageScale": 0,
     "linkageSize": 0
+  },
+  {
+    "guid": {
+      "a": "932b2f57-497b-ce0f-a4fc-ec6160a5c85e",
+      "b": ""
+    },
+    "objGuid": "Guid(5436009152553470042, 232950145139223445)",
+    "extraType": "AudioComponent",
+    "name": "Audio Player",
+    "version": "0.2.0",
+    "rttiType": "AudioComponent",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.2.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "audioRef": "f7902046-4738-2877-1532-0ea005b6f671"
   }
 ]

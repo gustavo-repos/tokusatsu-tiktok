@@ -458,7 +458,7 @@ entities:
     name: !<str> points
     guid: {a: 5354538653981758538, b: 9056812989230526638}
     scene: {localId: 1}
-    selfvisible: false
+    selfvisible: true
     components:
       - {localId: 23}
       - __class: Text
@@ -478,9 +478,9 @@ entities:
             _currAnimationType: 0
             _glowHAngle: 0
             _glowVAngle: 0
-            _horizontalAlignment: 1
+            _horizontalAlignment: 0
             _inAnimationAssetID: !<str> ""
-            _inner_input: !<str> Text
+            _inner_input: !<str> 30
             _lineBreakType: 1
             _loopAnimationAssetID: !<str> ""
             _maxInputWords: 0
@@ -504,10 +504,10 @@ entities:
         letters:
           - __class: Letter
             name: !<str> ""
-            guid: {a: 4949790349297489866, b: 2585611509070959782}
-            utf8: !<str> T
-            initialPosition: {x: -782.5668, y: 104.1667}
-            position: {x: -782.5668, y: 104.1667}
+            guid: {a: 5420507019522301001, b: 113199146727205790}
+            utf8: !<str> 3
+            initialPosition: {x: -387.309, y: 94.18408}
+            position: {x: -387.309, y: 94.18408}
             rotate: {x: 0, y: 0, z: 0}
             scale: {x: 1, y: 1}
             anchor: {x: 0, y: 0}
@@ -516,42 +516,18 @@ entities:
             letterStyle: {localId: 25}
           - __class: Letter
             name: !<str> ""
-            guid: {a: 5220057254577384706, b: 12584359030032815518}
-            utf8: !<str> e
-            initialPosition: {x: -176.613, y: 1.627625}
-            position: {x: -176.613, y: 1.627625}
+            guid: {a: 5370131508307046523, b: 184182243312918178}
+            utf8: !<str> 0
+            initialPosition: {x: 275.4022, y: 102.7952}
+            position: {x: 275.4022, y: 102.7952}
             rotate: {x: 0, y: 0, z: 0}
             scale: {x: 1, y: 1}
             anchor: {x: 0, y: 0}
             extraMatrix: {__class: Matrix4x4f, values: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
             instanceColor: {r: 1, g: 1, b: 1, a: 1}
             letterStyle: {localId: 25}
-          - __class: Letter
-            name: !<str> ""
-            guid: {a: 4855835772794375759, b: 12446642583707785111}
-            utf8: !<str> x
-            initialPosition: {x: 410.9086, y: 1.627625}
-            position: {x: 410.9086, y: 1.627625}
-            rotate: {x: 0, y: 0, z: 0}
-            scale: {x: 1, y: 1}
-            anchor: {x: 0, y: 0}
-            extraMatrix: {__class: Matrix4x4f, values: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
-            instanceColor: {r: 1, g: 1, b: 1, a: 1}
-            letterStyle: {localId: 25}
-          - __class: Letter
-            name: !<str> ""
-            guid: {a: 5625657622086346507, b: 927021487592417442}
-            utf8: !<str> t
-            initialPosition: {x: 901.3168, y: 90.06076}
-            position: {x: 901.3168, y: 90.06076}
-            rotate: {x: 0, y: 0, z: 0}
-            scale: {x: 1, y: 1}
-            anchor: {x: 0, y: 0}
-            extraMatrix: {__class: Matrix4x4f, values: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
-            instanceColor: {r: 1, g: 1, b: 1, a: 1}
-            letterStyle: {localId: 25}
-        str: !<str> Text
-        richStr: !<str> Text
+        str: !<str> 30
+        richStr: !<str> 30
         typeSettingParam: {localId: 28}
         canvas: {localId: 29}
         globalBackground: {localId: 30}
@@ -848,7 +824,7 @@ entities:
         entirePingPong: false
         texture: {localId: 1, path: 00000000-0000-0000-0000-0000000000c0--00000000-0000-0000-0000-0000000000c0.png}
         opacity: 1
-        color: {r: 0.8083333, g: 0.08420139, b: 0.08420139, a: 1}
+        color: {r: 0.8078431, g: 0.08235294, b: 0.08235294, a: 1}
         size: {x: 10, y: 10}
         pivot: {x: 0.5, y: 0.5}
         flipX: false
@@ -871,6 +847,24 @@ entities:
         guid: {a: 5665671300861197992, b: 11651950207292842400}
         enabled: true
         className: !<str> a59e7e05-3f82-a233-2e4f-b320ad27de21
+      - __class: DynamicComponent
+        name: !<str> AudioComponent
+        guid: {a: 5436009152553470042, b: 232950145139223445}
+        serializedProperty:
+          __class: ScriptSerializedProperty
+          name: !<str> ""
+          guid: {a: 4759649940774566604, b: 12142391469775866522}
+          properties:
+            __class: Map
+            autoPlay: false
+            isMobilePreview: false
+            loopCount: 1
+            mute: false
+            playMode: !<str> Once
+            resourcePath: !<str> audio/f7902046-4738-2877-1532-0ea005b6f671.mp3
+            volume: 16
+        enabled: true
+        className: !<str> AudioComponent
     layer: 0
 visible: true
 config:
@@ -1254,15 +1248,15 @@ enablePivotMatrix: false
 name: !<str> ""
 guid: {a: 4922478133938013346, b: 7401067506452431490}
 enabled: true
-localPosition: {x: 0, y: 12.44425, z: -40}
+localPosition: {x: 0, y: 12.44438, z: -40}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
 parent: {localId: 5}
 mobility:
   __class: Mobility
   value: Dynamic
-anchoredPosition: {x: 0, y: 398.2159}
-sizeDelta: {x: 720, y: 1280}
+anchoredPosition: {x: 0, y: 398.22}
+sizeDelta: {x: 70, y: 1280}
 pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
@@ -1290,7 +1284,7 @@ guid: {a: 5294562716295061598, b: 12326753849335750274}
 version: 101
 fontId: !<str> ""
 fontfamily: !<str> font/Classic.ttf
-fontSize: 260.4166564941406
+fontSize: 258.3333435058594
 fontPixelSize: 0
 fontStyle:
   __class: FontStyle
@@ -1424,7 +1418,7 @@ letterSpacing: 0
 lineSpacing: 0
 wordWrapWidth: 15000
 wordWrapHeight: 15000
-canvasWHFixed: {x: 14400, y: 25600}
+canvasWHFixed: {x: 1400, y: 25600}
 typeSettingKind:
   __class: TypesettingKind
   value: HORIZONTAL
@@ -1433,7 +1427,7 @@ typeSettingDirect:
   value: LEFT2RIGHT
 typeSettingAlign:
   __class: TypesettingAlign
-  value: CENTER
+  value: LEFT
 typeSettingAlignVertical:
   __class: TypesettingAlignVertical
   value: CENTER
@@ -1450,7 +1444,7 @@ wrappingEnabled: true
 autoFontSizeMax: 4166.66650390625
 autoFontSizeMin: -1
 numberOfLines: 0
-containerSize: {x: 14400, y: 25600}
+containerSize: {x: 1400, y: 25600}
 wrapMode:
   __class: WrappingMode
   value: Wrap
@@ -1461,7 +1455,7 @@ layoutMode:
 --- !TextCanvas &29
 name: !<str> ""
 guid: {a: 4690744535248315614, b: 3519381611388286113}
-textRect: {x: -7200, y: -508.355, w: 14400, h: 1016.71}
+textRect: {x: -700, y: -504.2882, w: 1400, h: 1008.576}
 canvasEnabled: false
 canvasColor: {x: 0, y: 0, z: 0, w: 1}
 canvasRoundCornerEnabled: false
@@ -1478,7 +1472,7 @@ targetRTExtraSize: {x: 0, y: 0}
 canvasStyle:
   __class: CanvasStyle
   value: BoundingBox
-pixelTextRect: {x: -7200, y: -508.355, w: 14400, h: 1016.71}
+pixelTextRect: {x: -700, y: -504.2882, w: 1400, h: 1008.576}
 --- !TextBackground &30
 name: !<str> ""
 guid: {a: 4832402196367689853, b: 3205078593500380843}

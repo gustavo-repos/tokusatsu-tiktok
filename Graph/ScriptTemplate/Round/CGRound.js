@@ -1,0 +1,1 @@
+let BaseNode=require("../Utils/BaseNode").BaseNode,APJS=require("../../../amazingpro");class CGRound extends BaseNode{constructor(){super()}setNext(e,t){this.nexts[e]=t}setInput(e,t){this.inputs[e]=t}getOutput(){return Math.floor(this.inputs[0]()+.5)}}exports.CGRound=CGRound;

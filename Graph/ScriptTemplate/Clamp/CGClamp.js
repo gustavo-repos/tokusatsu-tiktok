@@ -1,0 +1,1 @@
+let BaseNode=require("../Utils/BaseNode").BaseNode,APJS=require("../../../amazingpro");class CGClamp extends BaseNode{constructor(){super()}getOutput(e){var t,s=this.inputs[0](),a=this.inputs[1](),u=this.inputs[2]();if(null!=s&&null!=a&&null!=u)return t=Math.min(a,u),a=Math.max(a,u),s<=t?t:a<=s?a:s}}exports.CGClamp=CGClamp;

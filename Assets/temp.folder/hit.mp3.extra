@@ -1,7 +1,7 @@
 [
   {
     "guid": {
-      "a": "f7902046-4738-2877-1532-0ea005b6f671",
+      "a": "eb52dd5f-a55e-5a96-e821-333963bbeac8",
       "b": ""
     },
     "extraType": "ResItemMP3",
@@ -12,11 +12,11 @@
     "extendedInfo": {
       "isVisibleInInspector": true,
       "hideInPanel": false,
-      "expandInPanel": false
+      "expandInPanel": true
     },
     "mccState": "SUCCESS",
     "objGuid": "",
-    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\audio\\hit.mp3",
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto cat-game\\audio\\hit.mp3",
     "references": []
   }
 ]
