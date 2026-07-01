@@ -1,6 +1,6 @@
 declare namespace APJS {
   /**
-   * @description Enum representing the names of bones in a robot's skeletal structure.
+   * @description Enum representing the names of bones in a full-body avatar skeletal structure.
    * @enum {string}
    * @property Pelvis - The pelvis bone.
    * @property Spine1 - The first spine bone.
@@ -47,8 +47,8 @@ declare namespace APJS {
   }
   
   /**
-   * @namespace FullBodyAvatarDriveComponent
-   * @description Represents a dynamic component specifically designed for the FullBodyAvatarDriveComponent.
+   * @class FullBodyAvatarDrive
+   * @description Represents a dynamic component specifically designed for the FullBodyAvatarDrive.
    */
   class FullBodyAvatarDrive extends DynamicComponent {
     protected constructor();

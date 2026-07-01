@@ -26,7 +26,6 @@ declare function customNode(): (target: BaseUserConstructor<BasicScriptNode>) =>
  * Decorator that marks a class as a script component.
  * Script components can be attached to scene objects to add custom behavior.
  * This decorator should be applied to classes that extend APJS.BasicScriptComponent.
- *
  * @returns Class decorator function
  *
  * @example
@@ -144,7 +143,7 @@ declare function serializeProperty(target: any, key: string): void;
  * export class LightController extends APJS.BasicScriptComponent {
  *   @serializeProperty()
  *   @label("Light Color")
- *   public color: vec3 = new vec3(1, 1, 1);
+ *   public color: APJS.Vector3f = new APJS.Vector3f(1, 1, 1);
  *
  *   @serializeProperty()
  *   @label("Intensity (Lux)")
@@ -490,7 +489,7 @@ declare function space(heightPixels: number): (target: any, key: string) => any;
  *
  *   @groupBegin("Emission")
  *   @serializeProperty()
- *   public emissionColor: vec3 = new vec3(0, 0, 0);
+ *   public emissionColor: APJS.Vector3f = new APJS.Vector3f(0, 0, 0);
  *
  *   @serializeProperty()
  *   public emissionStrength: number = 1;

@@ -1,1 +1,1 @@
-let BaseNode=require("../Utils/BaseNode").BaseNode,APJS=require("../../../amazingpro");class CGOnUpdate extends BaseNode{constructor(){super()}onUpdate(e,s){this.outputs[1]=s,void 0!==this.nexts[0]&&this.nexts[0]()}}exports.CGOnUpdate=CGOnUpdate;
+Object.defineProperty(exports,"__esModule",{value:!0}),exports.CGOnUpdate=void 0;const ScriptNodeAPI_1=require("../Utils/ScriptNodeAPI");class CGOnUpdate extends ScriptNodeAPI_1.BaseNode{onUpdate(e,t){this.outputs[1]=t,void 0!==this.nexts[0]&&this.nexts[0]()}}exports.CGOnUpdate=CGOnUpdate;

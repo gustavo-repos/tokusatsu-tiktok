@@ -21,17 +21,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Enemy = void 0;
+exports.Enemy = exports.time = void 0;
 const Game_1 = require("Game");
+exports.time = 35;
 let Enemy = class Enemy extends APJS.BasicScriptComponent {
     constructor() {
         super(...arguments);
         this.accumulator = 0;
         this.spawnTimer = 0;
-        this.spawnInterval = 2;
-        this.time = 30;
+        this.spawnInterval = 3;
+        // time = 35
         this.startTimer = false;
-        this.spawnSpots = [[117 / Game_1.PPU, 104 / Game_1.PPU], [396 / Game_1.PPU, 104 / Game_1.PPU], [-396 / Game_1.PPU, 104 / Game_1.PPU], [-117 / Game_1.PPU, 104 / Game_1.PPU], [-256 / Game_1.PPU, 333 / Game_1.PPU], [256 / Game_1.PPU, 333 / Game_1.PPU]];
+        // spawnSpots = [[117 / PPU, 104 / PPU], [396 / PPU, 104 / PPU], [-396 / PPU, 104 / PPU], [-117 / PPU, 104 / PPU], [-256 / PPU, 333 / PPU], [256 / PPU, 333 / PPU]]
+        this.spawnSpots = [[117 / Game_1.PPU, 114 / Game_1.PPU], [396 / Game_1.PPU, 114 / Game_1.PPU], [-396 / Game_1.PPU, 114 / Game_1.PPU], [-117 / Game_1.PPU, 114 / Game_1.PPU], [-256 / Game_1.PPU, 343 / Game_1.PPU], [256 / Game_1.PPU, 343 / Game_1.PPU]];
         this.enemyWasHit = false;
         this.points = 0;
     }
@@ -59,15 +61,16 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
         this.playerWidth = this.transform.sizeDelta.x / Game_1.PPU;
         this.playerHeight = this.transform.sizeDelta.y / Game_1.PPU;
         this.enemyScene = this.getSceneObject().scene.findSceneObject('enemy');
+        this.scenePoints = this.getSceneObject().scene.findSceneObject('points');
     }
     onUpdate(deltaTime) {
         deltaTime = Math.min(deltaTime, 0.25);
         this.accumulator += deltaTime;
         while (this.accumulator >= Game_1.fixedTime) {
             this.spawnTimer += Game_1.fixedTime;
-            if (this.startTimer && this.time >= 0) {
-                this.time -= Game_1.fixedTime;
-                Game_1.conect.name = Math.round(this.time).toString();
+            if (this.startTimer && exports.time >= 0) {
+                exports.time -= Game_1.fixedTime;
+                Game_1.conect.name = Math.round(exports.time).toString();
             }
             if (!this.enemyWasHit && (0, Game_1.checkRectOverlap)(this.getPlayerRect(), (0, Game_1.getElementRect)(this.getSceneObject(), 0))) {
                 console.log('hit');
@@ -75,9 +78,26 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
                     this.startTimer = true;
                 this.points++;
                 // conect.name = this.points.toString()
+                this.scenePoints.name = this.points.toString();
                 this.enemyScene.name = 'hit';
                 this.enemyWasHit = true;
                 this.spawnTimer = 1;
+                if (this.points == 4) {
+                    this.spawnInterval = 2.5;
+                }
+                else if (this.points == 8) {
+                    this.spawnInterval = 2.3;
+                    exports.time = +15;
+                    // adicionar visual tempo aumentando!
+                }
+                else if (this.points == 12) {
+                    this.spawnInterval = 2;
+                    exports.time = +10;
+                    // adicionar visual tempo aumentando!
+                }
+                else if (this.points == 18) {
+                    // adiocionar o KO!
+                }
             }
             if (this.spawnTimer >= this.spawnInterval) {
                 // this.currentSpot = this.getRandomItem(this.spawnSpots)

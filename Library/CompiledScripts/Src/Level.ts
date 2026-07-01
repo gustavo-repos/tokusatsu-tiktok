@@ -1,4 +1,5 @@
 import { leftPressed, rightPressed, move, PPU, checkRectOverlap, solids, getElementRect, snapX, fixedTime } from "Game"
+import { time } from "Enemy"
 
 @component()
 export class Level extends APJS.BasicScriptComponent {

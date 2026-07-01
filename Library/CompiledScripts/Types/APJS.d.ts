@@ -89,14 +89,41 @@ declare namespace APJS {
   }
   /**
    * @namespace AlgorithmManager
+   * @description Access point for frame-based algorithm results exposed by the engine,
+   * such as face detection, face attributes, and related tracking data.
+   * @example
+   * // Read face tracking data every frame inside a Script component
+   * // Head orientation, face actions (eye blink), and face attributes (happy expression)
+   * onUpdate(deltaTime: number): void {
+   *   const result = APJS.AlgorithmManager.getResult();
+   *   const faceCount = result.getFaceCount();
+   *   if (faceCount > 0) {
+   *     const face = result.getFaceBaseInfo(0);
+   *     console.log("yaw:", face.yaw, "pitch:", face.pitch);
+   *
+   *     if (face.hasAction(APJS.FaceAction.EyeBlink)) {
+   *       console.log("User blinked!");
+   *     }
+   *   }
+   *   if (result.getFaceAttributeCount() > 0) {
+   *     const faceAttr = result.getFaceAttributeInfo(0);
+   *     if (faceAttr.expressionType == APJS.FaceAttrExpression.Happy) {
+   *       console.log("User is happy!");
+   *     }
+   *   }
+   * }
    */
   namespace AlgorithmManager {
     /**
-     * @description get Result
+     * @description Returns the current frame's algorithm result wrapper.
+     * The returned object exposes typed accessors such as face count, face base
+     * information, and face attribute information.
+     *
      * @example
      * const result = APJS.AlgorithmManager.getResult();
      * if (result.getFaceCount() > 0) {
-     *   //TODO
+     *   const face = result.getFaceBaseInfo(0);
+     *   const isLookingLeft = face.yaw > 0.2;
      * }
      */
     function getResult(): AlgorithmResult;
@@ -374,7 +401,20 @@ declare namespace APJS {
   }
   /**
    * @class Animator
-   * @description Animator. Component that plays back animations.
+   * @description Component that controls animation playback.
+   * @example
+   * const skeletonRoot = scene.findSceneObject("SkeletonAndRenderRoot");
+   * const animator = skeletonRoot.getComponent("Animator") as APJS.Animator;
+   * const anim = animator.getAnimation("walk");
+   * if (anim) {
+   *     animator.playback = anim;
+   * }
+   *
+   * const emitter = animator.getEmitter("walk");
+   * emitter?.on(APJS.AnimationEventType.AnimationEnd, (event) => {
+   *     const nextAnim = animator.getAnimation("idle");
+   *     if (nextAnim) { animator.playback = nextAnim; }
+   * });
    */
   class Animator extends Component {
     protected constructor();
@@ -392,10 +432,16 @@ declare namespace APJS {
      *     animation.play('animationName-run', wrapMode, speed, fadeInTime);
      * });
      */
+    /**
+     * @description Gets the event emitter for the specified animation.
+     * The `animationName` must match an animation resource name associated with this animator.
+     * Returns `undefined` if the animation does not exist or has no default clip.
+     */
     getEmitter(animationName: string): IEventEmitter | undefined;
     /**
-     * @description Return if the animator is playing any animation.
-     * @returns True if the animator is playing any animation, otherwise false.
+     * @description Returns whether the specified animation is currently playing.
+     * The `animationName` must match an animation resource name associated with this animator.
+     * @returns True if the specified animation is playing, otherwise false.
      * @example
      *     const isPlaying = animator.isPlaying('animationName-walk');
      */
@@ -403,17 +449,27 @@ declare namespace APJS {
     /**
      * @description Gets the animation resource currently being played.
      * @returns The animation resource currently being played, or null if no animation is currently playing.
+     * @example
+     * const current = animator.playback;
+     * if (current) {
+     *     console.log(current.frameCount);
+     * }
      */
     get playback(): Animation | null;
     /**
      * @description Sets the animation resource currently being played.
-     * @param animation - The animation resource to play. Set to null to stop all animations.
+     * @param animation - The animation resource to play. Set to null to stop all animations(not recommended, use stopAll instead).
+     * @example
+     * animator.playback = walkAnimation; // start playing a different animation
      */
     set playback(animation: Animation | null);
     /**
      * @description Gets the list of all animation resources associated with this animator.
      * The returned array contains all animation resources that have been added to this animator.
      * @returns The array of animation resources.
+     * @example
+     * const anims = animator.animations;
+     * console.log(anims.length);
      */
     get animations(): Animation[];
     /**
@@ -424,28 +480,43 @@ declare namespace APJS {
     set animations(value: Animation[]);
     /**
      * @description Gets the animation resource with the specified name.
+     * The name must match an animation resource name associated with this animator.
      * @param name - The name of the animation resource to get.
-     * @returns The animation resource with the specified name, or null if no animation resource with the specified name exists.
+     * @returns The animation resource with the specified name.
+     * @example
+     * const anim = animator.getAnimation('walk');
+     * if (anim) {
+     *     animator.playback = anim;
+     * }
      */
     getAnimation(name: string): Animation;
     /**
-     * @description Deprecated. play animation exclusively in default layer, use playState instead
+     * @description Deprecated. Play animation exclusively in the default layer; use `playback` instead.
+     * The `animationName` must match an animation resource name associated with this animator.
      * @param animationName - animation's name
      * @param wrapMode - loopCount or wrap mode, a value above 0 means loopCount
      * @param speed - play speed
      * @param fadeTime - blend weight fade duration, if is 0, do transition immediately
+     * @example
+     * animator.play('walk', AnimationWrapMode.Repeat, 1.0, 0.3);
      */
     play(animationName: string, wrapMode: number | AnimationWrapMode, speed: number, fadeInTime?: number): void;
     /**
      * @description stop all animations playing in this animator
+     * @example
+     * animator.stopAll();
      */
     stopAll(): void;
     /**
      * @description pause all animations playing in this animator
+     * @example
+     * animator.pauseAll();
      */
     pauseAll(): void;
     /**
      * @description resume all animations playing in this animator
+     * @example
+     * animator.resumeAll();
      */
     resumeAll(): void;
   }
@@ -508,7 +579,34 @@ declare namespace APJS {
     enabled: boolean;
   }
   /**
-   * @class
+   * @class BasicScriptComponent
+   * @description Base class for script components attached to SceneObjects.
+   * Extend this class to implement runtime behavior, respond to lifecycle callbacks, and access the host object through `getSceneObject()`.
+   *
+   * @example
+   * class Rotator extends APJS.BasicScriptComponent {
+   *   onInit() {
+   *     console.log('onInit');
+   *   }
+   *
+   *   onStart() {
+   *     console.log('onStart');
+   *   }
+   *
+   *   onUpdate(deltaTime: number) {
+   *     console.log('onUpdate', deltaTime);
+   *   }
+   *
+   *   onDestroy() {
+   *     console.log('onDestroy');
+   *   }
+   * }
+   *
+   * Lifecycle order for a normally enabled component:
+   * 1. `onInit()` — called after the component is added to a SceneObject.
+   * 2. `onStart()` — called before the first frame update.
+   * 3. `onUpdate(deltaTime)` — called every frame while the component stays enabled.
+   * 4. `onDestroy()` — called when the component is destroyed.
    */
   abstract class BasicScriptComponent extends DynamicComponent {
     /**
@@ -547,8 +645,31 @@ declare namespace APJS {
      */
     onDestroy(): void;
     /**
-     * @description Called by engine when events occurred.
-     * @param event - Event object.
+     * @description Called by the runtime when a global event is dispatched.
+     *
+     * Only pre-registered event types are delivered here (`AppEventType.COMPAT_BEF`,
+     * `EventType.DUAL_INSTANCE`, `EventType.SCENE_COMPONENTS_ADDED_OR_REMOVED`).
+     * For other event types such as Touch or RecordStart, use
+     * `EventManager.getGlobalEmitter().on()` instead — it automatically subscribes
+     * to the native event type and is the recommended approach for all new code.
+     *
+     * @param event - The event object.
+     *
+     * @example
+     * // Recommended: use GlobalEmitter for Touch / Record events
+     * export class MyScript extends APJS.BasicScriptComponent {
+     *   onStart() {
+     *     const emitter = APJS.EventManager.getGlobalEmitter();
+     *     emitter.on(APJS.EventType.Touch, this.onTouch, this);
+     *   }
+     *   onDestroy() {
+     *     const emitter = APJS.EventManager.getGlobalEmitter();
+     *     emitter.off(APJS.EventType.Touch, this.onTouch, this);
+     *   }
+     *   private onTouch(event: APJS.IEvent) {
+     *     const touch = event.args[0] as APJS.TouchData;
+     *   }
+     * }
      */
     onEvent(event: IEvent): void;
   }
@@ -556,12 +677,12 @@ declare namespace APJS {
    * @class BeatDetector
    * @description A beat detector implementation.
    * @example
-   * OnInit() {
-   *     const builder = APJS.AudioDetectionModule.getAudioDetectionBuilder(APJS.AudioDetectionType.Beat);
+   * onInit() {
+   *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.Beat);
    *     builder.setDetectorSource(APJS.AudioSourceType.Microphone, null);
    *     this.detector = builder.build();
    * }
-   * OnUpdate(dt: number) {
+   * onUpdate(dt: number) {
    *     if (this.detector) {
    *         const result = this.detector.getResult();
    *         console.log(result);
@@ -571,8 +692,16 @@ declare namespace APJS {
   class BeatDetector extends BaseAudioDetector {
     protected constructor();
     /**
-     * @description Get the result of the beat detection.
-     * @returns [1, 2, ...] The result of the beat detection.
+     * @description Gets the current beat detection result.
+     *
+     * All rhythm patterns are quantified to 3/4 or 4/4 time:
+     * - 4/4 time: cycles through 1 → 2 → 3 → 4 → 1 → ...
+     * - 3/4 time: cycles through 1 → 2 → 3 → 1 → ...
+     *
+     * Value 1 represents the onset beat (first beat of each measure).
+     * There is typically a ~2 second accuracy delay before the detector stabilizes.
+     *
+     * @returns The current beat position in the measure (1-based), or -1 when no result is available.
      */
     getResult(): number;
   }
@@ -580,8 +709,8 @@ declare namespace APJS {
    * @class BeatDetectorBuilder
    * @description A builder for beat detector to set the source of the detector and build the detector.
    * @example
-   * OnInit() {
-   *     const builder = APJS.AudioDetectionModule.getAudioDetectionBuilder(APJS.AudioDetectionType.Beat);
+   * onInit() {
+   *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.Beat);
    *     builder.setDetectorSource(APJS.AudioSourceType.Microphone, null);
    *     const detector = builder.build();
    * }
@@ -590,7 +719,7 @@ declare namespace APJS {
     protected constructor();
     setDetectorSource(type: AudioSourceType, audioComponent: IAudioComponent | null): this;
     /**
-     * @description Build the beat detector. Note that the detector should be built in OnInit, otherwise it will return null.
+     * @description Build the beat detector. Note that the detector should be built in onInit, otherwise it will return null.
      * @returns Detector instance of the beat detector.
      */
     build(): BeatDetector | null;
@@ -638,7 +767,7 @@ declare namespace APJS {
     Max
   }
   /**
-   * @class ColorBlendState
+   * @class BlendState
    * @extends AObject
    * @description Represents the blend state for color blending in the rendering pipeline.
    *
@@ -661,7 +790,7 @@ declare namespace APJS {
    * blendState.alphaBlendOperation = BlendOperation.Add;
    *
    * // Apply the blend state to a material
-   * material.mainpass.blendState = blendState;
+   * material.mainPass.blendState = blendState;
    *
    * @example <caption>Advanced Usage: Setting Up Additive Blending</caption>
    * // Create a new blend state for additive blending
@@ -675,7 +804,7 @@ declare namespace APJS {
    * additiveBlendState.alphaBlendOperation = BlendOperation.Add;
    *
    * // Apply the blend state to a material
-   * material.mainpass.blendState = additiveBlendState;
+   * material.mainPass.blendState = additiveBlendState;
    *
    * @see BlendFactor
    * @see BlendOperation
@@ -772,11 +901,22 @@ declare namespace APJS {
   /**
    * @class BoxCollider
    * @description Represents a box-shaped collider component used for physics collision detection.
+   * Use this when the collision shape is best approximated by a rectangular
+   * volume, such as crates, walls, or simple hitboxes.
+   * Inherited properties such as {@link center}, {@link rotation},
+   * {@link isTangible}, and {@link emitCollisionEvent} still apply.
+   *
+   * @example
+   * const box = obj.getComponent("BoxCollider") as APJS.BoxCollider;
+   * box.size = new APJS.Vector3f(20, 10, 6); // change the size of the box collider
+   * box.center = new APJS.Vector3f(0, 2, 0); // change the center of the box collider
    */
   class BoxCollider extends Collider {
     protected constructor();
     /**
-     * @description Gets the size of the box collider. Represents the dimensions of the box in 3D space.
+     * @description Gets or sets the authored size of the box collider.
+     * This is the full width, height, and depth of the box shape in local
+     * collider space. Defaults to (8, 8, 8), which is the same as the default cube size.
      * @returns {Vector3f} The size vector with x, y, z dimensions of the box collider
      */
     get size(): Vector3f;
@@ -788,12 +928,23 @@ declare namespace APJS {
   }
   /**
    * @class BoxCollider2D
+   * @description A rectangular 2D collider.
+   * Use this for simple 2D boundaries such as character hitboxes, walls,
+   * floors, or trigger regions.
+   * Inherited properties such as {@link offset}, {@link isTangible}, and
+   * {@link emitCollisionEvent} still apply.
+   *
+   * @example
+   * const box = obj.getComponent("BoxCollider2D") as APJS.BoxCollider2D;
+   * box.size = new APJS.Vector2f(40, 20); // change the size of the box collider
+   * box.offset = new APJS.Vector2f(0, 10); // change the offset of the box collider
    */
   class BoxCollider2D extends Collider2D {
     protected constructor();
     /**
-     * @description Gets the size of the box collider.
-     * @returns The size of the box collider.
+     * @description Gets or sets the authored size of the 2D box collider.
+     * This is the full width and height of the rectangular shape.
+     * @type {Vector2f}
      */
     get size(): Vector2f;
     /**
@@ -805,16 +956,39 @@ declare namespace APJS {
   /**
    * @class Camera
    * @description
-   * <br/>A Camera is a device through which the player views the world.
-   * <br/>use sceneObject.addComponent("Camera") to create one camera component
+   * A Camera is a device through which the player views the world.
+   * <br/>It defines the visible region via projection (perspective or orthographic),
+   * clipping planes (near/far), field of view, viewport rect, and render layers.
+   * <br/>The camera looks down its local <b>negative Z-axis</b>; use
+   * {@link Quaternionf.lookAt} or Transform rotation to aim it.
+   * <br/>Use `sceneObject.addComponent("Camera")` to create one camera component.
    * @example
-   * let cam = sceneObj.addComponent("Camera");
-   * cam.clearColor = new Color(0,0,0,1);
+   * // Get the existing camera from the scene
+   * const camObj = this.getSceneObject().scene.findSceneObject("Camera");
+   * const cam = camObj.getComponent("Camera") as APJS.Camera;
+   *
+   * // Change camera properties
+   * cam.cameraType = APJS.CameraType.Perspective;
+   * cam.fov = 45; // 45 degrees
+   * cam.near = 0.1;
+   * cam.far = 1000;
+   * cam.clearColor = new APJS.Color(0.2, 0.2, 0.2, 1);
+   *
+   * // Convert pixel screen coordinates to a world-space ray for picking
+   * const ray = cam.ScreenPointToRay(new APJS.Vector2f(screenX, screenY));
+   *
+   * // Implement a third-person follow camera
+   * const player = this.getSceneObject().scene.findSceneObject("Player"); // Player can be a sphere for example
+   * const targetPos = player.getTransform().getWorldPosition().clone();
+   * const offset = new APJS.Vector3f(0, 8, 20);
+   * camObj.getTransform().setWorldPosition(targetPos.add(offset));
+   * const forward = camObj.getTransform().getWorldPosition().subtract(targetPos).normalize();
+   * camObj.getTransform().localRotation = APJS.Quaternionf.lookAt(forward, new APJS.Vector3f(0, 1, 0));
    */
   class Camera extends Component {
     protected constructor();
     /**
-     * @description When enableClearColor is true and inputTexture is null, this color is used to clear this Camera's renderTarget before drawing to it.
+     * @description The color used to clear this Camera's render target before drawing, when `inputTexture` is null.
      */
     get clearColor(): Color;
     /**
@@ -832,7 +1006,7 @@ declare namespace APJS {
      */
     set clearType(type: CameraClearType);
     /**
-     * @description Gets the type of the camera, which can be either CameraType.Ortho or CameraType.PERSPECTIVE.
+     * @description Gets the type of the camera, which can be either CameraType.Ortho or CameraType.Perspective.
      */
     get cameraType(): CameraType;
     /**
@@ -851,6 +1025,7 @@ declare namespace APJS {
     set orthoHeight(height: number);
     /**
      * @description The distance of the far clipping plane.
+     * Objects farther than this value are not rendered.
      */
     get far(): number;
     /**
@@ -860,6 +1035,7 @@ declare namespace APJS {
     set far(value: number);
     /**
      * @description The distance of the near clipping plane.
+     * Objects closer than this value are not rendered.
      */
     get near(): number;
     /**
@@ -868,7 +1044,9 @@ declare namespace APJS {
      */
     set near(value: number);
     /**
-     * @description The Camera's field of view in radians.
+     * @description The Camera's field of view in degrees.
+     * Only effective when {@link cameraType} is {@link CameraType.Perspective}.
+     * range: [0.0, 180.0] default: 60.0
      */
     get fov(): number;
     /**
@@ -886,17 +1064,20 @@ declare namespace APJS {
      */
     set fovType(value: CameraFovType);
     /**
-     * @description This texture is used to clear the Camera's renderTarget before drawing.
-     * <br/>If this texture is null, clearColor will be used instead.
+     * @description The texture blit to the render target as the base color at the start of each frame, before scene objects are rendered on top.
+     * Only takes effect when `clearType` includes color clearing (e.g. `CameraClearType.Color`, `CameraClearType.ColorDepth`); ignored otherwise.
+     * When null and color clearing is active, `clearColor` is used instead.
+     * Its size is not guaranteed to match `renderTexture` or the preview viewport.
      */
     get inputTexture(): Texture | null;
     /**
-     * @description Sets the input texture for the camera.
+     * @description Sets the texture to blit to the render target as the base color each frame.
+     * Only effective when `clearType` includes color clearing; ignored otherwise.
      * @param value - The new input texture for the camera.
      */
     set inputTexture(value: Texture | null);
     /**
-     * @description Gets of layers this Camera will render.
+     * @description Gets the set of layers this Camera will render.
      */
     get renderLayer(): LayerSet;
     /**
@@ -905,11 +1086,14 @@ declare namespace APJS {
      */
     set renderLayer(value: LayerSet);
     /**
-     * @description Gets the render texture associated with the current camera.
+     * @description The RenderTexture this camera renders scene objects into each frame.
+     * Defaults to the Final Render Output bound by the runtime; can be replaced with a custom RenderTexture via the setter.
+     * Its dimensions are not guaranteed to match `inputTexture` or the preview viewport.
      */
     get renderTexture(): Texture;
     /**
-     * @description Sets the render texture for the camera.
+     * @description Sets a custom RenderTexture as this camera's output render target.
+     * Must be a RenderTexture; other texture types are silently rejected.
      * @param value - The new render texture for the camera.
      */
     set renderTexture(value: Texture);
@@ -919,7 +1103,7 @@ declare namespace APJS {
     get depthRenderTexture(): Texture;
     /**
      * @description Sets the depth render texture for the camera.
-     * @param value - The new depth render texture for the camera.s
+     * @param value - The new depth render texture for the camera. The texture must be a `DrawTexture`; passing any other type is silently ignored.
      */
     set depthRenderTexture(value: Texture);
     /**
@@ -947,39 +1131,85 @@ declare namespace APJS {
     get projectionMatrix(): Matrix4x4f;
     /**
      * @description Converts a point from view port space to world space.
-     * @param viewPortPoint - A point in view port space represented as a Vector3f.
+     * <br/>Viewport coordinates are normalized: (0, 0) is the bottom-left and (1, 1) is the top-right.
+     * The Z component specifies the world-unit depth from the camera's near plane.
+     * @param viewPortPoint - A point in view port space represented as a Vector3f (x, y in [0, 1]; z is depth).
      * @returns The corresponding point in world space as a Vector3f.
+     * @example
+     * // for default camera at (0, 0, 40), the following call returns (0, 0, 30)
+     * const worldPos = cam.viewportToWorldPoint(new APJS.Vector3f(0.5, 0.5, 10));
      */
     viewportToWorldPoint(viewPortPoint: Vector3f): Vector3f;
     /**
      * @description Projects a point from world space to viewport space.
+     * The returned viewport coordinates use a normalized range where `x` and `y` are typically in `[0, 1]`, with `(0, 0)` at the bottom-left of the viewport and `(1, 1)` at the top-right.
+     * The returned `z` value represents the distance from the camera along its view direction, in world units.
      * @param worldPoint - A point in world space represented as a Vector3f.
      * @returns The calculated point in viewport space as a Vector3f.
+     * @example
+     * // for default camera at (0, 0, 40), the following call returns (0.5, 0.5, 10)
+     * const viewportPos = cam.worldToViewportPoint(new APJS.Vector3f(0, 0, 30));
      */
     worldToViewportPoint(worldPoint: Vector3f): Vector3f;
     /**
      * @description Converts a screen space position to a world space position, given an absolute depth.
      * @param screenPoint - A point in screen space represented as a Vector3f.
+     * <br/>X, Y are screen coordinates in pixels. left-bottom is (0, 0). right-top is (W, H).
+     * <br/>Z is the absolute world-unit depth from the camera's
+     * <br/>near plane, not a normalized value. Use the Z value from {@link worldToScreenPoint} to round-trip correctly.
      * @returns The corresponding world space position as a Vector3f.
+     * @example
+     * // for default camera at (0, 0, 40), the following call returns (0, 0, 10)
+     * // because (360, 640) is the center of the screen with resolution (1280, 720)
+     * // and depth 30 is the depth from the near plane.
+     * const worldPos = cam.screenToWorldPoint(new APJS.Vector3f(360, 640, 30));
      */
     screenToWorldPoint(screenPoint: Vector3f): Vector3f;
     /**
      * @description Converts a world space position to a screen space position.
-     * Screen position is based on the current rendered screen resolution W x H. Therefore, it represents within the range ([0,W], [0,H]), where (0,0) is the bottom-left of the screen and (W,H) is the top-right.
      * @param worldPoint - The world space point as a Vector3f.
      * @returns The corresponding screen space position as a Vector3f.
+     * <br/>Screen position is based on the current rendered screen resolution W x H,
+     * <br/>ranging from ([0, W], [0, H]) where (0, 0) is the bottom-left and (W, H) is the top-right.
+     * <br/>The returned Z component is the distance from the camera's near plane in world units.
+     * @example
+     * // for default camera at (0, 0, 40), the following call returns (360, 640, 30)
+     * // because (0, 0, 10) is the center of the screen with resolution (1280, 720)
+     * // and depth 30 is the depth from the near plane.
+     * const screenPos = cam.worldToScreenPoint(new APJS.Vector3f(0, 0, 10));
+     * // Use screenPoint.x and screenPoint.y to position a 2D UI indicator
+     * const screenPointVec3f = cam.worldToScreenPoint(enemy.getTransform().getWorldPosition());
+     * const screenPos = new APJS.Vector2f(screenPointVec3f.x, screenPointVec3f.y); // pixel coordinates
      */
     worldToScreenPoint(worldPoint: Vector3f): Vector3f;
     /**
      * @description Generates a ray from the specified position in this camera's viewport space.
-     * @param viewportPoint - A point in viewport space represented as a Vector2f.
+     * <br/>Viewport coordinates are normalized: (0, 0) is the bottom-left and (1, 1) is the top-right.
+     * Useful for generating rays from UI elements whose positions are in normalized layout space.
+     * @param viewportPoint - A point in viewport space represented as a Vector2f (range [0, 1]).
      * @returns The calculated world space ray as a Ray object.
+     * @example
+     * // For a default camera at (0, 0, 40) and a default cube at (0, 0, 0)
+     * // with box collider size (8, 8, 8), the following call logs (0, 0, 4).
+     * // The ray to the center of the screen hits the front face of the cube first, and the front face is at z = 4.
+     * const ray = cam.viewportPointToRay(new APJS.Vector2f(0.5, 0.5));
+     * const hits = APJS.Physics3D.raycast(ray, 1000, true);
+     * console.log("raycastHit:", hits[0].point);
      */
     viewportPointToRay(viewportPoint: Vector2f): Ray;
     /**
      * @description Generates a ray from the screen position in this camera's view space.
-     * @param screenPoint - A point in screen space represented as a Vector2f.
+     * <br/>The screen coordinate system origin (0, 0) is at the bottom-left,
+     * with x increasing rightward and y increasing upward, measured in pixels.
+     * @param screenPoint - A point in screen space represented as a Vector2f (pixels).
      * @returns The calculated world space ray as a Ray object.
+     * @example
+     * // For a default camera at (0, 0, 40) and a default cube at (0, 0, 0)
+     * // with box collider size (8, 8, 8), the following call logs (0, 0, 4).
+     * // The ray to the center of the screen hits the front face of the cube first, and the front face is at z = 4.
+     * const ray = cam.ScreenPointToRay(new APJS.Vector2f(360, 640));
+     * const hits = APJS.Physics3D.raycast(ray, 500, true);
+     * console.log("raycastHit:", hits[0].point);
      */
     ScreenPointToRay(screenPoint: Vector2f): Ray;
     /**
@@ -1002,7 +1232,16 @@ declare namespace APJS {
     getWorldToCameraMatrix(): Matrix4x4f;
     /**
      * @description Gets the camera's forward direction, also known as the look-at direction.
+     * This method returns the normalized vector that the camera is currently looking toward
+     * (i.e., the default camera looks in the world-space direction of -Z in camera space, returns (0, 0, -1)).
+     * <br/>When constructing a follow-camera with {@link Quaternionf.lookAt}, pass
+     * `cameraPosition.subtract(targetPosition)` as the forward vector — NOT
+     * `targetPosition.subtract(cameraPosition)` — because `lookAt` aligns the object's
+     * positive Z-axis, which is opposite to the camera's view direction.
      * @returns The forward direction vector of the camera.
+     * @example
+     * const forward = cam.getLookAt();
+     * const right = forward.cross(new APJS.Vector3f(0, 1, 0)).normalize();
      */
     getLookAt(): Vector3f;
   }
@@ -1054,12 +1293,24 @@ declare namespace APJS {
   }
   /**
    * @class CapsuleCollider
+   * @description Represents a capsule-shaped collider component used for physics collision detection.
+   * Use this for rounded elongated volumes such as characters, limbs, or
+   * simple props that need smoother contact than a box.
+   * APJS exposes {@link radius} and {@link height} for the shape.
+   * It does not expose a separate capsule direction property.
+   *
+   * @example
+   * const capsule = obj.getComponent("CapsuleCollider") as APJS.CapsuleCollider;
+   * capsule.radius = 4; // change the radius of the capsule collider
+   * capsule.height = 16; // change the height of the capsule collider
+   * capsule.center = new APJS.Vector3f(0, 8, 0); // change the center of the capsule collider
    */
   class CapsuleCollider extends Collider {
     protected constructor();
     /**
-     * @description Gets the radius of the capsule collider.
-     * @returns The radius of the capsule collider.
+     * @description Gets or sets the authored radius of the capsule collider.
+     * Larger values make the capsule thicker. Defaults to 5.
+     * @returns {number} The radius of the capsule collider
      */
     get radius(): number;
     /**
@@ -1068,8 +1319,10 @@ declare namespace APJS {
      */
     set radius(value: number);
     /**
-     * @description Gets the height of the capsule collider.
-     * @returns The height of the capsule collider.
+     * @description Gets or sets the authored height of the capsule collider.
+     * Together with {@link radius}, this controls the final capsule shape used
+     * by the APJS physics wrapper. Defaults to 8.
+     * @returns {number} The height of the capsule collider
      */
     get height(): number;
     /**
@@ -1091,7 +1344,7 @@ declare namespace APJS {
      *
      * @description capture camera output to a texture
      * @param camera The camera to capture output from.
-     * @param cropRect The crop rectangle to apply to the captured frame (default is Rect(0, 0, 1, 1)).
+     * @param cropRect The crop rectangle to apply to the captured frame in normalized texture coordinates (default is Rect(0, 0, 1, 1)). x and y represent the crop origin, width and height represent the crop size, and each value is typically in the range [0, 1]. For example, Rect(0, 0, 1, 1) captures the full output, Rect(0, 0, 0.5, 0.5) captures the bottom-left quarter, and x + width / y + height should not exceed 1.
      * @param resolutionRatio The resolution ratio to apply to the captured frame (default is 1.0).
      * @returns The captured texture, or null if capture failed.
      * @example
@@ -1101,12 +1354,23 @@ declare namespace APJS {
   }
   /**
    * @class CircleCollider2D
-   * @description Represents a 2D circle collider.
+   * @description A circular 2D collider.
+   * Use this for round 2D collision volumes such as wheels, projectiles,
+   * pickups, or simple trigger regions.
+   * Inherited properties such as {@link offset}, {@link isTangible}, and
+   * {@link emitCollisionEvent} still apply.
+   *
+   * @example
+   * const circle = obj.getComponent("CircleCollider2D") as APJS.CircleCollider2D;
+   * circle.radius = 16; // change the radius of the circle collider
+   * circle.isTangible = false; // use as a circular trigger region
    */
   class CircleCollider2D extends Collider2D {
     protected constructor();
     /**
-     * @description Gets the radius of the circle collider.
+     * @description Gets or sets the authored radius of the 2D circle collider.
+     * Larger values produce a larger circular collision region.
+     * @type {number}
      */
     get radius(): number;
     /**
@@ -1114,200 +1378,264 @@ declare namespace APJS {
      */
     set radius(value: number);
     /**
-     * @description Indicates whether the collider should automatically adjust its size to fit the attached image.
+     * @description Gets or sets whether this collider should automatically fit
+     * the attached image.
+     * When enabled, the runtime can use the image size as input for circle
+     * sizing behavior.
      */
     get fitImage(): boolean;
-    /**
-     * @description Set whether the collider should automatically adjust its size to fit the attached image.
-     */
     set fitImage(value: boolean);
   }
   /**
    * @class Collider
+   * @description Base class for 3D collision shapes.
+   * Use a collider to define how a SceneObject participates in 3D contact
+   * tests, trigger detection, and rigid body collision response.
+   * Typically it is used alongside a {@link RigidBody}.
+   *
+   * {@link isTangible} is the main collision-vs-trigger switch.
+   * When {@link emitCollisionEvent} is enabled, APJS checks this collider's
+   * contacts during update and emits {@link CollisionEvent.Enter},
+   * {@link CollisionEvent.Stay}, and {@link CollisionEvent.Exit}.
+   *
+   * @example
+   * const collider = obj.getComponent("BoxCollider") as APJS.BoxCollider;
+   * collider.isTangible = true; // the collider cannot be passed through
+   * collider.emitCollisionEvent = true;
+   * APJS.EventManager.getObjectEmitter(collider).on(
+   *   APJS.CollisionEvent.Enter, (ev) => {
+   *     const infos = ev.args[0] as APJS.CollisionInfo[];
+   *   }
+   * );
    */
   class Collider extends DynamicComponent {
     protected constructor();
     /**
-     * @description Gets the collider is tangible.
-     * When true, the collider is tangible and objects will collide with it normally.
-     * When false, it becomes a trigger — objects can pass through it, but
-     * collision events can still be detected.
+     * @description Gets or sets whether the collider is tangible. Default is true.
+     * When true, objects collide with it normally. When false, it becomes a
+     * trigger — objects can pass through it, but collision events can still be detected.
      */
     get isTangible(): boolean;
-    /**
-     * @description Sets the collider is tangible.
-     * When true, the collider is tangible and objects will collide with it normally.
-     * When false, it becomes a trigger — objects can pass through it, but
-     * collision events can still be detected.
-     */
     set isTangible(value: boolean);
     /**
-     * @description Gets the center position of the collider.
+     * @description Gets or sets the collider's local center offset relative to the SceneObject.
+     * Use this to shift the collision shape without moving the visual object itself,
+     * such as placing a hitbox slightly in front of a character.
      */
     get center(): Vector3f;
-    /**
-     * @description Sets the center position of the collider.
-     */
     set center(value: Vector3f);
     /**
-     * @description Gets the collider is interactable through interactor node.
-     * When true, Physics Interactor Script Graph Node can be used to drag this object.
+     * @description Gets or sets whether this collider is marked as interactable for the Physics Interactor path.
+     * When enabled, APJS adds a dedicated interaction bit to the collider's category mask so
+     * Physics Interactor Script Graph Node can pick and drag it. This does not change normal collision behavior.
      */
     get interactable(): boolean;
-    /**
-     * @description Sets the collider is interactable through interactor node.
-     * When true, Physics Interactor Script Graph Node can be used to drag this object.
-     */
     set interactable(value: boolean);
     /**
-     * @description The physics material of the collider.
+     * @description Gets or sets the physics material used by this collider.
+     * The assigned material provides dynamic friction, static friction, and bounciness
+     * values for contact response.
      */
     get physicsMaterial(): PhysicsMaterial | null;
     set physicsMaterial(value: PhysicsMaterial | null);
     /**
-     * @description The rotation of the collider in quaternion form.
+     * @description Local rotation offset of the collider shape, stored as a quaternion.
+     * This rotates the collision shape relative to the SceneObject or attached RigidBody,
+     * without rotating the visual object itself. It is a collider configuration value,
+     * not the live world-space rotation currently simulated by physics.
      */
     get rotation(): Quaternionf;
     set rotation(value: Quaternionf);
     /**
-     * @description The collider’s rotation in euler angles (degrees).
+     * @description Same local collider rotation as {@link rotation}, expressed as Euler angles in degrees.
+     * Use this when you want to rotate the collision shape relative to the object.
+     * This is not the current world-space rotation of the physics body.
      */
     get eulerAngles(): Vector3f;
     set eulerAngles(value: Vector3f);
     /**
-     * @description Whether the collider emits collision events for custom script.
-     * When true, the collider will send collision events
-     * every frame (Enter / Stay / Exit).
-     * Enable this if your script needs to listen for collision callbacks.
+     * @description Gets or sets whether APJS should emit collision callbacks for this collider.
+     * When enabled, APJS checks this collider's contacts on each update and emits
+     * {@link CollisionEvent.Enter}, {@link CollisionEvent.Stay}, and {@link CollisionEvent.Exit}.
+     * Disabling it clears the cached collision state.
      */
     get emitCollisionEvent(): boolean;
     set emitCollisionEvent(value: boolean);
   }
   /**
    * @class Collider2D
+   * @description Base class for 2D collision shapes.
+   * Use a collider to define how a SceneObject participates in 2D collision
+   * response and trigger detection, typically alongside a {@link RigidBody2D}.
+   *
+   * When {@link emitCollisionEvent} is enabled, the native 2D listener buffers
+   * hit data and APJS emits {@link CollisionEvent2D.Enter},
+   * {@link CollisionEvent2D.Stay}, and {@link CollisionEvent2D.Exit}
+   * during update.
+   *
+   * @example
+   * const collider = obj.getComponent("BoxCollider2D") as APJS.BoxCollider2D;
+   * collider.isTangible = false; // behave like a trigger
+   * collider.emitCollisionEvent = true;
+   * APJS.EventManager.getObjectEmitter(collider).on(
+   *   APJS.CollisionEvent2D.Enter, (ev) => {
+   *     const infos = ev.args[0] as APJS.CollisionInfo2D[];
+   *   }
+   * );
    */
   class Collider2D extends DynamicComponent {
     protected constructor();
     /**
-     * @description Gets the center position offset of the collider.
+     * @description Gets or sets the collider shape offset authored in the
+     * collider object's local 2D space.
+     * @type {Vector2f}
      */
     get offset(): Vector2f;
-    /**
-     * @description Sets the center position offset of the collider.
-     */
     set offset(value: Vector2f);
     /**
-     * @description Gets the physics material of the collider.
+     * @description Gets or sets the physics material used by this collider.
+     * The assigned material provides dynamic friction, static friction, and bounciness
+     * values for contact response.
      */
     get physicsMaterial(): PhysicsMaterial | null;
-    /**
-     * @description Sets the physics material of the collider.
-     */
     set physicsMaterial(value: PhysicsMaterial | null);
     /**
-     * @description Gets whether the collider is tangible.
-     * When true, the collider is tangible and objects will collide with it normally.
-     * When false, it becomes a trigger — objects can pass through it, but
-     * collision events can still be detected.
+     * @description Gets or sets whether this 2D collider is tangible.
+     * When true, the collider participates in normal collision response.
+     * When false, it behaves like a trigger: objects can pass through it,
+     * but contacts can still be reported through {@link emitCollisionEvent}.
+     * @type {boolean}
      */
     get isTangible(): boolean;
-    /**
-     * @description Sets whether the collider is tangible.
-     * When true, the collider is tangible and objects will collide with it normally.
-     * When false, it becomes a trigger — objects can pass through it, but
-     * collision events can still be detected.
-     */
     set isTangible(value: boolean);
     /**
-     * @description Gets whether the collider emits collision events for custom script.
-     * When true, the collider will send collision events
-     * every frame (Enter / Stay / Exit).
-     * Enable this if your script needs to listen for collision callbacks.
+     * @description Gets or sets whether this collider should emit scripted 2D
+     * collision callbacks.
+     * When enabled, the native 2D listener buffers hit data and APJS emits
+     * {@link CollisionEvent2D.Enter}, {@link CollisionEvent2D.Stay}, and
+     * {@link CollisionEvent2D.Exit} during update.
+     * Disabling it clears the buffered events.
+     * @type {boolean}
      */
     get emitCollisionEvent(): boolean;
-    /**
-     * @description Sets whether the collider emits collision events for custom script.
-     * When true, the collider will send collision events
-     * every frame (Enter / Stay / Exit).
-     * Enable this if your script needs to listen for collision callbacks.
-     */
     set emitCollisionEvent(value: boolean);
   }
+  /**
+   * @class CollisionEvent
+   * @description 3D collision event types. Use with {@link EventManager.getObjectEmitter} on a {@link Collider}
+   * to listen for collision callbacks. The event payload (`ev.args[0]`) is an array of {@link CollisionInfo}.
+   *
+   * **Requires** `collider.emitCollisionEvent = true` to be set first.
+   *
+   * @example
+   * const collider = obj.getComponent("BoxCollider") as APJS.BoxCollider;
+   * collider.emitCollisionEvent = true;
+   * EventManager.getObjectEmitter(collider).on(CollisionEvent.Enter, (ev) => {
+   *     const infos = ev.args[0] as CollisionInfo[];
+   *     for (const info of infos) {
+   *         console.log("Hit", info.otherObject?.name, "at", info.point);
+   *     }
+   * });
+   */
   class CollisionEvent {
     constructor();
     /**
      * @readonly
-     * @description Enter
+     * @description Fired once when this collider is found colliding with another collider for the first time.
+     * In 3D, APJS computes this by comparing the current contact set with the previous update.
      * @type {UserEventType}
      */
     static get Enter(): UserEventType;
     /**
      * @readonly
-     * @description Stay
+     * @description Fired on each update while this collider continues colliding with the same other collider.
      * @type {UserEventType}
      */
     static get Stay(): UserEventType;
     /**
      * @readonly
-     * @description Exit
+     * @description Fired once when a collider that was colliding on the previous update is no longer colliding.
      * @type {UserEventType}
      */
     static get Exit(): UserEventType;
   }
+  /**
+   * @class CollisionEvent2D
+   * @description  2D collision event types. Use with {@link EventManager.getObjectEmitter} on a {@link Collider2D}
+   * to listen for collision callbacks. The event payload (`ev.args[0]`) is an array of {@link CollisionInfo2D}.
+   *
+   * **Requires** `collider.emitCollisionEvent = true` to be set first.
+   *
+   * @example
+   * const collider = obj.getComponent("Collider2D") as APJS.Collider2D;
+   * collider.emitCollisionEvent = true;
+   * APJS.EventManager.getObjectEmitter(collider).on(APJS.CollisionEvent2D.Enter, (ev) => {
+   *     const infos = ev.args[0] as APJS.CollisionInfo2D[];
+   *     for (const info of infos) {
+   *         console.log("Hit", info.otherObject?.name, "at", info.point);
+   *     }
+   * });
+   */
   class CollisionEvent2D {
     constructor();
     /**
      * @readonly
-     * @description Enter
+     * @description Fired once when the 2D physics engine reports that this collider has just started colliding.
      * @type {UserEventType}
      */
     static get Enter(): UserEventType;
     /**
      * @readonly
-     * @description Stay
+     * @description Fired on each physics step while the 2D physics engine reports that the collision is still active.
      * @type {UserEventType}
      */
     static get Stay(): UserEventType;
     /**
      * @readonly
-     * @description Exit
+     * @description Fired once when the 2D physics engine reports that a previous collision has ended.
      * @type {UserEventType}
      */
     static get Exit(): UserEventType;
   }
+  /**
+   * @class CollisionInfo
+   * @description Information about a single 3D collision contact point.
+   * Returned in the event payload of {@link CollisionEvent}.
+   */
   class CollisionInfo {
     constructor(point: Vector3f, normal: Vector3f, otherObject: SceneObject | null);
     /**
-     * @description The point of contact in world space.
-     * @type {Vector3f}
+     * @description World-space contact point.
      */
     readonly point: Vector3f;
     /**
-     * @description The normal of contact in world space.
-     * @type {Vector3f}
+     * @description World-space contact normal vector.
      */
     readonly normal: Vector3f;
     /**
-     * @description The other object involved in the collision.
-     * @type {SceneObject | null}
+     * @description The SceneObject that owns the other collider in this collision pair.
+     * This is null if APJS cannot resolve that collider back to a SceneObject.
      */
     readonly otherObject: SceneObject | null;
   }
+  /**
+   * @class CollisionInfo2D
+   * @description  * Information about a single 2D collision contact point.
+   * Returned in the event payload of {@link CollisionEvent2D}.
+   */
   class CollisionInfo2D {
     constructor(point: Vector2f, normal: Vector2f, otherObject: SceneObject | null);
     /**
-     * @description The point of contact in world space.
-     * @type {Vector2f}
+     * @description World-space contact point.
      */
     readonly point: Vector2f;
     /**
-     * @description The normal of contact in world space.
-     * @type {Vector2f}
+     * @description World-space contact normal vector.
      */
     readonly normal: Vector2f;
     /**
-     * @description The other object involved in the collision.
-     * @type {SceneObject | null}
+     * @description The SceneObject that owns the other collider in this collision pair.
+     * This is null if APJS cannot resolve that collider back to a SceneObject.
      */
     readonly otherObject: SceneObject | null;
   }
@@ -1398,7 +1726,7 @@ declare namespace APJS {
    * const cmdBuffer = new CommandBuffer();
    *
    * // Clear command buffer
-   * cmdBuffer.clear();
+   * cmdBuffer.clearAll();
    *
    * // Set the render target
    * cmdBuffer.setRenderTexture(renderTexture);
@@ -1428,7 +1756,7 @@ declare namespace APJS {
    * cmdBuffer.blit(sourceTexture, destinationTexture);
    *
    * // Commit the command buffer
-   * this.scene.commitCommandBuffer(cmdBuffer);;
+   * this.scene.commitCommandBuffer(cmdBuffer);
    *
    * @example <caption>Using Temporary Render Textures</caption>
    * // Create a command buffer
@@ -1458,7 +1786,7 @@ declare namespace APJS {
    * cmdBuffer.releaseTemporaryRT(tempRTId);
    *
    * // Commit the command buffer
-   * this.scene.commitCommandBuffer(cmdBuffer);;
+   * this.scene.commitCommandBuffer(cmdBuffer);
    *
    * @example <caption>Advanced Usage: Brush Rendering Pipeline</caption>
    * // Initialize CommandBuffers
@@ -1590,9 +1918,18 @@ declare namespace APJS {
    * @class Component
    * @description
    * Base class for everything attached to a SceneObject.
-   * <br/> Note that your code will never directly create a Component. Instead, you write script code, and attach the script to a SceneObject.
-   * <br/> use SceneObject.addComponent("MeshRenderer");
-   * @example let renderCom = currSceneObj.addComponent("MeshRenderer");
+   * <br/>Note that your code will never directly create a Component. Instead, you write script code, and attach the script to a SceneObject.
+   * <br/>Note that SceneObject.addComponent() can return null if the component type is invalid or cannot be added.
+   * @example
+   * ```typescript
+   * const sceneObject = scene.findSceneObject("Cube");
+   * if (sceneObject) {
+   *   const renderCom = sceneObject.addComponent("MeshRenderer");
+   *   if (renderCom) {
+   *     renderCom.enabled = true;
+   *   }
+   * }
+   * ```
    */
   class Component extends AObject {
     protected constructor();
@@ -1617,19 +1954,53 @@ declare namespace APJS {
   }
   /**
    * @class ConstantForce2D
-   * @description Represents a constant force and torque to be applied to a RigidBody2D.
+   * @description Returned by {@link RigidBody2D.addForceAt} when using continuous force modes
+   * ({@link ForceMode2D.Force} or {@link ForceMode2D.Acceleration}).
+   * Holds the computed world-space force and torque generated by the force application.
+   * These values can be reused with {@link RigidBody2D.addForce} and {@link RigidBody2D.addTorque}
+   * to apply additional or opposite continuous forces.
+   *
+   * Applying the negated force/torque (multiplied by -1) does not undo existing motion.
+   * It only cancels the continuous force contribution, so the object may continue moving
+   * with its current linear or angular velocity.
+   *
+   * Applying the negated force/torque again (equivalent to multiplying by -2 relative
+   * to the original force) produces a continuous force in the opposite direction.
+   *
+   * Not returned for instantaneous modes ({@link ForceMode2D.Impulse}, {@link ForceMode2D.VelocityChange}).
    */
   class ConstantForce2D {
+    /** World-space force in Newtons. */
     readonly worldForce: Vector2f;
+    /** World-space torque in Newton-meters. */
     readonly worldTorque: number;
     constructor(worldForce: Vector2f, worldTorque: number);
   }
   /**
    * @class ConstantForce3D
-   * @description Represents a constant force and torque to be applied to a RigidBody.
+   * @description Returned by {@link RigidBody.addForceAt} when using continuous force modes
+   * ({@link ForceMode3D.Force} or {@link ForceMode3D.Acceleration}).
+   * Holds the computed world-space force and torque generated by the force application.
+   * These values can be reused with {@link RigidBody.addForce} and {@link RigidBody.addTorque}
+   * to apply additional or opposite continuous forces.
+   *
+   * Applying the negated force/torque (multiplied by -1) does not undo existing motion.
+   * It only cancels the continuous force contribution, so the object may continue moving
+   * with its current linear or angular velocity.
+   *
+   * Applying the negated force/torque again (equivalent to multiplying by -2 relative
+   * to the original force) produces a continuous force in the opposite direction.
+   *
+   * Not returned for instantaneous modes ({@link ForceMode3D.Impulse}, {@link ForceMode3D.VelocityChange}).
    */
   class ConstantForce3D {
+    /**
+     * @description World-space force in Newtons.
+     */
     readonly worldForce: Vector3f;
+    /**
+     * @description World-space torque in Newton-meters.
+     */
     readonly worldTorque: Vector3f;
     constructor(worldForce: Vector3f, torque: Vector3f);
   }
@@ -1697,11 +2068,11 @@ declare namespace APJS {
   class DirectionalLight extends Light {
     protected constructor();
     /**
-     * @description Gets specifies whether this light casts shadows.
+     * @description Gets whether this light casts shadows.
      */
     get castShadow(): boolean;
     /**
-     * @description Sets specifies whether this light casts shadows.
+     * @description Sets whether this light casts shadows.
      */
     set castShadow(value: boolean);
     /**
@@ -1725,15 +2096,15 @@ declare namespace APJS {
      */
     get shadowStrength(): number;
     /**
-     * @description Gets the strength of the shadows.
+     * @description Sets the strength of the shadows.
      */
     set shadowStrength(value: number);
     /**
-     * @description Get specifies whether to use soft shadows.
+     * @description Gets whether to use soft shadows.
      */
     get softShadow(): boolean;
     /**
-     * @description Get specifies whether to use soft shadows.
+     * @description Sets whether to use soft shadows.
      */
     set softShadow(value: boolean);
     /**
@@ -1761,11 +2132,11 @@ declare namespace APJS {
      */
     set shadowFrustumArea(value: number);
     /**
-     * @description Gets specifies whether the shadow frustum should be calculated automatically.
+     * @description Gets whether the shadow frustum should be calculated automatically.
      */
     get shadowAutoFrustum(): boolean;
     /**
-     * @description Sets specifies whether the shadow frustum should be calculated automatically.
+     * @description Sets whether the shadow frustum should be calculated automatically.
      */
     set shadowAutoFrustum(value: boolean);
     /**
@@ -1787,7 +2158,12 @@ declare namespace APJS {
   }
   /**
    * @class DistanceJoint2D
-   * @description A 2D distance joint.
+   * @description A 2D distance joint. Maintains a fixed distance between two anchor points on connected bodies.
+   * Uses a spring constraint internally, where the connected anchors act like spring endpoints.
+   * @example
+   * // Set a distance joint between two objects (configured in editor via connectedBody reference)
+   * const distanceJoint = obj.getComponent("DistanceJoint2D") as APJS.DistanceJoint2D;
+   * distanceJoint.breakable = false; // Disable the joint from breaking
    */
   class DistanceJoint2D extends Joint2D {
     protected constructor();
@@ -1827,13 +2203,13 @@ declare namespace APJS {
      */
     test(v: number): boolean;
     /**
-     * @description Checks if no bits are set to 1.
+     * @description Checks if any bit is set to 1.
      * @returns `true` if at least one bit is set, `false` otherwise.
      */
     any(): boolean;
     /**
      * @description Checks if no bits are set to 1.
-     * @returns true` if no bits are set, `false` otherwise.
+     * @returns `true` if no bits are set, `false` otherwise.
      */
     none(): boolean;
     /**
@@ -1952,19 +2328,30 @@ declare namespace APJS {
   }
   /**
    * @class EdgeCollider2D
+   * @description An open 2D edge collider made from connected line segments.
+   * Use this for boundaries such as ledges, slopes, or outlines that should
+   * not behave like a filled polygon.
+   * Inherited properties such as {@link offset}, {@link isTangible}, and
+   * {@link emitCollisionEvent} still apply.
+   *
+   * @example
+   * const edge = obj.getComponent("EdgeCollider2D") as APJS.EdgeCollider2D;
+   * edge.points = [
+   *   new APJS.Vector2f(-10, 0),
+   *   new APJS.Vector2f(0, -10),
+   *   new APJS.Vector2f(10, 0),
+   * ]; // change the points of the edge collider to a fold line that folds downwards.
    */
   class EdgeCollider2D extends Collider2D {
     protected constructor();
     /**
-     * @description Gets or sets the points that define the edge collider.
-     * The points are connected in sequence to form the edge. At least two points are required
-     * to create a valid edge collider. An array of Vector2f points defining the edge
+     * @description Gets or sets the points that define this edge collider.
+     * The points are connected in order to form an open chain of line
+     * segments. At least two points are required to create a valid edge.
+     * The points are defined in local space of the collider.
+     * @type {Vector2f[]}
      */
     get points(): Vector2f[];
-    /**
-     * @description Sets the points that define the edge collider.
-     * @param value An array of Vector2f points defining the edge
-     */
     set points(value: Vector2f[]);
   }
   /**
@@ -1982,12 +2369,13 @@ declare namespace APJS {
      */
     set renderLayer(value: LayerSet);
     /**
-     * @description Sets the environment map (cubemap) for specular reflections.
-     * **Only supports TextureCube.**
+     * @description Sets the environment map used for specular reflections.
+     * Only cubemap textures are accepted by this API.
      */
     set environmentMap(value: Texture);
     /**
-     * @description Gets the environment map (cubemap) for specular reflections.
+     * @description Gets the environment map used for specular reflections.
+     * The returned texture is expected to be a cubemap texture.
      */
     get environmentMap(): Texture;
     /**
@@ -2058,7 +2446,7 @@ declare namespace APJS {
     /**
      * @description Retrieves the event emitter associated with a given object.
      * @param obj - The object for which to get the event emitter. This can be an AObject.
-     * @returns The event emitter for the specified object, or undefined if the object is invalid or not supported.
+     * @returns The event emitter for the specified object. Returns undefined only when the input object is invalid or not supported.
      * @example
      * ```ts
      * const emitter = APJS.EventManager.getObjectEmitter(myObject);
@@ -2073,7 +2461,7 @@ declare namespace APJS {
      * const emitter = APJS.EventManager.getGestureEmitter();
      * const callback = (event:APJS.IEvent) => {
      *   const gestureInfo = event.args[0] as APJS.GestureInfo;
-     *   const offset = gestureInfo.endPoint - gestureInfo.startPoint;
+     *   const offset = gestureInfo.endPoint.clone().subtract(gestureInfo.startPoint);
      *   // Do something with drag offset
      * }
      * emitter.on(GestureType.Drag, callback)
@@ -2096,15 +2484,15 @@ declare namespace APJS {
    */
   enum EventType {
     /**
-     * @description Touch event, the event args is [TouchData, ]
+     * @description Touch event. The event args are [TouchData].
      */
     Touch,
     /**
-     * @description Record start event, the event args is empty
+     * @description Record start event. The event args are empty.
      */
     RecordStart,
     /**
-     * @description Record end event, the event args is empty
+     * @description Record end event. The event args are empty.
      */
     RecordEnd
   }
@@ -2115,7 +2503,8 @@ declare namespace APJS {
   interface Face106Interface {
     /**
      * @readonly
-     * @description Each detected face has a unique faceID. When a face that was lost during tracking is detected again, it will have a new faceID.
+     * @description Each detected face has a unique faceID. When a face that was
+     * lost during tracking is detected again, it will have a new faceID.
      */
     readonly ID: number;
     /**
@@ -2125,7 +2514,12 @@ declare namespace APJS {
     readonly eyeDistance: number;
     /**
      * @readonly
-     * @description Pitch angle, in radians
+     * @description Pitch angle in radians. Positive and negative values represent
+     * opposite up/down head tilts.
+     * @example
+     * const face = result.getFaceBaseInfo(0);
+     * const upWard = face.pitch < -0.2;
+     * const downWard = face.pitch > 0.2;
      */
     readonly pitch: number;
     /**
@@ -2135,17 +2529,24 @@ declare namespace APJS {
     readonly pointsArray: Float32Array;
     /**
      * @readonly
-     * @description The rectangular area of the face
+     * @description Bounding rectangle of the detected face in normalized coordinates [0.0, 1.0],
+     * relative to the camera input image. `x` and `y` represent the bottom-left corner;
+     * `width` and `height` extend rightward and upward.
      */
     readonly rect: Rect;
     /**
      * @readonly
-     * @description Rotation angle, in radians
+     * @description Roll angle in radians. Positive and negative values represent
+     * opposite head tilts around the forward axis.
+     * @example
+     * const face = result.getFaceBaseInfo(0);
+     * const isTiltedLeft = face.roll > 0.2;
+     * const isTiltedRight = face.roll < -0.2;
      */
     readonly roll: number;
     /**
      * @readonly
-     * @description score
+     * @description Confidence score in the range [0, 1].
      */
     readonly score: number;
     /**
@@ -2155,12 +2556,22 @@ declare namespace APJS {
     readonly visibilityArray: Float32Array;
     /**
      * @readonly
-     * @description Horizontal rotation angle, in radians
+     * @description Yaw angle in radians. Positive and negative values represent
+     * opposite side-to-side head rotations.
+     * @example
+     * const face = result.getFaceBaseInfo(0);
+     * const facingLeft = face.yaw > 0.2;
+     * const facingRight = face.yaw < -0.2;
      */
     readonly yaw: number;
     /**
-     * @description Action check
-     * @param action - action
+     * @description Returns whether the specified facial action is currently detected.
+     * @param action - The action enum value or numeric action identifier to test.
+     * @example
+     * const face = result.getFaceBaseInfo(0);
+     * if (face.hasAction(APJS.FaceAction.MouthAh)) {
+     *   // react to an open mouth
+     * }
      */
     hasAction(action: number | FaceAction): boolean;
   }
@@ -2189,9 +2600,10 @@ declare namespace APJS {
     SideNod
   }
   /**
-   * @description Enum representing different facial expressions.
+   * @description Enum representing facial expression categories returned by face
+   * attribute analysis.
    * @enum
-   * @property Unknown Unknown expression.
+   * @property Unknown The expression could not be classified.
    * @property Angry Angry expression.
    * @property Disgust Disgusted expression.
    * @property Fear Fearful expression.
@@ -2229,17 +2641,17 @@ declare namespace APJS {
   interface FaceAttributeInterface {
     /**
      * @readonly
-     * @description age
+     * @description Predicted age value in the range [0, 100].
      */
     readonly age: number;
     /**
      * @readonly
-     * @description attractiveness score
+     * @description Attractiveness score in the range [0, 100].
      */
     readonly attractive: number;
     /**
      * @readonly
-     * @description Probability of being male
+     * @description Probability of being male in the range [0.0, 1.0].
      */
     readonly boyProbability: number;
     /**
@@ -2249,7 +2661,12 @@ declare namespace APJS {
     readonly expressionProbabilities: Float32Array;
     /**
      * @readonly
-     * @description Expression type
+     * @description The classified facial expression for this face.
+     * @example
+     * const attr = result.getFaceAttributeInfo(0);
+     * if (attr.expressionType === APJS.FaceAttrExpression.Happy) {
+     *   // react to a smile
+     * }
      */
     readonly expressionType: FaceAttrExpression;
     /**
@@ -2259,7 +2676,7 @@ declare namespace APJS {
     readonly gender: FaceAttrGender;
     /**
      * @readonly
-     * @description Degree of happiness
+     * @description Degree of happiness in the range [0, 100].
      */
     readonly happyScore: number;
   }
@@ -2270,7 +2687,8 @@ declare namespace APJS {
   interface FaceFaceMaskInterface {
     /**
      * @readonly
-     * @description Each detected face has a unique faceID. When a face that was lost during tracking is detected again, it will have a new faceID.
+     * @description Each detected face has a unique faceID. When a face that was
+     * lost during tracking is detected again, it will have a new faceID.
      */
     readonly ID: number;
     /**
@@ -2295,7 +2713,7 @@ declare namespace APJS {
      */
     get intensity(): number;
     /**
-     * @description Sets the intensity level of the face makeup component
+     * @description Sets the intensity level of the face makeup component.
      */
     set intensity(value: number);
     /**
@@ -2303,7 +2721,7 @@ declare namespace APJS {
      */
     get makeupTexture(): Texture | null;
     /**
-     * @description Sets the main texture applied to the face makeup component
+     * @description Sets the main texture applied to the face makeup component.
      */
     set makeupTexture(value: Texture | null);
     /**
@@ -2311,7 +2729,7 @@ declare namespace APJS {
      */
     get opacityEnabled(): boolean;
     /**
-     * @description Sets whether the opacity effect is enabled for the face makeup component
+     * @description Sets whether the opacity effect is enabled for the face makeup component.
      */
     set opacityEnabled(value: boolean);
     /**
@@ -2319,7 +2737,7 @@ declare namespace APJS {
      */
     get opacityTexture(): Texture | null;
     /**
-     * @description Sets the texture used for opacity control in the face makeup component
+     * @description Sets the texture used for opacity control in the face makeup component.
      */
     set opacityTexture(value: Texture | null);
     /**
@@ -2327,20 +2745,55 @@ declare namespace APJS {
      */
     get color(): Color;
     /**
-     * @description Sets the base color applied to the face makeup component
+     * @description Sets the base color applied to the face makeup component.
      */
     set color(value: Color);
     /**
-     * @description Sets a material property for a specific face index
-     * @param key - The uniform key to set
-     * @param face - The face index to apply the property to
-     * @param value - The value to set
+     * @description Sets a float uniform on a single face index.
+     * Unlike {@link setMaterialProperty} which applies to all faces, this targets one tracked face slot.
+     * The `key` must match the shader uniform name used by the bound face makeup material.
+     * Only supports `number` (float) values — for vec4/mat4/texture use the dedicated setters
+     * or {@link setMaterialProperty} instead.
+     *
+     * @param {string} key - Shader uniform name. Common keys and values are _Intensity, _Opacity
+     * @param {number} face - The tracked face index to apply the property to.
+     * @param {number} value - Float value to set.
+     * @example
+     * comp.setMaterialPropertyByIndex("_Intensity", 1, 1.0);
+     * comp.setMaterialPropertyByIndex("_Intensity", 1, 0.8);
+     * comp.setMaterialPropertyByIndex("_Intensity", 2, 0.5);
      */
     setMaterialPropertyByIndex(key: string, face: number, value: number): void;
     /**
-     * @description Sets a uniform property for all face indexes, handling different value types appropriately
-     * @param key - The uniform key to set
-     * @param value - The value to set, which can be a number, Vector4f, Matrix4x4f, or Texture
+     * @description Sets a shader uniform on **all face indexes** for this makeup component.
+     *
+     * The `key` must match the shader uniform name used by the bound face makeup material.
+     * Known shader keys used by this component include:
+     * - `"_Intensity"` (float): overall makeup intensity
+     * - `"_BaseColor"` (Vector4f): RGBA tint color
+     * - `"_BaseTexture"` (Texture): main makeup texture
+     * - `"_EnableOpacity"` (float): 0 or 1, whether opacity mask is enabled
+     * - `"_OpacityTexture"` (Texture): opacity mask texture
+     *
+     * **Silent failure:** passing an unrecognized key or a value whose type does not match
+     * the shader's uniform type produces no error — the call is simply ignored.
+     *
+     * **No caching:** the value is forwarded to the native shader but NOT stored in JS.
+     * The dedicated setters ({@link makeupTexture}, {@link opacityTexture}, {@link color},
+     * {@link opacityEnabled}, {@link intensity}) are convenience wrappers around this method
+     * with fixed keys — prefer them when available, as they cache values and provide type safety.
+     *
+     * **All faces vs per-face:** use {@link setMaterialPropertyByIndex} to target a single face index.
+     *
+     * @param {string} key - Shader uniform name.
+     * @param {number | Vector4f | Matrix4x4f | Texture} value - The value to set.
+     *
+     * @example
+     * comp.setMaterialProperty("_Intensity", 0.8);
+     * @example
+     * comp.setMaterialProperty("_BaseColor", new Vector4f(1, 0, 0, 1));
+     * @example
+     * comp.setMaterialProperty("_BaseTexture", myTexture);
      */
     setMaterialProperty(key: string, value: number | Vector4f | Matrix4x4f | Texture): void;
   }
@@ -2351,7 +2804,8 @@ declare namespace APJS {
   interface FaceMouthMaskInterface {
     /**
      * @readonly
-     * @description Each detected face has a unique faceID. When a face that was lost during tracking is detected again, it will have a new faceID.
+     * @description Each detected face has a unique faceID. When a face that was
+     * lost during tracking is detected again, it will have a new faceID.
      */
     readonly ID: number;
     /**
@@ -2372,7 +2826,9 @@ declare namespace APJS {
   interface FacePetInfoInterface {
     /**
      * @readonly
-     * @description Each detected pet face has a unique faceID. When a pet face that was lost during tracking is detected again, it will have a new faceID.
+     * @description Each detected pet face has a unique faceID. When a pet face
+     * that was lost during tracking is detected again, it will have a new
+     * faceID.
      */
     readonly ID: number;
     /**
@@ -2409,17 +2865,19 @@ declare namespace APJS {
     readonly rect: Rect;
     /**
      * @readonly
-     * @description Rotation angle, with the true measurement being negative on the left and positive on the right, in radians
+     * @description Rotation angle in radians. Negative values indicate left tilt
+     * and positive values indicate right tilt.
      */
     readonly roll: number;
     /**
      * @readonly
-     * @description score
+     * @description Confidence score in the range [0, 1].
      */
     readonly score: number;
     /**
      * @readonly
-     * @description Horizontal rotation angle, with the true measurement being negative on the left and positive on the right, in radians
+     * @description Horizontal rotation angle in radians. Negative values indicate
+     * rightward rotation and positive values indicate leftward rotation.
      */
     readonly yaw: number;
   }
@@ -2447,6 +2905,9 @@ declare namespace APJS {
    * ### Usage Examples
    * @example <caption>Face Index Switching</caption>
    * // Switch between tracked faces on touch
+   * const scene = this.getSceneObject().scene;
+   * const sceneObject = scene.findSceneObject('FaceReshape');
+   * if (!sceneObject) return;
    * const reshapeRenderer = sceneObject.getComponent('FaceReshapeRenderer') as APJS.FaceReshapeRenderer;
    * const faceIndexes = reshapeRenderer.faceIndexes;
    * let currentIndex = 0;
@@ -2457,6 +2918,9 @@ declare namespace APJS {
    *
    * @example <caption>Feature Weight Control</caption>
    * // Activate specific reshape feature on touch
+   * const scene = this.getSceneObject().scene;
+   * const sceneObject = scene.findSceneObject('FaceReshape');
+   * if (!sceneObject) return;
    * const reshapeRenderer = sceneObject.getComponent('FaceReshapeRenderer') as APJS.FaceReshapeRenderer;
    * const features = reshapeRenderer.getFeatureNames();
    * let currentIndex = 0;
@@ -2471,7 +2935,8 @@ declare namespace APJS {
   class FaceReshapeRenderer extends Renderer {
     protected constructor();
     /**
-     * @description indexes of faces to apply reshaping, start from 0
+     * @description Indexes of faces to apply reshaping to, using zero-based face slots.
+     * For example, `0` means the first tracked face.
      * @type {number[]}
      */
     get faceIndexes(): number[];
@@ -2503,7 +2968,8 @@ declare namespace APJS {
   interface FaceTeethMaskInterface {
     /**
      * @readonly
-     * @description Each detected face has a unique faceID. When a face that was lost during tracking is detected again, it will have a new faceID.
+     * @description Each detected face has a unique faceID. When a face that was
+     * lost during tracking is detected again, it will have a new faceID.
      */
     readonly ID: number;
     /**
@@ -2541,33 +3007,80 @@ declare namespace APJS {
   }
   /**
    * @class FixedJoint
+   * @description A 3D fixed joint. Completely locks two RigidBodies together
+   * — they maintain fixed relative position and rotation.
+   * Internally uses a distance joint + fixed rotation constraint pair.
+   * {@link breakingForce} applies to the positional constraint and
+   * {@link breakingTorque} applies to the rotation constraint.
+   * If either internal constraint breaks, only that constraint stops solving.
+   *
+   * @example
+   * const fixedJoint = obj.getComponent("FixedJoint") as APJS.FixedJoint;
+   * fixedJoint.breakingForce = -1; // disable positional break checks
+   * fixedJoint.breakingTorque = -1; // disable rotational break checks
    */
   class FixedJoint extends Joint3D {
     protected constructor();
   }
   /**
    * @class FixedJoint2D
+   * @description A 2D fixed joint. Completely locks two bodies together — they maintain fixed relative
+   * position and rotation. Can optionally break at {@link breakingForce} or {@link breakingTorque}
+   * thresholds if {@link breakable} is set.
+   * @example
+   * // Set a fixed joint between two objects (configured in editor via connectedBody reference)
+   * const fixedJoint = obj.getComponent("FixedJoint2D") as APJS.FixedJoint2D;
+   * fixedJoint.breakingForce = -1; // disable positional break checks
+   * fixedJoint.breakingTorque = -1; // disable rotational break checks
    */
   class FixedJoint2D extends Joint2D {
     protected constructor();
   }
   /**
-   * @enum ForceMode
-   * @description Defines how force is applied to a rigid body.
+   * @enum ForceMode2D
+   * @description Defines how force is applied to a 2D rigid body.
+   *
+   * | Mode | What you set | Actual effect | Example (10N on 1kg vs 100kg) |
+   * |------|-------------|---------------|-------------------------------|
+   * | `Force` | Newtons | a = F/m (mass matters) | 10 vs 0.1 m/s^2 |
+   * | `Acceleration` | m/s^2 | a = input (mass ignored) | 10 vs 10 m/s^2 both |
+   * | `Impulse` | Newton-seconds | dv = F/m, single frame | 10 vs 0.1 m/s velocity change |
+   * | `VelocityChange` | m/s | dv = input, single frame | 10 vs 10 m/s velocity change |
+   *
+   * @example
+   * // Continuous push downward — heavy objects fall slower
+   * rigidBody.addForce(new APJS.Vector2f(0, -5), APJS.ForceMode2D.Force);
+   * // Instant kick upward — regardless of mass
+   * rigidBody.addForce(new APJS.Vector2f(0, 50), APJS.ForceMode2D.VelocityChange);
    */
   enum ForceMode2D {
-    /** Continuous force, uses mass (a = F/m). Persistent in this implementation. */
+    /** Continuous force, uses mass (a = F/m). Applied every frame. */
     Force = 0,
-    /** Continuous acceleration, ignores mass (a = F). Persistent. */
+    /** Continuous acceleration, ignores mass (a = F). Applied every frame. */
     Acceleration = 1,
-    /** Instantaneous impulse, uses mass (dv = F/m). One-time application. */
+    /** Instantaneous impulse, uses mass (dv = F/m). Applied once. */
     Impulse = 2,
-    /** Instantaneous velocity change, ignores mass (dv = F). One-time application. */
+    /** Instantaneous velocity change, ignores mass (dv = F). Applied once. */
     VelocityChange = 3
   }
   /**
    * @enum ForceMode3D
-   * @description Enumeration of force modes for applying forces to rigid bodies in 3D physics.
+   * @description Defines how force is applied to a 3D rigid body.
+   *
+   * | Mode | What you set | Actual effect | Example (10N on 1kg vs 100kg) |
+   * |------|-------------|---------------|-------------------------------|
+   * | `Force` | Newtons | a = F/m (mass matters) | 10 vs 0.1 m/s^2 |
+   * | `Acceleration` | m/s^2 | a = input (mass ignored) | 10 vs 10 m/s^2 both |
+   * | `Impulse` | Newton-seconds | dv = F/m, single frame | 10 vs 0.1 m/s velocity change |
+   * | `VelocityChange` | m/s | dv = input, single frame | 10 vs 10 m/s velocity change |
+   *
+   * @example
+   * // Push upward — heavy objects accelerate less
+   * rigidBody.addForce(new APJS.Vector3f(0, 50, 0), APJS.ForceMode3D.Force);
+   * // Push upward — all objects accelerate the same
+   * rigidBody.addForce(new APJS.Vector3f(0, 50, 0), APJS.ForceMode3D.Acceleration);
+   * // Instant kick — like an explosion
+   * rigidBody.addForce(new APJS.Vector3f(0, 500, 0), APJS.ForceMode3D.Impulse);
    */
   enum ForceMode3D {
     Force = 0,
@@ -2616,7 +3129,7 @@ declare namespace APJS {
      *     this.currentDragStartPoint = gestureInfo.startPoint;
      *     this.startAnchoredPosition = this.imageTransform.anchoredPosition;
      *   }
-     *   const offset = gestureInfo.endPoint.subtract(this.currentDragStartPoint);
+     *   const offset = gestureInfo.endPoint.clone().subtract(this.currentDragStartPoint);
      *   this.imageTransform.anchoredPosition = offset.multiply(new APJS.Vector2f(screenResolution.x, -screenResolution.y)).add(this.startAnchoredPosition);
      * }
      * gestureEmitter.on(APJS.GestureType.Drag, dragCallback);
@@ -2644,6 +3157,7 @@ declare namespace APJS {
   }
   /**
    * @enum GifEvent
+   * @description Historical event names for GIF playback. Unlike some newer event enums that use PascalCase members, `GifEvent` keeps its original lowerCamelCase member names for compatibility.
    * @property {number} playBeginEventType
    * @property {number} playEndEventType
    * @property {number} pauseEventType
@@ -2664,6 +3178,7 @@ declare namespace APJS {
   }
   /**
    * @class GifTextureProvider
+   * @description GIF texture playback provider. It supports `playFromStart`, `pause`, `resume`, and frame/time seeking, but does not expose the same stop/reset surface as some other animated texture providers.
    */
   class GifTextureProvider extends TextureDelegateProvider {
     /**
@@ -2723,17 +3238,34 @@ declare namespace APJS {
   }
   /**
    * @class GSplatCollider
+   * @description A generated 3D compound collider built from GSplat sample data.
+   * Internally it creates multiple sphere colliders, so it behaves like a
+   * sampled volume rather than a single primitive shape.
+   * Public settings such as {@link isTangible} and {@link interactable}
+   * propagate across the generated internal colliders.
+   *
+   * @example
+   * const gsplatCollider = obj.getComponent("GSplatCollider") as APJS.GSplatCollider;
+   * gsplatCollider.isTangible = true;
+   * gsplatCollider.interactable = false;
    */
   class GSplatCollider extends Collider {
     protected constructor();
     /**
-     * @description Whether the collider is tangible.
+     * @description Gets or sets whether this generated GSplat collider is
+     * tangible.
+     * When true, its internal sphere colliders participate in normal collision
+     * response. When false, they behave like triggers.
+     * This setting is applied across the full generated collider set.
      * @type {boolean}
      */
     get isTangible(): boolean;
     set isTangible(value: boolean);
     /**
-     * @description Whether the collider is interactable.
+     * @description Gets or sets whether this generated GSplat collider is
+     * interactable through the Physics Interactor path.
+     * APJS applies the interaction category bit across the internal collider
+     * set. This does not change normal collision behavior.
      * @type {boolean}
      */
     get interactable(): boolean;
@@ -2860,23 +3392,42 @@ declare namespace APJS {
   }
   /**
    * @class HingeJoint
+   * @description A 3D hinge joint. Allows two RigidBody objects to rotate
+   * relative to each other around a single axis (specified by {@link axis}).
+   * Optionally limited by {@link minAngle}/{@link maxAngle} when
+   * {@link useLimits} is enabled.
+   * Internally uses a distance constraint + angular hinge constraint pair.
+   * {@link breakingForce} applies to the positional constraint and
+   * {@link breakingTorque} applies to the angular hinge constraint.
+   * If either internal constraint breaks, only that constraint stops solving.
+   *
+   * @example
+   * const hingeJoint = obj.getComponent("HingeJoint") as APJS.HingeJoint;
+   * hingeJoint.breakingForce = -1; // disable positional break checks
+   * hingeJoint.breakingTorque = -1; // disable angular break checks
+   * hingeJoint.useLimits = true;
+   * hingeJoint.minAngle = 0;
+   * hingeJoint.maxAngle = 90; // allow two bodies to rotate up to 90 degrees
    */
   class HingeJoint extends Joint3D {
     protected constructor();
     /**
-     * @description Whether the joint uses limits.
+     * @description Enables or disables hinge angle limits.
+     * When false, the hinge falls back to the full engine-supported range instead of using {@link minAngle} and {@link maxAngle}.
      * @type {boolean}
      */
     get useLimits(): boolean;
     set useLimits(value: boolean);
     /**
-     * @description The minimum angle of the joint.
+     * @description Minimum allowed relative rotation around the hinge axis, in degrees.
+     * This limit is measured between the two connected bodies and is used only when {@link useLimits} is enabled.
      * @type {number}
      */
     get minAngle(): number;
     set minAngle(value: number);
     /**
-     * @description The maximum angle of the joint.
+     * @description Maximum allowed relative rotation around the hinge axis, in degrees.
+     * This limit is measured between the two connected bodies and is used only when {@link useLimits} is enabled.
      * @type {number}
      */
     get maxAngle(): number;
@@ -2884,23 +3435,34 @@ declare namespace APJS {
   }
   /**
    * @class HingeJoint2D
+   * @description A 2D hinge joint. Allows two bodies to rotate relative to each other around a single axis (like a door hinge).
+   * Optionally constrained by {@link minAngle} and {@link maxAngle} when {@link useLimits} is enabled.
+   * @example
+   * // Set a hinge between two objects (configured in editor via connectedBody reference)
+   * const hingeJoint = obj.getComponent("HingeJoint2D") as APJS.HingeJoint2D;
+   * hingeJoint.useLimits = true;
+   * hingeJoint.minAngle = -45;
+   * hingeJoint.maxAngle = 45;
    */
   class HingeJoint2D extends Joint2D {
     protected constructor();
     /**
-     * @description Whether to use angle limits for the hinge joint.
+     * @description Enables or disables relative angle limits for this 2D hinge.
+     * When enabled, {@link minAngle} and {@link maxAngle} constrain the relative rotation between the two connected bodies.
      * @type {boolean}
      */
     get useLimits(): boolean;
     set useLimits(value: boolean);
     /**
-     * @description The maximum angle of the hinge joint.
+     * @description Maximum allowed relative hinge angle in degrees.
+     * This limit applies to the relative rotation between the two connected bodies and is used only when {@link useLimits} is enabled.
      * @type {number}
      */
     get maxAngle(): number;
     set maxAngle(value: number);
     /**
-     * @description The minimum angle of the hinge joint.
+     * @description Minimum allowed relative hinge angle in degrees.
+     * This limit applies to the relative rotation between the two connected bodies and is used only when {@link useLimits} is enabled.
      * @type {number}
      */
     get minAngle(): number;
@@ -2917,7 +3479,7 @@ declare namespace APJS {
     Center,
     /** Align to right edge. */
     Right,
-    /** Stretch to fill container. */
+    /** Justifies text to fill the container width. */
     Flush
   }
   /**
@@ -2950,7 +3512,7 @@ declare namespace APJS {
      */
     set type(value: number | UserEventType);
     /**
-     * @description Arguments passed to the event.
+     * @description Arguments passed to the event. The payload shape depends on the event type: `EventType.Touch` uses `[TouchData]`, pinch events use `[IPinchInfo]`, collision events use `[CollisionInfo]` or `[CollisionInfo2D]`.
      */
     get args(): any[];
     /**
@@ -3009,6 +3571,10 @@ declare namespace APJS {
   }
   /**
    * @class Image
+   * @description A component for rendering images.
+   * It can be used to display textures on the screen.
+   * By modifying properties such as texture and opacity, you can customize the image appearance.
+   * By using setMaterialProperty, you can implement effects such as progress bars, timer bars, and water levels.
    */
   class Image extends Renderer {
     protected constructor();
@@ -3033,12 +3599,13 @@ declare namespace APJS {
     get size(): Vector2f;
     set size(value: Vector2f);
     /**
-     * @description The pivot point of the Image, the typical range is [0, 1]
+     * @description The pivot point of the Image.
+     * Typical values are in the range [0, 1]. Values outside that range are still passed through and place the pivot outside the image rect.
      */
     get pivot(): Vector2f;
     set pivot(value: Vector2f);
     /**
-     * @description  Determine whether to flip the image horizontally
+     * @description Determine whether to flip the image horizontally
      */
     get flipX(): boolean;
     set flipX(value: boolean);
@@ -3053,32 +3620,37 @@ declare namespace APJS {
     get stretchMode(): StretchMode;
     set stretchMode(value: StretchMode);
     /**
-     * @description Get the specified material property value by key
-     * @param key - The key of the material property to get.
-     * @returns The value of the specified material property.
+     * @description Gets the current Image material property value for the specified key.
+     * For general material properties, `key` must match a property exposed by the Image's current material.
+     * Built-in Filled-mode keys such as `_filledType`, `_startPoint`, and `_filledRange` are also supported when the Image DrawMode is configured as Filled in the editor.
+     * @param key - The material property key to read.
+     * @returns The current value of the specified material property.
      */
     getMaterialProperty(key: string): number | Vector2f | Vector3f | Vector4f | Texture | Matrix4x4f;
     /**
-     * @description Set a material property for the current Image.
+     * @description Sets a material property for the current Image.
+     * For general material properties, `key` must match a property exposed by the Image's current material.
+     * Commonly used to implement material property-driven UI effects such as health bars, progress bars,
+     * timer bars, water levels, pole growth, and image slicing effects.
      *
-     * Note: Image DrawMode cannot be changed via script API. You must set the
-     * Image DrawMode (for example, switch to "Filled") in the editor.
+     * Note: Image DrawMode cannot be changed via script API. You must configure
+     * the Image DrawMode (for example, switch to "Filled") in the editor first.
      *
-     * When the Image DrawMode is set to "Filled", you can use this API to control
-     * the following fill-related parameters:
+     * When the Image DrawMode is set to "Filled", this API also supports these
+     * built-in fill keys:
      *
      * 1. Fill type: key = "_filledType", number
-     *    - 0: Horizontal fill, the fill area grows from left to right
-     *    - 1: Vertical fill, the fill area grows from top to bottom
+     *    - 0: Horizontal fill, the visible area grows from left to right.
+     *    - 1: Vertical fill, the visible area grows from top to bottom.
+     *      This describes the visual fill direction only; it does not redefine the screen coordinate origin used by other APIs.
      *
      * 2. Fill start point: key = "_startPoint", number, in the range [0, 1]
-     *    - For horizontal fill: the starting position from left to right
-     *    - For vertical fill: the starting position from top to bottom
-     *    For example: 0 means start from the very left/top, 0.5 means start from the center.
+     *    - For horizontal fill: the start position from left to right.
+     *    - For vertical fill: the start position from top to bottom.
+     *      For example: 0 means start from the very left/top, 0.5 means start from the center.
      *
      * 3. Fill range (progress): key = "_filledRange", number, in the range [0, 1]
-     *    - Represents the current fill percentage: 0 is 0%, 1 is 100%
-     *    For example: 0.5 means filled to 50%.
+     *    - Represents the current fill percentage: 0 is 0%, 1 is 100%.
      *
      * Example:
      * ```ts
@@ -3087,9 +3659,8 @@ declare namespace APJS {
      * image.setMaterialProperty("_startPoint", 0.0);
      * image.setMaterialProperty("_filledRange", 0.5);
      * ```
-     * @param {string} key
-     * @param {number | Vector2f | Vector3f | Vector4f | Texture | Matrix4x4f} arg1
-     * @returns {void}
+     * @param key - The material property key to write.
+     * @param arg1 - The value to set.
      */
     setMaterialProperty(key: string, arg1: number | Vector2f | Vector3f | Vector4f | Texture | Matrix4x4f): void;
   }
@@ -3105,35 +3676,53 @@ declare namespace APJS {
   }
   /**
    * @class Joint2D
+   * @description Base class for all 2D joints. A joint connects two RigidBody2D objects together,
+   * constraining their relative motion.
+   *
+   * Subclasses: {@link FixedJoint2D}, {@link HingeJoint2D}, {@link SpringJoint2D}, {@link DistanceJoint2D}.
+   *
+   * **Record/Reset:** Joints are reactivated during record start. Configuration properties (anchor, breaking force, limits) are preserved.
+   *
+   * @example
+   * // Set a hinge between two objects (configured in editor via connectedBody reference)
+   * const hingeJoint = obj.getComponent("HingeJoint2D") as APJS.HingeJoint2D;
+   * hingeJoint.useLimits = true;
+   * hingeJoint.minAngle = -45;
+   * hingeJoint.maxAngle = 45;
    */
   class Joint2D extends DynamicComponent {
     protected constructor();
     /**
-     * @description The local anchor point on this body.
+     * @description Local anchor point on this body.
+     * The value is authored in this joint's own local 2D space, not world space.
      * @type {Vector2f}
      */
     get anchor(): Vector2f;
     set anchor(value: Vector2f);
     /**
-     * @description The local anchor point on the connected body.
+     * @description Local anchor point on the connected body.
+     * The value is authored in the connected body's local 2D space, not world space.
      * @type {Vector2f}
      */
     get connectedAnchor(): Vector2f;
     set connectedAnchor(value: Vector2f);
     /**
-     * @description Whether the joint is breakable.
+     * @description Enables or disables break thresholds for this joint. Defaults to false.
+     * When false, {@link breakingForce} and {@link breakingTorque} are ignored.
      * @type {boolean}
      */
     get breakable(): boolean;
     set breakable(value: boolean);
     /**
-     * @description The maximum force that can be exerted on the connected body.
+     * @description Force threshold that breaks this joint.
+     * This is a break limit, not a force actively applied by the joint, and it is used only when {@link breakable} is true.
      * @type {number}
      */
     get breakingForce(): number;
     set breakingForce(value: number);
     /**
-     * @description The maximum torque that can be exerted on the connected body.
+     * @description Torque threshold that breaks this joint.
+     * This is a break limit, not a torque actively applied by the joint, and it is used only when {@link breakable} is true.
      * @type {number}
      */
     get breakingTorque(): number;
@@ -3141,29 +3730,53 @@ declare namespace APJS {
   }
   /**
    * @class Joint3D
+   * @description Base class for all 3D joints. A joint connects two RigidBody objects together,
+   * constraining their relative motion.
+   *
+   * Subclasses: {@link FixedJoint}, {@link HingeJoint}, {@link SpringJoint}, {@link PointJoint}.
+   *
+   * @example
+   * const fixedJoint = obj.getComponent("FixedJoint") as APJS.FixedJoint;
+   * fixedJoint.breakingForce = -1; // disable positional break checks
    */
   class Joint3D extends DynamicComponent {
     protected constructor();
     /**
-     * @description The force at which the joint breaks.
+     * @description Force threshold that breaks this 3D joint.
+     * This is a break limit, not a force actively applied by the joint.
+     * A value of -1 disables break checks for this constraint.
+     * When a joint breaks, only the native constraint stops solving.
+     * The connected RigidBodies keep their current motion and can still be
+     * affected by gravity, external forces, collisions, and any other joints
+     * that remain active.
+     * For compound joints such as {@link FixedJoint} and {@link HingeJoint},
+     * this force limit applies only to the positional constraint part.
+     * The angular part has its own break threshold via
+     * {@link breakingTorque}.
      * @type {number}
      */
     get breakingForce(): number;
     set breakingForce(value: number);
     /**
-     * @description The torque at which the joint breaks.
+     * @description Torque threshold that breaks this 3D joint.
+     * This is a break limit, not a torque actively applied by the joint.
+     * A value of -1 disables break checks for this constraint.
+     * This property is used only by joint types that create a second angular
+     * constraint, such as {@link FixedJoint} and {@link HingeJoint}.
      * @type {number}
      */
     get breakingTorque(): number;
     set breakingTorque(value: number);
     /**
-     * @description The anchor point of the joint.
+     * @description Local anchor point on this body.
+     * It is authored relative to this joint's own SceneObject and converted to a world-space point when the native joint is created.
      * @type {Vector3f}
      */
     get anchor(): Vector3f;
     set anchor(value: Vector3f);
     /**
-     * @description The anchor point of the connected body.
+     * @description Local anchor point on the connected body.
+     * It is authored relative to the connected body and converted to a world-space point when the native joint is created.
      * @type {Vector3f}
      */
     get connectedAnchor(): Vector3f;
@@ -3176,7 +3789,9 @@ declare namespace APJS {
     protected constructor();
     /**
      * @readonly
-     * @description Get the parsed JSON structured data
+     * @description Gets the parsed JSON object or array represented by this asset.
+     * Each access parses the current raw text and returns a new JS value; modifying the returned object does not write back to the asset.
+     * Returns `undefined` when the file cannot be loaded, the JSON is invalid, or the top-level value is not an object/array.
      * @type {any}
      */
     get json(): any;
@@ -3219,7 +3834,7 @@ declare namespace APJS {
      *
      * const LAYER_DEFAULT = 0;
      * const LAYER_1 = 1;
-     * camera.renderLayer = camera.renderLayer.set(DEFAULT_LAYER, true);
+     * camera.renderLayer = camera.renderLayer.set(LAYER_DEFAULT, true);
      * camera.renderLayer = camera.renderLayer.set(LAYER_1, true);
      */
     set(layer: number, value: boolean): this;
@@ -3395,7 +4010,8 @@ declare namespace APJS {
      */
     set passes(value: Pass[]);
     /**
-     * @description Check if a macro is enabled.
+     * @description Checks whether a shader macro is enabled on this material.
+     * The macro name must match the shader macro/key exactly.
      * @param value - The name of the macro.
      * @returns True if the macro is enabled, false otherwise.
      */
@@ -3407,59 +4023,69 @@ declare namespace APJS {
     clone(): Material;
     /**
      * @description Sets a named float value.
+     * The property name must match a float uniform/property exposed by the material shader.
      * @param name - The name of the float property.
      * @param value - The float value to set.
      */
     setFloat(name: string, value: number): void;
     /**
-     * @description Get a named float value from the material.
+     * @description Gets a named float value from the material.
+     * The property name must match a float uniform/property exposed by the material shader.
      * @param name - The name of the float property.
      * @returns The float value if found, undefined otherwise.
      */
     getFloat(name: string): number | undefined;
     /**
      * @description Sets a named matrix value.
+     * The property name must match a matrix uniform/property exposed by the material shader.
      * @param name - The name of the matrix property.
      * @param m - The matrix value to set.
      */
     setMatrix(name: string, m: Matrix4x4f): void;
     /**
      * @description Gets a named matrix value.
+     * The property name must match a matrix uniform/property exposed by the material shader.
      * @param name - The name of the matrix property.
      * @returns The matrix value if found, undefined otherwise.
      */
     getMatrix(name: string): Matrix4x4f | undefined;
     /**
      * @description Sets a named texture value.
+     * The property name must match a texture slot exposed by the material shader.
      * @param name - The name of the texture property.
      * @param texture - The texture value to set.
      */
     setTexture(name: string, texture: Texture): void;
     /**
      * @description Gets a named texture value from the material.
+     * The property name must match a texture slot exposed by the material shader.
      * @param name - The name of the texture property.
      * @returns The texture value if found, null otherwise.
      */
     getTexture(name: string): Texture | null;
     /**
      * @description Sets a named integer value.
+     * The property name must match an integer uniform/property exposed by the material shader.
      * @param name - The name of the integer property.
      * @param value - The integer value to set.
      */
     setInt(name: string, value: number): void;
     /**
      * @description Gets a named integer value.
+     * The property name must match an integer uniform/property exposed by the material shader.
      * @param name - The name of the integer property.
      */
     getInt(name: string): number | undefined;
     /**
      * @description Sets a shader macro that is enabled by this material.
+     * The macro name must match the shader macro/key exactly.
      * @param macro - The name of the shader macro.
      * @param value - The value to set for the shader macro.
      */
     enableMacro(macro: string, value: number): void;
     /**
-     * @description Unset a shader macro.
+     * @description Unsets a shader macro.
+     * The macro name must match the shader macro/key exactly.
      * @param macro - The name of the shader macro.
      */
     disableMacro(macro: string): void;
@@ -3474,67 +4100,81 @@ declare namespace APJS {
      */
     set mainPass(value: Pass);
     /**
-     * @description Checks if the material has a float key.
-     * @param key - The key to check for in the float map.
-     * @returns A boolean indicating whether the float key exists.
+     * @description Checks whether this material currently has a float property with the specified name.
+     * Property names are matched exactly and should come from the material/shader property definitions used by this material.
+     * @param key - The float property name to check.
+     * @returns True if a float property with that exact name exists; otherwise false.
      */
     hasFloatKey(key: string): boolean;
     /**
-     * @description Checks if the material has a Vector4 key.
-     * @param key - The key to check for in the Vector4 map.
-     * @returns A boolean indicating whether the key exists in the Vector4 map.
+     * @description Checks whether this material currently has a Vector4 property with the specified name.
+     * Property names are matched exactly and should come from the material/shader property definitions used by this material.
+     * @param key - The Vector4 property name to check.
+     * @returns True if a Vector4 property with that exact name exists; otherwise false.
      */
     hasVector4Key(key: string): boolean;
     /**
-     * @description Checks if the material has a Vector3 key.
-     * @param key - The key to check for in the Vector3 map.
-     * @returns A boolean indicating whether the key exists in the Vector3 map.
+     * @description Checks whether this material currently has a Vector3 property with the specified name.
+     * Property names are matched exactly and should come from the material/shader property definitions used by this material.
+     * @param key - The Vector3 property name to check.
+     * @returns True if a Vector3 property with that exact name exists; otherwise false.
      */
     hasVector3Key(key: string): boolean;
     /**
-     * @description Checks if the material has a Vector2 key.
-     * @param key - The key to check for in the Vector2 map.
-     * @returns A boolean indicating whether the key exists in the Vector2 map.
+     * @description Checks whether this material currently has a Vector2 property with the specified name.
+     * Property names are matched exactly and should come from the material/shader property definitions used by this material.
+     * @param key - The Vector2 property name to check.
+     * @returns True if a Vector2 property with that exact name exists; otherwise false.
      */
     hasVector2Key(key: string): boolean;
     /**
-     * @description Checks if the material has a matrix key.
-     * @param key - The key to check for in the material's matrix map.
-     * @returns A boolean indicating whether the material has the specified matrix key.
+     * @description Checks whether this material currently has a matrix property with the specified name.
+     * Property names are matched exactly and should come from the material/shader property definitions used by this material.
+     * @param key - The matrix property name to check.
+     * @returns True if a matrix property with that exact name exists; otherwise false.
      */
     hasMatrixKey(key: string): boolean;
     /**
-     * @description Checks if the material has a texture with the specified key.
-     * @param key - The key of the texture to check for.
-     * @returns A boolean indicating whether the material has a texture with the given key.
+     * @description Checks whether this material currently has a texture property with the specified name.
+     * Property names are matched exactly and should come from the material/shader property definitions used by this material.
+     * @param key - The texture property name to check.
+     * @returns True if a texture property with that exact name exists; otherwise false.
      */
     hasTextureKey(key: string): boolean;
     /**
-     * @description Checks if the material has an integer key.
-     * @param key - The key to check for in the integer map.
-     * @returns A boolean indicating whether the key exists in the integer map.
+     * @description Checks whether this material currently has an integer property with the specified name.
+     * Property names are matched exactly and should come from the material/shader property definitions used by this material.
+     * @param key - The integer property name to check.
+     * @returns True if an integer property with that exact name exists; otherwise false.
      */
     hasIntKey(key: string): boolean;
     /**
      * @description Sets a vector value in the material by its name.
+     * The property name must match a vector property exposed by the material shader.
+     * The vector dimension must also match the target property: pass Vector2f for vec2, Vector3f for vec3, and Vector4f for vec4.
      * @param name - The name of the vector property to set.
      * @param value - The vector value to set, which can be of type Vector2f, Vector3f, or Vector4f.
      */
     setVector(name: string, value: Vector2f | Vector3f | Vector4f): void;
     /**
      * @description Retrieves a vector property by name from the material.
+     * The property name must match a vector property exposed by the material shader.
+     * The returned type depends on the stored property kind: Vector2f for vec2, Vector3f for vec3, and Vector4f for vec4.
      * @param name - The name of the vector property to retrieve.
      * @returns A Vector2f, Vector3f, or Vector4f object if found; otherwise, undefined.
      */
     getVector(name: string): Vector2f | Vector3f | Vector4f | undefined;
     /**
      * @description Sets the color of a material property by name.
+     * The property name must match a color/vec4 property exposed by the material shader.
      * @param name - The name of the material property to set the color for.
      * @param color - The Color object containing the RGBA values to be set.
      */
     setColor(name: string, color: Color): void;
     /**
      * @description Retrieves the color associated with a given name from the material's properties.
+     * The property name must match a color/vec4 property exposed by the material shader.
+     * Returns `undefined` when the property does not exist or the named property is not stored as a Vector4f color value.
      * @param name - The name of the property to retrieve the color from.
      * @returns A Color object if the property exists and is a Vector4f, otherwise undefined.
      */
@@ -3582,10 +4222,7 @@ declare namespace APJS {
    * // Create a property block
    * const props = new MaterialPropertyBlock();
    *
-   * // Load a texture
-   * const texture = await assetManager.loadTexture('path/to/texture.png');
-   *
-   * // Set the texture property
+   * // Use an existing texture resource
    * props.setTexture('u_MainTexture', texture);
    *
    * // Apply to a renderer
@@ -3606,30 +4243,38 @@ declare namespace APJS {
     constructor();
     /**
      * @description Sets a float property value in the material property block.
+     * `name` should match a float property defined by the target material/shader that will consume this block.
      * @param name - The name of the float property to set.
      * @param val - The float value to assign to the property.
      */
     setFloat(name: string, val: number): void;
     /**
      * @description Sets a float array property in the material property block.
+     * `name` should match a float-array property defined by the target material/shader that will consume this block.
+     * When `data` is a Float32Array, it is treated as a tightly packed scalar array.
      * @param name - The name of the property to set.
      * @param data - An array of numbers or a Float32Array containing the float values.
      */
     setFloatArray(name: string, data: number[] | Float32Array): void;
     /**
      * @description Sets a vector2 array property in the material property block.
+     * `name` should match a vec2-array property defined by the target material/shader that will consume this block.
+     * When `data` is a Float32Array, values are read as a tightly packed `[x0, y0, x1, y1, ...]` layout.
      * @param name - The name of the property to set.
      * @param data - An array of Vector2f objects or a Float32Array containing the vector2 data.
      */
     setVector2Array(name: string, data: Vector2f[] | Float32Array): void;
     /**
      * @description Sets a vector3 array property in the material property block.
+     * `name` should match a vec3-array property defined by the target material/shader that will consume this block.
+     * When `data` is a Float32Array, values are read as a tightly packed `[x0, y0, z0, x1, y1, z1, ...]` layout.
      * @param name - The name of the property to set.
      * @param data - An array of Vector3f objects or a Float32Array containing the vector data.
      */
     setVector3Array(name: string, data: Vector3f[] | Float32Array): void;
     /**
      * @description Sets a texture property in the material property block.
+     * `name` should match a texture property defined by the target material/shader that will consume this block.
      * @param name - The name of the texture property to set.
      * @param texture - The Texture object to assign to the property.
      * @returns {void}
@@ -3637,19 +4282,24 @@ declare namespace APJS {
     setTexture(name: string, texture: Texture): void;
     /**
      * @description Sets a vector4 array property in the material property block.
+     * `name` should match a vec4-array property defined by the target material/shader that will consume this block.
+     * When `data` is a Float32Array, values are read as a tightly packed `[x0, y0, z0, w0, x1, y1, z1, w1, ...]` layout.
      * @param name - The name of the property to set.
      * @param data - An array of Vector4f objects or a Float32Array containing the vector data.
      */
     setVector4Array(name: string, data: Vector4f[] | Float32Array): void;
     /**
      * @description Sets a matrix property in the material property block.
+     * `name` should match a matrix property defined by the target material/shader that will consume this block.
      * @param name - The name of the matrix property to set.
      * @param mat - The Matrix4x4f value to assign to the property.
      * @returns {void}
      */
     setMatrix(name: string, mat: Matrix4x4f): void;
     /**
-     * @description Sets a vector property in the material with the specified name.
+     * @description Sets a vector property in the material property block with the specified name.
+     * `name` should match a vector property defined by the target material/shader that will consume this block.
+     * The vector dimension must also match the target property: pass Vector2f for vec2, Vector3f for vec3, and Vector4f for vec4.
      * @param name - The name of the vector property to set.
      * @param value - The vector value to assign, which can be of type Vector2f, Vector3f, or Vector4f.
      */
@@ -4117,13 +4767,27 @@ declare namespace APJS {
   }
   /**
    * @class MeshCollider
+   * @description A 3D collider that uses mesh geometry for collision.
+   * Use this when primitive shapes such as boxes, spheres, or capsules are not
+   * accurate enough for the object.
+   * A mesh must be assigned before the collider can initialize.
+   * {@link convex} switches the runtime shape toward convex-hull collision.
+   * If the collider is tied to a matching skinned mesh path, APJS updates the
+   * deformable collision mesh during update.
+   *
+   * @example
+   * const meshCollider = obj.getComponent("MeshCollider") as APJS.MeshCollider;
+   * meshCollider.convex = true; // simpler convex-hull collision
    */
   class MeshCollider extends Collider {
     protected constructor();
     /**
-     * @description Gets whether to use a convex hull for collision detection.
-     * When enabled, the mesh is simplified to its convex hull which improves performance
-     * but may be less accurate for complex meshes.
+     * @description Gets or sets whether this mesh collider should use convex-hull
+     * collision.
+     * When enabled, the runtime shape is simplified toward a convex hull.
+     * This is often faster or more stable than full mesh collision, but it may
+     * be less accurate for complex concave geometry.
+     * @type {boolean}
      */
     get convex(): boolean;
     /**
@@ -4207,20 +4871,21 @@ declare namespace APJS {
     set calculateNormal(value: boolean);
     /**
      * @description Checks if this component has a weight for the blend shape with the specified name.
+     * The name must match a blend shape channel defined on the mesh/morpher.
      * @param name The name of the blend shape to check
      * @returns True if a weight exists for the blend shape, false otherwise
      */
     hasBlendShapeWeight(name: string): boolean;
     /**
      * @description Gets the weight value of the blend shape channel with the specified name.
-     * Returns 0 if no weight is found for the given name.
+     * The name must match a blend shape channel defined on the mesh/morpher. Returns 0 if no weight is found for the given name.
      * @param name The name of the blend shape channel
      * @returns The weight value of the blend shape channel
      */
     getBlendShapeWeight(name: string): number;
     /**
      * @description Sets the weight value of the blend shape channel with the specified name.
-     * If no channel exists with the given name, one will be created.
+     * The name should normally match an existing blend shape channel defined on the mesh/morpher. If no channel exists with the given name, one will be created.
      * @param name The name of the blend shape channel
      * @param weight The weight value to set for the blend shape channel
      */
@@ -4296,15 +4961,20 @@ declare namespace APJS {
   }
   /**
    * @class OnsetDetector
-   * @description An onset detector implementation.
+   * @description Detects the onsets (note attacks / transients) in an audio stream in real time.
+   *
+   * An onset is detected when the difference in spectrum magnitude between the current and
+   * previous audio frames exceeds the configured threshold. Higher threshold = less sensitive,
+   * fewer onsets triggered; lower threshold = more sensitive.
+   *
    * @example
-   * OnInit() {
-   *     const builder = APJS.AudioDetectionModule.getAudioDetectionBuilder(APJS.AudioDetectionType.Onset) as APJS.OnsetDetectorBuilder;
+   * onInit() {
+   *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.Onset) as APJS.OnsetDetectorBuilder;
    *     builder.setDetectorSource(APJS.AudioSourceType.Microphone, null);
    *     builder.setThreshold(20);
    *     this.detector = builder.build();
    * }
-   * OnUpdate(dt: number) {
+   * onUpdate(dt: number) {
    *     if (this.detector) {
    *         const result = this.detector.getResult();
    *         console.log(result);
@@ -4314,8 +4984,12 @@ declare namespace APJS {
   class OnsetDetector extends BaseAudioDetector {
     protected constructor();
     /**
-     * @description Get the result of the onset detection.
-     * @returns [40, 767] The result of the onset detection.
+     * @description Gets the current onset detection result.
+     *
+     * The value represents the onset energy of the current audio frame.
+     * A higher value indicates a stronger note attack or transient.
+     *
+     * @returns The onset energy value in the range [0, 1024], or -1 when no result is available.
      */
     getResult(): number;
   }
@@ -4323,8 +4997,8 @@ declare namespace APJS {
    * @class OnsetDetectorBuilder
    * @description A builder for onset detector to set the source of the detector and build the detector.
    * @example
-   * OnInit() {
-   *     const builder = APJS.AudioDetectionModule.getAudioDetectionBuilder(APJS.AudioDetectionType.Onset);
+   * onInit() {
+   *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.Onset);
    *     builder.setDetectorSource(APJS.AudioSourceType.Microphone, null);
    *     const detector = builder.build();
    * }
@@ -4348,7 +5022,7 @@ declare namespace APJS {
      */
     setThreshold(threshold: number): this;
     /**
-     * @description Build the onset detector. Note that the detector should be built in OnInit, otherwise it will return null.
+     * @description Build the onset detector. Note that the detector should be built in onInit, otherwise it will return null.
      */
     build(): OnsetDetector | null;
   }
@@ -4448,54 +5122,138 @@ declare namespace APJS {
     set cullMode(value: CullMode);
   }
   /**
-   * @class Physic2D
+   * 2D physics world manager (singleton). Provides global physics settings,
+   * raycasting, and controls the 2D physics simulation.
+   *
+   * Properties set via `Physics2D.*` static accessors affect the entire 2D physics world.
+   * Per-object properties (mass, velocity, etc.) are set on individual {@link RigidBody2D} components.
+   *
+   * ## Record / Reset
+   * When recording starts, `resetPhysics()` is called automatically (if `auto_reset_effect` is enabled),
+   * restoring all bodies to their initial positions and velocities.
+   *
+   * @example
+   * // Get world gravity (~Earth gravity in internal units, 9.8 * gravityFactor)
+   * const gravity = APJS.Physics2D.gravity; // Vector2f(0, -9.8) by default
+   * // Slow down physics simulation
+   * APJS.Physics2D.timeSpeed = 0.5;
+   * // Cast a ray
+   * const ray = new APJS.Ray(new APJS.Vector3f(0, 10, 0), new APJS.Vector3f(0, -1, 0));
+   * const hits = APJS.Physics2D.raycast2D(ray, 100, true);
    */
   class Physics2D {
     /**
-     * 2d world gravity
-     * @description gravity acceleration
+     * @description Global 2D gravity acceleration in m/s^2.
+     * Default is (0, -9.8), simulating Earth-like gravity pulling downward.
+     * Set to {@link Vector2f.zero} to disable global gravity.
+     * Per-body gravity can be controlled via {@link RigidBody2D.useGravity} and {@link RigidBody2D.gravityScale}.
+     * **Not reset** on record start — retains the value you set.
      * @default new Vector2f(0, -9.8)
-     * @type {Vector2f}
      */
     static get gravity(): Vector2f;
     static set gravity(value: Vector2f);
     /**
-     * 2d world time speed
-     * @description time speed of 2d world
+     * @description Scales how fast the 2D physics simulation steps forward.
+     * 1.0 runs at normal simulation speed, 0.5 runs in slow motion, and 0.0 stops physics updates.
+     * **Not reset** on record start.
      * @default 1.0
-     * @type {number}
      */
     static get timeSpeed(): number;
     static set timeSpeed(value: number);
     /**
-     * @description Casts a ray in 2D space and returns information about the hits.
-     * @param ray The ray to cast.
-     * @param maxDistance The maximum distance the ray should cast.
-     * @param nearest Whether to return the nearest hit or all hits.
-     * @param layerMask The layer mask to filter hits.
-     * @returns An array of RaycastHit2D objects representing the hits.
+     * @description Casts a ray through the 2D physics world and returns the matching hits.
+     *
+     * @param ray The ray with origin and direction. Origin and direction are interpreted in 2D world XY space; Z is ignored. Direction must be non-zero.
+     * @param maxDistance Maximum cast distance in 2D world units. Must be positive.
+     * @param nearest If true, returns only the closest hit. If false, returns all hits along the ray.
+     * @param layerMask Optional layer mask to filter which layers can be hit. If omitted, all layers are tested.
+     * @returns Array of {@link RaycastHit2D}. Empty array if nothing was hit.
+     *
+     * @example
+     * // Shoot a ray downward from (100, 200) to detect what's below
+     * const ray = new APJS.Ray(new APJS.Vector3f(100, 200, 0), new APJS.Vector3f(0, -1, 0));
+     * const hits = APJS.Physics2D.raycast2D(ray, 50, true);
+     * if (hits.length > 0) {
+     *     console.log("Hit at:", hits[0].point);
+     * }
      */
     static raycast2D(ray: Ray, maxDistance: number, nearest: boolean, layerMask?: LayerSet): RaycastHit2D[];
   }
   /**
    * @class Physics3D
+   * @description 3D physics world manager (singleton). Provides global 3D physics settings,
+   * raycasting, and controls the PBD physics simulation.
+   *
+   * Properties set via `Physics3D.*` static accessors affect the entire 3D physics world.
+   * Per-object properties (mass, velocity, etc.) are set on individual {@link RigidBody} components.
+   *
+   * ## Record / Reset
+   * When recording starts, `resetPhysics()` is called automatically (if `auto_reset_effect` is enabled),
+   * which resets all body positions/velocities, reinitializes cloth/soft body actors, and clears collision state.
+   * Global properties (gravity, timeScale) are **not** reset.
+   *
+   * @example
+   * // Get world gravity (~Earth gravity in internal units, 9.8 * gravityFactor)
+   * const gravity = APJS.Physics3D.gravity; // Vector3f(0, -980, 0) by default
+   * // Cast a ray downward from (0, 10, 0)
+   * const origin = new APJS.Vector3f(0, 10, 0);
+   * const dir = new APJS.Vector3f(0, -1, 0);
+   * const hits = APJS.Physics3D.raycast(
+   *     new APJS.Ray(origin, dir), 100, true);
    */
   class Physics3D {
     /**
-     * @description 3d world gravity
+     * @description 3D world gravity acceleration in internal engine units. Default is (0, -980, 0).
+     * The value 980 = 9.8 m/s^2 * {@link gravityFactor} (100), making gravity consistent
+     * with forces applied via {@link RigidBody.addForce} (which are also scaled internally).
+     *
+     * Changing this affects all bodies with {@link RigidBody.useGravity} = true.
+     * **Not reset** on record start.
      */
     static get gravity(): Vector3f;
     static set gravity(value: Vector3f);
     /**
-     * @description gravity multiplayer
+     * @description Internal engine unit scaling factor. Defaults to 100 in normal mode, 10 in
+     * framerate-independent mode (set automatically during init).
+     *
+     * All forces applied via {@link RigidBody.addForce} and the gravity value read from
+     * scene settings are multiplied by this factor before being passed to the engine.
+     * This keeps forces and gravity in the same internal unit system.
      */
     static get gravityFactor(): number;
     static set gravityFactor(value: number);
     /**
-     * @description 3d physics simulation timeScale
+     * @description 3D physics simulation time multiplier. Default is 1.0.
+     * 1.0 = real-time, 0.5 = half-speed, 0.0 = paused.
+     * Values > 1.0 enable a slow-motion mode internally.
+     * **Not reset** on record start.
      */
     static get timeScale(): number;
     static set timeScale(value: number);
+    /**
+     * @description Casts a ray in 3D space and returns hit information.
+     * @param ray The ray with origin and direction.
+     * @param maxDistance Maximum cast distance.
+     * @param nearest If true, returns only the closest hit; if false, all hits.
+     * @param layerMask Optional {@link LayerSet} to filter which layers are tested.
+     *   Each enabled bit means that layer will be hit. Defaults to 0xffffff (all 24 layers).
+     * @returns Array of {@link RaycastHit3D}. Empty array if nothing was hit.
+     *
+     * @example
+     * // Cast downward and get the first hit
+     * const origin = new APJS.Vector3f(0, 10, 0);
+     * const dir = new APJS.Vector3f(0, -1, 0);
+     * const hits = APJS.Physics3D.raycast(
+     *     new APJS.Ray(origin, dir), 50, true);
+     * if (hits.length > 0) {
+     *     console.log("Hit:", hits[0].colliderObject?.name);
+     * }
+     * @example
+     * // Only hit objects on layer 1
+     * const layerMask = new APJS.LayerSet();
+     * layerMask.set(1, true);
+     * const hits = APJS.Physics3D.raycast(ray, 50, false, layerMask);
+     */
     static raycast(ray: Ray, maxDistance: number, nearest: boolean, layerMask?: LayerSet): RaycastHit3D[];
   }
   /**
@@ -4505,19 +5263,19 @@ declare namespace APJS {
   class PhysicsMaterial extends AObject {
     protected constructor();
     /**
-     * @description Set the Static Friction
+     * @description Gets the static friction.
      * @type {number}
      */
     get staticFriction(): number;
     set staticFriction(value: number);
     /**
-     * @description Set the Dynamic Friction
+     * @description Gets the dynamic friction.
      * @type {number}
      */
     get dynamicFriction(): number;
     set dynamicFriction(value: number);
     /**
-     * @description Set the Bounciness(also elasticity)
+     * @description Gets the bounciness (also elasticity).
      * @type {number}
      */
     get bounciness(): number;
@@ -4525,14 +5283,19 @@ declare namespace APJS {
   }
   /**
    * @class PitchDetector
-   * @description A pitch detector implementation.
+   * @description Detects the fundamental pitch (f0) of the audio source in real time.
+   *
+   * The higher the pitch, the greater the returned value.
+   * Typical human voice range is approximately 85 Hz (deep male) to 255 Hz (high female).
+   * Musical instruments can reach up to 650 Hz within this detector's range.
+   *
    * @example
-   * OnInit() {
-   *     const builder = APJS.AudioDetectionModule.getAudioDetectionBuilder(APJS.AudioDetectionType.Pitch);
+   * onInit() {
+   *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.Pitch);
    *     builder.setDetectorSource(APJS.AudioSourceType.Microphone, null);
    *     this.detector = builder.build();
    * }
-   * OnUpdate(dt: number) {
+   * onUpdate(dt: number) {
    *     if (this.detector) {
    *         const result = this.detector.getResult();
    *         console.log(result);
@@ -4542,8 +5305,13 @@ declare namespace APJS {
   class PitchDetector extends BaseAudioDetector {
     protected constructor();
     /**
-     * @description Get the result of the pitch detection.
-     * @returns [40, 650] The result of the pitch detection.
+     * @description Gets the current pitch detection result.
+     *
+     * The value represents the detected fundamental frequency in Hz.
+     * A larger value means a higher pitch.
+     *
+     * @returns The detected pitch in Hz, in the range [45, 650]. Returns -1 when no pitch is detected
+     * (e.g., during silence or non-pitched noise).
      */
     getResult(): number;
   }
@@ -4551,8 +5319,8 @@ declare namespace APJS {
    * @class PitchDetectorBuilder
    * @description A builder for pitch detector to set the source of the detector and build the detector.
    * @example
-   * OnInit() {
-   *     const builder = APJS.AudioDetectionModule.getAudioDetectionBuilder(APJS.AudioDetectionType.Pitch);
+   * onInit() {
+   *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.Pitch);
    *     builder.setDetectorSource(APJS.AudioSourceType.Microphone, null);
    *     const detector = builder.build();
    * }
@@ -4571,12 +5339,23 @@ declare namespace APJS {
      */
     setDetectorSource(type: AudioSourceType, audioComponent: IAudioComponent | null): this;
     /**
-     * @description Build the pitch detector. Note that the detector should be built in OnInit, otherwise it will return null.
+     * @description Build the pitch detector. Note that the detector should be built in onInit, otherwise it will return null.
      */
     build(): PitchDetector | null;
   }
   /**
    * @class PointJoint
+   * @description A 3D point joint. Keeps this joint's {@link anchor} and
+   * {@link connectedAnchor} at the same world-space position while still
+   * allowing the connected RigidBodies to rotate relative to each other.
+   * Internally uses a single zero-length distance joint without an
+   * additional rotation constraint.
+   * Can break at {@link breakingForce}. If it breaks, only that distance
+   * constraint stops solving; the connected RigidBodies do not freeze.
+   *
+   * @example
+   * const pointJoint = obj.getComponent("PointJoint") as APJS.PointJoint;
+   * pointJoint.breakingForce = -1; // keep the point constraint from breaking
    */
   class PointJoint extends Joint3D {
     protected constructor();
@@ -4598,8 +5377,14 @@ declare namespace APJS {
   }
   /**
    * @class PolygonCollider2D
-   * @description Represents a 2D polygon collider component for physics simulation.
-   * The polygon can be convex or concave. For concave polygons, it will be decomposed into convex sub-polygons.
+   * @description A filled 2D polygon collider.
+   * It can represent convex shapes directly and concave shapes through convex
+   * decomposition data stored on the component.
+   *
+   * @example
+   * const polygon = obj.getComponent("PolygonCollider2D") as APJS.PolygonCollider2D;
+   * polygon.offset = new APJS.Vector2f(0, 0);
+   * polygon.isTangible = true;
    */
   class PolygonCollider2D extends Collider2D {
     protected constructor();
@@ -4904,48 +5689,50 @@ declare namespace APJS {
      */
     toString(): string;
   }
+  /**
+   * Result of a 2D raycast. Returned by {@link Physics2D.raycast2D}.
+   */
   class RaycastHit2D {
     /**
-     * @description The point of contact in world space.
-     * @type {Vector2f}
+     * @description World-space point where the ray touched this hit.
      */
     readonly point: Vector2f;
     /**
-     * @description The normal of contact in world space.
-     * @type {Vector2f}
+     * @description World-space surface normal at the hit point.
      */
     readonly normal: Vector2f;
     /**
-     * @description The collider involved in the collision.
-     * @type {Collider2D | null}
+     * @description The Collider2D component that the ray hit.
+     * This is null if the hit SceneObject does not expose a Collider2D component through APJS.
      */
     readonly collider: Collider2D | null;
     /**
-     * @description The other object involved in the collision.
-     * @type {SceneObject | null}
+     * @description The SceneObject that owns the hit collider.
+     * This is null if APJS cannot resolve the hit collider back to a SceneObject.
      */
     readonly colliderObject: SceneObject | null;
     constructor(point: Vector2f, normal: Vector2f, collider: Collider2D | null, colliderObject: SceneObject | null);
   }
+  /**
+   * Result of a 3D raycast. Returned by {@link Physics3D.raycast}.
+   */
   class RaycastHit3D {
     /**
-     * @description The point of contact in world space.
-     * @type {Vector3f}
+     * @description World-space point where the ray first touched this hit.
      */
     readonly point: Vector3f;
     /**
-     * @description The normal of contact in world space.
-     * @type {Vector3f}
+     * @description World-space surface normal at the hit point.
      */
     readonly normal: Vector3f;
     /**
-     * @description The collider involved in the collision.
-     * @type {Collider | null}
+     * @description The collider component that the ray hit.
+     * This is null if the hit SceneObject does not expose a Collider component through APJS.
      */
     readonly collider: Collider | null;
     /**
-     * @description The object that the collider belongs to.
-     * @type {SceneObject | null}
+     * @description The SceneObject that owns the hit collider.
+     * This is null if APJS cannot resolve the hit collider back to a SceneObject.
      */
     readonly colliderObject: SceneObject | null;
     constructor(point: Vector3f, normal: Vector3f, collider: Collider | null, colliderObject: SceneObject | null);
@@ -5009,6 +5796,23 @@ declare namespace APJS {
      */
     set materials(value: Material[]);
     /**
+     * @description Gets the sorting order of the Renderer.
+     * @returns The current sorting order.
+     */
+    get sortingOrder(): number;
+    /**
+     * @description Sets the sorting order of the renderer, which determines the rendering priority relative to other renderers.
+     */
+    set sortingOrder(value: number);
+    /**
+     * @description Indicates whether the sorting order is automatically managed.
+     */
+    get autoSortingOrder(): boolean;
+    /**
+     * @description Sets whether the renderer should automatically manage the sorting order of its elements.
+     */
+    set autoSortingOrder(value: boolean);
+    /**
      * @description Gets the shadow mode of the renderer.
      */
     get shadowMode(): ShadowMode;
@@ -5065,7 +5869,146 @@ declare namespace APJS {
     setHeight(value: number): void;
   }
   /**
+   * Runtime resource loader bound to the current effect. Assets placed under
+   * the project's `Assets/Resources` directory are bundled with the effect
+   * package and can be dynamically loaded at runtime through this class by
+   * their original project paths, supporting single and batch loading as well
+   * as path enumeration.
+   *
+   * Supported asset types:
+   * - Texture (`.png`, `.jpg`, `.jpeg`, `.bmp`, `.gifTex`, `.animTex`)
+   * - Material (`.omtl`, `.mg`)
+   * - Prefab (`.prefab`)
+   * - Mesh / Model (`.fbx`, `.obj`, `.glb`, `.gltf`)
+   * - JsonAsset (`.userjson`)
+   *
+   * @example
+   * ```ts
+   * // Load a texture using its full path (relative to Assets/Resources).
+   * const icon = APJS.Resources.load('icon.png');
+   *
+   * // Load by base path (suffix omitted).
+   * const material = APJS.Resources.load('character');
+   * ```
+   */
+  namespace Resources {
+    /**
+     * Load a resource by its original project path. The path may be supplied
+     * with or without its file suffix; when multiple resources share the same
+     * base path, the first match is returned.
+     *
+     * Supported asset types:
+     * - Texture (`.png`, `.jpg`, `.jpeg`, `.bmp`, `.gifTex`, `.animTex`)
+     * - Material (`.omtl`, `.mg`)
+     * - Prefab (`.prefab`)
+     * - Mesh / Model (`.fbx`, `.obj`, `.glb`, `.gltf`)
+     * - JsonAsset (`.userjson`)
+     *
+     * @param path - The original project path of the resource to load.
+     * @returns The loaded resource instance, or `null` if the current scene has
+     * no active asset manager or the path cannot be resolved to a known
+     * resource.
+     *
+     * @example
+     * ```ts
+     * // Load a texture using its full path (relative to Assets/resources).
+     * const icon = APJS.Resources.load('icon.png');
+     *
+     * // Load by base path (suffix omitted).
+     * const material = APJS.Resources.load('character');
+     *
+     * if (icon) {
+     *   // Use the loaded resource...
+     * }
+     * ```
+     */
+    function load(path: string): any;
+    /**
+     * Load every resource that matches the given project path. When the path
+     * is supplied without a file suffix, all resources sharing the same base
+     * path are returned, ordered by resource type priority (images first,
+     * followed by materials, prefabs and meshes).
+     *
+     * Supported asset types:
+     * - Texture (`.png`, `.jpg`, `.jpeg`, `.bmp`, `.gifTex`, `.animTex`)
+     * - Material (`.omtl`, `.mg`)
+     * - Prefab (`.prefab`)
+     * - Mesh / Model (`.fbx`, `.obj`, `.glb`, `.gltf`)
+     * - JsonAsset (`.userjson`)
+     *
+     * @param path - The original project path of the resources to load. The
+     * path is resolved relative to `Assets/resources` and may be specified
+     * with or without a file suffix.
+     * @returns The loaded resource instances in priority order, or an empty
+     * array when the current scene has no active asset manager or the path
+     * cannot be resolved to any resource.
+     *
+     * @example
+     * ```ts
+     * // Load every material variant that shares the same base path.
+     * const materials = APJS.Resources.loadAll('PBR');
+     *
+     * // Load a specific material by its full path.
+     * const pbr = APJS.Resources.loadAll('PBR.omtl');
+     *
+     * for (const material of materials) {
+     *   // Use each loaded material...
+     * }
+     * ```
+     */
+    function loadAll(path: string): any[];
+    /**
+     * Check whether a resource is available under the given project path. The
+     * path is resolved relative to `Assets/resources` and may be supplied with
+     * or without a file suffix.
+     *
+     * @param path - The original project path of the resource to check.
+     * @returns `true` when the path resolves to at least one bundled asset,
+     * `false` otherwise.
+     *
+     * @example
+     * ```ts
+     * if (APJS.Resources.exist('icon.png')) {
+     *   const icon = APJS.Resources.load('icon.png');
+     *   // Use the loaded resource...
+     * }
+     * ```
+     */
+    function exist(path: string): boolean;
+    /**
+     * Get every original project path of the resources bundled with the current
+     * effect package. Paths are returned in their original casing as authored
+     * in the Effect House project.
+     *
+     * @returns An array of original project paths; empty when no resources are
+     * bundled with the current effect.
+     *
+     * @example
+     * ```ts
+     * const paths = APJS.Resources.getAllPaths();
+     * for (const path of paths) {
+     *   console.log(path);
+     * }
+     * ```
+     */
+    function getAllPaths(): string[];
+  }
+  /**
    * @class RigidBody
+   * @description A 3D physics rigid body component. Attach to a SceneObject to enable 3D PBD physics simulation.
+   *
+   * Combines with {@link Collider} to form a complete physical object.
+   *
+   * **Record/Reset:** On record start, position, rotation, and velocity are reset to initial values.
+   * Configuration properties (mass, damping, static, freeze, etc.) are preserved.
+   *
+   * @example
+   * const obj = scene.findSceneObject("Ball");
+   * if (obj) {
+   *     const rb = obj.getComponent("RigidBody") as APJS.RigidBody;
+   *     rb.mass = 5.0;
+   *     rb.addForce(new APJS.Vector3f(0, 500, 0), APJS.ForceMode3D.Impulse);
+   * }
    */
   class RigidBody extends DynamicComponent {
     protected constructor();
@@ -5093,17 +6036,17 @@ declare namespace APJS {
     /**
      * @description Gets or sets the continuous force applied to the rigid body in world space.
      * Force is measured in Newtons and is applied continuously during physics simulation.
-     * Note: Directly setting this property overrides any previously applied forces.
-     * For temporary forces, consider using the addForce method instead.
+     * Setting this replaces the previous continuous force value. This does NOT affect forces added via {@link addForce}.
+     * To apply multiple forces cumulatively, use {@link addForce} instead.
      * @default Vector3f(0, 0, 0)
      */
     get force(): Vector3f;
     set force(value: Vector3f);
     /**
-     * @description Gets or sets the continuous torque applied to the rigid body in world space.
+     * @description Gets or sets the continuous torque (the external force that causes a rigid body to rotate) applied to the rigid body in world space.
      * Torque is measured in Newton-meters and is applied continuously during physics simulation.
-     * Note: Directly setting this property overrides any previously applied torques.
-     * For temporary torques, consider using the addTorque method instead.
+     * Setting this replaces the previous continuous torque value. This does NOT affect torques added via {@link addTorque}.
+     * To apply multiple torques cumulatively, use {@link addTorque} instead.
      * @default Vector3f(0, 0, 0)
      */
     get torque(): Vector3f;
@@ -5133,341 +6076,387 @@ declare namespace APJS {
     get freezeZ(): boolean;
     set freezeZ(value: boolean);
     /**
-     * @description Gets or sets whether the rigid body is static (immovable).
-     * Static bodies are not affected by forces or collisions and are typically used for environment geometry.
-     * Changing this property affects performance characteristics of the physics simulation.
+     * @description Gets or sets whether the rigid body behaves as an immovable kinematic body.
+     * When enabled, the PBD simulator stops treating this body as dynamically simulated.
+     * Use this for environment geometry or authored placement that should not respond to forces.
      * @default false
      */
     get static(): boolean;
     set static(value: boolean);
     /**
-     * @description Gets or sets whether physics animation is enabled for this rigid body.
-     * When enabled, the rigid body combines physics simulation with animation, allowing for hybrid behavior.
-     * This feature creates additional internal constraints and may impact performance.
+     * @description Blend animation with physics. When enabled, a hidden kinematic "shadow body" follows
+     * the animation, and the real physics rigid body is pulled toward it via spring-like joints.
+     *
+     * - `physicsAnimation = false`: pure physics (forces/gravity drive motion)
+     * - `physicsAnimation = true`, `rate = 0`: pure animation (body exactly follows animation)
+     * - `physicsAnimation = true`, `rate = 0.5`: blend (physics and animation mix)
+     * - `physicsAnimation = true`, `rate = 1.0`: mostly physics, loosely follows animation
+     *
+     * **Requires** the SceneObject or an ancestor to have an Animator component.
+     * **Performance:** Creates two additional constraints per body.
      * @default false
      */
     get physicsAnimation(): boolean;
     set physicsAnimation(value: boolean);
     /**
-     * @description Gets or sets the rate at which physics animation is applied, controlling the blend between animation and physics.
-     * Value typically ranges from 0 (full animation) to 1 (full physics). Intermediate values create a blend effect.
-     * Higher values give more influence to physics simulation over animation.
+     * @description Controls the blend between animation and physics when {@link physicsAnimation} is enabled.
+     *
+     * Range [0, 1]:
+     * - `0` = pure animation (rigid body rigidly follows the animated transform)
+     * - `1` = mostly physics (animation only loosely guides, gravity/forces dominate)
+     *
+     * Internally maps to joint compliance: low rate = stiff springs = tight animation tracking.
      * @default 0.0
      */
     get physicsAnimationRate(): number;
     set physicsAnimationRate(value: number);
     /**
-     * @description Gets or sets whether gravity affects this rigid body.
-     * When enabled, the rigid body is affected by the scene's gravity settings, typically pulling it downward.
-     * Gravity is applied continuously during physics simulation alongside other forces.
+     * @description Gets or sets whether scene gravity contributes to this body's
+     * continuous external force.
+     * When enabled, APJS adds `Physics3D.gravity * mass` to the body's accumulated
+     * external force. Disabling gravity removes that contribution without changing
+     * any other forces already applied to the body.
      * @default true
      */
     get useGravity(): boolean;
     set useGravity(value: boolean);
     /**
-     * @description Gets or sets the world space position of the rigid body.
-     * Position is represented as a Vector3f in world coordinates.
-     * Setting this property directly moves the body immediately, bypassing physics simulation.
-     * For physics-consistent movement, consider applying forces instead.
+     * @description World-space position of the rigid body (meters). Reads from the physics engine;
+     * writing teleports the body immediately, bypassing velocity/force simulation.
+     *
+     * Do NOT modify Transform.position directly on a physics-controlled object —
+     * the physics engine will overwrite it on the next frame.
+     * Use this property or {@link addForce} instead to move the body.
+     *
+     * @example
+     * // Teleport a physics body to (0, 5, 0)
+     * rigidBody.position = new APJS.Vector3f(0, 5, 0);
+     * // For smooth movement, use forces:
+     * rigidBody.addForce(new APJS.Vector3f(0, 10, 0), APJS.ForceMode3D.Impulse);
      * @default Vector3f(0, 0, 0)
      */
     get position(): Vector3f;
     set position(value: Vector3f);
     /**
-     * @description Gets or sets the rotation of the rigid body as a quaternion.
-     * Rotation is represented as a Quaternionf in world space.
-     * Setting this property directly rotates the body immediately, bypassing physics simulation.
-     * For physics-consistent rotation, consider applying torques instead.
+     * @description Current world-space rotation of the rigid body, returned as a quaternion.
+     * Once the body is created, the getter reflects the live orientation from the physics engine.
+     * Writing teleports the body's rotation immediately, bypassing torque and angular-velocity simulation.
+     *
+     * Do NOT modify Transform.rotation directly on a physics-controlled object —
+     * the physics engine will overwrite it on the next frame.
+     * Use this property, {@link eulerAngles}, or {@link addTorque} instead.
+     *
+     * @example
+     * // Teleport rotation (90 degrees around Y axis, 1.57 radians)
+     * rigidBody.rotation = APJS.Quaternionf.makeFromEulerAngles(new APJS.Vector3f(0, 1.57, 0));
+     * // For smooth rotation, use torque:
+     * rigidBody.addTorque(new APJS.Vector3f(0, 10, 0), APJS.ForceMode3D.Impulse);
      * @default Quaternionf(0, 0, 0, 1)
      */
     get rotation(): Quaternionf;
     set rotation(value: Quaternionf);
     /**
-     * @description Gets or sets the rotation of the rigid body as Euler angles in degrees.
-     * Angles are represented as a Vector3f with rotation order XYZ.
-     * Note that Euler angles can suffer from gimbal lock; consider using the rotation property for more robust rotation handling.
+     * @description Current world-space rotation of the rigid body as Euler angles in radians
+     * (rotation order XYZ). The getter reflects the live orientation from the physics engine.
+     * Writing teleports the body immediately. For smooth rotation, use {@link addTorque}.
+     *
+     * Do NOT modify Transform.eulerAngles directly — it will be overwritten.
+     * Prefer {@link rotation} over this property to avoid gimbal lock.
      * @default Vector3f(0, 0, 0)
      */
     get eulerAngles(): Vector3f;
     set eulerAngles(value: Vector3f);
     /**
-     * @description Gets or sets the linear velocity of the rigid body in world space.
-     * Velocity is measured in meters per second as a Vector3f.
-     * Setting this property directly changes the body's velocity immediately, overriding physics calculations.
-     * For physics-consistent velocity changes, consider applying forces instead.
+     * @description World-space linear velocity in meters per second (m/s).
+     * The getter returns the live simulator value, and writing overrides the current physics-computed velocity immediately.
+     * For gradual changes, use {@link addForce} instead.
      * @default Vector3f(0, 0, 0)
      */
     get velocity(): Vector3f;
     set velocity(value: Vector3f);
     /**
-     * @description Gets or sets the angular velocity of the rigid body in world space.
-     * Angular velocity is measured in radians per second as a Vector3f.
-     * Setting this property directly changes the body's angular velocity immediately, overriding physics calculations.
-     * For physics-consistent angular velocity changes, consider applying torques instead.
+     * @description World-space angular velocity in radians per second.
+     * The vector points along the rotation axis, the getter returns the live simulator value,
+     * and writing overrides the current physics-computed angular velocity immediately.
+     * For gradual changes, use {@link addTorque} instead.
      * @default Vector3f(0, 0, 0)
      */
     get angularVelocity(): Vector3f;
     set angularVelocity(value: Vector3f);
     /**
-     * @description Gets or sets the inertia tensor of the rigid body.
-     * The inertia tensor represents the body's resistance to rotational acceleration around different axes.
-     * Values are typically calculated automatically based on mass and shape, but can be overridden for custom behavior.
+     * @description Gets or sets the diagonal inertia tensor of the rigid body.
+     * These values describe resistance to angular acceleration around the body's principal axes.
+     * They are usually computed automatically from mass and collider shape, but can be overridden for custom behavior.
      * @default Vector3f(1, 1, 1)
      */
     get inertiaTensor(): Vector3f;
     set inertiaTensor(value: Vector3f);
     /**
-     * @description Add a force to the RigidBody's center of mass.
-     * * ### Force Modes
-     * - **Force:** Continuous force, dependent on mass.
-     * - **Acceleration:** Continuous acceleration, independent of mass.
-     * - **Impulse:** Instant force, dependent on mass (e.g. Explosion, Collision).
-     * - **VelocityChange:** Instant velocity change, independent of mass.
-     * @example Applying an instantaneous force
-     * const explosionForce = new Vector3f(0, 100, 0);
-     * rigidBody.addForce(explosionForce, Physics3D.ForceMode.Impulse);
-     * @param force - The force vector to apply (World Space).
-     * @param mode - The type of force application. Defaults to `Physics3D.ForceMode.Force`.
-     * @returns {void}
+     * @description Adds force at the rigid body's center of mass.
+     *
+     * Force modes:
+     * - `Force`: adds continuous force and scales with mass
+     * - `Acceleration`: adds continuous acceleration independent of mass
+     * - `Impulse`: applies an immediate impulse and changes velocity instantly
+     * - `VelocityChange`: applies an immediate velocity change independent of mass
+     *
+     * @example
+     * const explosionForce = new APJS.Vector3f(0, 100, 0);
+     * rigidBody.addForce(explosionForce, APJS.ForceMode3D.Impulse);
+     * @param force - The world-space force vector to apply.
+     * @param mode - The type of force application. Defaults to {@link ForceMode3D.Force}.
      */
     addForce(force: Vector3f, mode?: ForceMode3D): void;
     /**
-     * @description Add a torque to the RigidBody's center of mass.
-     * * ### Force Modes
-     * - **Force:** Continuous force, dependent on mass.
-     * - **Acceleration:** Continuous acceleration, independent of mass.
-     * - **Impulse:** Instant force, dependent on mass (e.g. Explosion, Collision).
-     * - **VelocityChange:** Instant velocity change, independent of mass.
-     * @example Applying an instantaneous torque
-     * const explosionTorque = new Vector3f(0, 100, 0);
-     * rigidBody.addTorque(explosionTorque, Physics3D.ForceMode.Impulse);
-     * @param torque - The torque vector to apply (World Space).
-     * @param mode - The type of torque application. Defaults to `Physics3D.ForceMode.Force`.
-     * @returns {void}
+     * @description Adds torque at the rigid body's center of mass.
+     *
+     * Force modes:
+     * - `Force`: adds continuous torque and scales with mass
+     * - `Acceleration`: adds continuous angular acceleration independent of mass
+     * - `Impulse`: applies an immediate angular impulse
+     * - `VelocityChange`: applies an immediate angular velocity change independent of mass
+     *
+     * @example
+     * const explosionTorque = new APJS.Vector3f(0, 100, 0);
+     * rigidBody.addTorque(explosionTorque, APJS.ForceMode3D.Impulse);
+     * @param torque - The world-space torque vector to apply.
+     * @param mode - The type of torque application. Defaults to {@link ForceMode3D.Force}.
      */
     addTorque(torque: Vector3f, mode?: ForceMode3D): void;
     /**
-     * @description Add a force at a specific position, potentially generating torque.
+     * @description Applies a force at a specific point, which may also generate torque.
+     * If `isLocal` is true, both `force` and `position` are interpreted in the object's local space
+     * and converted to world space before applying the force.
      * @example push something at a specific point
-     * // Apply a push at the edge of the object (1 unit to the right) to make it swing
-     * const pushForce = new Vector3f(0, 0, 10); // Push forward
-     * const pushPoint = new Vector3f(1, 0, 0);  // Right edge
-     * rigidBody.addForceAt(pushForce, pushPoint, true, Physics3D.ForceMode.Impulse);
+     * // Apply a push at the edge of the object to make it swing
+     * const pushForce = new APJS.Vector3f(0, 0, 10); // Push forward
+     * const pushPoint = new APJS.Vector3f(1, 0, 0);  // Right edge
+     * rigidBody.addForceAt(pushForce, pushPoint, false, APJS.ForceMode3D.Impulse);
      * @param force - The force vector to apply.
-     * @param position - The position at which to apply the force.
-     * @param isLocal - If true, interprets `force` and `position` in local space. Defaults to false.
-     * @param mode - The mode of the force (Force, Impulse, etc.). Defaults to Force.
-     * @returns {ConstantForce3D | null} - Returns force/torque if the mode is continuous (Force/Acceleration), enabling later removal.
+     * @param position - The application point.
+     * @param isLocal - If true, `force` and `position` are in local space. Defaults to false.
+     * @param mode - The mode of the force (Force, Impulse, etc.). Defaults to {@link ForceMode3D.Force}.
+     * @returns {ConstantForce3D | null} A world-space handle for continuous modes; null for instantaneous modes.
      */
     addForceAt(force: Vector3f, position: Vector3f, isLocal?: boolean, mode?: ForceMode3D): ConstantForce3D | null;
   }
   /**
    * @class RigidBody2D
-   * @description A 2D physics rigid body component that can be attached to scene objects to enable physics simulation.
-   * This component handles physical properties like mass, velocity, forces, and constraints.
+   * @description A 2D physics rigid body component. Attach to a SceneObject to enable 2D physics simulation.
+   *
+   * Combines with {@link Collider2D} to form a complete physical object: the RigidBody2D handles
+   * motion (position, velocity, forces) while the Collider2D defines the shape for collision detection.
+   *
+   * **Record/Reset:** On record start, position, rotation, and velocity are reset to initial values.
+   * Configuration properties (mass, damping, static, freeze, etc.) are preserved.
+   *
+   * @example
+   * const obj = scene.findSceneObject("Player");
+   * if (obj) {
+   *     const rb = obj.getComponent("RigidBody2D") as APJS.RigidBody2D;
+   *     rb.mass = 2.0;
+   *     rb.addForce(new APJS.Vector2f(0, 50), APJS.ForceMode2D.Impulse);
+   * }
    */
   class RigidBody2D extends DynamicComponent {
     protected constructor();
     /**
-     * @description Gets whether the RigidBody2D is static. Static bodies don't move under physics simulation but can collide with other bodies.
+     * @description Gets or sets whether this body behaves like a non-moving physics body.
+     * When enabled, the simulator switches this body away from dynamic simulation,
+     * clears accumulated force and torque, and resets its runtime linear and
+     * angular velocity to zero. Re-enabling dynamic behavior restores the serialized
+     * initial velocity values.
      */
     get static(): boolean;
-    /**
-     * @description Sets whether the RigidBody2D is static. Static bodies don't move under physics simulation but can collide with other bodies.
-     * Changing this property will immediately update the physics simulation type.
-     */
     set static(value: boolean);
     /**
-     * @description Gets whether the RigidBody2D is affected by gravity.
-     * When enabled, the body will accelerate downward according to the scene's gravity settings.
+     * @description Gets or sets whether gravity affects this body.
+     * When enabled, the simulator uses this body's current {@link gravityScale}.
+     * When disabled, APJS pushes a native gravity scale of `0` while keeping the
+     * stored `gravityScale` value unchanged for later reuse.
      */
     get useGravity(): boolean;
-    /**
-     * @description Sets whether the RigidBody2D is affected by gravity.
-     * When enabled, the body will accelerate downward according to the scene's gravity settings.
-     */
     set useGravity(value: boolean);
     /**
-     * @description Gets the mass of the RigidBody2D in kilograms.
-     * Mass affects how forces impact the body's acceleration and how it interacts with other bodies during collisions.
+     * @description Gets or sets the body's mass in kilograms.
+     * Larger mass reduces acceleration from the same applied force and affects collision response.
      */
     get mass(): number;
-    /**
-     * @description Sets the mass of the RigidBody2D in kilograms.
-     * Mass affects how forces impact the body's acceleration and how it interacts with other bodies during collisions.
-     */
     set mass(value: number);
     /**
-     * @description Gets the position of the RigidBody2D in world coordinates.
+     * @description Gets or sets the position of the RigidBody2D in world coordinates.
      * Position represents the center of mass of the body in 2D space.
+     * Setting this property teleports the body immediately instead of moving it through simulation.
+     * Do NOT modify `ScreenTransform.anchoredPosition` directly on a physics body —
+     * the engine will overwrite it on the next frame. Use this property or {@link addForce} instead.
+     *
+     * Note: When converting from screen pixels to 2D physics world units, divide by 32.
+     * @example
+     * rigidBody2D.position = new Vector2f(5, 3); // teleport to (5m, 3m)
      */
     get position(): Vector2f;
-    /**
-     * @description Sets the position of the RigidBody2D in world coordinates.
-     * Position represents the center of mass of the body in 2D space.
-     */
     set position(value: Vector2f);
     /**
-     * @description Gets the rotation of the RigidBody2D in radians.
+     * @description Gets or sets this body's authored rotation in radians.
      * Rotation is measured counter-clockwise from the positive X-axis.
+     * Setting this property rotates the body immediately instead of moving it through simulation.
+     * Do NOT modify `ScreenTransform.rotation` directly on a physics body —
+     * the engine will overwrite it on the next frame. Use this property or {@link addTorque} instead.
      */
     get rotation(): number;
-    /**
-     * @description Sets the rotation of the RigidBody2D in radians.
-     * Rotation is measured counter-clockwise from the positive X-axis.
-     */
     set rotation(value: number);
     /**
-     * @description Gets the linear damping coefficient of the RigidBody2D.
-     * Linear damping reduces the body's linear velocity over time, simulating air resistance or friction.
+     * @description Gets or sets the body's linear damping coefficient.
+     * Value typically ranges from 0 (no damping) to 1 (maximum damping).
+     * Larger values make linear velocity decay faster during simulation.
      */
     get damping(): number;
-    /**
-     * @description Sets the linear damping coefficient of the RigidBody2D.
-     * Linear damping reduces the body's linear velocity over time, simulating air resistance or friction.
-     */
     set damping(value: number);
     /**
-     * @description Gets the angular damping coefficient of the RigidBody2D.
-     * Angular damping reduces the body's angular velocity over time.
+     * @description Gets or sets the body's angular damping coefficient.
+     * Value typically ranges from 0 (no damping) to 1 (maximum damping).
+     * Larger values make angular velocity decay faster.
      */
     get angularDamping(): number;
-    /**
-     * @description Sets the angular damping coefficient of the RigidBody2D.
-     * Angular damping reduces the body's angular velocity over time.
-     */
     set angularDamping(value: number);
     /**
-     * @description Gets whether the RigidBody2D is frozen on the X-axis.
-     * When frozen, the body cannot move along the X-axis but can still move along other axes.
+     * @description Gets or sets whether this body is locked against horizontal movement.
      */
     get freezeX(): boolean;
-    /**
-     * @description Sets whether the RigidBody2D is frozen on the X-axis.
-     * When frozen, the body cannot move along the X-axis but can still move along other axes.
-     */
     set freezeX(value: boolean);
     /**
-     * @description Gets whether the RigidBody2D is frozen on the Y-axis.
-     * When frozen, the body cannot move along the Y-axis but can still move along other axes.
+     * @description Gets or sets whether this body is locked against vertical movement.
      */
     get freezeY(): boolean;
-    /**
-     * @description Sets whether the RigidBody2D is frozen on the Y-axis.
-     */
     set freezeY(value: boolean);
     /**
-     * @description Gets whether the RigidBody2D's rotation is frozen.
-     * When frozen, the body cannot rotate but can still translate in 2D space.
+     * @description Gets or sets whether this body is locked against rotation.
      */
     get freezeZ(): boolean;
-    /**
-     * @description Sets whether the RigidBody2D's rotation is frozen.
-     * When frozen, the body cannot rotate but can still translate in 2D space.
-     */
     set freezeZ(value: boolean);
     /**
-     * @description Gets the accumulated external force applied to the RigidBody2D.
-     * Forces affect the body's acceleration according to Newton's second law (F = ma).
+     * @description Gets or sets the continuous force applied to the rigid body in world space.
+     * Force is measured in Newtons and is applied continuously during physics simulation.
+     * Setting this replaces the previous continuous force value. This does NOT affect forces added via {@link addForce}.
+     * To apply multiple forces cumulatively, use {@link addForce} instead.
      */
     get force(): Vector2f;
-    /**
-     * @description Sets the accumulated external force applied to the RigidBody2D.
-     * Forces affect the body's acceleration according to Newton's second law (F = ma).
-     */
     set force(value: Vector2f);
     /**
-     * @description Gets the accumulated external torque applied to the RigidBody2D.
-     * Torque causes angular acceleration around the body's center of mass.
+     * @description Gets or sets the continuous torque applied to the rigid body in world space.
+     * Torque is measured in Newton-meters and is applied continuously during physics simulation.
+     * Setting this replaces the previous continuous torque value. This does NOT affect torques added via {@link addTorque}.
+     * To apply multiple torques cumulatively, use {@link addTorque} instead.
      */
     get torque(): number;
-    /**
-     * @description Sets the accumulated external torque applied to the RigidBody2D.
-     * Torque causes angular acceleration around the body's center of mass.
-     */
     set torque(value: number);
     /**
-     * @description Gets the gravity scale factor for the RigidBody2D.
-     * This multiplier affects how much gravity influences the body (0 = no gravity, 1 = normal gravity, 2 = double gravity).
+     * @description Gets or sets the multiplier applied to global 2D gravity for this body.
+     * For example, 0 disables gravity, 1 uses normal gravity, and 2 doubles it.
+     * If {@link useGravity} is false, this value is stored but not pushed to the simulator until gravity is re-enabled.
      */
     get gravityScale(): number;
-    /**
-     * @description Sets the gravity scale factor for the RigidBody2D.
-     * This multiplier affects how much gravity influences the body (0 = no gravity, 1 = normal gravity, 2 = double gravity).
-     */
     set gravityScale(value: number);
     /**
-     * @description Gets the linear velocity of the RigidBody2D.
-     * Velocity represents the rate of change of position over time.
+     * @description Gets or sets the initial linear velocity of the RigidBody2D in meters per second.
+     * This value is serialized and applied when the body is first created.
+     * To read/write runtime velocity, use the `velocity` property instead.
+     */
+    get initialVelocity(): Vector2f;
+    set initialVelocity(value: Vector2f);
+    /**
+     * @description Gets or sets the initial angular velocity of the RigidBody2D in radians per second.
+     * This value is serialized and applied when the body is first created.
+     * To read/write runtime angular velocity, use the `angularVelocity` property instead.
+     */
+    get initialAngularVelocity(): number;
+    set initialAngularVelocity(value: number);
+    /**
+     * @description Gets or sets the rigid body's world-space linear velocity in meters per second.
+     * Once the body is created, the getter returns the live simulator velocity.
+     * Setting this property changes the current runtime state only; use {@link initialVelocity} for startup configuration.
      */
     get velocity(): Vector2f;
-    /**
-     * @description Sets the linear velocity of the RigidBody2D.
-     * Velocity represents the rate of change of position over time.
-     */
     set velocity(value: Vector2f);
     /**
-     * @description Gets the angular velocity of the RigidBody2D in radians per second.
+     * @description Gets or sets the rigid body's angular velocity in radians per second.
      * Positive values indicate counter-clockwise rotation.
+     * Once the body is created, the getter returns the live simulator value.
+     * Setting this property changes the current runtime state only; use {@link initialAngularVelocity} for startup configuration.
      */
     get angularVelocity(): number;
-    /**
-     * @description Sets the angular velocity of the RigidBody2D in radians per second.
-     * Positive values indicate counter-clockwise rotation.
-     */
     set angularVelocity(value: number);
     /**
-     * @description Adds a force to the RigidBody2D's accumulated forces.
-     * The force will be applied during the next physics simulation step.
-     * @param force - The force vector (x, y) in Newtons to add
+     * @description Adds force to this body.
+     * Continuous modes accumulate force or acceleration until removed. Instantaneous
+     * modes apply an impulse immediately.
+     *
+     * Force modes:
+     * - `Force`: continuous force and mass-dependent acceleration
+     * - `Acceleration`: continuous acceleration independent of mass
+     * - `Impulse`: immediate velocity change scaled by mass
+     * - `VelocityChange`: immediate velocity change independent of mass
+     *
+     * @param force - The world-space force vector in 2D physics units.
+     * @param mode - The force mode to apply. Defaults to {@link ForceMode2D.Force}.
      */
     addForce(force: Vector2f, mode?: ForceMode2D): void;
     /**
-     * @description Adds a torque to the RigidBody2D's accumulated torque.
-     * The torque will be applied during the next physics simulation step.
-     * @param torque - The torque in Newton-meters to add
+     * @description Adds torque to this body.
+     * Continuous modes accumulate torque or angular acceleration until removed.
+     * Instantaneous modes apply angular impulse immediately.
+     *
+     * @param torque - The torque value in Newton-meters.
+     * @param mode - The force mode to apply. Defaults to {@link ForceMode2D.Force}.
      */
     addTorque(torque: number, mode?: ForceMode2D): void;
     /**
-     * @description Add a force at a specific position in 2D space, potentially generating rotation (torque).
-     * * @example Pushing a 2d squre at the corner to spin it
-     * // Apply a force at the top-right corner relative to the object
-     * const pushForce = new Vector2f(10, 0); // Push right
-     * const cornerPos = new Vector2f(0.5, 0.5); // Top-right corner in local space
-     * rigidBody2D.addForceAt(pushForce, cornerPos, true, Physics2D.ForceMode.Impulse);
+     * @description Applies force at a specific point, which may also generate torque.
+     * If `isLocal` is true, both `force` and `position` are converted from local
+     * space to world space before the force is applied.
+     *
+     * Continuous modes return a {@link ConstantForce2D} describing the world-space
+     * force and torque contribution so it can later be removed. Instantaneous modes
+     * return `null`.
+     *
+     * @example
+     * const pushForce = new APJS.Vector2f(10, 0); // Push right
+     * const cornerPos = new APJS.Vector2f(0.5, 0.5); // Top-right corner in local space
+     * rigidBody2D.addForceAt(pushForce, cornerPos, true, APJS.ForceMode2D.Impulse);
      * @param force - The force vector to apply.
-     * @param position - The position at which the force is applied.
+     * @param position - The application point.
      * @param isLocal - If true, interprets inputs in local space. Defaults to false.
-     * @param mode - The force mode (Force, Impulse, etc.). Defaults to Force.
-     * @returns {ConstantForce2D | null} - Returns force/torque if the mode is continuous (Force/Acceleration), enabling later removal.
+     * @param mode - The force mode. Defaults to {@link ForceMode2D.Force}.
+     * @returns A world-space handle for continuous modes; `null` for instantaneous modes.
      */
     addForceAt(force: Vector2f, position: Vector2f, isLocal?: boolean, mode?: ForceMode2D): ConstantForce2D | null;
   }
   /**
    * @class Scene
-   * @description <b>runtime</b> can on script with [this.scene] get one scene
+   * @description In scripts, access the current scene from the mounted scene object.
    * @example
-   * let currScene = this.scene;
+   * const currScene = this.getSceneObject().scene;
    */
   class Scene extends AObject {
     protected constructor();
     /**
-     * @description Create and add a scene object to this scene
-     * @param name - the name of sceneObject
-     * @returns the created SceneObject
+     * @description Creates and adds a scene object to this scene.
+     * @param name - The name of the SceneObject to create.
+     * @returns The created SceneObject.
      * @example
-     * let newObj = this.scene.createSceneObject('newObj');
+     * const scene = this.getSceneObject().scene;
+     * const newObj = scene.createSceneObject('newObj');
      */
     createSceneObject(name: string): SceneObject;
     /**
-     * @description remove scene object from the scene
-     * <br/> (if obj does not belong to the scene or is invalid return false)
-     * @param obj - Object that need to be removed from the scene
-     * @returns remove is success?
+     * @description Removes a scene object from the scene.
+     * <br/>Returns false if the object does not belong to the scene or is invalid.
+     * @param obj - The object to remove from the scene.
+     * @returns Returns true if the object was removed successfully; otherwise false.
      * @example
-     * let foundObj = this.scene.findSceneObject('newObj');
+     * let foundObj = this.getSceneObject().scene.findSceneObject('newObj');
      * if (foundObj) {
-     *   this.scene.removeSceneObject(foundObj);
+     *   this.getSceneObject().scene.removeSceneObject(foundObj);
      * }
      */
     removeSceneObject(obj: SceneObject): boolean;
@@ -5480,7 +6469,7 @@ declare namespace APJS {
      * @description
      * get all the sceneObject in the Scene.
      * @example
-     * var sceneObjects = this.scene.getAllSceneObjects();
+     * var sceneObjects = this.getSceneObject().scene.getAllSceneObjects();
      * sceneObjects.forEach(obj => {
      *   // TODO
      * })
@@ -5488,13 +6477,16 @@ declare namespace APJS {
     getAllSceneObjects(): SceneObject[];
     /**
      * @description Finds a scene object by name from a scene object tree or subtree in the scene.
+     * If the root is not provided, the search is performed from the root of the scene.
+     * If multiple scene objects share the same name, only the first matching object is returned.
+     * So unique names are recommended when using this method, or ensure that the name is unique within the subtree.
      * @param name - The name of the scene object to find.
      * @param root - The root scene object of the scene object tree or subtree.
      * @returns The found scene object, or null if not found.
      * @example
-     * let foundObj = this.scene.findSceneObject('newObj');
+     * let foundObj = this.getSceneObject().scene.findSceneObject('newObj');
      * if (foundObj) {
-     *   this.scene.removeSceneObject(foundObj);
+     *   this.getSceneObject().scene.removeSceneObject(foundObj);
      * }
      */
     findSceneObject(name: string, root?: SceneObject): SceneObject | null;
@@ -5584,6 +6576,7 @@ declare namespace APJS {
     setEnabledInHierarchy(enabled: boolean): void;
     /**
      * @description Finds a child by name and returns it.
+     * This lookup uses the child object name and returns the first matching child found by the underlying scene query.
      * @param name - The name of the sceneObject to find.
      * @returns The found child SceneObject, or null if no child with matching name is found.
      */
@@ -5595,26 +6588,30 @@ declare namespace APJS {
     getChildren(): SceneObject[];
     /**
      * @description Adds a component of the specified type to the scene object.
+     * The type string should use the public APJS component name.
      * @param type - The type of component to add.
      * @returns The added component, or null if the component could not be added.
      */
     addComponent(type: string): Component | null;
     /**
      * @description Gets a component of the specified type from the scene object.
+     * The type string should use the public APJS component name.
      * @param type The type of component to get.
      * @returns The component of the specified type, or null if not found.
      */
     getComponent(type: string): Component | null;
     /**
      * @description Gets all components of the specified type from the scene object.
+     * When provided, the type string should use the public APJS component name.
      * @param type - Optional the type of components to get.
      * @returns An array of components of the specified type or all components for no type input.
      */
     getComponents(type?: string): Component[];
     /**
-     * @param type - Component's typename
-     * @description getComponentsRecursive
-     * @returns components
+     * @description Gets components of the specified type from this scene object and its descendants.
+     * The type string should use the public APJS component name.
+     * @param type - Component type name.
+     * @returns Matching components from the hierarchy.
      */
     getComponentsRecursive(type: string): Component[];
     /**
@@ -5628,8 +6625,8 @@ declare namespace APJS {
      */
     getTransform(): Transform;
     /**
-     * @description Removes a component of the specified type from the scene object.
-     * @param type - The type of component to remove.
+     * @description Removes the specified component instance from the scene object.
+     * @param comp - The component instance to remove.
      * @returns True if the component was successfully removed, false otherwise.
      */
     removeComponent(comp: Component): boolean;
@@ -5667,20 +6664,48 @@ declare namespace APJS {
    * Manages screen space transformations for UI elements, including positioning, sizing, and anchoring.
    * Extends the base Transform class to provide UI-specific layout functionality such as anchor points,
    * pivot positioning, and screen space rect calculations.
+   * ## Anchor modes (controlled by `anchors`)
+   * `anchors = (left, right, bottom, top)` mapped to `(x, y, z, w)`,
+   * each value normalized to [0, 1] relative to the parent rect.
+   * - **Point anchor** (`x === y` and `z === w`): `sizeDelta` equals the element's absolute pixel size.
+   * - **Stretch anchor** (`x !== y` or `z !== w`): `sizeDelta` = element size − anchor region size.
+   *   Negative values mean the element is inset from the anchor edges.
+   * ## Positioning
+   * `anchoredPosition` is the pixel offset from the **anchor center** to the element's **pivot** point.
+   * `anchorCenter = (Lerp(anchors.x, anchors.y, pivot.x), Lerp(anchors.z, anchors.w, pivot.y))`
+   * in normalized parent space.
+   * @example
+   * // Fixed-size element centered in parent
+   * st.anchors = new Vector4f(0.5, 0.5, 0.5, 0.5);
+   * st.sizeDelta = new Vector2f(360, 640); // element is 360px wide, 640px tall
+   * st.anchoredPosition = new Vector2f(0, 0);
+   *
+   * @example
+   * // Full-screen stretch with 20px inset on each side
+   * st.anchors = new Vector4f(0, 1, 0, 1);
+   * st.sizeDelta = new Vector2f(-40, -40); // 20px inset on each side
+   * // if you want to padding top 40px and bottom 0px
+   * st.anchoredPosition = new Vector2f(0, -20);
+   * // st.offsets = new Vector4f(20,-20,0,-40) is equivalent
    */
   class ScreenTransform extends Transform {
     constructor();
     /**
-     * @description Gets or sets the position of the UI element relative to its anchors.
-     * This position is calculated from the element's pivot point and adjusted based on anchor positions.
-     * Values are in screen space coordinates.
+     * @description Gets or sets the pixel offset of the pivot point relative to the anchor center point.
+     * Anchor center = Lerp(anchorLeft, anchorRight, pivot.x), Lerp(anchorBottom, anchorTop, pivot.y).
+     * Unit: pixels. Default: (0, 0).
+     * Example: anchors=(0.5,0.5,0.5,0.5), pivot=(0.5,0.5), anchoredPosition=(100,50) means
+     * the element center is 100px to the right and 50px above the parent center.
      */
     get anchoredPosition(): Vector2f;
     set anchoredPosition(value: Vector2f);
     /**
-     * @description Gets or sets the size difference between the UI element and its parent's rect.
-     * Positive values expand the element beyond the parent's bounds, negative values shrink it.
-     * Values are in screen space coordinates.
+     * @description Gets or sets the element size delta, in pixels. Meaning depends on anchor mode:
+     * - Point anchor (anchors.x==anchors.y && anchors.z==anchors.w):
+     *   sizeDelta IS the absolute element size. e.g. (360, 640) = 360px wide, 640px tall.
+     * - Stretch anchor (anchors.x!=anchors.y || anchors.z!=anchors.w):
+     *   sizeDelta = element size minus anchor region size. Negative = element is inset.
+     *   e.g. anchors=(0,1,0,1), sizeDelta=(-40,-40) means 20px inset on each side.
      */
     get sizeDelta(): Vector2f;
     set sizeDelta(value: Vector2f);
@@ -5692,26 +6717,35 @@ declare namespace APJS {
     get pivot(): Vector2f;
     set pivot(value: Vector2f);
     /**
-     * @description Gets or sets the anchor points that define how the UI element is positioned relative to its parent.
-     * Format: [minX, minY, maxX, maxY], each in [0,1] range relative to parent's rect.
-     * Common configurations include (0,0,1,1) for stretching to fill parent, (0.5,0.5,0.5,0.5) for centering, etc.
+     * @description Gets or sets the anchor points as (left, right, bottom, top) = (x, y, z, w),
+     * each normalized in [0,1] relative to the parent rect (0=left/bottom edge, 1=right/top edge).
+     * - Point anchor (x==y, z==w): element attaches to a single point. e.g. (0.5,0.5,0.5,0.5) = parent center.
+     * - Stretch anchor (x!=y or z!=w): element stretches with parent. e.g. (0,1,0,1) = fill parent.
+     * - (0,0,0,0) = bottom-left corner; (1,1,1,1) = top-right corner. Default: (0.5,0.5,0.5,0.5).
      */
     get anchors(): Vector4f;
     set anchors(value: Vector4f);
     /**
-     * @description Gets or sets the offset values from the anchors, defining the element's position within the anchor bounds.
-     * Format: [left, bottom, right, top] offsets in pixels.
+     * @description Gets or sets the four edge positions of the element relative to the anchor center, in pixels.
+     * Format: (left, right, bottom, top). Derived from anchoredPosition + sizeDelta + pivot (not stored independently):
+     *   left   = anchoredPosition.x - sizeDelta.x * pivot.x
+     *   right  = anchoredPosition.x + sizeDelta.x * (1 - pivot.x)
+     *   bottom = anchoredPosition.y - sizeDelta.y * pivot.y
+     *   top    = anchoredPosition.y + sizeDelta.y * (1 - pivot.y)
+     * Writing offsets back-calculates and updates sizeDelta and anchoredPosition accordingly.
      */
     get offsets(): Vector4f;
     set offsets(value: Vector4f);
     /**
      * @description Gets or sets the 2D scaling factor applied to the UI element.
+     * Values greater than 1 enlarge the element, while values between 0 and 1 shrink it.
+     * The scale is applied relative to the parent transform and centered on the pivot point.
      */
     get scale(): Vector2f;
     set scale(value: Vector2f);
     /**
      * @description Gets or sets the 2D rotation angle in degrees applied to the UI element.
-     * Rotation is performed around the element's pivot point.
+     * Positive values = counter-clockwise. Rotation is relative to parent and centered on the pivot point.
      */
     get rotation(): number;
     set rotation(value: number);
@@ -5763,12 +6797,12 @@ declare namespace APJS {
    * @class SoundEventDetector
    * @description Sound event detector.
    * @example
-   * OnInit() {
-   *     const builder = APJS.AudioDetectionModule.getAudioDetectionBuilder(APJS.AudioDetectionType.SoundEvent);
+   * onInit() {
+   *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.SoundEvent);
    *     builder.setDetectorSource(APJS.AudioSourceType.Microphone, null);
    *     this.detector = builder.build();
    * }
-   * OnUpdate(dt: number) {
+   * onUpdate(dt: number) {
    *     if (this.detector) {
    *         const results = this.detector.getResult();
    *         for (const result of results) {
@@ -5806,8 +6840,8 @@ declare namespace APJS {
    * @class SoundEventDetectorBuilder
    * @description Builder for SoundEventDetector.
    * @example
-   * OnInit() {
-   *     const builder = APJS.AudioDetectionModule.getAudioDetectionBuilder(APJS.AudioDetectionType.SoundEvent);
+   * onInit() {
+   *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.SoundEvent);
    *     builder.setDetectorSource(APJS.AudioSourceType.Microphone, null);
    *     const detector = builder.build();
    * }
@@ -5815,7 +6849,7 @@ declare namespace APJS {
   class SoundEventDetectorBuilder extends AudioDetectorBuilder<SoundEventDetector> {
     protected constructor();
     /**
-     * @description Build the SoundEventDetector. Note that the detector should be built in OnInit, otherwise it will return null.
+     * @description Build the SoundEventDetector. Note that the detector should be built in onInit, otherwise it will return null.
      */
     build(): SoundEventDetector | null;
   }
@@ -5841,7 +6875,7 @@ declare namespace APJS {
   }
   /**
    * @enum SoundEventType
-   * @description Audio sound event type.
+   * @description Audio sound event type. These string values are the public identifiers used by the detector and should be treated as stable, case-sensitive names.
    * @example
    * const catResult = this.audioEventDetector.getSimilarityByType(APJS.SoundEventType.Cat);
    */
@@ -5889,27 +6923,53 @@ declare namespace APJS {
   }
   /**
    * @class SpectrumDetector
-   * @description A spectrum detector implementation.
+   * @description Detects the raw audio frequency spectrum in real time.
+   *
+   * `getResult()` returns 512 raw FFT magnitude values covering 0 Hz to 22050 Hz,
+   * where each value is in the range [0, 255] (0 = silence, 255 = maximum magnitude).
+   * Each bin covers approximately 22050 / 512 ≈ 43 Hz.
+   *
+   * To derive band-level data, average consecutive bins. For example, dividing into
+   * 8 equal bands of 64 bins each maps to these approximate frequency ranges:
+   * - Band 0: 0 Hz – 2756 Hz   (bins 0–63)
+   * - Band 1: 2756 Hz – 5512 Hz  (bins 64–127)
+   * - Band 2: 5512 Hz – 8269 Hz  (bins 128–191)
+   * - Band 3: 8269 Hz – 11025 Hz (bins 192–255)
+   * - Band 4: 11025 Hz – 13781 Hz (bins 256–319)
+   * - Band 5: 13781 Hz – 16537 Hz (bins 320–383)
+   * - Band 6: 16537 Hz – 19293 Hz (bins 384–447)
+   * - Band 7: 19293 Hz – 22050 Hz (bins 448–511)
+   *
    * @example
-   * OnInit() {
-   *     const builder = APJS.AudioDetectionModule.getAudioDetectionBuilder(APJS.AudioDetectionType.Spectrum);
+   * onInit() {
+   *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.Spectrum);
    *     builder.setDetectorSource(APJS.AudioSourceType.Microphone, null);
    *     this.detector = builder.build();
    * }
-   * OnUpdate(dt: number) {
-   *     if (this.detector) {
-   *         const result = this.detector.getResult();
-   *         for (const value of result) {
-   *             console.log(value);
-   *         }
+   * onUpdate(dt: number) {
+   *     const raw = this.detector.getResult(); // 512 raw magnitude values, each in [0, 255]
+   *     if (raw.length === 0) return;
+   *
+   *     // Overall average magnitude
+   *     const avg = raw.reduce((sum, v) => sum + v, 0) / raw.length;
+   *
+   *     // Divide into 8 frequency bands (64 bins each)
+   *     const NUM_BANDS = 8;
+   *     const BINS_PER_BAND = raw.length / NUM_BANDS; // 64
+   *     const bands: number[] = [];
+   *     for (let i = 0; i < NUM_BANDS; i++) {
+   *         const slice = raw.slice(i * BINS_PER_BAND, (i + 1) * BINS_PER_BAND);
+   *         bands[i] = slice.reduce((sum, v) => sum + v, 0) / slice.length;
    *     }
+   *     console.log('avg:', avg, 'bands:', bands);
    * }
    */
   class SpectrumDetector extends BaseAudioDetector {
     protected constructor();
     /**
-     * @description Get the result of the spectrum detection.
-     * @returns db:[-100, -30] The result of the spectrum detection.
+     * @description Gets the current spectrum detection result.
+     *
+     * @returns Array of 512 raw FFT magnitude values (each in [0, 255]), or an empty array when no result is available.
      */
     getResult(): Array<number>;
   }
@@ -5917,8 +6977,8 @@ declare namespace APJS {
    * @class SpectrumDetectorBuilder
    * @description A builder for spectrum detector to set the source of the detector and build the detector.
    * @example
-   * OnInit() {
-   *     const builder = APJS.AudioDetectionModule.getAudioDetectionBuilder(APJS.AudioDetectionType.Spectrum);
+   * onInit() {
+   *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.Spectrum);
    *     builder.setDetectorSource(APJS.AudioSourceType.Microphone, null);
    *     const detector = builder.build();
    * }
@@ -5937,20 +6997,30 @@ declare namespace APJS {
      */
     setDetectorSource(type: AudioSourceType, audioComponent: IAudioComponent | null): this;
     /**
-     * @description Build the spectrum detector. Note that the detector should be built in OnInit, otherwise it will return null.
+     * @description Build the spectrum detector. Note that the detector should be built in onInit, otherwise it will return null.
      * @returns Detector instance of the spectrum detector.
      */
     build(): SpectrumDetector | null;
   }
   /**
    * @class SphereCollider
+   * @description Represents a sphere-shaped collider component used for physics collision detection.
+   * Use this for round collision volumes such as simple projectiles, pickups,
+   * or approximate body volumes.
+   * Inherited properties such as {@link center}, {@link isTangible}, and
+   * {@link emitCollisionEvent} still apply.
+   *
+   * @example
+   * const sphere = obj.getComponent("SphereCollider") as APJS.SphereCollider;
+   * sphere.radius = 12;
+   * sphere.isTangible = false; // use as a spherical trigger volume
    */
   class SphereCollider extends Collider {
     protected constructor();
     /**
-     * @description Gets or sets the radius of the sphere collider.
-     * The radius determines the size of the spherical collision boundary.
-     * Larger values result in a larger collision area around the object.
+     * @description Gets or sets the authored radius of the sphere collider.
+     * Larger values produce a larger spherical collision volume around the object.
+     * This is a radius value, not a diameter. Defaults to 5, the same as the default sphere size.
      */
     get radius(): number;
     set radius(value: number);
@@ -5988,17 +7058,31 @@ declare namespace APJS {
   }
   /**
    * @class SpringJoint
+   * @description A 3D spring joint. Acts like a damped spring connecting two
+   * RigidBodies.
+   * Uses an elastic distance constraint with compliance (from
+   * {@link tolerance}) and damping (from {@link damping}).
+   * Can break at {@link breakingForce}. If it breaks, only that distance
+   * constraint stops solving; the connected RigidBodies do not freeze.
+   *
+   * @example
+   * const springJoint = obj.getComponent("SpringJoint") as APJS.SpringJoint;
+   * springJoint.breakingForce = -1; // keep the spring constraint from breaking
+   * springJoint.damping = 0.5; // 50% damping
+   * springJoint.tolerance = 0.5; // 50% softness
    */
   class SpringJoint extends Joint3D {
     protected constructor();
     /**
-     * @description The damping of the spring joint.
+     * @description User-facing damping control for this spring joint from 0 to 1.
+     * Larger values make oscillation die out faster, so the connected bodies stop bouncing and settle sooner.
      * @type {number}
      */
     get damping(): number;
     set damping(value: number);
     /**
-     * @description The tolerance of the spring joint.
+     * @description User-facing softness control for this spring joint from 0 to 1.
+     * Larger values let the connected bodies stretch or compress farther from their rest distance before the spring pulls back strongly.
      * @type {number}
      */
     get tolerance(): number;
@@ -6006,17 +7090,27 @@ declare namespace APJS {
   }
   /**
    * @class SpringJoint2D
+   * @description A 2D spring joint. Applies a force to pull two bodies back to their initial relative positions,
+   * like a spring connecting them. Configurable with {@link damping} and {@link tolerance} (stiffness).
+   * @example
+   * // Set a spring between two objects (configured in editor via connectedBody reference)
+   * const springJoint = obj.getComponent("SpringJoint2D") as APJS.SpringJoint2D;
+   * springJoint.damping = 0.7; // 0.7 is a common value for a natural spring
+   * springJoint.tolerance = 0.5; // 0.5 is a common value for a natural spring
    */
   class SpringJoint2D extends Joint2D {
     protected constructor();
     /**
-     * @description The damping factor of the spring joint.
+     * @description User-facing damping control for this 2D spring joint.
+     * Value typically ranges from 0 (no damping) to 1 (maximum damping).
+     * Larger values make the spring stop oscillating sooner, so the two connected bodies settle more quickly.
      * @type {number}
      */
     get damping(): number;
     set damping(value: number);
     /**
-     * @description The tolerance of the spring joint.
+     * @description User-facing softness control for this 2D spring joint.
+     * Larger values let the two connected bodies separate or compress farther before the spring pulls back strongly.
      * @type {number}
      */
     get tolerance(): number;
@@ -6049,11 +7143,11 @@ declare namespace APJS {
    * @enum
    */
   enum StencilOperation {
-    /** the current value of the stencil buffer. */
+    /** Keeps the current value of the stencil buffer. */
     Keep,
-    /** the stencil buffer to zero. */
+    /** Sets the stencil buffer to zero. */
     Zero,
-    /** the current stencil buffer value with a reference value. */
+    /** Replaces the current stencil buffer value with a reference value. */
     Replace,
     /** the current stencil buffer value and clamps it to the maximum representable unsigned integer. */
     IncrementAndClamp,
@@ -6171,11 +7265,11 @@ declare namespace APJS {
   class Text extends Renderer {
     protected constructor();
     /**
-     * @description Gets the font size.
+     * @description Gets the font size in points (pt).
      */
     get fontSize(): number;
     /**
-     * @description Sets the font size.
+     * @description Sets the font size in points (pt).
      */
     set fontSize(value: number);
     /**
@@ -6243,85 +7337,70 @@ declare namespace APJS {
      */
     set verticalAlignment(value: VerticalAlignment);
     /**
-     * @description Gets the color used for letter fill styling.
+     * @description Gets or sets the fill color used for the text glyphs.
+     * This affects the primary letter fill layer only and does not create,
+     * remove, or recolor outline or shadow layers.
      */
     get color(): Color;
-    /**
-     * @description Sets the color used for letter fill styling.
-     */
     set color(value: Color);
     /**
-     * @description Gets the color of the text outline at index.
+     * @description Gets the color of an existing outline layer.
+     * Outline layers must already exist in editor-authored text data. Script can
+     * read or recolor them, but cannot create or remove them.
      *
-     * Note: Outline of text component cannot be created or removed via script API. You must add
-     * or remove outlines in the editor.
-     *
-     * Example:
-     * ```ts
+     * @example
      * // Gets the color of the first outline
      * const color = text.getOutlineColorAtIndex(0);
-     * ```
-     * @param {number} index The index of the outline to get the color.
-     * @returns {Color | undefined} The color of the outline at the specified index.
+     * @param index - The outline layer index (0-based); returns `undefined` if out of range.
+     * @returns The outline color, or `undefined` if the index is out of range.
      */
     getOutlineColorAtIndex(index: number): Color | undefined;
     /**
-     * @description Sets the color of the text outline at index.
+     * @description Sets the color of an existing outline layer.
+     * Outline layers must already exist in editor-authored text data. Script can
+     * recolor them, but cannot create or remove them.
      *
-     * Note: Outline of text component cannot be created or removed via script API. You must add
-     * or remove outlines in the editor.
-     *
-     * Example:
-     * ```ts
+     * @example
      * // Sets the color of the first outline
      * const color = new Color(1, 1, 1, 1);
      * text.setOutlineColorAtIndex(0, color);
-     * ```
-     * @param {number} index The index of the outline to set the color.
-     * @param {Color} color The color to set for the outline at the specified index.
-     * @returns {void}
+     * @param index - The outline layer index (0-based); silently ignored if out of range.
+     * @param color - The new outline color.
      */
     setOutlineColorAtIndex(index: number, color: Color): void;
     /**
-     * @description Gets the color of the text shadow at index.
+     * @description Gets the color of an existing shadow layer.
+     * Shadow layers must already exist in editor-authored text data. Script can
+     * read or recolor them, but cannot create or remove them.
      *
-     * Note: Shadow of text component cannot be created or removed via script API. You must add
-     * or remove shadows in the editor.
-     *
-     * Example:
-     * ```ts
+     * @example
      * // Gets the color of the first shadow
      * const color = text.getShadowColorAtIndex(0);
-     * ```
-     * @param {number} index The index of the shadow to get the color.
-     * @returns {Color | undefined} The color of the shadow at the specified index.
+     * @param index - The shadow layer index (0-based); returns `undefined` if out of range.
+     * @returns The shadow color, or `undefined` if the index is out of range.
      */
     getShadowColorAtIndex(index: number): Color | undefined;
     /**
-     * @description Sets the color of the text shadow at index.
+     * @description Sets the color of an existing shadow layer.
+     * Shadow layers must already exist in editor-authored text data. Script can
+     * recolor them, but cannot create or remove them.
      *
-     * Note: Shadow of text component cannot be created or removed via script API. You must add
-     * or remove shadows in the editor.
-     *
-     * Example:
-     * ```ts
+     * @example
      * // Sets the color of the first shadow
      * const color = new Color(1, 1, 1, 1);
      * text.setShadowColorAtIndex(0, color);
-     * ```
-     * @param {number} index The index of the shadow to set the color.
-     * @param {Color} color The color to set for the shadow at the specified index.
-     * @returns {void}
+     * @param index - The shadow layer index (0-based); silently ignored if out of range.
+     * @param color - The new shadow color.
      */
     setShadowColorAtIndex(index: number, color: Color): void;
     /**
-     * @description Gets the count of outlines for the text component.
-     * @returns {number} The value of count of outlines.
+     * @description Returns the number of outline layers currently defined on this text.
+     * @returns The outline layer count.
      */
     getOutlineCount(): number;
     /**
-     * @description Gets the count of shadows for the text component.
-     * @returns {number} The value of count of shadows.
+     * @description Returns the number of shadow layers currently defined on this text.
+     * @returns The shadow layer count.
      */
     getShadowCount(): number;
   }
@@ -6438,7 +7517,7 @@ declare namespace APJS {
    * @class Texture2DProvider
    * @description
    * <br/><b>new Texture2DProvider() is an invalid constructor</b>
-   * <br/>If you need a 2D texture, you can get an texture by calling TextureUtil.createTexture2D()
+   * <br/>If you need a 2D texture, you can get a texture by calling TextureUtil.createTexture2D()
    * @example
    * let provider = tex.getControl() as Texture2DProvider;
    */
@@ -6459,7 +7538,7 @@ declare namespace APJS {
    * @class TextureDelegateProvider
    * @description
    * <br/><b>new TextureDelegateProvider() is an invalid constructor</b>
-   * <br/>If you need a Delegate texture, you can get an texture by calling TextureUtil.createTextureDelegate()
+   * <br/>If you need a Delegate texture, you can get a texture by calling TextureUtil.createTextureDelegate()
    */
   class TextureDelegateProvider extends TextureProvider {
     protected constructor();
@@ -6487,14 +7566,24 @@ declare namespace APJS {
     get phase(): TouchPhase;
     /**
      * @readonly
-     * @description Get the position of the touch in screen coordinates.
-     * @returns The position of the touch as a Vector2f object.
+     * @description Gets the position of the touch in normalized screen coordinates.
+     * Coordinates use the range [0, 1]. `x` is horizontal (0 = left, 1 = right).
+     *
+     * **Important:** `y` is in a flipped coordinate space — 0 = top of screen, 1 = bottom.
+     * This is the **opposite** of standard screen space and world space (where y increases upward).
+     * Always flip `y` before using the position for world-space calculations or UI placement:
+     *
+     * @example
+     * const touch = event.args[0] as APJS.TouchData;
+     * const touchPos = new APJS.Vector2f(touch.position.x, 1.0 - touch.position.y);
+     * const screenPos = touchPos.clone().multiply(new APJS.Vector2f(720, 1280));
+     *
+     * @returns Normalized position of the touch as a Vector2f. Value range: x ∈ [0, 1], y ∈ [0, 1] (0 = top, 1 = bottom).
      */
     get position(): Vector2f;
     /**
      * @readonly
-     * @description Get the force of the touch.
-     * @returns The force of the touch, typically a normalized value between 0 and 1.
+     * @description Get the force of the touch. Typically a normalized value between 0 and 1.
      */
     get force(): number;
     /**
@@ -6530,10 +7619,13 @@ declare namespace APJS {
    */
   namespace TouchUtils {
     /**
-     * @description Whether a screen touch is on an image.
-     * @param {Vector2f} screenPoint The screen touch point. value range: [0, 1]
+     * @description Whether a normalized touch point is on an image.
+     * @param {Vector2f} screenPoint A normalized screen point in the range [0, 1], typically from `TouchData.position`.
+     * (0, 0) is the top-left corner of the screen; (1, 1) is the bottom-right corner; x increases rightward and y increases downward.
+     * This is not the pixel-based screen space used by camera conversion APIs such as `Camera.screenToWorldPoint`
+     * (which uses bottom-left origin with y increasing upward).
      * @param {Image} image The image component to judge. The image should be enabled and have a valid screen transform component. It should be rendered by a camera with the Orthographic type.
-     * @returns {boolean} True if the screen touch is on the image, otherwise false.
+     * @returns {boolean} True if the normalized touch point is on the image, otherwise false.
      * @example
      * let callback = (event:APJS.IEvent) => {
      *     const touchInfo = event.args[0] as APJS.TouchData;
@@ -6547,17 +7639,17 @@ declare namespace APJS {
     function isScreenPointOnImage(screenPoint: Vector2f, image: Image): boolean;
     /**
      * @description Retrieves the event emitter associated with pinch.
-     * @returns The event emitter for the pinch, which can be used to subscribe to pinch events defined in PinchInfo.
+     * @returns The event emitter for the pinch, which can be used to subscribe to pinch events defined in IPinchInfo.
      * @example
      * const emitter = APJS.TouchUtils.getPinchEmitter();
      * const callback = (event: APJS.IEvent) => {
      *   const pinchInfo = event.args[0] as APJS.IPinchInfo;
      *   const { scale, angle } = pinchInfo;
      *   // Do something with scale and angle, e.g. scale and rotate the image.
-     *   this.imageTransform.localScale = new APJS.Vector3f(scale, scale, 1);
+     *   this.imageTransform.scale = new APJS.Vector2f(scale, scale);
      *   this.imageTransform.rotation = angle * 180 / Math.PI;
      * }
-     * emitter.on(0, callback); // evenName can use any number.
+     * emitter.on(0, callback); // The pinch emitter ignores eventName, so any number can be used.
      */
     function getPinchEmitter(): IEventEmitter;
   }
@@ -6567,8 +7659,7 @@ declare namespace APJS {
    * Position, rotation and scale of an object.
    * <br/>Every object in a Scene has a Transform. It's used to store and manipulate the position, rotation and scale of the object.
    * <br/>Every Transform can have a parent, which allows you to apply position, rotation and scale hierarchically.
-   * <br/>This is the hierarchy seen in the Hierarchy pane. They also support enumerators so you can loop through children using:
-   * <br/>
+   * <br/>This is the hierarchy seen in the Hierarchy pane. You can iterate child transforms through the hierarchy APIs.
    * @example let transform = currObj.getTransform();
    */
   class Transform extends Component {
@@ -6636,7 +7727,7 @@ declare namespace APJS {
     setWorldMatrix(matrix: Matrix4x4f): void;
     /**
      * @description Returns the Transform's position relative to the world.
-     * <br/>Obtaining the rotation in world space may trigger a matrix transformation operation.
+     * <br/>Obtaining the position in world space may trigger a matrix transformation operation.
      * @returns The position of the Transform in world space.
      */
     getWorldPosition(): Vector3f;
@@ -6689,10 +7780,15 @@ declare namespace APJS {
   type UserEventType = number;
   /**
    * @class Vector2f
-   * A two dimensional vector.
+   * A two-dimensional vector.
+   *
+   * Most instance math methods mutate this vector and return `this` for chaining.
+   * Use {@link clone} first when you need to preserve the original value.
+   *
    * @example
    * let zero_p = new Vector2f();
    * let custom_p = new Vector2f(88, 88);
+   * let offset = custom_p.clone().subtract(new Vector2f(8, 8));
    */
   class Vector2f {
     /**
@@ -6720,25 +7816,26 @@ declare namespace APJS {
      */
     equals(vec: Vector2f): boolean;
     /**
-     * @description Sets the two-dimensional coordinates of this vector.
+     * @description Sets the two-dimensional coordinates of this vector in place.
      * @param x - The x-coordinate to set.
      * @param y - The y-coordinate to set.
      * @returns This vector with updated coordinates.
      */
     set(x: number, y: number): this;
     /**
-     * @description Creates and returns a clone of the current Vector2f.
-     * @returns A new Vector2f with the same x and y values as the original.
+     * @description Creates and returns a new Vector2f with the same component values.
+     * Use this before calling mutating math methods when the original value must be preserved.
+     * @returns A new Vector2f with the same x and y values as this vector.
      */
     clone(): Vector2f;
     /**
-     * @description Adds the components of `vec` to this vector.
+     * @description Adds the components of `vec` to this vector in place.
      * @param vec - The vector whose components will be added to this vector.
      * @returns This vector with updated components after addition.
      */
     add(vec: Vector2f): this;
     /**
-     * @description Subtracts the components of `vec` from this vector.
+     * @description Subtracts the components of `vec` from this vector in place.
      * @param vec - The vector to subtract from this vector.
      * @returns This vector after subtraction.
      */
@@ -6772,8 +7869,8 @@ declare namespace APJS {
      */
     distance(vec: Vector2f): number;
     /**
-     * @description Divides the current vector by another vector `vec` component-wise.
-     * @param vec - The vector to divide by, where each component is used to divide the corresponding component of the current vector.
+     * @description Divides this vector by `vec` component-wise in place.
+     * @param vec - The vector to divide by, where each component divides the matching component of this vector.
      * @returns This vector after performing the division.
      */
     divide(vec: Vector2f): this;
@@ -6784,38 +7881,40 @@ declare namespace APJS {
      */
     dot(vec: Vector2f): number;
     /**
-     * @description Performs component-wise multiplication of the vector with the given `value`.
-     * If `value` is a number, multiplies both x and y components by that number.
-     * If `value` is another Vector2f, multiplies each component of this vector by the corresponding component of `value`.
+     * @description Multiplies this vector in place.
+     * If `value` is a number, both components are scaled by that number.
+     * If `value` is a Vector2f, multiplication is performed component-wise.
      * @param value - A number or another Vector2f to multiply with.
      * @returns This vector after performing the multiplication.
      */
     multiply(value: number | Vector2f): this;
     /**
-     * @description Multiplies the x and y components of the vector by a given scalar value.
+     * @description Multiplies both components of this vector by `scale` in place.
      * @param scale - The scalar value to multiply the vector's components by.
      * @returns This vector with updated components.
      */
     multiplyScalar(scale: number): this;
     /**
-     * @description Scales the vector to have a length of 1 and returns the normalized vector.
+     * @description Normalizes this vector in place so its magnitude becomes 1.
+     * If the magnitude is zero, the vector is left unchanged.
      * @returns This vector after normalization.
      */
     normalize(): this;
     /**
-     * @description Projects the current vector onto the given vector `vec` and returns the result.
+     * @description Projects this vector onto `vec` in place.
+     * If `vec` has zero length, this vector is set to `(0, 0)`.
      * @param vec - The vector to project onto.
-     * @returns The current vector after being projected onto `vec`.
+     * @returns This vector after projection.
      */
     project(vec: Vector2f): this;
     /**
-     * @description Reflects the vector across the plane defined by the normal `vec` and returns this.
+     * @description Reflects this vector across the plane defined by the normal `vec` in place.
      * @param vec - The normal vector defining the reflection plane.
-     * @returns This vector after being reflected.
+     * @returns This vector after reflection.
      */
     reflect(vec: Vector2f): this;
     /**
-     * @description Inverts the components of the vector by computing 1/x and 1/y.
+     * @description Replaces each component with its reciprocal in place.
      * @returns This vector with inverted x and y values.
      */
     inverse(): this;
@@ -6825,11 +7924,14 @@ declare namespace APJS {
      */
     toString(): string;
     /**
-     * @description Approximate comparison of the two vectors by the value of each dimension with a specified distance threshold.
+     * @description Approximate comparison of the two vectors by the value of
+     * each dimension with a specified distance threshold.
      * @param vec1 - The first vector to compare.
      * @param vec2 - The second vector to compare.
-     * @param dist - The maximum allowed difference between corresponding dimensions for the vectors to be considered approximately equal.
-     * @returns A boolean indicating whether the two vectors are approximately equal within the given distance threshold.
+     * @param dist - The maximum allowed difference between corresponding
+     * dimensions for the vectors to be considered approximately equal.
+     * @returns A boolean indicating whether the two vectors are approximately
+     * equal within the given distance threshold.
      * @example
      * let a = new Vector2f(0.0000001, 0.0000001);
      * let b = new Vector2f(0.0000000, 0.0000000);
@@ -6861,10 +7963,15 @@ declare namespace APJS {
   }
   /**
    * @class Vector3f
-   * A three dimensional vector.
+   * A three-dimensional vector.
+   *
+   * Most instance math methods mutate this vector and return `this` for chaining.
+   * Use {@link clone} first when you need to preserve the original value.
+   *
    * @example
    * let zero_p = new Vector3f();
    * let custom_p = new Vector3f(88.8, 88.8, 88.8);
+   * let offset = custom_p.clone().subtract(new Vector3f(8, 8, 8));
    */
   class Vector3f {
     /**
@@ -6912,7 +8019,7 @@ declare namespace APJS {
      */
     toString(): string;
     /**
-     * @description Sets the three-dimensional coordinates of this vector.
+     * @description Sets the three-dimensional coordinates of this vector in place.
      * @param x - The x-coordinate value to set.
      * @param y - The y-coordinate value to set.
      * @param z - The z-coordinate value to set.
@@ -6932,12 +8039,13 @@ declare namespace APJS {
      */
     clampLength(length: number): this;
     /**
-     * @description Creates and returns a new Vector3f with the same x, y, and z values as the current vector.
-     * @returns A new Vector3f that is a clone of the current vector.
+     * @description Creates and returns a new Vector3f with the same component values.
+     * Use this before calling mutating math methods when the original value must be preserved.
+     * @returns A new Vector3f that is a clone of this vector.
      */
     clone(): Vector3f;
     /**
-     * @description Computes the cross product of the current vector with another vector and updates the current vector with the result.
+     * @description Computes the cross product with `other` and stores the result in this vector.
      * @param other - The vector to compute the cross product with.
      * @returns This vector after computing the cross product.
      */
@@ -6949,7 +8057,7 @@ declare namespace APJS {
      */
     distance(other: Vector3f): number;
     /**
-     * @description Divides the current vector by another vector or a scalar.
+     * @description Divides this vector in place by `value`.
      * @param value - The divisor, which can be either a Vector3f or a number.
      * @returns This vector after division.
      */
@@ -6961,27 +8069,29 @@ declare namespace APJS {
      */
     dot(other: Vector3f): number;
     /**
-     * @description Performs component-wise multiplication of the vector with the given value.
-     * If the value is a Vector3f, it multiplies each component (x, y, z) of the current vector by the corresponding component of the given vector.
-     * If the value is a number, it multiplies each component (x, y, z) of the current vector by that number.
+     * @description Multiplies this vector in place.
+     * If `value` is a Vector3f, multiplication is performed component-wise.
+     * If `value` is a number, all components are scaled by that number.
      * @param value - A Vector3f or a number to multiply with the vector's components.
      * @returns This vector after multiplication.
      */
     multiply(value: number | Vector3f): this;
     /**
-     * @description Multiplies each component (x, y, z) of the vector by a given scalar.
+     * @description Multiplies all components of this vector by `scalar` in place.
      * @param scalar - The number to multiply each component of the vector by.
      * @returns This vector with updated components.
      */
     multiplyScalar(scalar: number): this;
     /**
-     * @description Scales the vector to have a length of 1 and returns the modified vector.
+     * @description Normalizes this vector in place so its magnitude becomes 1.
+     * If the magnitude is zero, the vector is left unchanged.
      * @returns This vector after normalization.
      */
     normalize(): this;
     /**
-     * @description Projects the current vector onto the specified vector and modifies the current vector to be the result.
-     * @param other - The vector onto which the current vector is projected.
+     * @description Projects this vector onto `other` in place.
+     * If `other` has zero length, this vector is set to `(0, 0, 0)`.
+     * @param other - The vector onto which this vector is projected.
      * @returns This vector after projection.
      */
     project(other: Vector3f): this;
@@ -6992,25 +8102,25 @@ declare namespace APJS {
      */
     projectOnPlane(normal: Vector3f): this;
     /**
-     * @description Reflects this vector across the plane defined by the normal 'normal' and returns this.
+     * @description Reflects this vector across the plane defined by the normal `normal` in place.
      * @param normal - The normal vector defining the reflection plane.
-     * @returns This vector after being reflected.
+     * @returns This vector after reflection.
      */
     reflect(normal: Vector3f): this;
     /**
-     * @description Adds the components of another vector to this vector.
+     * @description Adds the components of `other` to this vector in place.
      * @param other - The vector whose components will be added to this vector.
      * @returns This vector with updated components after addition.
      */
     add(other: Vector3f): this;
     /**
-     * @description Subtracts the components of the given vector from this vector and returns this vector.
+     * @description Subtracts the components of `other` from this vector in place.
      * @param other - The vector to subtract from this vector.
      * @returns This vector after subtraction.
      */
     subtract(other: Vector3f): this;
     /**
-     * @description Inverts the components of this vector by computing 1/x, 1/y, and 1/z.
+     * @description Replaces each component with its reciprocal in place.
      * @returns This vector with inverted x, y, and z values.
      */
     inverse(): this;
@@ -7026,7 +8136,8 @@ declare namespace APJS {
      * @description Approximately compares two vectors by the value of each component with a specified tolerance.
      * @param vec1 - The first vector to compare.
      * @param vec2 - The second vector to compare.
-     * @param dist - The maximum allowed difference between corresponding components for the vectors to be considered approximately equal.
+     * @param dist - The maximum allowed difference between corresponding
+     * components for the vectors to be considered approximately equal.
      * @returns True if the vectors are approximately equal within the given tolerance, false otherwise.
      * @example
      * let a = new Vector3f(0.0000001, 0.0000001, 0.0000001);
@@ -7051,10 +8162,15 @@ declare namespace APJS {
   }
   /**
    * @class Vector4f
-   * A four dimensional vector.
+   * A four-dimensional vector.
+   *
+   * Most instance math methods mutate this vector and return `this` for chaining.
+   * Use {@link clone} first when you need to preserve the original value.
+   *
    * @example
    * let zero_p = new Vector4f();
    * let custom_p = new Vector4f(88.8, 88.8, 88.8, 88.8);
+   * let offset = custom_p.clone().subtract(new Vector4f(8, 8, 8, 8));
    */
   class Vector4f {
     /**
@@ -7087,7 +8203,8 @@ declare namespace APJS {
     constructor(x?: number, y?: number, z?: number, w?: number);
     /**
      * @constructor
-     * @param x - A 3-dimensional vector representing the first three components of the new vector. The fourth component is assumed to be 0.
+     * @param x - A 3-dimensional vector representing the first three
+     * components of the new vector. The fourth component is assumed to be 0.
      */
     constructor(x: Vector3f);
     /**
@@ -7096,7 +8213,7 @@ declare namespace APJS {
      */
     constructor(x: Vector4f);
     /**
-     * @description Sets the four-dimensional components of this vector.
+     * @description Sets the four-dimensional components of this vector in place.
      * @param x - The value for the x component.
      * @param y - The value for the y component.
      * @param z - The value for the z component.
@@ -7110,18 +8227,19 @@ declare namespace APJS {
      */
     magnitude(): number;
     /**
-     * @description Calculates and returns the squared magnitude of the vector, which is the dot product of the vector with itself.
+     * @description Calculates and returns the squared magnitude of the vector,
+     * which is the dot product of the vector with itself.
      * @returns The squared magnitude (length) of the vector.
      */
     sqrMagnitude(): number;
     /**
-     * @description Adds the components of `other` to this Vector4f.
+     * @description Adds the components of `other` to this vector in place.
      * @param other - The Vector4f whose components will be added to this vector.
      * @returns This Vector4f after addition.
      */
     add(other: Vector4f): this;
     /**
-     * @description Subtracts the components of the given vector from this vector and returns this vector.
+     * @description Subtracts the components of `other` from this vector in place.
      * @param other - The vector to subtract from this vector.
      * @returns This vector after subtraction.
      */
@@ -7133,18 +8251,20 @@ declare namespace APJS {
      */
     clampLength(length: number): this;
     /**
-     * @description Returns a clone of the current Vector4f instance.
+     * @description Creates and returns a new Vector4f with the same component values.
+     * Use this before calling mutating math methods when the original value must be preserved.
      * @returns A new Vector4f with the same values as the original.
      */
     clone(): Vector4f;
     /**
-     * @description Calculates and returns the Euclidean distance between this vector and another vector in 4-dimensional space.
+     * @description Calculates and returns the Euclidean distance between this
+     * vector and another vector in 4-dimensional space.
      * @param other - The target vector to calculate the distance to.
      * @returns The calculated distance
      */
     distance(other: Vector4f): number;
     /**
-     * @description Divides each component of the vector by the corresponding component of the given vector.
+     * @description Divides this vector in place by `other` component-wise.
      * @param other - The vector to divide by.
      * @returns This vector after division.
      */
@@ -7162,24 +8282,27 @@ declare namespace APJS {
      */
     equals(other: Vector4f): boolean;
     /**
-     * @description Returns the dimension-wise multiplication product of the vector and another vector or a scalar.
-     * @param other - The vector or scalar to multiply with. If it's a Vector4f, performs element-wise multiplication. If it's a number, multiplies each component of the vector by this number.
+     * @description Multiplies this vector in place.
+     * If `other` is a Vector4f, multiplication is performed component-wise.
+     * If `other` is a number, all components are scaled by that number.
+     * @param other - The vector or scalar to multiply with.
      * @returns This vector after performing the multiplication.
      */
     multiply(other: Vector4f | number): this;
     /**
-     * @description Performs component-wise multiplication of the vector with another vector or a scalar.
-     * @param other - The vector or scalar to multiply with. If it's a Vector4f, performs element-wise multiplication. If it's a number, multiplies each component of the vector by this number.
+     * @description Multiplies all components of this vector by `scalar` in place.
+     * @param scalar - The number to multiply each component of the vector by.
      * @returns This vector after performing the multiplication.
      */
     multiplyScalar(scalar: number): this;
     /**
-     * @description Scales the vector to have a length of 1 and returns the modified vector.
+     * @description Normalizes this vector in place so its magnitude becomes 1.
+     * If the magnitude is zero, the vector is left unchanged.
      * @returns This vector after normalization.
      */
     normalize(): this;
     /**
-     * @description Inverts the components of this Vector4f by computing 1/x, 1/y, 1/z, and 1/w.
+     * @description Replaces each component with its reciprocal in place.
      * @returns This vector with inverted components.
      */
     inverse(): this;
@@ -7189,10 +8312,12 @@ declare namespace APJS {
      */
     toString(): string;
     /**
-     * @description Approximate comparison of the two vectors by the value of each component within a specified distance.
+     * @description Approximate comparison of the two vectors by the value of
+     * each component within a specified distance.
      * @param vec1 - The first vector to compare.
      * @param vec2 - The second vector to compare.
-     * @param dist - The maximum allowed difference between corresponding components of the vectors for them to be considered approximately equal.
+     * @param dist - The maximum allowed difference between corresponding
+     * components of the vectors for them to be considered approximately equal.
      * @returns A boolean indicating whether the vectors are approximately equal within the given distance.
      * @example
      * let a = new Vector4f(0.0000001, 0.0000001, 0.0000001, 0.0);
@@ -7239,7 +8364,8 @@ declare namespace APJS {
      */
     attribute?: VertexAttributeType;
     /**
-     * @description The name of the attribute.
+     * @description The name of the vertex attribute.
+     * This should match the attribute name expected by the shader or mesh consumer.
      */
     name?: string;
     /**
@@ -7280,9 +8406,9 @@ declare namespace APJS {
     TexCoord6,
     /** Represents the eighth texture coordinate attribute of a vertex. */
     TexCoord7,
-    /** Represents a user-defined attribute of a vertex. */
+    /** Historical name for the first user-defined vertex attribute. */
     UserDefine0,
-    /** Represents another user-defined attribute of a vertex. */
+    /** Historical name for the second user-defined vertex attribute. */
     UserDefine1,
     /** Represents the indices attribute of a vertex, typically used for bone indices in skinning. */
     Indices,
@@ -7318,8 +8444,12 @@ declare namespace APJS {
     StopEmitting = 1
   }
   /**
-   * @class VFXEffectBlock
-   * @description Component that controls a visual effect instance, including playback, seed, camera binding, and exposed slot values.
+   * @class VisualEffect
+   * @description Component that controls a visual effect instance (playback, seed, camera binding,
+   * and exposed slot values). **To stop an effect, use `stop()` — do NOT disable the component.**
+   * `stop()` supports two modes: `StopEmitting` (stop emitting, keep existing particles) and
+   * `StopEmittingAndClear` (stop and clear all particles immediately). Use `play()` / `pause()` /
+   * `stop()` / `reset()` for lifecycle control.
    */
   class VisualEffect extends Component {
     protected constructor();
@@ -7353,7 +8483,6 @@ declare namespace APJS {
     setStartSeed(seed: number): void;
     /**
      * @description Reset the visual effect to its initial state.
-     * @returns {void}
      */
     reset(): void;
     /**
@@ -7365,12 +8494,14 @@ declare namespace APJS {
      */
     pause(): void;
     /**
-     * @description Emit particles immediately.
+     * @description Emits a burst immediately.
+     * Use this for one-shot burst behavior when the effect is already playing.
+     * Has no effect if `isEmitting` is `false` (i.e. after `stop()` has been called).
      * @example
      * export class NewScriptComponent extends APJS.BasicScriptComponent {
      *   ......
      *   onUpdate(deltaTime: number) {
-     *     if (this.visualEffectComponent.isEmitting && otherCondition) {
+     *     if (this.visualEffectComponent.isPlaying && triggerBurstOnce) {
      *       this.visualEffectComponent.emit();
      *     }
      *   }
@@ -7378,12 +8509,16 @@ declare namespace APJS {
      */
     emit(): void;
     /**
-     * @description Whether the visual effect is currently playing.
+     * @description Whether the VFX system is currently running (i.e. particles are still being
+     * simulated and rendered). Remains `true` after `stop(StopEmitting)` until all existing
+     * particles have naturally expired. Becomes `false` only after `stop(StopEmittingAndClear)`.
      */
     get isPlaying(): boolean;
     /**
-     * @description Whether the visual effect is currently emitting particles.
-     * @returns {boolean} True if emitting, false otherwise
+     * @description Whether the effect is currently spawning new particles.
+     * Becomes `false` after any `stop()` call regardless of the stop behavior.
+     * While `isEmitting` is `false` but `isPlaying` is still `true`, existing
+     * particles continue to simulate until they expire naturally.
      */
     get isEmitting(): boolean;
     /**
@@ -7406,21 +8541,24 @@ declare namespace APJS {
   class VisualEffectAsset extends AObject {
     protected constructor();
     /**
-     * @description Checks if the VFX profile has a texture key.
+     * @description Checks if the VFX profile has a boolean key.
+     * The key must match an exposed boolean property name from the VFX profile.
      * @param name - The name to check for in the boolean map.
      * @returns A boolean indicating whether the property exists in the VFX Profile.
      */
     hasBoolKey(name: string): boolean;
     /**
-     * @description Gets a named texture value from VFX Profile.
-     * @param name - The name of the texture property.
-     * @returns The value of the texture property or null.
+     * @description Gets a named boolean value from VFX Profile.
+     * The key must match an exposed boolean property name from the VFX profile.
+     * @param name - The name of the boolean property.
+     * @returns The value of the boolean property or undefined.
      */
     getBool(name: string): boolean | undefined;
     /**
-     * @description Sets a named texture value to VFX Profile.
-     * @param name - The name of the texture property.
-     * @param value - The texture value to set.
+     * @description Sets a named boolean value on the VFX Profile.
+     * The key must match an exposed boolean property name from the VFX profile.
+     * @param name - The name of the boolean property.
+     * @param value - The boolean value to set.
      * @example
      * export class NewScriptComponent extends APJS.BasicScriptComponent {
      *   ......
@@ -7438,18 +8576,21 @@ declare namespace APJS {
     setBool(name: string, value: boolean): void;
     /**
      * @description Checks if the VFX profile has an integer key.
-     * @param key - The key to check for in the integer map.
+     * The key can be either an exposed integer property name or a supported derived spawn key such as `burstcount_<index>`, `spawnratemin_<index>`, or `spawnratemax_<index>`.
+     * @param name - The key to check for in the integer map.
      * @returns A boolean indicating whether the key exists in the VFX Profile.
      */
     hasIntKey(name: string): boolean;
     /**
      * @description Gets a named integer value from VFX Profile.
+     * The key can be either an exposed integer property name or a supported derived spawn key such as `burstcount_<index>`, `spawnratemin_<index>`, or `spawnratemax_<index>`.
      * @param name - The name of the integer property.
      * @returns The value of the integer property or undefined.
      */
     getInt(name: string): number | undefined;
     /**
      * @description Sets a named integer value to VFX Profile.
+     * The key can be either an exposed integer property name or a supported derived spawn key such as `burstcount_<index>`, `spawnratemin_<index>`, or `spawnratemax_<index>`.
      * @param name - The name of the integer property.
      * @param value - The integer value to set.
      * @example
@@ -7469,7 +8610,18 @@ declare namespace APJS {
     setInt(name: string, value: number): void;
     /**
      * @description Checks if the VFX profile has a float key.
-     * @param key - The key to check for in the float map.
+     * The key can be either an exposed float property name or a supported derived spawn key.
+     * `<index>` is the zero-based position in {@link contextBlocks} (i.e. `contextBlocks[<index>]`).
+     * Derived spawn keys are only meaningful when `contextBlocks[<index>]` is a Spawner context,
+     * because the Spawn Rate block (which owns these properties) can only be placed in a Spawner context.
+     * Supported derived spawn keys:
+     * - `spawnrate_<index>` - number of particles spawned per second by the Spawn Rate block of `contextBlocks[<index>]`
+     * - `burstdelay_<index>` - delay in seconds the Spawn Rate block of `contextBlocks[<index>]` waits before each Periodic Burst.
+     *   Returns `true` whenever `contextBlocks[<index>]` exists, regardless of its context type.
+     *   Note: {@link getFloat} for this key returns `undefined` when `delayMin` and `delayMax` differ by more than 0.0003.
+     * - `delaymin_<index>` - minimum delay in seconds the Spawn Rate block of `contextBlocks[<index>]` waits before each burst (Random mode)
+     * - `delaymax_<index>` - maximum delay in seconds the Spawn Rate block of `contextBlocks[<index>]` waits before each burst (Random mode)
+     * @param name - The key to check for in the float map.
      * @returns A boolean indicating whether the property exists in the VFX Profile.
      */
     hasFloatKey(name: string): boolean;
@@ -7500,18 +8652,23 @@ declare namespace APJS {
     setFloat(name: string, value: number): void;
     /**
      * @description Checks if the VFX profile has a texture key.
-     * @param key - The key to check for in the texture map.
+     * Texture keys must match exposed texture property names from the VFX graph/profile exactly.
+     * If multiple context blocks expose the same key, this method returns true when any matching block contains it.
+     * @param name - The texture key to check.
      * @returns A boolean indicating whether the property exists in the VFX Profile.
      */
     hasTextureKey(name: string): boolean;
     /**
      * @description Gets a named texture value from VFX Profile.
+     * Texture keys must match exposed texture property names from the VFX graph/profile exactly.
      * @param name - The name of the texture property.
-     * @returns The value of the texture property or null.
+     * @returns The value of the texture property, or `null` when no matching exposed texture key exists or no texture is currently assigned.
      */
     getTexture(name: string): Texture | null;
     /**
      * @description Sets a named texture value to VFX Profile.
+     * Texture keys must match exposed texture property names from the VFX graph/profile exactly.
+     * If multiple context blocks expose the same key, this method updates every matching block.
      * @param name - The name of the texture property.
      * @param value - The texture value to set.
      * @example
@@ -7532,18 +8689,25 @@ declare namespace APJS {
     setTexture(name: string, value: Texture): void;
     /**
      * @description Checks if the VFX profile has a vector key.
-     * @param key - The key to check for in the vector map.
+     * Vector keys must match exposed vector property names from the VFX graph/profile exactly.
+     * This method checks vec2, vec3, and vec4-backed exposed properties.
+     * @param name - The vector key to check.
      * @returns A boolean indicating whether the property exists in the VFX Profile.
      */
     hasVectorKey(name: string): boolean;
     /**
      * @description Gets a named vector value from VFX Profile.
+     * Vector keys must match exposed vector property names from the VFX graph/profile exactly.
+     * Returns Vector2f for vec2 keys. For vec4-backed keys whose name starts with `Vector3f_`, this method trims the stored vec4 value to a Vector3f; other vec4-backed keys return Vector4f.
      * @param name - The name of the vector property.
      * @returns The value of the vector property or null.
      */
     getVector(name: string): Vector2f | Vector3f | Vector4f | null;
     /**
      * @description Sets a named vector value to VFX Profile.
+     * Vector keys must match exposed vector property names from the VFX graph/profile exactly.
+     * For vec2-backed keys, pass Vector2f. For vec4-backed keys, pass Vector4f, or pass Vector3f only for keys that use the `Vector3f_` naming convention and are stored internally as vec4.
+     * If multiple context blocks expose the same key, this method updates every matching block.
      * @param name - The name of the vector property.
      * @param value - The vector value to set.
      * @example
@@ -7554,7 +8718,8 @@ declare namespace APJS {
      *       // Set Vector3f to (1.0, 0, 0)
      *       const asset = this.visualEffectComponent.asset;
      *       const value = new APJS.Vector3f(1.0, 0, 0);
-     *       if (asset.hasVectorKey('Vector3f_0_0') && !asset.getVector('Vector3f_0_0').equals(value)) {
+     *       const current = asset.getVector('Vector3f_0_0');
+     *       if (asset.hasVectorKey('Vector3f_0_0') && current && !current.equals(value)) {
      *         asset.setVector('Vector3f_0_0', value);
      *       }
      *     }
@@ -7564,18 +8729,22 @@ declare namespace APJS {
     setVector(name: string, value: Vector2f | Vector3f | Vector4f): void;
     /**
      * @description Checks if the VFX profile has a color key.
-     * @param key - The key to check for in the color map.
+     * Color keys are exposed color properties stored in the profile's vec4-backed property map and must match exactly.
+     * @param name - The color key to check.
      * @returns A boolean indicating whether the property exists in the VFX Profile.
      */
     hasColorKey(name: string): boolean;
     /**
      * @description Gets a named color value from VFX Profile.
+     * Color keys are exposed color properties stored in the profile's vec4-backed property map and must match exactly.
      * @param name - The name of the color property.
-     * @returns The value of the color property or null.
+     * @returns The value of the color property, or `null` when no matching exposed color key exists.
      */
     getColor(name: string): Color | null;
     /**
      * @description Sets a named color value to VFX Profile.
+     * Color keys are exposed color properties stored in the profile's vec4-backed property map and must match exactly.
+     * If multiple context blocks expose the same key, this method updates every matching block.
      * @param name - The name of the color property.
      * @param value - The color value to set.
      * @example
@@ -7586,7 +8755,8 @@ declare namespace APJS {
      *       // Set Color to red
      *       const asset = this.visualEffectComponent.asset;
      *       const red = new APJS.Color(1.0, 0, 0, 1.0);
-     *       if (asset.hasColorKey('Color_0_0') && !asset.getColor('Color_0_0').equals(red)) {
+     *       const current = asset.getColor('Color_0_0');
+     *       if (asset.hasColorKey('Color_0_0') && current && !current.equals(red)) {
      *         asset.setColor('Color_0_0', red);
      *       }
      *     }
@@ -7597,14 +8767,18 @@ declare namespace APJS {
   }
   /**
    * @class VolumeDetector
-   * @description A volume detector implementation.
+   * @description Detects the overall volume level of the audio source in real time.
+   *
+   * Returns a value from 0 (complete silence) to 1 (loudest sound in the audio stream).
+   * Useful for driving animations or transformations that respond to audio loudness.
+   *
    * @example
-   * OnInit() {
-   *     const builder = APJS.AudioDetectionModule.getAudioDetectionBuilder(APJS.AudioDetectionType.Volume);
+   * onInit() {
+   *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.Volume);
    *     builder.setDetectorSource(APJS.AudioSourceType.Microphone, null);
    *     this.detector = builder.build();
    * }
-   * OnUpdate(dt: number) {
+   * onUpdate(dt: number) {
    *     if (this.detector) {
    *         const result = this.detector.getResult();
    *         console.log(result);
@@ -7614,8 +8788,8 @@ declare namespace APJS {
   class VolumeDetector extends BaseAudioDetector {
     protected constructor();
     /**
-     * @description Get the result of the volume detection.
-     * @returns [0, 1] The result of the volume detection.
+     * @description Gets the current volume detection result.
+     * @returns A normalized volume value in the range [0, 1], or -1 when no result is available.
      */
     getResult(): number;
   }
@@ -7623,8 +8797,8 @@ declare namespace APJS {
    * @class VolumeDetectorBuilder
    * @description A builder for volume detector to set the source of the detector and build the detector.
    * @example
-   * OnInit() {
-   *     const builder = APJS.AudioDetectionModule.getAudioDetectionBuilder(APJS.AudioDetectionType.Volume);
+   * onInit() {
+   *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.Volume);
    *     builder.setDetectorSource(APJS.AudioSourceType.Microphone, null);
    *     const detector = builder.build();
    * }
@@ -7643,7 +8817,7 @@ declare namespace APJS {
      */
     setDetectorSource(type: AudioSourceType, audioComponent: IAudioComponent | null): this;
     /**
-     * @description Build the volume detector. Note that the detector should be built in OnInit, otherwise it will return null.
+     * @description Build the volume detector. Note that the detector should be built in onInit, otherwise it will return null.
      * @returns Detector instance of the volume detector.
      */
     build(): VolumeDetector | null;

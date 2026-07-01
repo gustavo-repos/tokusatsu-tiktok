@@ -1,14 +1,17 @@
 import { fixedTime, teleport, PPU, checkRectOverlap, getElementRect, conect } from "Game"
 
+export var time = 35
+
 @component()
 export class Enemy extends APJS.BasicScriptComponent {
 
   accumulator = 0
   spawnTimer = 0
-  spawnInterval = 2
-  time = 30
+  spawnInterval = 3
+  // time = 35
   startTimer = false
-  spawnSpots = [[117 / PPU, 104 / PPU], [396 / PPU, 104 / PPU], [-396 / PPU, 104 / PPU], [-117 / PPU, 104 / PPU], [-256 / PPU, 333 / PPU], [256 / PPU, 333 / PPU]]
+  // spawnSpots = [[117 / PPU, 104 / PPU], [396 / PPU, 104 / PPU], [-396 / PPU, 104 / PPU], [-117 / PPU, 104 / PPU], [-256 / PPU, 333 / PPU], [256 / PPU, 333 / PPU]]
+  spawnSpots = [[117 / PPU, 114 / PPU], [396 / PPU, 114 / PPU], [-396 / PPU, 114 / PPU], [-117 / PPU, 114 / PPU], [-256 / PPU, 343 / PPU], [256 / PPU, 343 / PPU]]
   currentSpot: any
   transform: any
   playerObj: any
@@ -17,6 +20,7 @@ export class Enemy extends APJS.BasicScriptComponent {
   enemyWasHit = false
   points = 0
   enemyScene: any
+  scenePoints: any
 
   getPlayerRect() {
     var center = this.playerObj.getTransform().getWorldPosition()
@@ -44,6 +48,7 @@ export class Enemy extends APJS.BasicScriptComponent {
     this.playerWidth = this.transform.sizeDelta.x / PPU
     this.playerHeight = this.transform.sizeDelta.y / PPU
     this.enemyScene = this.getSceneObject().scene.findSceneObject('enemy')
+    this.scenePoints = this.getSceneObject().scene.findSceneObject('points')
   }
 
   onUpdate(deltaTime: number) {
@@ -55,9 +60,9 @@ export class Enemy extends APJS.BasicScriptComponent {
 
       this.spawnTimer += fixedTime
 
-      if (this.startTimer && this.time >= 0) {
-        this.time -= fixedTime
-        conect.name = Math.round(this.time).toString()
+      if (this.startTimer && time >= 0) {
+        time -= fixedTime
+        conect.name = Math.round(time).toString()
       }
 
       if (!this.enemyWasHit && checkRectOverlap(this.getPlayerRect(), getElementRect(this.getSceneObject(), 0))) {
@@ -65,9 +70,23 @@ export class Enemy extends APJS.BasicScriptComponent {
         if (!this.startTimer) this.startTimer = true
         this.points++
         // conect.name = this.points.toString()
+        this.scenePoints.name = this.points.toString()
         this.enemyScene.name = 'hit'
         this.enemyWasHit = true
         this.spawnTimer = 1
+        if (this.points == 4) {
+          this.spawnInterval = 2.5
+        } else if (this.points == 8) {
+          this.spawnInterval = 2.3
+          time =+ 15
+          // adicionar visual tempo aumentando!
+        } else if (this.points == 12) {
+          this.spawnInterval = 2
+          time =+ 10
+          // adicionar visual tempo aumentando!
+        } else if (this.points == 18) {
+          // adiocionar o KO!
+        }
       } 
 
       if (this.spawnTimer >= this.spawnInterval) {

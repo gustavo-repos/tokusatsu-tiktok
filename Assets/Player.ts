@@ -1,4 +1,5 @@
 import { gravity, move, jumpPressed, checkRectOverlap, getElementRect, snapY, PPU, platforms, leftPressed, rightPressed, fixedTime, conect } from "Game"
+import { time } from "Enemy"
 
 /* 
 state:
@@ -102,6 +103,8 @@ export class Player extends APJS.BasicScriptComponent {
 
   onUpdate(deltaTime: number) {
     if (this.frameCounter < 30) { this.frameCounter++; return }
+
+    //console.log(time) Porque trava o código????
 
     deltaTime = Math.min(deltaTime, 0.25)
     this.accumulator += deltaTime

@@ -48,14 +48,15 @@ declare namespace APJS {
   type DyeHairPropertyKey = 'Mode' | 'Bleach' | 'BleachIntensity' | 'Coverage' | 'Color' | 'Color1' | 'Color2' | 'Color3' | 'Color4' | 'GradientType' | 'GradientArea' | 'Flip' | 'Texture' | 'Opacity';
   
   /**
-   * @namespace DyeHair
+   * @class DyeHair
    * @description Represents a dynamic component specifically designed for the DyeHair.
    */
   class DyeHair extends DynamicComponent {
     protected constructor();
   
     /**
-     * Get property value.
+     * Gets a property value.
+     * The property key must match a supported `DyeHairPropertyKey` for the current dye mode.
      * @param type - Property name.
      * @returns Property value.
      */
@@ -65,7 +66,19 @@ declare namespace APJS {
      * Set property value.
      * @param type - Property name.
      * @param value - Property value.
+     * The property key must match a supported `DyeHairPropertyKey` for the current dye mode,
+     * and the value type must match that property.
      * @returns Whether the property is set successfully.
+     *
+     * @example
+     * ```typescript
+     * const hairObject = scene.findSceneObject("Hair Color");
+     * const dyeHair = hairObject.getComponent('DyeHair') as DyeHair;
+     * // set color to red in Full mode
+     * dyeHair.setProperty("Color", new Color(1, 0, 0, 0.7));
+     * // set coverage to 0.5
+     * dyeHair.setProperty("Coverage", 0.5);
+     * ```
      */
     setProperty(type: DyeHairPropertyKey, value: any): boolean;
   }

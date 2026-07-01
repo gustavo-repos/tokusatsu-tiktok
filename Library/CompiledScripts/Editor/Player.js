@@ -109,6 +109,7 @@ let Player = class Player extends APJS.BasicScriptComponent {
             this.frameCounter++;
             return;
         }
+        //console.log(time) Porque trava o código????
         deltaTime = Math.min(deltaTime, 0.25);
         this.accumulator += deltaTime;
         while (this.accumulator >= Game_1.fixedTime) {

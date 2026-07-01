@@ -1,1 +1,1 @@
-let BaseNode=require("../Utils/BaseNode").BaseNode,APJS=require("../../../amazingpro");class CGSequence extends BaseNode{constructor(){super()}execute(e){for(var s in this.nexts)this.nexts[s]&&this.nexts[s]()}}exports.CGSequence=CGSequence;
+Object.defineProperty(exports,"__esModule",{value:!0}),exports.CGSequence=void 0;const ScriptNodeAPI_1=require("../Utils/ScriptNodeAPI");class CGSequence extends ScriptNodeAPI_1.BaseNode{execute(e){for(const e in this.nexts)this.nexts[e]&&this.nexts[e]()}}exports.CGSequence=CGSequence;

@@ -1,1 +1,1 @@
-let APJS=require("../../../amazingpro"),BaseNode=require("../Utils/BaseNode").BaseNode;class CGGetComponentNode extends BaseNode{constructor(){super()}getOutput(e){return this.inputs[0]()}}exports.CGGetComponentNode=CGGetComponentNode;
+Object.defineProperty(exports,"__esModule",{value:!0}),exports.CGGetComponentNode=void 0;const ScriptNodeAPI_1=require("../Utils/ScriptNodeAPI");class CGGetComponentNode extends ScriptNodeAPI_1.BaseNode{getOutput(e){return this.inputs[0]()}}exports.CGGetComponentNode=CGGetComponentNode;

@@ -12,7 +12,9 @@ declare namespace APJS {
      */
     loopCount: number;
     /**
-     * @description The volume level (0-100) of the audio.
+     * @description The volume level of the audio. Default is `100`.
+     * Accepts integer or floating-point values in the range `[0, 100]`.
+     * Values above `100` are clamped to `100`, and values below `0` are clamped to `0`.
      */
     volume: number;
 
