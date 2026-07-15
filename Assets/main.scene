@@ -969,7 +969,7 @@ entities:
         letters:
           - __class: Letter
             name: !<str> ""
-            guid: {a: 5235777636809092060, b: 10570957892777970872}
+            guid: {a: 4887343885986767948, b: 13105296596367722415}
             utf8: !<str> 0
             initialPosition: {x: -370.0868, y: 102.7952}
             position: {x: -370.0868, y: 102.7952}

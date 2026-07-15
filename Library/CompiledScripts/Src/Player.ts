@@ -1,5 +1,4 @@
-import { gravity, move, jumpPressed, checkRectOverlap, getElementRect, snapY, PPU, platforms, leftPressed, rightPressed, fixedTime, conect } from "Game"
-import { time } from "Enemy"
+import { gravity, move, jumpPressed, checkRectOverlap, getElementRect, snapY, PPU, platforms, leftPressed, rightPressed, fixedTime, conect, time } from "Game"
 
 /* 
 state:
@@ -50,20 +49,22 @@ export class Player extends APJS.BasicScriptComponent {
 
   setSubstate () {
 
-    if (this.state == 0) {
-      if (leftPressed || rightPressed) {
-        this.substate = 1
+    if (time > 0) {
+      if (this.state == 0) {
+        if (leftPressed || rightPressed) {
+          this.substate = 1
+        } else {
+          this.substate = 0
+        }
       } else {
-        this.substate = 0
+        this.substate = (this.velocityY >= 0) ? 2 : 3
       }
-    } else {
-      this.substate = (this.velocityY >= 0) ? 2 : 3
-    }
 
-    if (leftPressed) {
-      this.playerSprite.getComponent('Image').flipX = true
-    } else if (rightPressed) {
-      this.playerSprite.getComponent('Image').flipX = false
+      if (leftPressed) {
+        this.playerSprite.getComponent('Image').flipX = true
+      } else if (rightPressed) {
+        this.playerSprite.getComponent('Image').flipX = false
+      }
     }
 
   }
@@ -104,8 +105,6 @@ export class Player extends APJS.BasicScriptComponent {
   onUpdate(deltaTime: number) {
     if (this.frameCounter < 30) { this.frameCounter++; return }
 
-    //console.log(time) Porque trava o código????
-
     deltaTime = Math.min(deltaTime, 0.25)
     this.accumulator += deltaTime
 
@@ -118,7 +117,7 @@ export class Player extends APJS.BasicScriptComponent {
 
       if (this.velocityY < -30) this.velocityY = -30
 
-      if (jumpPressed && this.state == 0 && !this.jumpCycle) {
+      if (jumpPressed && this.state == 0 && !this.jumpCycle && time > 0) {
         this.velocityY = this.jumpPower
         this.jumpCycle = true
         this.state = 1 

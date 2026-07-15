@@ -21,15 +21,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NewScriptComponent = void 0;
-let NewScriptComponent = class NewScriptComponent extends APJS.BasicScriptComponent {
+exports.Shared = exports.test = void 0;
+exports.test = 123;
+let Shared = class Shared extends APJS.BasicScriptComponent {
+    /**
+     * Called before the first frame update
+     */
     onStart() {
-        console.log('teste');
     }
+    /**
+     * Called once per frame
+     */
     onUpdate(deltaTime) {
     }
 };
-NewScriptComponent = __decorate([
+Shared = __decorate([
     component()
-], NewScriptComponent);
-exports.NewScriptComponent = NewScriptComponent;
+], Shared);
+exports.Shared = Shared;

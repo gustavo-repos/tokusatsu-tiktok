@@ -57,22 +57,24 @@ let Player = class Player extends APJS.BasicScriptComponent {
         return [centerX, centerY, this.width * 0.55, this.height * 0.9];
     }
     setSubstate() {
-        if (this.state == 0) {
-            if (Game_1.leftPressed || Game_1.rightPressed) {
-                this.substate = 1;
+        if (Game_1.time > 0) {
+            if (this.state == 0) {
+                if (Game_1.leftPressed || Game_1.rightPressed) {
+                    this.substate = 1;
+                }
+                else {
+                    this.substate = 0;
+                }
             }
             else {
-                this.substate = 0;
+                this.substate = (this.velocityY >= 0) ? 2 : 3;
             }
-        }
-        else {
-            this.substate = (this.velocityY >= 0) ? 2 : 3;
-        }
-        if (Game_1.leftPressed) {
-            this.playerSprite.getComponent('Image').flipX = true;
-        }
-        else if (Game_1.rightPressed) {
-            this.playerSprite.getComponent('Image').flipX = false;
+            if (Game_1.leftPressed) {
+                this.playerSprite.getComponent('Image').flipX = true;
+            }
+            else if (Game_1.rightPressed) {
+                this.playerSprite.getComponent('Image').flipX = false;
+            }
         }
     }
     setPlayerSprite() {
@@ -109,7 +111,6 @@ let Player = class Player extends APJS.BasicScriptComponent {
             this.frameCounter++;
             return;
         }
-        //console.log(time) Porque trava o código????
         deltaTime = Math.min(deltaTime, 0.25);
         this.accumulator += deltaTime;
         while (this.accumulator >= Game_1.fixedTime) {
@@ -119,7 +120,7 @@ let Player = class Player extends APJS.BasicScriptComponent {
                 this.velocityY += Game_1.gravity * Game_1.fixedTime;
             if (this.velocityY < -30)
                 this.velocityY = -30;
-            if (Game_1.jumpPressed && this.state == 0 && !this.jumpCycle) {
+            if (Game_1.jumpPressed && this.state == 0 && !this.jumpCycle && Game_1.time > 0) {
                 this.velocityY = this.jumpPower;
                 this.jumpCycle = true;
                 this.state = 1;

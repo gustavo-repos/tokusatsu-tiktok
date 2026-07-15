@@ -1,0 +1,22 @@
+[
+  {
+    "guid": {
+      "a": "993a5765-ac6e-a75c-2553-d5c7f6a9b5c8",
+      "b": ""
+    },
+    "extraType": "ResItemJSScript",
+    "name": "Time",
+    "version": "0.1.0",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "objGuid": "",
+    "references": [],
+    "scriptAnnotation": [],
+    "needCompile": true,
+    "isUserScript": true
+  }
+]

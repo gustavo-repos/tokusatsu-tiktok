@@ -1,5 +1,4 @@
-import { leftPressed, rightPressed, move, PPU, checkRectOverlap, solids, getElementRect, snapX, fixedTime } from "Game"
-import { time } from "Enemy"
+import { leftPressed, rightPressed, move, PPU, checkRectOverlap, solids, getElementRect, snapX, fixedTime, time } from "Game"
 
 @component()
 export class Level extends APJS.BasicScriptComponent {
@@ -36,7 +35,7 @@ export class Level extends APJS.BasicScriptComponent {
 
     while (this.accumulator >= fixedTime) {
       this.velocityX = 12 * fixedTime
-      if (leftPressed) {
+      if (leftPressed && time > 0) {
       for (let i = 0; i < solids.length; i++) {
         if (checkRectOverlap(this.getPlayerBodyRect(), getElementRect(solids[i], this.velocityX))) {
           snapX(this.playerObj, solids[i], this.getSceneObject())
@@ -48,7 +47,7 @@ export class Level extends APJS.BasicScriptComponent {
         move(this.getSceneObject(), this.velocityX, 0)
       }
 
-      if (rightPressed) {
+      if (rightPressed && time > 0) {
         for (let i = 0; i < solids.length; i++) {
           if (checkRectOverlap(this.getPlayerBodyRect(), getElementRect(solids[i], -this.velocityX))) {
             snapX(this.playerObj, solids[i], this.getSceneObject())

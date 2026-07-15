@@ -8,8 +8,16 @@ export var solids: any
 export var grounds: any
 export const fixedTime = 0.02
 export var conect: any
-export const collisionState = {
-  touchSidePlat: false
+var isTimeRunning = false
+export var time = 35
+
+export function startTimer() {
+  //console.log('startTimer')
+  if (!isTimeRunning) isTimeRunning = true
+}
+
+export function addTime(x: number) {
+  time += x
 }
 
 export function move (el: any, dx: number, dy: number) {
@@ -80,6 +88,7 @@ export function snapX (character: any, obstacle: any, world: any) {
 @component()
 export class Game extends APJS.BasicScriptComponent {
 
+  accumulator = 0
   lastTouchPos?: { x: number, y: number }
   buttonActionRect: any  
   buttonLeftRect: any
@@ -226,9 +235,22 @@ export class Game extends APJS.BasicScriptComponent {
   }
 
   onUpdate(deltaTime: number) {
+
+    deltaTime = Math.min(deltaTime, 0.25)
+    this.accumulator += deltaTime
+
     if (deltaTime > 0.2) {
       leftPressed = false
       rightPressed = false
     }
+
+    while (this.accumulator >= fixedTime) {
+      if (isTimeRunning && time >= 0) {
+        time -= fixedTime
+        conect.name = Math.round(time).toString()
+      }
+      this.accumulator -= fixedTime
+    }
+
   }
 }

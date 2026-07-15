@@ -21,15 +21,38 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NewScriptComponent = void 0;
-let NewScriptComponent = class NewScriptComponent extends APJS.BasicScriptComponent {
+exports.Time = exports.startTimer = void 0;
+const Game_1 = require("Game");
+var isTimerRunning = false;
+function startTimer() {
+    console.log('startTimer running');
+    //if (isTimerRunning) isTimerRunning = true
+}
+exports.startTimer = startTimer;
+let Time = class Time extends APJS.BasicScriptComponent {
+    constructor() {
+        super(...arguments);
+        this.time = 35;
+        this.isTimerRunning = false;
+        this.accumulator = 0;
+    }
     onStart() {
-        console.log('teste');
     }
     onUpdate(deltaTime) {
+        deltaTime = Math.min(deltaTime, 0.25);
+        this.accumulator += deltaTime;
+        while (this.accumulator >= Game_1.fixedTime) {
+            //console.log(fixedTime)
+            if (this.isTimerRunning && this.time >= 0) {
+                this.time -= Game_1.fixedTime;
+                //console.log('teste')
+                Game_1.conect.name = Math.round(this.time).toString();
+            }
+            this.accumulator -= Game_1.fixedTime;
+        }
     }
 };
-NewScriptComponent = __decorate([
+Time = __decorate([
     component()
-], NewScriptComponent);
-exports.NewScriptComponent = NewScriptComponent;
+], Time);
+exports.Time = Time;

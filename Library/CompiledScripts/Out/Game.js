@@ -19,16 +19,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Game = exports.snapX = exports.snapY = exports.checkRectOverlap = exports.getElementRect = exports.teleport = exports.move = exports.collisionState = exports.conect = exports.fixedTime = exports.grounds = exports.solids = exports.platforms = exports.rightPressed = exports.leftPressed = exports.jumpPressed = exports.PPU = exports.gravity = void 0;
+exports.Game = exports.snapX = exports.snapY = exports.checkRectOverlap = exports.getElementRect = exports.teleport = exports.move = exports.addTime = exports.startTimer = exports.time = exports.conect = exports.fixedTime = exports.grounds = exports.solids = exports.platforms = exports.rightPressed = exports.leftPressed = exports.jumpPressed = exports.PPU = exports.gravity = void 0;
 exports.gravity = -65;
 exports.PPU = 32;
 exports.jumpPressed = false;
 exports.leftPressed = false;
 exports.rightPressed = false;
 exports.fixedTime = 0.02;
-exports.collisionState = {
-    touchSidePlat: false
-};
+var isTimeRunning = false;
+exports.time = 35;
+function startTimer() {
+    //console.log('startTimer')
+    if (!isTimeRunning)
+        isTimeRunning = true;
+}
+exports.startTimer = startTimer;
+function addTime(x) {
+    exports.time += x;
+}
+exports.addTime = addTime;
 function move(el, dx, dy) {
     var pos = el.getTransform().localPosition;
     pos.x += dx;
@@ -98,6 +107,7 @@ exports.snapX = snapX;
 let Game = class Game extends APJS.BasicScriptComponent {
     constructor() {
         super(...arguments);
+        this.accumulator = 0;
         this.touchCallback = (event) => {
             const touchInfo = event.args[0];
             const outputTouchPhase = touchInfo.phase;
@@ -219,9 +229,18 @@ let Game = class Game extends APJS.BasicScriptComponent {
         APJS.EventManager.getGlobalEmitter().off(APJS.EventType.Touch, this.touchCallback);
     }
     onUpdate(deltaTime) {
+        deltaTime = Math.min(deltaTime, 0.25);
+        this.accumulator += deltaTime;
         if (deltaTime > 0.2) {
             exports.leftPressed = false;
             exports.rightPressed = false;
+        }
+        while (this.accumulator >= exports.fixedTime) {
+            if (isTimeRunning && exports.time >= 0) {
+                exports.time -= exports.fixedTime;
+                exports.conect.name = Math.round(exports.time).toString();
+            }
+            this.accumulator -= exports.fixedTime;
         }
     }
 };

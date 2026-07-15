@@ -1,3 +1,5 @@
+const APJS = globalThis.orion['@orion/orion-sdk/EditorFramework'].APJS;
+
 const {BasicScriptNode} = require('./BasicScriptNode');
 const {
   customNode,
@@ -19,18 +21,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Enemy = void 0;
+exports.EnemyBackup = exports.time = void 0;
 const Game_1 = require("Game");
-// export var time = 35
-// export var startTimer = false
-let Enemy = class Enemy extends APJS.BasicScriptComponent {
+exports.time = 35;
+let EnemyBackup = class EnemyBackup extends APJS.BasicScriptComponent {
     constructor() {
         super(...arguments);
         this.accumulator = 0;
         this.spawnTimer = 0;
         this.spawnInterval = 3;
         // time = 35
-        //startTimer = false
+        this.startTimer = false;
         // spawnSpots = [[117 / PPU, 104 / PPU], [396 / PPU, 104 / PPU], [-396 / PPU, 104 / PPU], [-117 / PPU, 104 / PPU], [-256 / PPU, 333 / PPU], [256 / PPU, 333 / PPU]]
         this.spawnSpots = [[117 / Game_1.PPU, 114 / Game_1.PPU], [396 / Game_1.PPU, 114 / Game_1.PPU], [-396 / Game_1.PPU, 114 / Game_1.PPU], [-117 / Game_1.PPU, 114 / Game_1.PPU], [-256 / Game_1.PPU, 343 / Game_1.PPU], [256 / Game_1.PPU, 343 / Game_1.PPU]];
         this.enemyWasHit = false;
@@ -67,15 +68,14 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
         this.accumulator += deltaTime;
         while (this.accumulator >= Game_1.fixedTime) {
             this.spawnTimer += Game_1.fixedTime;
-            // if (this.startTimer && time >= 0) {
-            //   time -= fixedTime
-            //   conect.name = Math.round(time).toString()
-            // }
+            if (this.startTimer && exports.time >= 0) {
+                exports.time -= Game_1.fixedTime;
+                Game_1.conect.name = Math.round(exports.time).toString();
+            }
             if (!this.enemyWasHit && (0, Game_1.checkRectOverlap)(this.getPlayerRect(), (0, Game_1.getElementRect)(this.getSceneObject(), 0))) {
-                //console.log('hit')
-                // if (!startTimer) startTimer = true
-                //startTimer()
-                (0, Game_1.startTimer)();
+                console.log('hit');
+                if (!this.startTimer)
+                    this.startTimer = true;
                 this.points++;
                 // conect.name = this.points.toString()
                 this.scenePoints.name = this.points.toString();
@@ -87,17 +87,15 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
                 }
                 else if (this.points == 8) {
                     this.spawnInterval = 2.3;
-                    (0, Game_1.addTime)(15);
-                    //time =+ 15
+                    exports.time += 15;
                     // adicionar visual tempo aumentando!
                 }
                 else if (this.points == 12) {
                     this.spawnInterval = 2;
-                    (0, Game_1.addTime)(10);
-                    //time =+ 10
+                    exports.time += 10;
                     // adicionar visual tempo aumentando!
                 }
-                else if (this.points == 25) {
+                else if (this.points == 18) {
                     // adiocionar o KO!
                 }
             }
@@ -113,7 +111,7 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
         }
     }
 };
-Enemy = __decorate([
+EnemyBackup = __decorate([
     component()
-], Enemy);
-exports.Enemy = Enemy;
+], EnemyBackup);
+exports.EnemyBackup = EnemyBackup;
