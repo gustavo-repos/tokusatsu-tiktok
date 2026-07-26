@@ -3,10 +3,10 @@
   "context": {
     "snapshot": {
       "start": {
-        "startTime": 1784144818757
+        "startTime": 1785010141916
       },
       "end": {
-        "endTime": 1784152877142
+        "endTime": 1785024706226
       }
     }
   },
@@ -3275,7 +3275,7 @@
                                     "texture": {
                                       "type": "Texture",
                                       "data": {
-                                        "guid": "00000000-0000-0000-0000-0000000000c0"
+                                        "guid": "797aa12b-1f61-4e13-6b1c-eedffe440107"
                                       }
                                     },
                                     "segTex": {
@@ -3390,9 +3390,9 @@
                                     "color": {
                                       "type": "Color",
                                       "data": {
-                                        "r": 0.808,
-                                        "g": 0.082,
-                                        "b": 0.082,
+                                        "r": 1,
+                                        "g": 1,
+                                        "b": 1,
                                         "a": 1
                                       }
                                     },
@@ -6345,36 +6345,6 @@
                               "type": "String",
                               "data": ""
                             }
-                          },
-                          {
-                            "type": {
-                              "type": "String",
-                              "data": "Time",
-                              "readonly": true
-                            },
-                            "guid": {
-                              "type": "Guid",
-                              "data": "30ab89ee-998e-1681-0528-14e23f6966b4",
-                              "readonly": true
-                            },
-                            "name": {
-                              "type": "String",
-                              "data": "Time",
-                              "readonly": true
-                            },
-                            "version": {
-                              "type": "Version",
-                              "data": "0.1.0",
-                              "readonly": true
-                            },
-                            "enabled": {
-                              "type": "Boolean",
-                              "data": true
-                            },
-                            "resGuid": {
-                              "type": "String",
-                              "data": "993a5765-ac6e-a75c-2553-d5c7f6a9b5c8"
-                            }
                           }
                         ]
                       },
@@ -7503,7 +7473,7 @@
             {
               "guid": {
                 "type": "Guid",
-                "data": "ab9ab966-6de6-aaa1-fbb9-62d496b287c6",
+                "data": "86d3226b-fae7-7288-6756-9d7dd16094a0",
                 "readonly": true
               },
               "name": {
@@ -7552,11 +7522,11 @@
               },
               "fps": {
                 "type": "Number",
-                "data": 4
+                "data": 5
               },
               "duration": {
                 "type": "Number",
-                "data": 1
+                "data": 0.8
               }
             },
             {
@@ -7718,6 +7688,88 @@
                 "readonly": true
               },
               "subAssets": []
+            },
+            {
+              "guid": {
+                "type": "Guid",
+                "data": "f6fdc978-299e-22dc-2121-8f0345556f5a",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "enemy"
+              },
+              "type": {
+                "type": "String",
+                "data": "GifAsset",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\enemy.gif",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.1.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "resolution": {
+                "type": "String",
+                "data": "96 x 96",
+                "readonly": true
+              },
+              "sizeStr": {
+                "type": "String",
+                "data": "1.72 KB",
+                "readonly": true
+              }
+            },
+            {
+              "guid": {
+                "type": "Guid",
+                "data": "797aa12b-1f61-4e13-6b1c-eedffe440107",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "enemy"
+              },
+              "type": {
+                "type": "String",
+                "data": "GifTexture",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\enemy.gifTex",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.1.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "gifAsset": {
+                "type": "GifAsset",
+                "data": {
+                  "guid": "f6fdc978-299e-22dc-2121-8f0345556f5a"
+                }
+              },
+              "loopCount": {
+                "type": "Number",
+                "data": 1
+              },
+              "fps": {
+                "type": "Number",
+                "data": 3
+              },
+              "duration": {
+                "type": "Number",
+                "data": 1
+              }
             },
             {
               "guid": {
@@ -8375,6 +8427,268 @@
             {
               "guid": {
                 "type": "Guid",
+                "data": "a4d6927a-34be-d6b5-d685-e2b06488f8ca",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "idle_1"
+              },
+              "type": {
+                "type": "String",
+                "data": "Texture2D",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\idle_1.png",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "width": {
+                "type": "Number",
+                "data": 128
+              },
+              "height": {
+                "type": "Number",
+                "data": 128
+              },
+              "artifactFileSize": {
+                "type": "Number",
+                "data": 342
+              },
+              "assetType": {
+                "type": "String",
+                "data": "PNG"
+              },
+              "compressionType": {
+                "type": "Enum",
+                "data": "Automatic",
+                "options": [
+                  "Automatic",
+                  "Manual",
+                  "None"
+                ]
+              },
+              "compressQuality": {
+                "type": "Enum",
+                "data": "High",
+                "options": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "compressMaxResolution": {
+                "type": "Enum",
+                "data": "Size512",
+                "options": [
+                  "Size1024",
+                  "Size512",
+                  "Size256",
+                  "Size128"
+                ]
+              },
+              "enableMipmap": {
+                "type": "Boolean",
+                "data": false
+              },
+              "filterMin": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMag": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMipmap": {
+                "type": "Enum",
+                "data": "None",
+                "options": [
+                  "None",
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "wrapModeS": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeT": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeR": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "premultiplyAlpha": {
+                "type": "Boolean",
+                "data": false
+              }
+            },
+            {
+              "guid": {
+                "type": "Guid",
+                "data": "8882f491-a0a6-868a-0816-f52dd262eda5",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "idle_2"
+              },
+              "type": {
+                "type": "String",
+                "data": "Texture2D",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\idle_2.png",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "width": {
+                "type": "Number",
+                "data": 96
+              },
+              "height": {
+                "type": "Number",
+                "data": 96
+              },
+              "artifactFileSize": {
+                "type": "Number",
+                "data": 235
+              },
+              "assetType": {
+                "type": "String",
+                "data": "PNG"
+              },
+              "compressionType": {
+                "type": "Enum",
+                "data": "Automatic",
+                "options": [
+                  "Automatic",
+                  "Manual",
+                  "None"
+                ]
+              },
+              "compressQuality": {
+                "type": "Enum",
+                "data": "High",
+                "options": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "compressMaxResolution": {
+                "type": "Enum",
+                "data": "Size512",
+                "options": [
+                  "Size1024",
+                  "Size512",
+                  "Size256",
+                  "Size128"
+                ]
+              },
+              "enableMipmap": {
+                "type": "Boolean",
+                "data": false
+              },
+              "filterMin": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMag": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMipmap": {
+                "type": "Enum",
+                "data": "None",
+                "options": [
+                  "None",
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "wrapModeS": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeT": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeR": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "premultiplyAlpha": {
+                "type": "Boolean",
+                "data": false
+              }
+            },
+            {
+              "guid": {
+                "type": "Guid",
                 "data": "61a3c6f0-68bb-0788-09c9-fb109b32e29e",
                 "readonly": true
               },
@@ -8708,33 +9022,6 @@
                 "type": "Boolean",
                 "data": false
               }
-            },
-            {
-              "guid": {
-                "type": "Guid",
-                "data": "993a5765-ac6e-a75c-2553-d5c7f6a9b5c8",
-                "readonly": true
-              },
-              "name": {
-                "type": "String",
-                "data": "Time"
-              },
-              "type": {
-                "type": "String",
-                "data": "TSScript",
-                "readonly": true
-              },
-              "filePath": {
-                "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Time.ts",
-                "readonly": true
-              },
-              "version": {
-                "type": "Version",
-                "data": "0.1.0",
-                "readonly": true
-              },
-              "subAssets": []
             }
           ]
         },
@@ -8742,30 +9029,34 @@
       }
     },
     {
-      "actionId": "7bdd3efe-e380-1014-2f67-b3c5b5e0d95a",
+      "actionId": "none",
       "actionType": "do",
       "source": "API",
       "commands": {
-        "name": "DeleteComponent",
+        "name": "DeleteAsset",
         "data": {
           "input": {
-            "guid": "30ab89ee-998e-1681-0528-14e23f6966b4"
+            "guid": "797aa12b-1f61-4e13-6b1c-eedffe440107"
           },
           "output": {
-            "deletedComponentInfo": {
-              "type": {
-                "type": "String",
-                "data": "Time",
-                "readonly": true
-              },
+            "deletedAssetInfo": {
               "guid": {
                 "type": "Guid",
-                "data": "30ab89ee-998e-1681-0528-14e23f6966b4",
+                "data": "797aa12b-1f61-4e13-6b1c-eedffe440107",
                 "readonly": true
               },
               "name": {
                 "type": "String",
-                "data": "Time",
+                "data": "enemy"
+              },
+              "type": {
+                "type": "String",
+                "data": "GifTexture",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\enemy.gifTex",
                 "readonly": true
               },
               "version": {
@@ -8773,13 +9064,24 @@
                 "data": "0.1.0",
                 "readonly": true
               },
-              "enabled": {
-                "type": "Boolean",
-                "data": true
+              "subAssets": [],
+              "gifAsset": {
+                "type": "GifAsset",
+                "data": {
+                  "guid": "f6fdc978-299e-22dc-2121-8f0345556f5a"
+                }
               },
-              "resGuid": {
-                "type": "String",
-                "data": "993a5765-ac6e-a75c-2553-d5c7f6a9b5c8"
+              "loopCount": {
+                "type": "Number",
+                "data": 1
+              },
+              "fps": {
+                "type": "Number",
+                "data": 3
+              },
+              "duration": {
+                "type": "Number",
+                "data": 1
               }
             }
           }
@@ -8790,8 +9092,8 @@
         "dependencies": [
           {
             "type": "guid",
-            "sourceId": "GetScene",
-            "source": "commands.data.output.renderGroups[1].sceneObjects[0].children[1].components[2].guid.data",
+            "sourceId": "GetAllAssets",
+            "source": "commands.data.output[7].guid.data",
             "target": "commands.data.input.guid"
           }
         ]
@@ -8805,27 +9107,27 @@
         "name": "DeleteAsset",
         "data": {
           "input": {
-            "guid": "993a5765-ac6e-a75c-2553-d5c7f6a9b5c8"
+            "guid": "059e4bbc-ed97-8a4d-191e-5761247e444c"
           },
           "output": {
             "deletedAssetInfo": {
               "guid": {
                 "type": "Guid",
-                "data": "993a5765-ac6e-a75c-2553-d5c7f6a9b5c8",
+                "data": "059e4bbc-ed97-8a4d-191e-5761247e444c",
                 "readonly": true
               },
               "name": {
                 "type": "String",
-                "data": "Time"
+                "data": "GIF Texture"
               },
               "type": {
                 "type": "String",
-                "data": "TSScript",
+                "data": "Folder",
                 "readonly": true
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Time.ts",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture",
                 "readonly": true
               },
               "version": {
@@ -8838,14 +9140,562 @@
           }
         },
         "subCommands": []
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "AddAsset",
+        "data": {
+          "input": {
+            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\hit_enemy.otextureseq"
+          },
+          "output": [
+            {
+              "guid": {
+                "type": "Guid",
+                "data": "4bc5dd19-a5b8-3eb1-a31a-c75cc58e8edd",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "hit_enemy"
+              },
+              "type": {
+                "type": "String",
+                "data": "TextureSequence",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\hit_enemy.otextureseq",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "width": {
+                "type": "Number",
+                "data": 96
+              },
+              "height": {
+                "type": "Number",
+                "data": 96
+              },
+              "artifactFileSize": {
+                "type": "Number",
+                "data": 227
+              },
+              "assetType": {
+                "type": "String",
+                "data": "PNG"
+              },
+              "compressionType": {
+                "type": "Enum",
+                "data": "Automatic",
+                "options": [
+                  "Automatic",
+                  "Manual",
+                  "None"
+                ]
+              },
+              "compressQuality": {
+                "type": "Enum",
+                "data": "High",
+                "options": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "compressMaxResolution": {
+                "type": "Enum",
+                "data": "Size512",
+                "options": [
+                  "Size1024",
+                  "Size512",
+                  "Size256",
+                  "Size128"
+                ]
+              },
+              "premultiplyAlpha": {
+                "type": "Boolean",
+                "data": false
+              }
+            }
+          ]
+        },
+        "subCommands": []
       },
       "context": {
         "dependencies": [
           {
-            "type": "guid",
-            "sourceId": "GetAllAssets",
-            "source": "commands.data.output[16].guid.data",
-            "target": "commands.data.input.guid"
+            "type": "asset",
+            "sourceId": "none",
+            "source": "%Project%/Assets/Textures/hit_enemy.otextureseq",
+            "target": "commands.data.input.path"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "DeleteAsset",
+        "data": {
+          "input": {
+            "guid": "f7ceee63-26a8-9f2f-fe2a-bcce78d1f1f9"
+          },
+          "output": {
+            "deletedAssetInfo": {
+              "guid": {
+                "type": "Guid",
+                "data": "f7ceee63-26a8-9f2f-fe2a-bcce78d1f1f9",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "hit_enemy"
+              },
+              "type": {
+                "type": "String",
+                "data": "AnimatedTexture",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Animated Textures\\hit_enemy.animTex",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "textureSequence": {
+                "type": "TextureSequence",
+                "data": {
+                  "guid": "4bc5dd19-a5b8-3eb1-a31a-c75cc58e8edd"
+                }
+              },
+              "loopCount": {
+                "type": "Number",
+                "data": -1
+              },
+              "playMode": {
+                "type": "Enum",
+                "data": "Forward",
+                "options": [
+                  "Forward",
+                  "PingPong",
+                  "Randomize",
+                  "Shuffle"
+                ]
+              },
+              "reverse": {
+                "type": "Boolean",
+                "data": false
+              },
+              "fps": {
+                "type": "Number",
+                "data": 12
+              },
+              "duration": {
+                "type": "Number",
+                "data": 0.083
+              }
+            }
+          }
+        },
+        "subCommands": []
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "DeleteAsset",
+        "data": {
+          "input": {
+            "guid": "4bc5dd19-a5b8-3eb1-a31a-c75cc58e8edd"
+          },
+          "output": {
+            "deletedAssetInfo": {
+              "guid": {
+                "type": "Guid",
+                "data": "4bc5dd19-a5b8-3eb1-a31a-c75cc58e8edd",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "hit_enemy"
+              },
+              "type": {
+                "type": "String",
+                "data": "TextureSequence",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\hit_enemy.otextureseq",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "width": {
+                "type": "Number",
+                "data": 96
+              },
+              "height": {
+                "type": "Number",
+                "data": 96
+              },
+              "artifactFileSize": {
+                "type": "Number",
+                "data": 227
+              },
+              "assetType": {
+                "type": "String",
+                "data": "PNG"
+              },
+              "compressionType": {
+                "type": "Enum",
+                "data": "Automatic",
+                "options": [
+                  "Automatic",
+                  "Manual",
+                  "None"
+                ]
+              },
+              "compressQuality": {
+                "type": "Enum",
+                "data": "High",
+                "options": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "compressMaxResolution": {
+                "type": "Enum",
+                "data": "Size512",
+                "options": [
+                  "Size1024",
+                  "Size512",
+                  "Size256",
+                  "Size128"
+                ]
+              },
+              "premultiplyAlpha": {
+                "type": "Boolean",
+                "data": false
+              }
+            }
+          }
+        },
+        "subCommands": []
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "DeleteAsset",
+        "data": {
+          "input": {
+            "guid": "2158497c-10c5-956c-9c33-01d48564e27b"
+          },
+          "output": {
+            "deletedAssetInfo": {
+              "guid": {
+                "type": "Guid",
+                "data": "2158497c-10c5-956c-9c33-01d48564e27b",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "Textures"
+              },
+              "type": {
+                "type": "String",
+                "data": "Folder",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.1.0",
+                "readonly": true
+              },
+              "subAssets": []
+            }
+          }
+        },
+        "subCommands": []
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "DeleteAsset",
+        "data": {
+          "input": {
+            "guid": "4bc5dd19-a5b8-3eb1-a31a-c75cc58e8edd"
+          },
+          "output": {
+            "deletedAssetInfo": {
+              "guid": {
+                "type": "Guid",
+                "data": "4bc5dd19-a5b8-3eb1-a31a-c75cc58e8edd",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "hit_enemy"
+              },
+              "type": {
+                "type": "String",
+                "data": "TextureSequence",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\hit_enemy.otextureseq",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "width": {
+                "type": "Number",
+                "data": 96
+              },
+              "height": {
+                "type": "Number",
+                "data": 96
+              },
+              "artifactFileSize": {
+                "type": "Number",
+                "data": 227
+              },
+              "assetType": {
+                "type": "String",
+                "data": "PNG"
+              },
+              "compressionType": {
+                "type": "Enum",
+                "data": "Automatic",
+                "options": [
+                  "Automatic",
+                  "Manual",
+                  "None"
+                ]
+              },
+              "compressQuality": {
+                "type": "Enum",
+                "data": "High",
+                "options": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "compressMaxResolution": {
+                "type": "Enum",
+                "data": "Size512",
+                "options": [
+                  "Size1024",
+                  "Size512",
+                  "Size256",
+                  "Size128"
+                ]
+              },
+              "premultiplyAlpha": {
+                "type": "Boolean",
+                "data": false
+              }
+            }
+          }
+        },
+        "subCommands": []
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "AddAsset",
+        "data": {
+          "input": {
+            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\enemy\\portal\\hit_enemy.png"
+          },
+          "output": [
+            {
+              "guid": {
+                "type": "Guid",
+                "data": "68f58465-e0dc-5bd6-5f95-3cc63c1955d2",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "hit_enemy"
+              },
+              "type": {
+                "type": "String",
+                "data": "Texture2D",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\hit_enemy\\hit_enemy.png",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "width": {
+                "type": "Number",
+                "data": 96
+              },
+              "height": {
+                "type": "Number",
+                "data": 96
+              },
+              "artifactFileSize": {
+                "type": "Number",
+                "data": 234
+              },
+              "assetType": {
+                "type": "String",
+                "data": "PNG"
+              },
+              "compressionType": {
+                "type": "Enum",
+                "data": "Automatic",
+                "options": [
+                  "Automatic",
+                  "Manual",
+                  "None"
+                ]
+              },
+              "compressQuality": {
+                "type": "Enum",
+                "data": "High",
+                "options": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "compressMaxResolution": {
+                "type": "Enum",
+                "data": "Size512",
+                "options": [
+                  "Size1024",
+                  "Size512",
+                  "Size256",
+                  "Size128"
+                ]
+              },
+              "enableMipmap": {
+                "type": "Boolean",
+                "data": false
+              },
+              "filterMin": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMag": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMipmap": {
+                "type": "Enum",
+                "data": "None",
+                "options": [
+                  "None",
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "wrapModeS": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeT": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeR": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "premultiplyAlpha": {
+                "type": "Boolean",
+                "data": false
+              }
+            }
+          ]
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "asset",
+            "sourceId": "none",
+            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/enemy/portal/hit_enemy.png",
+            "target": "commands.data.input.path"
           }
         ]
       }

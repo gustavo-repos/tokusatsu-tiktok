@@ -1,16 +1,16 @@
 %YAML 1.1
 --- !TextureDelegate &1
 name: !<str> walk
-guid: {a: 4857992549527516249, b: 9480371219952768161}
+guid: {a: 5096104700472300684, b: 17575017686345409459}
 serializedProperty:
   __class: ScriptSerializedProperty
   name: !<str> ""
-  guid: {a: 5162657477497689966, b: 10984373817346230430}
+  guid: {a: 5333645027448309383, b: 4984329446560652476}
   properties:
     __class: Map
     JSClassName: !<str> AnimatedTextureProvider
-    duration: 1
-    fps: 4
+    duration: 0.8
+    fps: 5
     loopCount: -1
     playMode: 0
     reverse: false

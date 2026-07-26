@@ -1,22 +1,19 @@
 [
   {
     "guid": {
-      "a": "f7902046-4738-2877-1532-0ea005b6f671",
+      "a": "5fcdbbe3-2841-0418-8d77-600be8b86ca1",
       "b": ""
     },
-    "extraType": "ResItemMP3",
-    "name": "hit",
+    "extraType": "ResItemFolder",
+    "name": "GIF",
     "version": "0.1.0",
-    "rttiType": "AudioAsset",
     "authorizationInfo": "",
     "extendedInfo": {
       "isVisibleInInspector": true,
       "hideInPanel": false,
       "expandInPanel": true
     },
-    "mccState": "SUCCESS",
     "objGuid": "",
-    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\audio\\hit.mp3",
     "references": []
   }
 ]

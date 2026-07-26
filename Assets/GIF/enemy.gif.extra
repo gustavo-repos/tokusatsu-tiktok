@@ -1,22 +1,21 @@
 [
   {
     "guid": {
-      "a": "f7902046-4738-2877-1532-0ea005b6f671",
+      "a": "f6fdc978-299e-22dc-2121-8f0345556f5a",
       "b": ""
     },
-    "extraType": "ResItemMP3",
-    "name": "hit",
+    "extraType": "ResItemGif",
+    "name": "enemy",
     "version": "0.1.0",
-    "rttiType": "AudioAsset",
+    "rttiType": "GifAsset",
     "authorizationInfo": "",
     "extendedInfo": {
       "isVisibleInInspector": true,
       "hideInPanel": false,
       "expandInPanel": true
     },
-    "mccState": "SUCCESS",
     "objGuid": "",
-    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\audio\\hit.mp3",
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\enemy\\portal\\enemy.gif",
     "references": []
   }
 ]

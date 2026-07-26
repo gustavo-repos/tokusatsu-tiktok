@@ -69,6 +69,9 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
         this.accumulator += deltaTime;
         while (this.accumulator >= Game_1.fixedTime) {
             this.spawnTimer += Game_1.fixedTime;
+            if (!this.enemyWasHit) {
+                this.enemyScene.name = 'enemy';
+            }
             // if (this.startTimer && time >= 0) {
             //   time -= fixedTime
             //   conect.name = Math.round(time).toString()
@@ -108,7 +111,7 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
                 this.setCurrentSpot(this.spawnSpots);
                 (0, Game_1.teleport)(this.getSceneObject(), this.currentSpot[0], this.currentSpot[1]);
                 this.spawnTimer = 0;
-                this.enemyScene.name = 'enemy';
+                this.enemyScene.name = 'respawn';
                 this.enemyWasHit = false;
             }
             this.accumulator -= Game_1.fixedTime;

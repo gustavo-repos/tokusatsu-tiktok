@@ -61,6 +61,10 @@ export class Enemy extends APJS.BasicScriptComponent {
 
       this.spawnTimer += fixedTime
 
+      if (!this.enemyWasHit) {
+        this.enemyScene.name = 'enemy'
+      }
+
       // if (this.startTimer && time >= 0) {
       //   time -= fixedTime
       //   conect.name = Math.round(time).toString()
@@ -99,7 +103,7 @@ export class Enemy extends APJS.BasicScriptComponent {
         this.setCurrentSpot(this.spawnSpots)
         teleport(this.getSceneObject(), this.currentSpot[0], this.currentSpot[1])
         this.spawnTimer = 0
-        this.enemyScene.name = 'enemy'
+        this.enemyScene.name = 'respawn'
         this.enemyWasHit = false
       }
   

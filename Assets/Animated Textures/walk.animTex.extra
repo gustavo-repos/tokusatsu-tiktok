@@ -1,7 +1,7 @@
 [
   {
     "guid": {
-      "a": "ab9ab966-6de6-aaa1-fbb9-62d496b287c6",
+      "a": "86d3226b-fae7-7288-6756-9d7dd16094a0",
       "b": ""
     },
     "extraType": "ResItemAnimatedTexture",
@@ -12,7 +12,7 @@
     "extendedInfo": {
       "isVisibleInInspector": true,
       "hideInPanel": false,
-      "expandInPanel": false
+      "expandInPanel": true
     },
     "objGuid": "",
     "resourceFilePath": "C:\\Users\\gbroc\\AppData\\Local\\Effect House\\Resources\\BuiltinResource\\assets\\jsAssets\\default.animTex",

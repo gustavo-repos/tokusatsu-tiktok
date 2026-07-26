@@ -869,9 +869,9 @@ entities:
           __class: LightProbeBlendMode
           value: OFF
         entirePingPong: false
-        texture: {localId: 1, path: 00000000-0000-0000-0000-0000000000c0--00000000-0000-0000-0000-0000000000c0.png}
+        texture: {localId: 1, path: 00000000-0000-0000-0000-00000000006b--00000000-0000-0000-0000-00000000006b.png}
         opacity: 1
-        color: {r: 0.8078431, g: 0.08235294, b: 0.08235294, a: 1}
+        color: {r: 1, g: 1, b: 1, a: 1}
         size: {x: 10, y: 10}
         pivot: {x: 0.5, y: 0.5}
         flipX: false
@@ -969,7 +969,7 @@ entities:
         letters:
           - __class: Letter
             name: !<str> ""
-            guid: {a: 4887343885986767948, b: 13105296596367722415}
+            guid: {a: 5053958140294992479, b: 16687455612646859412}
             utf8: !<str> 0
             initialPosition: {x: -370.0868, y: 102.7952}
             position: {x: -370.0868, y: 102.7952}

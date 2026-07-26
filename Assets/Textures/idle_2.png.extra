@@ -1,11 +1,11 @@
 [
   {
     "guid": {
-      "a": "1e0c51ca-a9de-046f-c4d8-9b2ea6802c16",
+      "a": "8882f491-a0a6-868a-0816-f52dd262eda5",
       "b": ""
     },
     "extraType": "ResItemPNGImage",
-    "name": "wall",
+    "name": "idle_2",
     "version": "0.2.0",
     "rttiType": "Texture",
     "authorizationInfo": "",
@@ -26,7 +26,7 @@
     "wrapModeR": 0,
     "premultiplyAlpha": false,
     "objGuid": "",
-    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\wall.png",
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\enemy\\idle_2.png",
     "references": []
   }
 ]
