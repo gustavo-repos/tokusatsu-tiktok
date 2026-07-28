@@ -35,12 +35,13 @@ substate:
 1 walking
 2 jumping
 3 falling
+4 attacking
 */
 let Player = class Player extends APJS.BasicScriptComponent {
     constructor() {
         super(...arguments);
         this.state = 1;
-        this.substate = 3;
+        //substate = 3
         this.lastSubstate = 3;
         this.previousState = 1;
         this.jumpCycle = false;
@@ -56,18 +57,25 @@ let Player = class Player extends APJS.BasicScriptComponent {
         // return [centerX, centerY, this.width * 0.4, this.height * 0.875]
         return [centerX, centerY, this.width * 0.55, this.height * 0.9];
     }
-    setSubstate() {
+    substateHandle() {
         if (Game_1.time > 0) {
-            if (this.state == 0) {
-                if (Game_1.leftPressed || Game_1.rightPressed) {
-                    this.substate = 1;
+            if (Game_1.substate != 4) {
+                if (this.state == 0) {
+                    if (Game_1.leftPressed || Game_1.rightPressed) {
+                        (0, Game_1.setSubstate)(1);
+                    }
+                    else {
+                        (0, Game_1.setSubstate)(0);
+                    }
                 }
                 else {
-                    this.substate = 0;
+                    if (this.velocityY >= 0) {
+                        (0, Game_1.setSubstate)(2);
+                    }
+                    else {
+                        (0, Game_1.setSubstate)(3);
+                    }
                 }
-            }
-            else {
-                this.substate = (this.velocityY >= 0) ? 2 : 3;
             }
             if (Game_1.leftPressed) {
                 this.playerSprite.getComponent('Image').flipX = true;
@@ -78,11 +86,11 @@ let Player = class Player extends APJS.BasicScriptComponent {
         }
     }
     setPlayerSprite() {
-        if (this.substate == this.lastSubstate)
+        if (Game_1.substate == this.lastSubstate)
             return;
         // this.playerSprite.name = this.substate.toString()
         // console.log(this.substate.toString())
-        switch (this.substate) {
+        switch (Game_1.substate) {
             case 0:
                 this.playerSprite.name = 'idle';
                 break;
@@ -95,8 +103,11 @@ let Player = class Player extends APJS.BasicScriptComponent {
             case 3:
                 this.playerSprite.name = 'fall';
                 break;
+            case 4:
+                this.playerSprite.name = 'attacking';
+                break;
         }
-        this.lastSubstate = this.substate;
+        this.lastSubstate = Game_1.substate;
     }
     onStart() {
         this.playerSprite = this.getSceneObject().scene.findSceneObject('playerSprite');
@@ -114,7 +125,7 @@ let Player = class Player extends APJS.BasicScriptComponent {
         deltaTime = Math.min(deltaTime, 0.25);
         this.accumulator += deltaTime;
         while (this.accumulator >= Game_1.fixedTime) {
-            this.setSubstate();
+            this.substateHandle();
             this.setPlayerSprite();
             if (this.state == 1)
                 this.velocityY += Game_1.gravity * Game_1.fixedTime;

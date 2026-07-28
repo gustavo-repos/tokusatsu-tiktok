@@ -1,11 +1,11 @@
 [
   {
     "guid": {
-      "a": "a1fc9166-c974-1f21-d31e-aa99eda4b382",
+      "a": "a427c2cb-bb5e-e8dc-adf7-f820c0ba3d4e",
       "b": ""
     },
     "extraType": "ResItemPNGImage",
-    "name": "button_jump",
+    "name": "platform",
     "version": "0.2.0",
     "rttiType": "Texture",
     "authorizationInfo": "",
@@ -26,7 +26,7 @@
     "wrapModeR": 0,
     "premultiplyAlpha": false,
     "objGuid": "",
-    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\buttons\\button_jump.png",
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\platform.png",
     "references": []
   }
 ]

@@ -193,7 +193,7 @@ entities:
           __class: LightProbeBlendMode
           value: OFF
         entirePingPong: false
-        texture: {localId: 1, path: fb681aa5-799c-3171-4d3d-d43af43d866e--fb681aa5-799c-3171-4d3d-d43af43d866e.png}
+        texture: {localId: 1, path: b497dac7-7fa1-401b-f280-e0aaafd02b1e--b497dac7-7fa1-401b-f280-e0aaafd02b1e.png}
         opacity: 1
         color: {r: 1, g: 1, b: 1, a: 1}
         size: {x: 10, y: 10}
@@ -239,7 +239,7 @@ entities:
           __class: LightProbeBlendMode
           value: OFF
         entirePingPong: false
-        texture: {localId: 1, path: 1e0c51ca-a9de-046f-c4d8-9b2ea6802c16--1e0c51ca-a9de-046f-c4d8-9b2ea6802c16.png}
+        texture: {localId: 1, path: c1cfe47c-e3c0-f8a8-72e0-5baa0a3c985f--c1cfe47c-e3c0-f8a8-72e0-5baa0a3c985f.png}
         opacity: 1
         color: {r: 1, g: 1, b: 1, a: 1}
         size: {x: 10, y: 10}
@@ -285,7 +285,7 @@ entities:
           __class: LightProbeBlendMode
           value: OFF
         entirePingPong: false
-        texture: {localId: 1, path: 1e0c51ca-a9de-046f-c4d8-9b2ea6802c16--1e0c51ca-a9de-046f-c4d8-9b2ea6802c16.png}
+        texture: {localId: 1, path: c1cfe47c-e3c0-f8a8-72e0-5baa0a3c985f--c1cfe47c-e3c0-f8a8-72e0-5baa0a3c985f.png}
         opacity: 1
         color: {r: 1, g: 1, b: 1, a: 1}
         size: {x: 10, y: 10}
@@ -331,7 +331,7 @@ entities:
           __class: LightProbeBlendMode
           value: OFF
         entirePingPong: false
-        texture: {localId: 1, path: beb40e71-a73e-6fae-581c-753c2d2450d3--beb40e71-a73e-6fae-581c-753c2d2450d3.png}
+        texture: {localId: 1, path: 95a0df60-6507-7713-9cca-380266fa14ba--95a0df60-6507-7713-9cca-380266fa14ba.png}
         opacity: 1
         color: {r: 1, g: 1, b: 1, a: 1}
         size: {x: 10, y: 10}
@@ -377,7 +377,7 @@ entities:
           __class: LightProbeBlendMode
           value: OFF
         entirePingPong: false
-        texture: {localId: 1, path: beb40e71-a73e-6fae-581c-753c2d2450d3--beb40e71-a73e-6fae-581c-753c2d2450d3.png}
+        texture: {localId: 1, path: 95a0df60-6507-7713-9cca-380266fa14ba--95a0df60-6507-7713-9cca-380266fa14ba.png}
         opacity: 1
         color: {r: 1, g: 1, b: 1, a: 1}
         size: {x: 10, y: 10}
@@ -423,7 +423,7 @@ entities:
           __class: LightProbeBlendMode
           value: OFF
         entirePingPong: false
-        texture: {localId: 1, path: f1f323ca-2ea4-d01a-02d0-914106d04f39--f1f323ca-2ea4-d01a-02d0-914106d04f39.png}
+        texture: {localId: 1, path: a1fc9166-c974-1f21-d31e-aa99eda4b382--a1fc9166-c974-1f21-d31e-aa99eda4b382.png}
         opacity: 1
         color: {r: 1, g: 1, b: 1, a: 1}
         size: {x: 10, y: 10}
@@ -478,7 +478,7 @@ entities:
         flipY: false
         stretchMode:
           __class: ImageStretchMode
-          value: Fit
+          value: FillAndCut
         atlasIndex: 0
         horizontalAlignment:
           __class: LinearAlignment
@@ -685,7 +685,7 @@ entities:
           __class: LightProbeBlendMode
           value: OFF
         entirePingPong: false
-        texture: {localId: 1, path: 00000000-0000-0000-0000-000000000021--00000000-0000-0000-0000-000000000021.png}
+        texture: {localId: 1, path: a427c2cb-bb5e-e8dc-adf7-f820c0ba3d4e--a427c2cb-bb5e-e8dc-adf7-f820c0ba3d4e.png}
         opacity: 1
         color: {r: 1, g: 1, b: 1, a: 1}
         size: {x: 10, y: 10}
@@ -731,7 +731,7 @@ entities:
           __class: LightProbeBlendMode
           value: OFF
         entirePingPong: false
-        texture: {localId: 1, path: 00000000-0000-0000-0000-000000000021--00000000-0000-0000-0000-000000000021.png}
+        texture: {localId: 1, path: a427c2cb-bb5e-e8dc-adf7-f820c0ba3d4e--a427c2cb-bb5e-e8dc-adf7-f820c0ba3d4e.png}
         opacity: 1
         color: {r: 1, g: 1, b: 1, a: 1}
         size: {x: 10, y: 10}
@@ -969,7 +969,7 @@ entities:
         letters:
           - __class: Letter
             name: !<str> ""
-            guid: {a: 5053958140294992479, b: 16687455612646859412}
+            guid: {a: 5718137727450169404, b: 630405774185769649}
             utf8: !<str> 0
             initialPosition: {x: -370.0868, y: 102.7952}
             position: {x: -370.0868, y: 102.7952}
@@ -1205,7 +1205,7 @@ mobility:
   __class: Mobility
   value: Dynamic
 anchoredPosition: {x: 0, y: -130}
-sizeDelta: {x: 1157, y: 48}
+sizeDelta: {x: 1176, y: 48}
 pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
@@ -1214,14 +1214,14 @@ enablePivotMatrix: false
 name: !<str> ""
 guid: {a: 4812445798424311393, b: 4080499101558076326}
 enabled: true
-localPosition: {x: 17.03125, y: 8.6875, z: 0}
+localPosition: {x: 17.34375, y: 8.6875, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
 parent: {localId: 8}
 mobility:
   __class: Mobility
   value: Dynamic
-anchoredPosition: {x: 545, y: 278}
+anchoredPosition: {x: 555, y: 278}
 sizeDelta: {x: 66, y: 768}
 pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
@@ -1231,14 +1231,14 @@ enablePivotMatrix: false
 name: !<str> ""
 guid: {a: 4769394058436803562, b: 16503252304127183783}
 enabled: true
-localPosition: {x: -17.03125, y: 8.6875, z: 0}
+localPosition: {x: -17.34375, y: 8.6875, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
 parent: {localId: 8}
 mobility:
   __class: Mobility
   value: Dynamic
-anchoredPosition: {x: -545, y: 278}
+anchoredPosition: {x: -555, y: 278}
 sizeDelta: {x: 66, y: 768}
 pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}

@@ -1,4 +1,5 @@
-import { gravity, move, jumpPressed, checkRectOverlap, getElementRect, snapY, PPU, platforms, leftPressed, rightPressed, fixedTime, conect, time } from "Game"
+import { gravity, move, jumpPressed, checkRectOverlap, getElementRect, snapY, PPU, platforms, 
+leftPressed, rightPressed, fixedTime, conect, time, substate, setSubstate } from "Game"
 
 /* 
 state:
@@ -12,12 +13,13 @@ substate:
 1 walking	
 2 jumping
 3 falling 
+4 attacking
 */
 
 @component()
 export class Player extends APJS.BasicScriptComponent {
   state = 1
-  substate = 3
+  //substate = 3
   lastSubstate = 3
   previousState = 1
   jumpCycle = false
@@ -47,17 +49,22 @@ export class Player extends APJS.BasicScriptComponent {
     return [centerX, centerY, this.width * 0.55, this.height * 0.9]
   }
 
-  setSubstate () {
-
+  substateHandle () {
     if (time > 0) {
-      if (this.state == 0) {
-        if (leftPressed || rightPressed) {
-          this.substate = 1
+      if (substate != 4) {
+        if (this.state == 0) {
+          if (leftPressed || rightPressed) {
+            setSubstate(1)
+          } else {
+            setSubstate(0)
+          }
         } else {
-          this.substate = 0
+          if (this.velocityY >= 0) {
+            setSubstate(2)
+          } else {
+            setSubstate(3)
+          }
         }
-      } else {
-        this.substate = (this.velocityY >= 0) ? 2 : 3
       }
 
       if (leftPressed) {
@@ -65,17 +72,17 @@ export class Player extends APJS.BasicScriptComponent {
       } else if (rightPressed) {
         this.playerSprite.getComponent('Image').flipX = false
       }
-    }
 
+    }
   }
 
   setPlayerSprite () {
-    if (this.substate == this.lastSubstate) return
+    if (substate == this.lastSubstate) return
 
     // this.playerSprite.name = this.substate.toString()
     // console.log(this.substate.toString())
 
-    switch (this.substate) {
+    switch (substate) {
       case 0:
         this.playerSprite.name = 'idle'
         break
@@ -88,9 +95,12 @@ export class Player extends APJS.BasicScriptComponent {
       case 3:
         this.playerSprite.name = 'fall'
         break
+      case 4:
+        this.playerSprite.name = 'attacking'
+        break
     }
 
-    this.lastSubstate = this.substate
+    this.lastSubstate = substate
 }
 
   onStart() {
@@ -109,7 +119,7 @@ export class Player extends APJS.BasicScriptComponent {
     this.accumulator += deltaTime
 
     while (this.accumulator >= fixedTime) {
-      this.setSubstate()
+      this.substateHandle()
 
       this.setPlayerSprite()
 

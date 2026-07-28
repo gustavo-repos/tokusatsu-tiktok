@@ -1,0 +1,26 @@
+[
+  {
+    "guid": {
+      "a": "1e35ba89-8a91-988c-60cb-d3bb7c36f6c6",
+      "b": ""
+    },
+    "extraType": "ResItemGifTexture",
+    "name": "attacking",
+    "version": "0.1.0",
+    "rttiType": "Texture",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": true
+    },
+    "objGuid": "",
+    "resourceFilePath": "C:\\Users\\gbroc\\AppData\\Local\\Effect House\\Plugins\\Gif@2.0.27\\resources\\builtinJSAssets\\default.gifTex",
+    "references": [
+      {
+        "guid": "8ba7d164-49f6-db41-5135-083b006a5060",
+        "propertyName": "gifAsset"
+      }
+    ]
+  }
+]

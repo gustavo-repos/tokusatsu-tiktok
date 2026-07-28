@@ -1,0 +1,21 @@
+[
+  {
+    "guid": {
+      "a": "8ba7d164-49f6-db41-5135-083b006a5060",
+      "b": ""
+    },
+    "extraType": "ResItemGif",
+    "name": "attacking",
+    "version": "0.1.0",
+    "rttiType": "GifAsset",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": true
+    },
+    "objGuid": "",
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\attacking\\attacking.gif",
+    "references": []
+  }
+]

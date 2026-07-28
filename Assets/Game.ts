@@ -10,6 +10,11 @@ export const fixedTime = 0.02
 export var conect: any
 var isTimeRunning = false
 export var time = 35
+export var substate = 3
+
+export function setSubstate (x: number) {
+  substate = x
+}
 
 export function startTimer() {
   //console.log('startTimer')

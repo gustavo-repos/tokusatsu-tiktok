@@ -1,0 +1,46 @@
+%YAML 1.1
+--- !TextureDelegate &1
+name: !<str> attacking
+guid: {a: 4694833364542299130, b: 4731589885613138313}
+serializedProperty:
+  __class: ScriptSerializedProperty
+  name: !<str> ""
+  guid: {a: 5674131356849824775, b: 1156304584523809692}
+  properties:
+    __class: Map
+    JSClassName: !<str> GifTextureProvider
+    fps: 10
+    gifAsset: {localId: 1, path: 8ba7d164-49f6-db41-5135-083b006a5060--8ba7d164-49f6-db41-5135-083b006a5060.gifasset}
+    loopCount: -1
+width: 152
+height: 152
+depth: 1
+internalFormat:
+  __class: InternalFormat
+  value: RGBA8
+dataType:
+  __class: DataType
+  value: U8norm
+builtinType:
+  __class: BuiltInTextureType
+  value: NORAML
+enableMipmap: true
+filterMin:
+  __class: FilterMode
+  value: LINEAR
+filterMag:
+  __class: FilterMode
+  value: LINEAR
+filterMipmap:
+  __class: FilterMipmapMode
+  value: NONE
+wrapModeS:
+  __class: WrapMode
+  value: CLAMP
+wrapModeT:
+  __class: WrapMode
+  value: CLAMP
+wrapModeR:
+  __class: WrapMode
+  value: CLAMP
+maxAnisotropy: 1

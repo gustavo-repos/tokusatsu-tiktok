@@ -19,7 +19,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Game = exports.snapX = exports.snapY = exports.checkRectOverlap = exports.getElementRect = exports.teleport = exports.move = exports.addTime = exports.startTimer = exports.time = exports.conect = exports.fixedTime = exports.grounds = exports.solids = exports.platforms = exports.rightPressed = exports.leftPressed = exports.jumpPressed = exports.PPU = exports.gravity = void 0;
+exports.Game = exports.snapX = exports.snapY = exports.checkRectOverlap = exports.getElementRect = exports.teleport = exports.move = exports.addTime = exports.startTimer = exports.setSubstate = exports.substate = exports.time = exports.conect = exports.fixedTime = exports.grounds = exports.solids = exports.platforms = exports.rightPressed = exports.leftPressed = exports.jumpPressed = exports.PPU = exports.gravity = void 0;
 exports.gravity = -65;
 exports.PPU = 32;
 exports.jumpPressed = false;
@@ -28,6 +28,11 @@ exports.rightPressed = false;
 exports.fixedTime = 0.02;
 var isTimeRunning = false;
 exports.time = 35;
+exports.substate = 3;
+function setSubstate(x) {
+    exports.substate = x;
+}
+exports.setSubstate = setSubstate;
 function startTimer() {
     //console.log('startTimer')
     if (!isTimeRunning)

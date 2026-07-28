@@ -1,4 +1,4 @@
-import { fixedTime, teleport, PPU, checkRectOverlap, getElementRect, conect, startTimer, addTime } from "Game"
+import { fixedTime, teleport, PPU, checkRectOverlap, getElementRect, conect, startTimer, addTime, setSubstate, substate } from "Game"
 
 // export var time = 35
 // export var startTimer = false
@@ -9,6 +9,8 @@ export class Enemy extends APJS.BasicScriptComponent {
   accumulator = 0
   spawnTimer = 0
   spawnInterval = 3
+  playerAttackingTimer = 0
+  playerAttackingInterval = 0.4
   // time = 35
   //startTimer = false
   // spawnSpots = [[117 / PPU, 104 / PPU], [396 / PPU, 104 / PPU], [-396 / PPU, 104 / PPU], [-117 / PPU, 104 / PPU], [-256 / PPU, 333 / PPU], [256 / PPU, 333 / PPU]]
@@ -61,6 +63,13 @@ export class Enemy extends APJS.BasicScriptComponent {
 
       this.spawnTimer += fixedTime
 
+      if (substate == 4)  this.playerAttackingTimer += fixedTime
+
+      if (this.playerAttackingTimer >= this.playerAttackingInterval) {
+        setSubstate(3)
+        this.playerAttackingTimer = 0
+      }
+
       if (!this.enemyWasHit) {
         this.enemyScene.name = 'enemy'
       }
@@ -71,10 +80,8 @@ export class Enemy extends APJS.BasicScriptComponent {
       // }
 
       if (!this.enemyWasHit && checkRectOverlap(this.getPlayerRect(), getElementRect(this.getSceneObject(), 0))) {
-        //console.log('hit')
-        // if (!startTimer) startTimer = true
-        //startTimer()
         startTimer()
+        setSubstate(4)
         this.points++ 
         // conect.name = this.points.toString()
         this.scenePoints.name = this.points.toString()

@@ -29,6 +29,8 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
         this.accumulator = 0;
         this.spawnTimer = 0;
         this.spawnInterval = 3;
+        this.playerAttackingTimer = 0;
+        this.playerAttackingInterval = 0.4;
         // time = 35
         //startTimer = false
         // spawnSpots = [[117 / PPU, 104 / PPU], [396 / PPU, 104 / PPU], [-396 / PPU, 104 / PPU], [-117 / PPU, 104 / PPU], [-256 / PPU, 333 / PPU], [256 / PPU, 333 / PPU]]
@@ -67,6 +69,12 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
         this.accumulator += deltaTime;
         while (this.accumulator >= Game_1.fixedTime) {
             this.spawnTimer += Game_1.fixedTime;
+            if (Game_1.substate == 4)
+                this.playerAttackingTimer += Game_1.fixedTime;
+            if (this.playerAttackingTimer >= this.playerAttackingInterval) {
+                (0, Game_1.setSubstate)(3);
+                this.playerAttackingTimer = 0;
+            }
             if (!this.enemyWasHit) {
                 this.enemyScene.name = 'enemy';
             }
@@ -75,10 +83,8 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
             //   conect.name = Math.round(time).toString()
             // }
             if (!this.enemyWasHit && (0, Game_1.checkRectOverlap)(this.getPlayerRect(), (0, Game_1.getElementRect)(this.getSceneObject(), 0))) {
-                //console.log('hit')
-                // if (!startTimer) startTimer = true
-                //startTimer()
                 (0, Game_1.startTimer)();
+                (0, Game_1.setSubstate)(4);
                 this.points++;
                 // conect.name = this.points.toString()
                 this.scenePoints.name = this.points.toString();
