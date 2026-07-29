@@ -2,26 +2,32 @@ declare namespace APJS {
   /**
    * @class Leaderboard
    * @extends DynamicComponent
-   * @description Leaderboard component. Component that displays leaderboard.
+   * @description Leaderboard UI component that displays ranking data and manages a
+   * per-instance score. `setScore` updates the local score and auto-posts it once
+   * leaderboard data is ready. `postFinalScore` requests a separate final submission
+   * with no completion callback.
    * @apjs_protected_constructor
    */
   class Leaderboard extends DynamicComponent {
     protected constructor();
 
     /**
-     * @description Get current score.
+     * @description Returns the current score. Default is `0`;
      * @returns {number}
      */
     getScore(): number;
 
     /**
-     * @description Set current score.
-     * @param {number} score - New score to set to
+     * @description Sets the current score. Non-finite values (`NaN`, `Infinity`,
+     * `-Infinity`) are rejected and the score reverts. The new score is synced and
+     * auto-posted on the next frame if leaderboard data is ready.
+     * @param {number} score - New score to store.
      */
     setScore(score: number): void;
 
     /**
-     * @description Post current final score.
+     * @description Requests posting the current score as the final score. Deferred
+     * until leaderboard data is ready; no completion callback.
      */
     postFinalScore(): void;
   }
@@ -70,7 +76,8 @@ declare namespace APJS {
 
     /**
      * @description Posts the current score to the server. The score must have been set
-     * previously via setScoreAndGetRankings.
+     * previously via {@link setScoreAndGetRankings}; if not, the call is silently ignored.
+     * Returns `void` with no callback; success or failure is not reported to the caller.
      */
     public postScore(): void;
 
@@ -165,6 +172,7 @@ declare namespace APJS {
      * @class UserProfile
      * @description Contains a user's TikTok profile information, including the profile photo
      * texture, username, and friend count. Used for both the current user and friends.
+     * `friendCount` is only populated for the current user.
      */
     class UserProfile {
       /**
@@ -173,7 +181,10 @@ declare namespace APJS {
       constructor();
 
       /**
-       * @description The user's profile photo texture.
+       * @description The user's profile photo texture, when an avatar image is available.
+       * Delivered when the profile is returned via getUserProfile / getFriendProfileAtIndex; it
+       * may be absent when the user has no avatar image. Read it only after the profile callback
+       * has fired.
        */
       public profileTexture: Texture;
 
@@ -193,6 +204,7 @@ declare namespace APJS {
      * @class Rankings
      * @description Contains the user's ranking positions across different leaderboard types
      * (friends, national, and global).
+     * Each field uses `-1` when no rank is currently available.
      */
     class Rankings {
       /**
@@ -201,17 +213,20 @@ declare namespace APJS {
       constructor();
 
       /**
-       * @description The user's rank among friends.
+       * @description The user's rank among friends. A 1-based position (`1` is the top rank);
+       * users with the same score share the same rank. `-1` when no rank is currently available.
        */
       public friendsRank: number;
 
       /**
-       * @description The user's national rank.
+       * @description The user's national rank. A 1-based position (`1` is the top rank);
+       * users with the same score share the same rank. `-1` when no rank is currently available.
        */
       public nationalRank: number;
 
       /**
-       * @description The user's global rank.
+       * @description The user's global rank. A 1-based position (`1` is the top rank);
+       * users with the same score share the same rank. `-1` when no rank is currently available.
        */
       public globalRank: number;
     }
@@ -220,6 +235,7 @@ declare namespace APJS {
      * @class LeaderboardData
      * @description Contains the user's leaderboard data returned after initialization,
      * including the best score and highest historical rankings.
+     * When the service has no recorded score yet, `bestScore` remains `-1`.
      */
     class LeaderboardData {
       /**
@@ -228,20 +244,23 @@ declare namespace APJS {
       constructor();
 
       /**
-       * @description The user's best score achieved, or -1 if no score has been recorded.
+       * @description The user's best score achieved, or `-1` if no score has been recorded.
+       * Read-only result populated by the service; assigning to it does not change the stored score.
        */
       public bestScore: number;
 
       /**
        * @description The user's highest historical rankings across all leaderboard types.
+       * Individual rank fields remain `-1` when that ranking is unavailable.
        */
       public highestRankings: Rankings;
     }
 
     /**
      * @class LeaderboardInfo
-     * @description Contains the leaderboard entry information for a user at a specific
-     * index and leaderboard type, including profile, score, and ranking.
+     * @description A single entry on the leaderboard. Default values when no entry
+     * exists at the requested slot: `score = -1`, `ranking = -1`, `userName = ''`,
+     * `isCurrentUser = false`.
      */
     class LeaderboardInfo {
       /**
@@ -251,6 +270,7 @@ declare namespace APJS {
 
       /**
        * @description The profile photo texture of the user at this leaderboard entry.
+       * May be `null` if no avatar image is available and no default icon is configured.
        */
       public profileTexture: Texture;
 
@@ -260,7 +280,9 @@ declare namespace APJS {
       public userName: string;
 
       /**
-       * @description The score of the user at this leaderboard entry.
+       * @description The score of the user at this leaderboard entry. This is the raw numeric
+       * score value submitted for that user (same scale as the value passed to the score APIs);
+       * it has no fixed unit. Uses `-1` when the requested slot has no leaderboard entry.
        */
       public score: number;
 
@@ -270,7 +292,9 @@ declare namespace APJS {
       public isCurrentUser: boolean;
 
       /**
-       * @description The ranking position of this leaderboard entry.
+       * @description The ranking position of this leaderboard entry. A 1-based position
+       * (`1` is the top rank). Users with the same score receive the same rank value.
+       * Uses `-1` when the requested slot has no leaderboard entry.
        */
       public ranking: number;
     }

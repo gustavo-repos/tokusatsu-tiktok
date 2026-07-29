@@ -49,26 +49,40 @@ declare namespace APJS {
   
   /**
    * @class DyeHair
-   * @description Represents a dynamic component specifically designed for the DyeHair.
+   * @description Runtime hair-dye component whose editable property set depends on the current
+   * dye mode.
+   * Use {@link getProperty} and {@link setProperty} with {@link DyeHairPropertyKey} names.
+   * `Mode` and `Bleach` cannot be set through {@link setProperty}. Keys not supported by the
+   * current mode cause {@link setProperty} to return `false` and {@link getProperty} to return `null`.
    */
   class DyeHair extends DynamicComponent {
     protected constructor();
   
     /**
      * Gets a property value.
-     * The property key must match a supported `DyeHairPropertyKey` for the current dye mode.
-     * @param type - Property name.
-     * @returns Property value.
+     * @param type - Property name. The returned value type depends on the key:
+     * - `Mode`: `DyeHairMode`
+     * - `GradientType`: `GradientType`
+     * - `Bleach` / `Flip`: `boolean`
+     * - `Color` / `Color1` / `Color2` / `Color3` / `Color4`: `Color`
+     * - `Texture`: `Texture`
+     * - `BleachIntensity` / `Coverage` / `GradientArea` / `Opacity`: `number`
+     * @returns The property value, or `null` when the key is not supported by the current dye mode.
      */
     getProperty(type: DyeHairPropertyKey): any;
   
     /**
      * Set property value.
-     * @param type - Property name.
-     * @param value - Property value.
-     * The property key must match a supported `DyeHairPropertyKey` for the current dye mode,
-     * and the value type must match that property.
-     * @returns Whether the property is set successfully.
+     * @param type - Property name. Read-only keys `Mode` and `Bleach` always fail.
+     * Writable keys and their accepted value types:
+     * - `BleachIntensity` / `Coverage` / `GradientArea` / `Opacity`: `number`
+     * - `Flip`: `boolean`
+     * - `Color` / `Color1` / `Color2` / `Color3` / `Color4`: `Color`
+     * - `GradientType`: `GradientType`
+     * - `Texture`: `Texture`
+     * @param value - Property value. Its runtime type must match the key listed above.
+     * @returns `true` on success. Returns `false` when the value type is wrong, when the key is
+     * read-only (`Mode`, `Bleach`), or when the key is not supported by the current dye mode.
      *
      * @example
      * ```typescript

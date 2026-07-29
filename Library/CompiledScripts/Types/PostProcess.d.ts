@@ -25,6 +25,8 @@ declare namespace APJS {
   
     /**
      * @description Gets or sets the bloom effect color, used to tint the glow.
+     * Provided as an RGBA color in gamma (sRGB) space; all four channels (including alpha) contribute
+     * to the tint. Component values are normally in the `0–1` range. Default: opaque white `(1, 1, 1, 1)`.
      */
     get color(): Color;
   
@@ -40,6 +42,7 @@ declare namespace APJS {
     /**
      * @description Gets whether fast mode is enabled. Improves performance at the cost of quality.
      * @deprecated Fast mode is editor-only and cannot be enabled at runtime. Reading this property is safe, but new code should prefer tuning `threshold`, `softKnee`, `clamp`, `anamorphicRatio`, and `diffuse` instead of relying on fast mode.
+     * Default: `true` in serialized editor-authored instances.
      */
     get fastMode(): boolean;
   
@@ -50,8 +53,8 @@ declare namespace APJS {
     set fastMode(value: boolean);
   
     /**
-     * @description Gets or sets the bloom effect intensity. Higher values make the glow stronger.
-     * 1–25 range typical.
+     * @description Gets or sets the bloom effect intensity. Higher values make the glow stronger;
+     * `0` effectively removes the glow. Typical authoring range is `1–25`. Default: `6.5`.
      */
     get intensity(): number;
   
@@ -124,7 +127,7 @@ declare namespace APJS {
   
     /**
      * @description Gets the shape type for the bokeh blur effect (e.g., hexagon, circle).
-     * Determines the appearance of the blur highlights.
+     * Determines the appearance of the blur highlights. Reading this property is safe at runtime.
      */
     get shape(): BokehBlurShapeType;
   
@@ -136,8 +139,10 @@ declare namespace APJS {
     set shape(value: BokehBlurShapeType);
   
     /**
-     * @description Gets or sets the size of the bokeh blur effect. Controls the radius of the blur effect.
-     * Range: [0, 99999]. Default: 4.0 set in editor.
+     * @description Gets or sets the size of the bokeh blur effect. Controls the blur radius:
+     * larger values spread the blur over a wider area; `0` produces no blur. The value is a
+     * relative blur-radius factor (not a strict pixel measurement). Range: [0, 99999].
+     * Runtime initial value: `5.0` (editor-authored instances default to `4.0`).
      */
     get size(): number;
   
@@ -149,6 +154,8 @@ declare namespace APJS {
    * @description This class implements chromatic aberration post-processing effects,
    * which simulate the optical phenomenon where different wavelengths of light
    * are focused at slightly different points, causing color fringes.
+   * Runtime authoring mainly uses {@link intensity} and {@link fastMode}; {@link spectralLUT}
+   * remains readable for editor-authored data but is deprecated for runtime writes.
    */
   class ChromaticAberration extends PostEffect {
     protected constructor();
@@ -156,6 +163,7 @@ declare namespace APJS {
     /**
      * @description Gets or sets whether fast mode for chromatic aberration is enabled.
      * Fast mode improves performance but reduces accuracy of the effect.
+     * Default: `false`.
      */
     get fastMode(): boolean;
   
@@ -164,6 +172,7 @@ declare namespace APJS {
     /**
      * @description Gets or sets the chromatic aberration intensity.
      * Controls how strongly the RGB channels are shifted apart. Range: [-10, 10].
+     * Default: `0.7`.
      */
     get intensity(): number;
   
@@ -171,7 +180,7 @@ declare namespace APJS {
   
     /**
      * @description Gets or sets the spectral LUT (Lookup Texture) used for chromatic aberration.
-     * Defines how RGB channels are sampled and shifted.
+     * Defines how RGB channels are sampled and shifted. Default: `null`.
      * @deprecated spectralLUT is deprecated and cannot be used at runtime. Reading it is safe for editor-authored configurations, but new code should prefer `intensity` and `fastMode` instead of relying on a spectral LUT.
      */
     get spectralLUT(): Texture | null;
@@ -181,14 +190,17 @@ declare namespace APJS {
   
   /**
    * @class Custom
-   * @description A PostEffect implementation that enables custom post-processing effects through user-defined materials and shaders.
+   * @description Custom post-processing effect driven by a user-provided material.
+   * Assign this object to {@link PostProcess.custom}, set {@link material}, and keep the effect
+   * enabled to make it participate in the PostProcess render chain.
    */
   class Custom extends PostEffect {
     protected constructor();
   
     /**
      * @description Gets or sets the material used for the custom post-process effect.
-     * Defines the shader applied in the effect.
+     * Set to `null` to disable rendering of this effect. Any `Material`
+     * instance or `null` is accepted as-is.
      */
     get material(): Material | null;
   
@@ -197,7 +209,8 @@ declare namespace APJS {
   
   /**
    * @class Distort
-   * @description Represents a PostEffect specifically designed for the Distort.
+   * @description Screen-space distortion effect that combines radial warping with optional
+   * wave-style offsets.
    */
   class Distort extends PostEffect {
     protected constructor();
@@ -215,7 +228,7 @@ declare namespace APJS {
     /**
      * @description Gets or sets the barrel distortion power. Controls the strength of the radial distortion.
      * A value of 0 means no distortion, positive values create barrel distortion,
-     * negative values create pincushion distortion. Range: [-1, 1].
+     * negative values create pincushion distortion. Default: `0`. Range: [-1, 1].
      */
     get barrelPower(): number;
   
@@ -241,8 +254,8 @@ declare namespace APJS {
     set offset(value: Vector2f);
   
     /**
-     * @description Gets or sets the distortion rotation angle.
-     * Rotates the distortion effect around the screen center. Range: [-360, 360].
+     * @description Gets or sets the distortion rotation angle, in degrees.
+     * Rotates the radial distortion pattern around the screen center. Default: `0`. Range: [-360, 360].
      */
     get rotation(): number;
   
@@ -260,7 +273,8 @@ declare namespace APJS {
   
     /**
      * @description Gets or sets the zoom factor for the distortion effect.
-     * Higher values zoom the image in or out. A value of 1.0 represents no zoom. Range: [-1, 1].
+     * `0` means no zoom; positive values zoom the image in (magnify toward the center),
+     * negative values zoom out. Default: `0`. Range: [-1, 1].
      */
     get zoom(): number;
   
@@ -277,7 +291,7 @@ declare namespace APJS {
   
   /**
    * @class Grain
-   * @description Represents a PostEffect specifically designed for the Grain.
+   * @description Film-grain effect that overlays animated luminance and color noise on the screen.
    */
   class Grain extends PostEffect {
     protected constructor();
@@ -309,7 +323,19 @@ declare namespace APJS {
   
   /**
    * @class LensFlare
-   * @description Represents a PostEffect specifically designed for the LensFlare.
+   * @description Screen-space lens flare effect driven by a normalized light-source position and
+   * an intensity value. Accessed as the `lensFlare` property of a {@link PostProcess} component;
+   * it renders as part of that component's post-processing chain each frame while the component's
+   * camera is active and this effect's {@link enabled} flag is `true`. Property changes take effect
+   * on the next rendered frame.
+   * @example
+   * ```typescript
+   * const postProcess = sceneObject.getComponent("PostProcess") as PostProcess;
+   * if (postProcess.lensFlare) {
+   *   postProcess.lensFlare.intensity = 0.8;
+   *   postProcess.lensFlare.position = new Vector2f(0.7, 0.3);
+   * }
+   * ```
    */
   class LensFlare extends PostEffect {
     protected constructor();
@@ -334,8 +360,8 @@ declare namespace APJS {
   
   /**
    * @class MotionBlur
-   * @description Represents a PostEffect specifically designed for the MotionBlur.
-   * This class implements motion blur functionality by accumulating frames over time to create blur trails for moving objects.
+   * @description Motion-blur effect that blends the current frame with previously accumulated
+   * image data to create trailing blur.
    */
   class MotionBlur extends PostEffect {
     protected constructor();
@@ -351,7 +377,19 @@ declare namespace APJS {
   
   /**
    * @class Vignette
-   * @description Represents a PostEffect specifically designed for the Vignette.
+   * @description Post-processing effect that darkens screen edges to draw attention toward the
+   * center of the frame. Accessed as the `vignette` property of a {@link PostProcess} component;
+   * it renders as part of that component's post-processing chain each frame while the component's
+   * camera is active and this effect's {@link enabled} flag is `true`. Property changes take effect
+   * on the next rendered frame.
+   * @example
+   * ```typescript
+   * const postProcess = sceneObject.getComponent("PostProcess") as PostProcess;
+   * if (postProcess.vignette) {
+   *   postProcess.vignette.power = 1.0;
+   *   postProcess.vignette.contrast = 2.0;
+   * }
+   * ```
    */
   class Vignette extends PostEffect {
     protected constructor();
@@ -375,7 +413,10 @@ declare namespace APJS {
   
   /**
    * @class PostProcess
-   * @description Represents a dynamic component specifically designed for the PostProcess.
+   * @description Screen-space post-processing component attached to a camera scene object.
+   * Each effect property returns either that effect's configuration object or `null` when the
+   * effect is not configured on this component. Only non-null effects whose {@link enabled} flag
+   * is `true` participate in the render chain.
    * @example
    * ```typescript
    * const bloomObject = scene.findSceneObject("Bloom");
@@ -423,6 +464,8 @@ declare namespace APJS {
     /**
      * @description FXAA (Fast Approximate Anti-Aliasing) effect configuration. Returns `null` when no Fxaa effect is configured on this PostProcess component.
      * Reduces aliasing artifacts in the rendered image with minimal performance impact.
+     * The returned object has no tunable parameters; it only represents whether FXAA is present, and
+     * its {@link enabled} flag toggles the effect on or off.
      */
     readonly fxaa: Fxaa | null;
   
@@ -453,14 +496,22 @@ declare namespace APJS {
   
   /**
    * @class PostEffect
-   * @description Represents a base class for other post effects.
+   * @description Base class for all post-processing effect objects used by a
+   * {@link PostProcess} component.
+   *
+   * Assign a concrete PostEffect subclass to a non-null effect property on
+   * {@link PostProcess} and set {@link enabled} to `true` to make that effect
+   * participate in the post-processing chain.
    */
   class PostEffect extends ScriptCustomObject {
     protected constructor();
   
     /**
-     * @description Indicates whether the post effect is enabled.
+     * @description Whether this effect is applied.
+     * Default: `false`.
+     * This effect takes effect only when it is assigned to a {@link PostProcess}
+     * effect property and this value is `true`.
      */
-    enabled: any;
+    enabled: boolean;
   }
 }

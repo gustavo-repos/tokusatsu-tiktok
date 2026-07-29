@@ -1,7 +1,11 @@
 declare namespace APJS {
   /**
    * @class
-   * An axis-aligned bounding box, or AABB for short, is a box aligned with coordinate axes and fully enclosing some object
+   * An axis-aligned bounding box defined by a minimum corner
+   * `(minX, minY, minZ)` and a maximum corner `(maxX, maxY, maxZ)`.
+   * `new AABB()` creates a zero-sized box at the origin.
+   * No range validation is performed; the relationship `min ≤ max`
+   * is not enforced — keep all six values consistent when editing.
    * @example
    * let aabb_1 = new AABB(new Vector3f(-1, -1, -1), new Vector3f(1, 1, 1));
    */
@@ -17,55 +21,69 @@ declare namespace APJS {
      */
     constructor(min?: Vector3f, max?: Vector3f);
     /**
-     * @description The minimal point-X of the box.
+     * @description The minimum x-coordinate. No range validation;
+     * the relationship `minX ≤ maxX` is not enforced.
      */
     get minX(): number;
     /**
-     * @description Sets the minimum x-coordinate of the axis-aligned bounding box (AABB).
+     * @description The minimum x-coordinate. No range validation;
+     * the relationship `minX ≤ maxX` is not enforced.
      */
     set minX(value: number);
     /**
-     * @description The minimal point-Y of the box.
+     * @description The minimum y-coordinate. No range validation;
+     * the relationship `minY ≤ maxY` is not enforced.
      */
     get minY(): number;
     /**
-     * @description Sets the minimum Y-coordinate of the axis-aligned bounding box (AABB).
+     * @description The minimum y-coordinate. No range validation;
+     * the relationship `minY ≤ maxY` is not enforced.
      */
     set minY(value: number);
     /**
-     * @description The minimal point-Z of the box.
+     * @description The minimum z-coordinate. No range validation;
+     * the relationship `minZ ≤ maxZ` is not enforced.
      */
     get minZ(): number;
     /**
-     * @description Sets the minimum Z-coordinate of the axis-aligned bounding box (AABB).
+     * @description The minimum z-coordinate. No range validation;
+     * the relationship `minZ ≤ maxZ` is not enforced.
      */
     set minZ(value: number);
     /**
-     * @description The max point-X of the box.
+     * @description The maximum x-coordinate. No range validation;
+     * the relationship `minX ≤ maxX` is not enforced.
      */
     get maxX(): number;
     /**
-     * @description Sets the maximum X-coordinate of the AABB (Axis-Aligned Bounding Box).
+     * @description The maximum x-coordinate. No range validation;
+     * the relationship `minX ≤ maxX` is not enforced.
      */
     set maxX(value: number);
     /**
-     * @description The max point-Y of the box.
+     * @description The maximum y-coordinate. No range validation;
+     * the relationship `minY ≤ maxY` is not enforced.
      */
     get maxY(): number;
     /**
-     * @description Sets the maximum Y-coordinate of the axis-aligned bounding box (AABB).
+     * @description The maximum y-coordinate. No range validation;
+     * the relationship `minY ≤ maxY` is not enforced.
      */
     set maxY(value: number);
     /**
-     * @description The max point-Z of the box.
+     * @description The maximum z-coordinate. No range validation;
+     * the relationship `minZ ≤ maxZ` is not enforced.
      */
     get maxZ(): number;
     /**
-     * @description Sets the maximum Z-coordinate of the axis-aligned bounding box (AABB).
+     * @description The maximum z-coordinate. No range validation;
+     * the relationship `minZ ≤ maxZ` is not enforced.
      */
     set maxZ(value: number);
     /**
      * @description Returns whether this AABB is equal to the specified `v` AABB.
+     * Equality uses the native `AABB` `operator==`, which compares the min and max corners directly.
+     * No tolerance is applied.
      * @param v - The AABB to compare with.
      * @returns A boolean indicating whether the two AABBs are equal.
      */
@@ -77,20 +95,34 @@ declare namespace APJS {
     clone(): AABB;
     /**
      * @description Returns a string representation of the AABB.
-     * @returns The string representation of the AABB.
+     * @example
+     * new AABB(new Vector3f(-1, -2, -3), new Vector3f(1, 2, 3)).toString()
+     * // "AABB(min: -1.00000, -2.00000, -3.00000,\n     max: 1.00000, 2.00000, 3.00000)"
+     * @returns A string representation of this AABB.
      */
     toString(): string;
     /**
-     * @description Determines if the current AABB intersects with another AABB.
+     * @description Returns `true` if this AABB overlaps or touches `other`
+     * (face, edge, or corner contact counts as intersection).
+     * Undefined behavior if either box has `min > max` on any axis.
      * @param other - The other AABB to check for intersection.
-     * @returns A boolean indicating whether the two AABBs intersect.
+     * @returns Whether the two AABBs intersect.
      */
     intersects(other: AABB): boolean;
   }
   /**
    * @namespace AlgorithmManager
-   * @description Access point for frame-based algorithm results exposed by the engine,
+   * @description Access point for the current frame's algorithm results exposed by the engine,
    * such as face detection, face attributes, and related tracking data.
+   * Call `APJS.AlgorithmManager.getResult()` from per-frame callbacks such as `Script.onUpdate()`
+   * when you need the latest result for that frame. Repeated calls within the same frame reuse
+   * the same result wrapper.
+   * `getResult()` itself does not use `null` or `undefined` to signal "no result".
+   * When a category has no output in the current frame, check the matching `get*Count()` method
+   * or category-specific execution state before reading indexed items.
+   * The cached wrapper is cleared at the start of the next runtime update, so treat the returned
+   * result object and the objects read from it as current-frame data and reacquire them each frame
+   * instead of caching them across frames.
    * @example
    * // Read face tracking data every frame inside a Script component
    * // Head orientation, face actions (eye blink), and face attributes (happy expression)
@@ -117,7 +149,14 @@ declare namespace APJS {
     /**
      * @description Returns the current frame's algorithm result wrapper.
      * The returned object exposes typed accessors such as face count, face base
-     * information, and face attribute information.
+     * information, and face attribute information. Repeated calls within the same
+     * frame return the same wrapper object.
+     * This method does not return `null` when there are no algorithm outputs for the
+     * current frame. Instead, use the matching `get*Count()` method, or a category's
+     * `get*IsExecuted()` method when available, to decide whether indexed reads are valid.
+     * The wrapper is cached only for the current frame and is cleared before the next
+     * runtime `onUpdate()` cycle, so reacquire it each frame and avoid relying on object
+     * identity across frames.
      *
      * @example
      * const result = APJS.AlgorithmManager.getResult();
@@ -130,79 +169,125 @@ declare namespace APJS {
   }
   /**
    * @interface AlgorithmResult
+   * @description Typed accessors for the current frame's algorithm outputs returned by `APJS.AlgorithmManager.getResult()`.
+   * Each `get*Count()` method reports how many results of that category are available in the current frame.
+   * Use the matching indexed accessor to read items from the same result set.
+   * @example
+   * const result = APJS.AlgorithmManager.getResult();
+   * const faceCount = result.getFaceCount();
+   *
+   * if (faceCount > 0) {
+   *   const face = result.getFaceBaseInfo(0);
+   *   console.log("first face yaw:", face.yaw);
+   * }
    */
   interface AlgorithmResult {
     /**
-     * @description getBodyInfo
-     * @param index
-     * @returns {BodyInfo}
+     * @description Returns the body result at `index` from the current frame's body
+     * result set. Valid indexes are `0` to `getBodyCount() - 1`.
+     * Out-of-range indexes return `null`.
+     * @param index - The index in the current frame's body result set.
+     * @returns {BodyInfo} The body result at `index`, or `null` when `index` is out of range.
      */
     getBodyInfo(index: number): BodyInfo;
     /**
-     * @description getBodyCount
+     * @description Returns the number of body results available in the current frame.
+     * Use this with `getBodyInfo(index)`.
+     * Returns `0` when the current frame has no body results to read.
      * @returns number
      */
     getBodyCount(): number;
     /**
-     * @description getFaceAttributeCount
+     * @description Returns the number of face attribute results available in the current frame.
+     * Face attribute results describe regular detected human faces. Use this count
+     * with `getFaceAttributeInfo(index)` before reading an attribute result.
      * @returns {number}
      */
     getFaceAttributeCount(): number;
     /**
-     * @description getFaceAttributeInfo
-     * @param {number} index
-     * @returns {FaceAttributeInterface}
+     * @description Returns the face attribute result at `index` from the current frame's
+     * face attribute result set. When used together with face detection, the same
+     * regular-face index is used; first check that
+     * `index < getFaceAttributeCount()`. Out-of-range indexes return `null`.
+     * @param {number} index - The index in the current frame's face attribute result set.
+     * @returns {FaceAttributeInterface} The face attribute result at `index`, or `null` when `index` is out of range.
      */
     getFaceAttributeInfo(index: number): FaceAttributeInterface;
     /**
-     * @description getFaceBaseInfo
-     * @param {number} index
-     * @returns {Face106Interface}
+     * @description Returns the face base result at `index` from the current frame's
+     * detected face result set. Valid indexes are `0` to `getFaceCount() - 1`.
+     * Out-of-range indexes return `null`.
+     * @param {number} index - The face index in the current frame.
+     * @returns {Face106Interface} The face base result at `index`, or `null` when `index` is out of range.
      */
     getFaceBaseInfo(index: number): Face106Interface;
     /**
-     * @description getFaceCount
+     * @description Returns the number of detected faces available in the current frame.
+     * Use this with `getFaceBaseInfo(index)`. Face indexes start at `0`.
+     * Returns `0` when the current frame has no detected face results.
      * @returns {number}
      */
     getFaceCount(): number;
     /**
-     * @description getFaceFaceMask
-     * @param {number} index
-     * @returns {FaceFaceMaskInterface}
+     * @description Returns the face-region mask for the face at `index`.
+     * The mask is a square grayscale buffer in its own normalized square space
+     * (top-left origin, row-major), not aligned pixel-for-pixel with the input
+     * camera image; see {@link FaceFaceMaskInterface.faceMask} for the layout.
+     * Valid indexes are `0` to `getFaceCount() - 1`; out-of-range returns
+     * `null`.
+     * @param {number} index - The face index in the current frame.
+     * @returns {FaceFaceMaskInterface} The face-region mask for the face at `index`, or `null` when `index` is out of range.
      */
     getFaceFaceMask(index: number): FaceFaceMaskInterface;
     /**
-     * @description getFaceMouthMask
-     * @param {number} index
-     * @returns {FaceMouthMaskInterface}
+     * @description Returns the mouth-region mask for the face at `index`.
+     * The mask is a square grayscale buffer in its own normalized square space
+     * (top-left origin, row-major), not aligned pixel-for-pixel with the input
+     * camera image; see {@link FaceMouthMaskInterface.faceMask} for the layout.
+     * Valid indexes are `0` to `getFaceCount() - 1`; out-of-range returns
+     * `null`.
+     * @param {number} index - The face index in the current frame.
+     * @returns {FaceMouthMaskInterface} The mouth-region mask for the face at `index`, or `null` when `index` is out of range.
      */
     getFaceMouthMask(index: number): FaceMouthMaskInterface;
     /**
-     * @description getFacePetInfo
-     * @param {number} index
-     * @returns {FacePetInfoInterface}
+     * @description Returns the face pet result at `index` from the current frame's
+     * face pet result set. This index is independent of `getFaceCount()` (face pet
+     * detection is a separate algorithm). Valid indexes are `0` to
+     * `getFacePetInfoCount() - 1`. Out-of-range indexes return `null`.
+     * The returned result can represent different `facePetType` values (cat, dog,
+     * or human); filter by `facePetType` if only one type is needed.
+     * @param {number} index - The index in the current frame's face pet result set.
+     * @returns {FacePetInfoInterface} The face pet result at `index`, or `null` when `index` is out of range.
      */
     getFacePetInfo(index: number): FacePetInfoInterface;
     /**
-     * @description getFacePetInfoCount
+     * @description Returns the number of face pet results available in the current frame.
+     * Use this with `getFacePetInfo(index)`. This count is independent of
+     * `getFaceCount()` and may include entries of any `facePetType` (cat, dog, human).
      * @returns {number}
      */
     getFacePetInfoCount(): number;
     /**
-     * @description getFaceTeethMask
-     * @param {number} index
-     * @returns {FaceTeethMaskInterface}
+     * @description Returns the teeth-region mask for the face at `index`.
+     * Valid indexes are `0` to `getFaceCount() - 1`; out-of-range returns
+     * `null`.
+     * @param {number} index - The face index in the current frame.
+     * @returns {FaceTeethMaskInterface} The teeth-region mask for the face at `index`, or `null` when `index` is out of range.
      */
     getFaceTeethMask(index: number): FaceTeethMaskInterface;
     /**
-     * @description getHandCount
+     * @description Returns the number of detected hands in the current frame.
+     * Use this with `getHandInfo(index)`. Returns `0` when no hands are
+     * detected.
      * @returns {number}
      */
     getHandCount(): number;
     /**
-     * @description getHandInfo
-     * @param {number} index
-     * @returns {HandInfo}
+     * @description Returns the hand detection result at `index`. Valid indexes
+     * are `0` to `getHandCount() - 1`; out-of-range returns `null`.
+     * @param {number} index - The index in the current frame's hand result set.
+     * @returns {HandInfo} The hand detection result at `index`, or `null` when `index` is out of range.
      */
     getHandInfo(index: number): HandInfo;
   }
@@ -247,6 +332,19 @@ declare namespace APJS {
   }
   /**
    * @class AnimatedTextureProvider
+   * @description Provider that plays a `TextureSequence` as an animated texture.
+   * Default playback settings are `reverse = false`, `playMode = Forward`, `loopCount = -1`,
+   * `fps = 12`, and `duration = 0`.
+   * Assigning `textureSequence` updates `frameCount` from the sequence and then calls `reset()`.
+   * Once a frame count is available, `fps` and `duration` stay linked:
+   * setting `fps` recalculates `duration` as `frameCount / fps`, while setting `duration`
+   * recalculates `fps` as `Math.round(frameCount / duration)` and the stored duration then snaps
+   * to that integer-fps result.
+   * `loopCount = 0` disables time-based playback updates and also makes `seekTime()` a no-op.
+   * Playback state methods operate on the current in-memory settings: `play()` / `resume()` only flip the
+   * playing state, `pause()` only stops advancing time, `stop()` resets to the first frame, and `reset()`
+   * rebuilds playback from the full current sequence while keeping properties such as `playMode`, `reverse`,
+   * `loopCount`, `fps`, and `duration`.
    */
   class AnimatedTextureProvider extends TextureDelegateProvider {
     /**
@@ -260,7 +358,8 @@ declare namespace APJS {
      */
     set reverse(value: boolean);
     /**
-     * @description Gets or sets the play mode of the animation.
+     * @description Gets or sets the play mode used to build each loop's frame order.
+     * Default: `AnimatedTexturePlayMode.Forward`.
      */
     get playMode(): AnimatedTexturePlayMode;
     /**
@@ -269,41 +368,65 @@ declare namespace APJS {
      */
     set playMode(value: AnimatedTexturePlayMode);
     /**
-     * @description Gets the number of times the animation should loop.
+     * @description Gets how many times the animation should loop.
+     * Default: `-1`.
+     * `0` disables playback updates and time seeking.
+     * Positive values play a finite number of loops.
+     * Negative values keep looping.
      */
     get loopCount(): number;
     /**
-     * @description Sets the number of times the animation should loop.
+     * @description Sets how many times the animation should loop.
+     * Default: `-1`.
+     * `0` disables playback updates and time seeking.
+     * Positive values play a finite number of loops.
+     * Negative values keep looping.
      */
     set loopCount(value: number);
     /**
-     * @description Gets the frames per second (fps) of the animation.
+     * @description Gets the animation frame rate in frames per second.
+     * Default: `12`.
      */
     get fps(): number;
     /**
-     * @description Sets the frames per second (fps) of the animation.
+     * @description Sets the animation frame rate in frames per second.
+     * Default: `12`.
+     * Invalid values (`<= 0`) are ignored.
+     * When a frame count is available, changing `fps` updates `duration` to `frameCount / fps`.
      */
     set fps(value: number);
     /**
      * @description Gets the duration of the animation in seconds.
+     * Default: `0`.
      */
     get duration(): number;
     /**
      * @description Sets the duration of the animation in seconds.
+     * Default: `0`.
+     * Invalid values (`<= 0`) are ignored.
+     * When a frame count is available, changing `duration` recalculates `fps` as
+     * `Math.round(frameCount / duration)`. The stored duration then follows that resolved `fps`.
      */
     set duration(value: number);
     /**
      * @description reset and set the start and end index of the animation. The index range from 0 to frameCount - 1.
+     * Both inputs are rounded to integers and clamped into `[0, frameCount - 1]`.
+     * The interval length is computed inclusively from `min(from, to)` to `max(from, to)`.
+     * The stored `startIndex` / `endIndex` keep the caller's order, so `from > to` creates a descending range
+     * for play modes that read the endpoints directly.
      * @param from - start index of the animation
      * @param to - end index of the animation
      */
     playFromTo(from: number, to: number): void;
     /**
      * @description Starts the animation playback.
+     * If playback is already running, this call keeps the current frame/time state unchanged.
      */
     play(): void;
     /**
      * @description Pauses animation playback.
+     * There is no playing-state precondition: this sets the internal playing flag to `false`
+     * and emits the pause event even if playback was already stopped or paused.
      */
     pause(): void;
     /**
@@ -312,10 +435,15 @@ declare namespace APJS {
     stop(): void;
     /**
      * @description Resumes the animation playback.
+     * This only switches the playing state back on and continues from the current frame/time state.
+     * If `stop()` was called earlier, playback resumes from the reset start state that `stop()` prepared.
      */
     resume(): void;
     /**
      * @description Resets the animation to its initial state and restarts playback.
+     * This resets the active range to the full current sequence, sets local time/frame state back to the start,
+     * and restarts playback without changing the configured `playMode`, `reverse`, `loopCount`, `fps`, or `duration`.
+     * If no valid `textureSequence` / atlas data is available, playback is turned off instead.
      */
     reset(): void;
     /**
@@ -336,43 +464,59 @@ declare namespace APJS {
   class Animation extends AObject {
     protected constructor();
     /**
-     * @description total duration in seconds
-     * @type {number}
+     * @description Total length of the animation in seconds. default: `0`.
+     * @readonly
+     * @return the duration in seconds.
      */
     get duration(): number;
     /**
-     * @description default start time for this animation
-     * @type {number}
+     * @description Start time of the default clip in seconds. Used as the
+     * playback start point when an {@link Animator} plays this animation's
+     * default clip. Not validated against {@link endTime} or {@link duration}.
+     * default: `0`.
+     * @return the start time in seconds.
      */
     get startTime(): number;
     /**
-     * @description default end time for this animation
-     * @type {number}
+     * @description End time of the default clip in seconds. Used as the
+     * playback end point when an {@link Animator} plays this animation's
+     * default clip. Not clamped to {@link duration} or auto-synced with
+     * {@link startTime}. default: `0`.
+     * @return the end time in seconds.
      */
     get endTime(): number;
     /**
      * @readonly
      * @description The frame count of the animation.
      * Determined by the track with the highest number of frames.
+     * Returns `0` when the animation has no tracks, or when every track has an empty key list.
      * Enabling animation compression on import may reduce this value.
      * @type {number}
      */
     get frameCount(): number;
     /**
-     * @description set default WrapMode for this animation
+     * @description Gets the default `wrapMode` stored on this animation.
      * @type {AnimationWrapMode}
      */
     get wrapMode(): AnimationWrapMode;
     /**
-     * @description set default WrapMode for this animation
+     * @description Sets the default `wrapMode` stored on this animation.
      * @type {AnimationWrapMode}
      */
     set wrapMode(inWrapMode: AnimationWrapMode);
     /**
-     * @description set default playback speed for this animation
-     * @type {number}
+     * @description Gets the default playback speed multiplier.
+     * @return the speed multiplier.
      */
     get speed(): number;
+    /**
+     * @description Sets the default playback speed multiplier.
+     * - `1.0` = normal speed;
+     * - `0` = frozen (animation stays at the current frame but does not stop).
+     * Must be ≥ 0; negative values produce undefined behavior.
+     * Range `[0, 10]` (enforced by the editor). Default: `1.0`.
+     * @param inSpeed - the speed multiplier.
+     */
     set speed(inSpeed: number);
   }
   /**
@@ -401,7 +545,8 @@ declare namespace APJS {
   }
   /**
    * @class Animator
-   * @description Component that controls animation playback.
+   * @description Component that manages the animation resources attached to a scene object and controls playback on this animator.
+   * Use it to query animations by name, switch the current playback animation, and listen for events from an animation's default clip.
    * @example
    * const skeletonRoot = scene.findSceneObject("SkeletonAndRenderRoot");
    * const animator = skeletonRoot.getComponent("Animator") as APJS.Animator;
@@ -419,36 +564,41 @@ declare namespace APJS {
   class Animator extends Component {
     protected constructor();
     /**
-     * @description Retrieves the animation event emitter instance. If it doesn't exist, it creates a new one.
-     * @param name - The name of the animation.
-     * @returns The animation event emitter instance.
-     * @example
-     * const emitter = animator.getEmitter('animationName-walk');
-     * emitter.on(APJS.AnimationEventType.AnimationEnd, (event: APJS.IEvent) => {
-     *     const animation = event.args[0] as APJS.Animation;
-     *     const speed = 1;
-     *     const wrapMode = APJS.AnimationWrapMode.Once;
-     *     const fadeInTime = 1;
-     *     animation.play('animationName-run', wrapMode, speed, fadeInTime);
-     * });
-     */
-    /**
      * @description Gets the event emitter for the specified animation.
-     * The `animationName` must match an animation resource name associated with this animator.
+     * The `animationName` must match the {@link Animation.name} of an animation
+     * registered on this animator (i.e. one of the entries in {@link Animator.animations}).
+     * Matching is case-sensitive and exact; aliases or state-machine state names are not
+     * accepted.
      * Returns `undefined` if the animation does not exist or has no default clip.
+     * The first call for a given animation creates a new emitter and caches it; subsequent
+     * calls with the same name return the same instance.
+     * @param animationName - The animation name, exactly as defined on the animator.
+     * @returns The animation event emitter instance, or `undefined` if the animation cannot be resolved.
+     * @example
+     * const emitter = animator.getEmitter('walk');
+     * emitter?.on(APJS.AnimationEventType.AnimationEnd, (event: APJS.IEvent) => {
+     *     const animation = event.args[0] as APJS.Animation;
+     *     animator.playback = animation;
+     * });
      */
     getEmitter(animationName: string): IEventEmitter | undefined;
     /**
      * @description Returns whether the specified animation is currently playing.
-     * The `animationName` must match an animation resource name associated with this animator.
+     * <br/>The `animationName` must match the {@link Animation.name} of an animation
+     * registered on this animator (i.e. one of the entries in {@link Animator.animations}).
+     * Matching is case-sensitive and exact; passing an empty string or a name that does
+     * not exist returns `false` and logs a warning rather than throwing.
+     * Returns `false` when the animation has been paused or stopped, or when it has no default clip.
+     * @param animationName - The name of the animation to query, exactly as defined on the animator.
      * @returns True if the specified animation is playing, otherwise false.
      * @example
-     *     const isPlaying = animator.isPlaying('animationName-walk');
+     *     const isPlaying = animator.isPlaying('walk');
      */
     isPlaying(animationName: string): boolean;
     /**
-     * @description Gets the animation resource currently being played.
-     * @returns The animation resource currently being played, or null if no animation is currently playing.
+     * @description Gets the animation resource currently playing on this animator's default layer.
+     * Returns `null` if the default layer has no running clip.
+     * @returns The animation resource currently playing on the default layer, or `null` if none is available.
      * @example
      * const current = animator.playback;
      * if (current) {
@@ -457,16 +607,19 @@ declare namespace APJS {
      */
     get playback(): Animation | null;
     /**
-     * @description Sets the animation resource currently being played.
-     * @param animation - The animation resource to play. Set to null to stop all animations(not recommended, use stopAll instead).
+     * @description Sets the animation resource currently played on this animator's default layer.
+     * When a non-null animation is assigned at runtime, this animator adds it to `animations` first if needed, then immediately plays that animation's default clip.
+     * Set to `null` to stop all animations currently playing on this animator.
+     * @param animation - The animation resource to play, or `null` to stop all animations.
      * @example
      * animator.playback = walkAnimation; // start playing a different animation
      */
     set playback(animation: Animation | null);
     /**
      * @description Gets the list of all animation resources associated with this animator.
-     * The returned array contains all animation resources that have been added to this animator.
-     * @returns The array of animation resources.
+     * The returned array is a snapshot of the current animation list.
+     * Editing that array does not change this animator until you assign the modified array back through `animations`.
+     * @returns The current animation resource list.
      * @example
      * const anims = animator.animations;
      * console.log(anims.length);
@@ -474,15 +627,20 @@ declare namespace APJS {
     get animations(): Animation[];
     /**
      * @description Sets the list of all animation resources associated with this animator.
-     * The array can be modified to add or remove animation resources.
-     * @param value - The array of animation resources to set.
+     * This replaces the animator's current animation list with `value`.
+     * @param value - The full animation resource list to assign.
      */
     set animations(value: Animation[]);
     /**
      * @description Gets the animation resource with the specified name.
-     * The name must match an animation resource name associated with this animator.
-     * @param name - The name of the animation resource to get.
-     * @returns The animation resource with the specified name.
+     * <br/>The `name` must match the {@link Animation.name} of an animation registered
+     * on this animator (i.e. one of the entries in {@link Animator.animations}); matching
+     * is case-sensitive and exact, and aliases or state-machine names are not accepted.
+     * <br/>If no animation with the given name exists, the underlying RTTI returns a
+     * native null and this method resolves to a falsy value (`null`/`undefined`); always
+     * null-check the result before using it.
+     * @param name - The animation name, exactly as defined on the animator.
+     * @returns The animation resource with the specified name, or `null` if none matches.
      * @example
      * const anim = animator.getAnimation('walk');
      * if (anim) {
@@ -491,13 +649,14 @@ declare namespace APJS {
      */
     getAnimation(name: string): Animation;
     /**
-     * @description Deprecated. Play animation exclusively in the default layer; use `playback` instead.
-     * The `animationName` must match an animation resource name associated with this animator.
-     * @param animationName - animation's name
+     * @description Play animation exclusively in the default layer.
+     * @deprecated Use `playback` instead.
+     * @param animationName - The animation name, exactly as defined on the animator.
      * @param wrapMode - loopCount or wrap mode, a value above 0 means loopCount
      * @param speed - play speed
      * @param fadeTime - blend weight fade duration, if is 0, do transition immediately
      * @example
+     * // Play the 'walk' animation registered on the animator.
      * animator.play('walk', AnimationWrapMode.Repeat, 1.0, 0.3);
      */
     play(animationName: string, wrapMode: number | AnimationWrapMode, speed: number, fadeInTime?: number): void;
@@ -522,15 +681,22 @@ declare namespace APJS {
   }
   /**
    * @class AObject
+   * @description Common base class for many APJS objects that expose shared object identity data.
+   * Use `AObject` when you only need common information such as the object's `name`, `guid`, `handle`, or equality,
+   * instead of APIs that are specific to a concrete subclass.
    */
   class AObject {
     protected constructor();
     /**
-     * @description Get the name of the object.
+     * @description Gets the name of the object.
+     * Default: `''`, unless the concrete object sets another initial name.
+     * This API does not enforce any format or uniqueness constraint.
      */
     get name(): string;
     /**
-     * @description Set the name of the object.
+     * @description Sets the name of the object.
+     * This API stores the assigned string as-is and does not enforce any format
+     * or uniqueness constraint.
      * @param value - The name to set for the object.
      */
     set name(value: string);
@@ -544,14 +710,23 @@ declare namespace APJS {
   }
   /**
    * @class AudioDetectorBuilder
-   * @description The base builder for audio detector to set the source of the detector and build the detector.
+   * @description The base builder for audio detectors.
+   * Use it to choose which audio source the detector reads from before calling `build()`.
    */
   abstract class AudioDetectorBuilder<T> {
     protected constructor();
     /**
      * @description Set the source of the detector.
-     * @param type - The type of audio source. Default is None. When the type is ExternalFile, the audioComponent must be provided.
-     * @param audioComponent - The audio component which plays the external audio file.
+     * `Microphone` reads from the microphone input and `Music` reads from the online music input;
+     * both ignore `audioComponent`.
+     * `ExternalFile` reads from the `audioComponent`'s audio clip player, so `audioComponent` must be provided.
+     * `None` leaves the builder without a valid detector source.
+     * This method always stores the requested source choice on the builder and returns the builder itself;
+     * source validation happens later during `build()`. In particular, `ExternalFile` with a missing player and
+     * `None` both lead to a builder state that cannot produce a working detector.
+     * @param type - The audio source type to use.
+     * @param audioComponent - Pass the audio component that plays the external audio file when `type` is `ExternalFile`;
+     * otherwise pass `null`.
      * @example
      * audioDetectorBuilder
      *     .setDetectorSource(APJS.AudioSourceType.ExternalFile, audioComponent)
@@ -573,9 +748,18 @@ declare namespace APJS {
   /**
    * @class BaseAudioDetector
    * @description The base class for audio detectors with common functionality.
+   * Implements {@link IAudioDetector} so every subclass exposes the same `enabled` switch
+   * that gates whether the detector actively produces detection results, and centralises
+   * the per-frame extractor wiring used by concrete detectors. Concrete detector classes add
+   * their own result accessors on top of this base.
    */
   abstract class BaseAudioDetector implements IAudioDetector {
     protected constructor();
+    /**
+     * @description Whether the detector is enabled.
+     * The default value is `true`.
+     * When disabled, detector result APIs no longer return detection results and instead return their corresponding no-result values.
+     */
     enabled: boolean;
   }
   /**
@@ -604,9 +788,12 @@ declare namespace APJS {
    *
    * Lifecycle order for a normally enabled component:
    * 1. `onInit()` — called after the component is added to a SceneObject.
-   * 2. `onStart()` — called before the first frame update.
-   * 3. `onUpdate(deltaTime)` — called every frame while the component stays enabled.
-   * 4. `onDestroy()` — called when the component is destroyed.
+   * 2. `onEnable()` — called after `onInit()` when the component becomes enabled and active.
+   * 3. `onStart()` — called before the first frame update.
+   * 4. `onUpdate(deltaTime)` — called every frame while the component stays enabled.
+   * 5. `onDisable()` — called when the component becomes disabled or invisible, and before `onDestroy()`.
+   * 6. `onDestroy()` — called when the component is destroyed.
+   * `onEnable()`/`onDisable()` may fire multiple times as the enabled/visible state toggles.
    */
   abstract class BasicScriptComponent extends DynamicComponent {
     /**
@@ -615,11 +802,20 @@ declare namespace APJS {
      */
     getSceneObject(): SceneObject;
     /**
-     * @description Called by engine when component itself is enabled.
+     * @description Called by the engine when the component becomes enabled and active.
+     * It is triggered when the component's `enabled` property is set to `true`, or when
+     * the SceneObject becomes visible while the component is enabled.
+     * For a normally enabled component it runs after `onInit()` and before the first
+     * `onStart()`. It may be called multiple times over the component's lifetime as the
+     * enabled/visible state toggles.
      */
     onEnable(): void;
     /**
-     * @description Called by engine when component itself is disabled.
+     * @description Called by the engine when the component becomes disabled.
+     * It is triggered when the component's `enabled` property is set to `false`, or when
+     * the SceneObject becomes invisible while the component is enabled. It also runs before
+     * `onDestroy()` when an enabled component is removed or destroyed.
+     * It may be called multiple times over the component's lifetime, paired with `onEnable()`.
      */
     onDisable(): void;
     /**
@@ -707,7 +903,9 @@ declare namespace APJS {
   }
   /**
    * @class BeatDetectorBuilder
-   * @description A builder for beat detector to set the source of the detector and build the detector.
+   * @description A builder for beat detector to configure the detector's audio source and then build the detector.
+   * The source settings stored on this builder are the ones used by `build()`.
+   * In normal usage, call `setDetectorSource(...)` before `build()`.
    * @example
    * onInit() {
    *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.Beat);
@@ -717,10 +915,25 @@ declare namespace APJS {
    */
   class BeatDetectorBuilder extends AudioDetectorBuilder<BeatDetector> {
     protected constructor();
+    /**
+     * @description Set the source of the beat detector.
+     * `Microphone` reads from the microphone input and `Music` reads from the online music input;
+     * both ignore `audioComponent`.
+     * `ExternalFile` reads from the `audioComponent`'s audio clip player, so `audioComponent` must be provided.
+     * `None` leaves the builder without a valid detector source.
+     * The selected source and component are stored on the builder and applied when `build()` is called.
+     * @param type - The audio source type to use.
+     * @param audioComponent - The audio component that plays the external audio file when `type` is `ExternalFile`.
+     * @returns Builder instance for chaining.
+     */
     setDetectorSource(type: AudioSourceType, audioComponent: IAudioComponent | null): this;
     /**
-     * @description Build the beat detector. Note that the detector should be built in onInit, otherwise it will return null.
-     * @returns Detector instance of the beat detector.
+     * @description Build the beat detector from the source configuration currently stored on this builder.
+     * Returns `null` only when the detector type is unavailable in the current runtime (`isAvailable === false`).
+     * Source misconfiguration does not produce `null` here: `build()` still creates a detector instance, but an
+     * invalid source choice such as `None` or an `ExternalFile` source without a usable audio player prevents the
+     * detector from wiring a working extractor node and therefore from producing results.
+     * @returns Detector instance of the beat detector, or `null` when this detector type is unavailable.
      */
     build(): BeatDetector | null;
   }
@@ -770,14 +983,12 @@ declare namespace APJS {
    * @class BlendState
    * @extends AObject
    * @description Represents the blend state for color blending in the rendering pipeline.
+   * APJS getters and setters here operate on the first color attachment (`attachments[0]`) only;
+   * if the native blend state has no attachment yet, the first setter call creates that attachment.
+   * For advanced multi-attachment cases, work with the native blend state directly through the
+   * inherited native accessors. The native RHI fallback for a missing color attachment is blend
+   * disabled with `src = ONE`, `dst = ZERO`, and blend operations set to `ADD`.
    *
-   * ### Core Features
-   * - Controls how colors are blended during rendering
-   * - Supports configurable blend factors and operations
-   * - Enables or disables blending for color attachments
-   * - Provides access to native blend state implementation
-   *
-   * ### Usage Examples
    * @example <caption>Basic Usage: Setting Up Alpha Blending</caption>
    * // Create a new blend state for alpha blending
    * const blendState = new BlendState();
@@ -817,16 +1028,20 @@ declare namespace APJS {
     constructor();
     /**
      * @description Indicates whether blending is enabled for the color attachment state.
+     * This script property reflects the first color attachment only.
      * @returns True if blending is enabled, false otherwise.
      */
     get enabled(): boolean;
     /**
      * @description Sets the enabled state of the blend state for the first attachment.
+     * This does not change the blend factors or operations; it only toggles whether the first attachment uses them.
      * @param value True to enable blending, false otherwise.
      */
     set enabled(value: boolean);
     /**
      * @description The source color blend factor for the first attachment in the blend state.
+     * The native fallback default is `BlendFactor.One` until the first attachment is explicitly configured.
+     * Only takes effect when {@link enabled} is `true`.
      * @returns The source color blend factor.
      */
     get srcColorFactor(): BlendFactor;
@@ -837,6 +1052,8 @@ declare namespace APJS {
     set srcColorFactor(value: BlendFactor);
     /**
      * @description The destination color blend factor for the first attachment in the blend state.
+     * The native fallback default is `BlendFactor.Zero` until the first attachment is explicitly configured.
+     * Only takes effect when {@link enabled} is `true`.
      * @returns The destination color blend factor.
      */
     get dstColorFactor(): BlendFactor;
@@ -847,6 +1064,8 @@ declare namespace APJS {
     set dstColorFactor(value: BlendFactor);
     /**
      * @description The source alpha blend factor for the first color attachment in the blend state.
+     * The native fallback default is `BlendFactor.One` until the first attachment is explicitly configured.
+     * Configured independently from the color factors and only takes effect when {@link enabled} is `true`.
      * @returns The source alpha blend factor.
      */
     get srcAlphaFactor(): BlendFactor;
@@ -857,6 +1076,8 @@ declare namespace APJS {
     set srcAlphaFactor(value: BlendFactor);
     /**
      * @description The destination alpha blend factor for the first color attachment in the blend state.
+     * The native fallback default is `BlendFactor.Zero` until the first attachment is explicitly configured.
+     * Configured independently from the color factors and only takes effect when {@link enabled} is `true`.
      * @returns The destination alpha blend factor.
      */
     get dstAlphaFactor(): BlendFactor;
@@ -867,6 +1088,9 @@ declare namespace APJS {
     set dstAlphaFactor(value: BlendFactor);
     /**
      * @description The blend operation for the first color attachment in the blend state.
+     * The native fallback default is `BlendOperation.Add`, which combines the source and
+     * destination colors using their respective blend factors. Only takes effect when
+     * {@link enabled} is `true`.
      * @returns The color blend operation.
      */
     get colorBlendOperation(): BlendOperation;
@@ -877,6 +1101,8 @@ declare namespace APJS {
     set colorBlendOperation(value: BlendOperation);
     /**
      * @description The blend operation for alpha blending in the first color attachment in the blend state.
+     * The native fallback default is `BlendOperation.Add`. Configured independently from
+     * {@link colorBlendOperation} and only takes effect when {@link enabled} is `true`.
      * @returns The alpha blend operation.
      */
     get alphaBlendOperation(): BlendOperation;
@@ -888,12 +1114,15 @@ declare namespace APJS {
   }
   /**
    * @interface
-   * BodyInfo
+   * @description A single detected body (skeleton) from the current frame's body
+   * detection result. Accessed via {@link AlgorithmResult.getBodyInfo}. Valid only
+   * for the frame in which it was produced.
    */
   interface BodyInfo {
     /**
      * @readonly
-     * @description detected
+     * @description Whether this body is detected in the current frame. `false` means
+     * this entry should be treated as not detected.
      * @type {boolean}
      */
     readonly detected: boolean;
@@ -989,10 +1218,13 @@ declare namespace APJS {
     protected constructor();
     /**
      * @description The color used to clear this Camera's render target before drawing, when `inputTexture` is null.
+     * Only takes effect when `clearType` includes color clearing; ignored otherwise.
+     * If `inputTexture` is assigned and color clearing is active, that texture provides the base color instead.
      */
     get clearColor(): Color;
     /**
      * @description Sets the clear color for the camera.
+     * Only affects rendering when `clearType` includes color clearing and `inputTexture` is null.
      * @param color - The new clear color for the camera.
      */
     set clearColor(color: Color);
@@ -1016,30 +1248,38 @@ declare namespace APJS {
     set cameraType(type: CameraType);
     /**
      * @description The orthographic height of the camera if the camera type is orthographic.
+     * Only meaningful when `cameraType` is `CameraType.Ortho`.
+     * Default: `1.0`. Recommended range: `[0, 99]`.
+     * The value is forwarded as-is and is not clamped at this layer.
      */
     get orthoHeight(): number;
     /**
      * @description Sets the orthographic height of the camera.
+     * Only meaningful when `cameraType` is `CameraType.Ortho`.
      * @param height - The new orthographic height for the camera.
      */
     set orthoHeight(height: number);
     /**
      * @description The distance of the far clipping plane.
      * Objects farther than this value are not rendered.
+     * Default: 1000
      */
     get far(): number;
     /**
      * @description Sets the far clipping plane of the camera, defining the maximum distance at which objects are visible.
+     * APJS forwards this value directly and does not enforce `far > near` in this layer.
      * @param value - The new far clipping plane for the camera.
      */
     set far(value: number);
     /**
      * @description The distance of the near clipping plane.
      * Objects closer than this value are not rendered.
+     * Default: 0.1
      */
     get near(): number;
     /**
      * @description Sets the near clipping plane of the camera, defining the closest distance at which objects are visible.
+     * APJS forwards this value directly and does not enforce positivity or a `near < far` relationship in this layer.
      * @param value - The new near clipping plane for the camera.
      */
     set near(value: number);
@@ -1056,10 +1296,15 @@ declare namespace APJS {
     set fov(value: number);
     /**
      * @description Gets the field of view type for the camera.
+     * The native default is `CameraFovType.Custom`.
+     * This setting is only meaningful for perspective cameras.
      */
     get fovType(): CameraFovType;
     /**
      * @description Sets the field of view type for the camera.
+     * `CameraFovType.Custom` uses the stored `fov` value.
+     * `CameraFovType.Physical` lets the native camera use platform/device FOV when the physical-FOV
+     * feature is enabled; otherwise this mode may not change the effective projection.
      * @param value - The new field of view type for the camera.
      */
     set fovType(value: CameraFovType);
@@ -1092,26 +1337,41 @@ declare namespace APJS {
      */
     get renderTexture(): Texture;
     /**
-     * @description Sets a custom RenderTexture as this camera's output render target.
-     * Must be a RenderTexture; other texture types are silently rejected.
+     * @description Sets a custom `RenderTexture` as this camera's output render target.
+     * The input must be a `RenderTexture`.
+     * Passing `null` clears the current render texture.
+     * Passing any other texture type logs an error and leaves the current target unchanged.
      * @param value - The new render texture for the camera.
      */
     set renderTexture(value: Texture);
     /**
-     * @description Gets the depth render texture associated with the current camera.
+     * @description Gets the depth texture currently assigned to this camera.
+     * The returned texture is the `DrawTexture` used as the camera's depth attachment source.
      */
     get depthRenderTexture(): Texture;
     /**
-     * @description Sets the depth render texture for the camera.
-     * @param value - The new depth render texture for the camera. The texture must be a `DrawTexture`; passing any other type is silently ignored.
+     * @description Sets the depth texture for the camera.
+     * The input must be a `DrawTexture`.
+     * Passing `null` clears the current depth texture.
+     * Passing any other texture type logs an error and leaves the current depth texture unchanged.
+     * @param value - The new depth render texture for the camera.
      */
     set depthRenderTexture(value: Texture);
     /**
-     * @description The camera's viewport, default is (0,0,1,1)
+     * @description The camera viewport, in normalized coordinates.
+     * Default: `(0, 0, 1, 1)`, which covers the full render target.
+     * `x` and `y` are offsets, and `width` and `height` are sizes, all relative
+     * to the current render target.
+     * Values outside `[0, 1]` are allowed. The effective viewport is clipped
+     * to the current render target.
      */
     get viewport(): Rect;
     /**
-     * @description Sets the camera's viewport to the specified rectangular area.
+     * @description Sets the camera viewport in normalized coordinates.
+     * `x` and `y` are offsets, and `width` and `height` are sizes, all relative
+     * to the current render target.
+     * Values outside `[0, 1]` are allowed. The effective viewport is clipped
+     * to the current render target.
      * @param value - The new viewport for the camera.
      */
     set viewport(value: Rect);
@@ -1126,7 +1386,7 @@ declare namespace APJS {
     set renderOrder(value: number);
     /**
      * @readonly
-     * @description Get the projection matrix of the camera.
+     * @description Get the current projection matrix of the camera.
      */
     get projectionMatrix(): Matrix4x4f;
     /**
@@ -1152,30 +1412,34 @@ declare namespace APJS {
      */
     worldToViewportPoint(worldPoint: Vector3f): Vector3f;
     /**
-     * @description Converts a screen space position to a world space position, given an absolute depth.
-     * @param screenPoint - A point in screen space represented as a Vector3f.
-     * <br/>X, Y are screen coordinates in pixels. left-bottom is (0, 0). right-top is (W, H).
-     * <br/>Z is the absolute world-unit depth from the camera's
-     * <br/>near plane, not a normalized value. Use the Z value from {@link worldToScreenPoint} to round-trip correctly.
-     * @returns The corresponding world space position as a Vector3f.
+     * @description Converts a screen space position to a world space position.
+     * @param screenPoint - A point in screen space represented as a `Vector3f`.
+     * <br/>`x` and `y` are pixel coordinates with a bottom-left origin, in the
+     * <br/>current render target and camera viewport.
+     * <br/>This is different from {@link TouchData.position}, which uses normalized
+     * <br/>coordinates with a top-left origin.
+     * <br/>`z` is the distance along the camera viewing axis in world units.
+     * <br/>Use the `z` value from {@link worldToScreenPoint} to round-trip correctly.
+     * @returns The corresponding world space position as a `Vector3f`.
      * @example
-     * // for default camera at (0, 0, 40), the following call returns (0, 0, 10)
-     * // because (360, 640) is the center of the screen with resolution (1280, 720)
-     * // and depth 30 is the depth from the near plane.
+     * // for the default camera at (0, 0, 40), using the center of the current
+     * // render target with z = 30 returns (0, 0, 10)
      * const worldPos = cam.screenToWorldPoint(new APJS.Vector3f(360, 640, 30));
      */
     screenToWorldPoint(screenPoint: Vector3f): Vector3f;
     /**
      * @description Converts a world space position to a screen space position.
-     * @param worldPoint - The world space point as a Vector3f.
-     * @returns The corresponding screen space position as a Vector3f.
-     * <br/>Screen position is based on the current rendered screen resolution W x H,
-     * <br/>ranging from ([0, W], [0, H]) where (0, 0) is the bottom-left and (W, H) is the top-right.
-     * <br/>The returned Z component is the distance from the camera's near plane in world units.
+     * @param worldPoint - The world space point as a `Vector3f`.
+     * @returns The corresponding screen space position as a `Vector3f`.
+     * <br/>`x` and `y` are pixel coordinates with a bottom-left origin, in the
+     * <br/>current render target and camera viewport.
+     * <br/>This is different from {@link TouchData.position}, which uses normalized
+     * <br/>coordinates with a top-left origin.
+     * <br/>The returned `z` component is the distance along the camera viewing axis
+     * <br/>in world units.
      * @example
-     * // for default camera at (0, 0, 40), the following call returns (360, 640, 30)
-     * // because (0, 0, 10) is the center of the screen with resolution (1280, 720)
-     * // and depth 30 is the depth from the near plane.
+     * // for the default camera at (0, 0, 40), the following call returns the
+     * // center of the current render target, with z = 30
      * const screenPos = cam.worldToScreenPoint(new APJS.Vector3f(0, 0, 10));
      * // Use screenPoint.x and screenPoint.y to position a 2D UI indicator
      * const screenPointVec3f = cam.worldToScreenPoint(enemy.getTransform().getWorldPosition());
@@ -1201,13 +1465,16 @@ declare namespace APJS {
      * @description Generates a ray from the screen position in this camera's view space.
      * <br/>The screen coordinate system origin (0, 0) is at the bottom-left,
      * with x increasing rightward and y increasing upward, measured in pixels.
+     * This is the screen-space counterpart of {@link viewportPointToRay}.
+     * The capitalized method name is kept for backward compatibility with the native API;
+     * prefer {@link screenPointToRay} in new code.
      * @param screenPoint - A point in screen space represented as a Vector2f (pixels).
      * @returns The calculated world space ray as a Ray object.
      * @example
      * // For a default camera at (0, 0, 40) and a default cube at (0, 0, 0)
      * // with box collider size (8, 8, 8), the following call logs (0, 0, 4).
      * // The ray to the center of the screen hits the front face of the cube first, and the front face is at z = 4.
-     * const ray = cam.ScreenPointToRay(new APJS.Vector2f(360, 640));
+     * const ray = cam.ScreenPointToRay(new APJS.Vector2f(640, 360));
      * const hits = APJS.Physics3D.raycast(ray, 500, true);
      * console.log("raycastHit:", hits[0].point);
      */
@@ -1296,8 +1563,13 @@ declare namespace APJS {
    * @description Represents a capsule-shaped collider component used for physics collision detection.
    * Use this for rounded elongated volumes such as characters, limbs, or
    * simple props that need smoother contact than a box.
-   * APJS exposes {@link radius} and {@link height} for the shape.
-   * It does not expose a separate capsule direction property.
+   * APJS exposes {@link radius} (default 5) and {@link height} (default 8) for
+   * the shape. It does not expose a separate capsule direction property.
+   * Both values are expressed in the collider's local units and are additionally
+   * scaled by the object's world scale at runtime. The two are independent: the
+   * total length of the capsule along its axis is `height + 2 * radius`.
+   * The authored values are stored in local collider space and are applied to the native collider
+   * when the component is initialized or when these properties are updated afterward.
    *
    * @example
    * const capsule = obj.getComponent("CapsuleCollider") as APJS.CapsuleCollider;
@@ -1308,8 +1580,10 @@ declare namespace APJS {
   class CapsuleCollider extends Collider {
     protected constructor();
     /**
-     * @description Gets or sets the authored radius of the capsule collider.
-     * Larger values make the capsule thicker. Defaults to 5.
+     * @description Gets or sets the authored radius of the capsule collider,
+     * in the collider's local units (additionally scaled by world scale at
+     * runtime). This is the radius of the rounded caps. Larger values make the
+     * capsule thicker. Should be positive. Defaults to 5.
      * @returns {number} The radius of the capsule collider
      */
     get radius(): number;
@@ -1319,9 +1593,12 @@ declare namespace APJS {
      */
     set radius(value: number);
     /**
-     * @description Gets or sets the authored height of the capsule collider.
-     * Together with {@link radius}, this controls the final capsule shape used
-     * by the APJS physics wrapper. Defaults to 8.
+     * @description Gets or sets the authored height of the capsule collider,
+     * in the collider's local units (additionally scaled by world scale at
+     * runtime). This is the length of the straight cylindrical middle section,
+     * excluding the two rounded caps, so the full capsule length along its axis
+     * is `height + 2 * {@link radius}`. {@link radius} and height are independent
+     * and not clamped against each other. Should be positive. Defaults to 8.
      * @returns {number} The height of the capsule collider
      */
     get height(): number;
@@ -1334,6 +1611,8 @@ declare namespace APJS {
   /**
    * @description
    * <br/>CaptureFrameHelper is a helper class to capture camera output.
+   * <br/>It captures from a camera's current `renderTexture` by scheduling a one-shot copy after
+   * the next `AFTER_RENDER` event, and returns the destination texture immediately.
    * @example
    * let texture = APJS.CaptureFrameHelper.captureCameraOutput(camera);
    * @class CaptureFrameHelper
@@ -1346,7 +1625,10 @@ declare namespace APJS {
      * @param camera The camera to capture output from.
      * @param cropRect The crop rectangle to apply to the captured frame in normalized texture coordinates (default is Rect(0, 0, 1, 1)). x and y represent the crop origin, width and height represent the crop size, and each value is typically in the range [0, 1]. For example, Rect(0, 0, 1, 1) captures the full output, Rect(0, 0, 0.5, 0.5) captures the bottom-left quarter, and x + width / y + height should not exceed 1.
      * @param resolutionRatio The resolution ratio to apply to the captured frame (default is 1.0).
+     * Values greater than `1.0` are clamped to full resolution, and values less than or equal to
+     * `0.002` fall back to a `1x1` capture texture.
      * @returns The captured texture, or null if capture failed.
+     * Returns `null` when the camera is missing or has no `renderTexture` to copy from.
      * @example
      * const texture = CaptureFrameHelper.captureCameraOutput(camera, new Rect(0, 0, 1, 1), 0.5);
      */
@@ -1359,6 +1641,9 @@ declare namespace APJS {
    * pickups, or simple trigger regions.
    * Inherited properties such as {@link offset}, {@link isTangible}, and
    * {@link emitCollisionEvent} still apply.
+   * `radius` defines the authored circle size used by the collider itself.
+   * The serialized `fitImage` flag does not overwrite `radius` inside the APJS layer; any image-fit
+   * behavior is consumed elsewhere from serialized data.
    *
    * @example
    * const circle = obj.getComponent("CircleCollider2D") as APJS.CircleCollider2D;
@@ -1368,8 +1653,10 @@ declare namespace APJS {
   class CircleCollider2D extends Collider2D {
     protected constructor();
     /**
-     * @description Gets or sets the authored radius of the 2D circle collider.
-     * Larger values produce a larger circular collision region.
+     * @description Gets or sets the authored radius of the 2D circle collider,
+     * in local 2D units (additionally scaled by the object's world scale at
+     * runtime). Larger values produce a larger circular collision region.
+     * Should be positive. Defaults to 1.
      * @type {number}
      */
     get radius(): number;
@@ -1378,10 +1665,10 @@ declare namespace APJS {
      */
     set radius(value: number);
     /**
-     * @description Gets or sets whether this collider should automatically fit
-     * the attached image.
-     * When enabled, the runtime can use the image size as input for circle
-     * sizing behavior.
+     * @description Gets or sets the serialized "fit image" flag for this circle collider.
+     * Default: `false`.
+     * The APJS layer only stores this flag and does not modify `radius` or rebuild the collider when the flag changes;
+     * any "fit the attached image" behavior is consumed elsewhere from the serialized value.
      */
     get fitImage(): boolean;
     set fitImage(value: boolean);
@@ -1397,6 +1684,8 @@ declare namespace APJS {
    * When {@link emitCollisionEvent} is enabled, APJS checks this collider's
    * contacts during update and emits {@link CollisionEvent.Enter},
    * {@link CollisionEvent.Stay}, and {@link CollisionEvent.Exit}.
+   * Most authored properties on this class start as local configuration values and are pushed to
+   * the native collider after initialization, or immediately when an initialized collider is updated.
    *
    * @example
    * const collider = obj.getComponent("BoxCollider") as APJS.BoxCollider;
@@ -1421,6 +1710,9 @@ declare namespace APJS {
      * @description Gets or sets the collider's local center offset relative to the SceneObject.
      * Use this to shift the collision shape without moving the visual object itself,
      * such as placing a hitbox slightly in front of a character.
+     * Default: `(0, 0, 0)` in local units.
+     * When an initialized collider is not attached to a rigid body, APJS multiplies this offset by
+     * the SceneObject's world scale before forwarding it to the native collider.
      */
     get center(): Vector3f;
     set center(value: Vector3f);
@@ -1428,6 +1720,8 @@ declare namespace APJS {
      * @description Gets or sets whether this collider is marked as interactable for the Physics Interactor path.
      * When enabled, APJS adds a dedicated interaction bit to the collider's category mask so
      * Physics Interactor Script Graph Node can pick and drag it. This does not change normal collision behavior.
+     * Default: `true`.
+     * This flag only affects the Physics Interactor pickup / drag path and does not by itself enable collision events.
      */
     get interactable(): boolean;
     set interactable(value: boolean);
@@ -1435,6 +1729,9 @@ declare namespace APJS {
      * @description Gets or sets the physics material used by this collider.
      * The assigned material provides dynamic friction, static friction, and bounciness
      * values for contact response.
+     * Default: `null`, which makes the collider use this class's built-in fallback coefficients
+     * (`dynamic=0.6`, `static=0.61`, `restitution=0.3 * 0.96` in the native mapping path).
+     * When a `PhysicsMaterial` is assigned, its public coefficients are typically expected in `[0, 1]`.
      */
     get physicsMaterial(): PhysicsMaterial | null;
     set physicsMaterial(value: PhysicsMaterial | null);
@@ -1443,6 +1740,8 @@ declare namespace APJS {
      * This rotates the collision shape relative to the SceneObject or attached RigidBody,
      * without rotating the visual object itself. It is a collider configuration value,
      * not the live world-space rotation currently simulated by physics.
+     * Default: identity quaternion `(0, 0, 0, 1)`.
+     * APJS stores the authored quaternion as-is and does not normalize or validate it at this layer.
      */
     get rotation(): Quaternionf;
     set rotation(value: Quaternionf);
@@ -1450,13 +1749,19 @@ declare namespace APJS {
      * @description Same local collider rotation as {@link rotation}, expressed as Euler angles in degrees.
      * Use this when you want to rotate the collision shape relative to the object.
      * This is not the current world-space rotation of the physics body.
+     * Default: `(0, 0, 0)`.
+     * APJS converts between this value and {@link rotation} through
+     * {@link Quaternionf.makeFromEulerAngles} and {@link Quaternionf.toEulerAngles},
+     * so the component meaning follows `Quaternionf`: `(pitch, yaw, roll)`.
      */
     get eulerAngles(): Vector3f;
     set eulerAngles(value: Vector3f);
     /**
      * @description Gets or sets whether APJS should emit collision callbacks for this collider.
+     * Default: `false`.
      * When enabled, APJS checks this collider's contacts on each update and emits
      * {@link CollisionEvent.Enter}, {@link CollisionEvent.Stay}, and {@link CollisionEvent.Exit}.
+     * The event payload is `ev.args[0]` as an array of {@link CollisionInfo}.
      * Disabling it clears the cached collision state.
      */
     get emitCollisionEvent(): boolean;
@@ -1467,6 +1772,9 @@ declare namespace APJS {
    * @description Base class for 2D collision shapes.
    * Use a collider to define how a SceneObject participates in 2D collision
    * response and trigger detection, typically alongside a {@link RigidBody2D}.
+   * Authored properties such as {@link offset}, {@link physicsMaterial}, and
+   * {@link isTangible} are stored on the APJS side first, then pushed to the
+   * native 2D collider as soon as one is created or updated.
    *
    * When {@link emitCollisionEvent} is enabled, the native 2D listener buffers
    * hit data and APJS emits {@link CollisionEvent2D.Enter},
@@ -1487,20 +1795,28 @@ declare namespace APJS {
     protected constructor();
     /**
      * @description Gets or sets the collider shape offset authored in the
-     * collider object's local 2D space.
+     * collider object's local 2D space, expressed in local 2D units.
+     * Default: `(0, 0)`.
+     * APJS later converts this authored offset into the attached rigid body's
+     * local frame using the current 2D transform before recreating or updating
+     * the native collider.
      * @type {Vector2f}
      */
     get offset(): Vector2f;
     set offset(value: Vector2f);
     /**
      * @description Gets or sets the physics material used by this collider.
-     * The assigned material provides dynamic friction, static friction, and bounciness
-     * values for contact response.
+     * Default: `null`, which leaves the collider using its current built-in 2D
+     * coefficients (`friction=0.2`, `restitution=0.0` before any material override).
+     * When a material is assigned, APJS forwards `staticFriction` and
+     * `bounciness * 0.96` to the native collider. APJS does not clamp these values
+     * at this layer.
      */
     get physicsMaterial(): PhysicsMaterial | null;
     set physicsMaterial(value: PhysicsMaterial | null);
     /**
      * @description Gets or sets whether this 2D collider is tangible.
+     * Default: `true`.
      * When true, the collider participates in normal collision response.
      * When false, it behaves like a trigger: objects can pass through it,
      * but contacts can still be reported through {@link emitCollisionEvent}.
@@ -1511,9 +1827,11 @@ declare namespace APJS {
     /**
      * @description Gets or sets whether this collider should emit scripted 2D
      * collision callbacks.
+     * Default: `false`.
      * When enabled, the native 2D listener buffers hit data and APJS emits
      * {@link CollisionEvent2D.Enter}, {@link CollisionEvent2D.Stay}, and
      * {@link CollisionEvent2D.Exit} during update.
+     * The event payload is `ev.args[0]` as an array of {@link CollisionInfo2D}.
      * Disabling it clears the buffered events.
      * @type {boolean}
      */
@@ -1609,7 +1927,10 @@ declare namespace APJS {
      */
     readonly point: Vector3f;
     /**
-     * @description World-space contact normal vector.
+     * @description World-space contact normal at the contact point.
+     * It is a unit-length vector (magnitude 1) describing the contact direction
+     * between the two colliders. For the same contact, the value reported to one
+     * collider and the value reported to the other point in opposite directions.
      */
     readonly normal: Vector3f;
     /**
@@ -1630,7 +1951,10 @@ declare namespace APJS {
      */
     readonly point: Vector2f;
     /**
-     * @description World-space contact normal vector.
+     * @description World-space contact normal at the contact point.
+     * It is a unit-length vector (magnitude 1) describing the contact direction
+     * between the two colliders. For the same contact, the value reported to one
+     * collider and the value reported to the other point in opposite directions.
      */
     readonly normal: Vector2f;
     /**
@@ -1641,24 +1965,32 @@ declare namespace APJS {
   }
   /**
    * @class Color
+   * @description A mutable RGBA color with channels inrange `[0, 1]`.
+   * `1` is full intensity / opaque, `0` is none / fully transparent.
+   * Values are not clamped; values outside `[0, 1]` are stored as-is.
    * @example
    * const white = new Color(1, 1, 1, 1);
    */
   class Color {
     /**
-     * @description Color's channel R
+     * @description The red channel. Defaults to `0`. Normalized linear range
+     * `[0, 1]`; not clamped — values outside this range are passed through.
      */
     r: number;
     /**
-     * @description Color's channel G
+     * @description The green channel. Defaults to `0`. Normalized linear range
+     * `[0, 1]`; not clamped — values outside this range are passed through.
      */
     g: number;
     /**
-     * @description Color's channel B
+     * @description The blue channel. Defaults to `0`. Normalized linear range
+     * `[0, 1]`; not clamped — values outside this range are passed through.
      */
     b: number;
     /**
-     * @description Color's channel A
+     * @description The alpha (opacity) channel. Defaults to `0` (fully transparent).
+     * Normalized linear range `[0, 1]`; not clamped — values outside this range
+     * are passed through.
      */
     a: number;
     /**
@@ -1671,6 +2003,7 @@ declare namespace APJS {
     constructor(r?: number, g?: number, b?: number, a?: number);
     /**
      * @description Compares the current color with another color for equality.
+     * Returns `true` only when `r`, `g`, `b`, and `a` are all exactly equal.
      * @param v - The color to compare against.
      * @returns A boolean indicating whether the two colors are equal.
      */
@@ -1830,21 +2163,24 @@ declare namespace APJS {
      */
     constructor();
     /**
-     * @description Adds a command to copy a texture to another.
+     * @description Adds a command to copy a texture to another. The source is sampled and the
+     * destination must be a writable render texture (or a temporary render texture ID). The copy
+     * runs when the buffer is committed.
      *
      * @param src - The source texture or temporary render texture ID.
-     * @param dest - The destination texture or temporary render texture ID.
+     * @param dest - The destination render texture or temporary render texture ID.
      */
     blit(src: Texture | number, dest: Texture | number): void;
     /**
-     * @description Adds a command to copy a texture to another using a material.
+     * @description Adds a command to copy a texture to another using a material. The copy runs
+     * when the buffer is committed.
      *
      * @param src - The source texture or temporary render texture ID.
-     * @param dest - The destination texture or temporary render texture ID.
+     * @param dest - The destination render texture or temporary render texture ID.
      * @param material - The material to use for the blit operation.
-     * @param shaderPass - The shader pass to use.
-     * @param isCache - Whether to cache the blit operation.
-     * @param properties - An optional block of material properties to apply.
+     * @param shaderPass - The shader pass index to use; pass `-1` to apply all passes.
+     * @param isCache - Whether to reuse cached render state across executions to reduce per-execution cost.
+     * @param properties - An optional block of material properties applied just before the blit.
      */
     blitWithMaterial(src: Texture | number, dest: Texture | number, material: Material, shaderPass: number, isCache: boolean, properties?: MaterialPropertyBlock): void;
     /**
@@ -1852,65 +2188,73 @@ declare namespace APJS {
      */
     clearAll(): void;
     /**
-     * @description Adds a command to clear a render target.
+     * @description Adds a command to clear the active render target. Requires a render target to
+     * have been set first via {@link setRenderTexture}.
      *
      * @param clearColor - Whether to clear the color buffer.
      * @param clearDepth - Whether to clear the depth buffer.
      * @param backgroundColor - The color to clear with.
-     * @param depth - The depth value to clear with.
+     * @param depth - The depth value to clear with, in the normalized `[0, 1]` range.
      */
     clearRenderTexture(clearColor: boolean, clearDepth: boolean, backgroundColor: Color, depth: number): void;
     /**
-     * @description Adds a command to draw a mesh.
+     * @description Adds a command to draw a mesh. The draw runs when the buffer is committed.
      *
      * @param mesh - The mesh to draw.
      * @param matrix - The transformation matrix to use.
      * @param material - The material to use.
-     * @param submeshIndex - The index of the submesh to render.
-     * @param shaderPass - The shader pass to use. Use -1 to render all passes.
-     * @param properties - Optional material properties to apply for this draw call.
-     * @param isCache - Whether to cache the draw operation.
+     * @param submeshIndex - The index of the submesh to render, in `[0, submeshCount - 1]`.
+     * @param shaderPass - The shader pass index to use. Use `-1` to render all passes.
+     * @param properties - Optional material properties applied just before this draw call.
+     * @param isCache - Whether to reuse cached render state across executions to reduce per-execution cost (default `false`).
      */
     drawMesh(mesh: Mesh, matrix: Matrix4x4f, material: Material, submeshIndex: number, shaderPass: number, properties?: MaterialPropertyBlock | undefined, isCache?: boolean): void;
     /**
      * @description Adds a command to set a global shader color property.
+     * Applies to subsequent draw commands in this buffer until overwritten.
      *
-     * @param name - The name of the color property.
+     * @param name - The shader property name to bind, matching a uniform declared in the shader.
      * @param color - The color value to set.
      */
     setGlobalColor(name: string, color: Color): void;
     /**
      * @description Adds a command to set a global shader float property.
+     * Applies to subsequent draw commands in this buffer until overwritten.
      *
-     * @param name - The name of the float property.
+     * @param name - The shader property name to bind, matching a uniform declared in the shader.
      * @param value - The float value to set.
      */
     setGlobalFloat(name: string, value: number): void;
     /**
      * @description Adds a command to set a global shader vector property.
+     * Applies to subsequent draw commands in this buffer until overwritten.
      *
-     * @param name - The name of the vector property.
+     * @param name - The shader property name to bind, matching a uniform declared in the shader.
      * @param value - The vector value to set.
      */
     setGlobalVector(name: string, value: Vector4f): void;
     /**
      * @description Adds a command to set a global shader matrix property.
+     * Applies to subsequent draw commands in this buffer until overwritten.
      *
-     * @param name - The name of the matrix property.
+     * @param name - The shader property name to bind, matching a uniform declared in the shader.
      * @param value - The matrix value to set.
      */
     setGlobalMatrix(name: string, value: Matrix4x4f): void;
     /**
      * @description Adds a command to set a global shader texture property.
+     * Applies to subsequent draw commands in this buffer until overwritten.
+     * Passing `null` is a no-op.
      *
-     * @param name - The name of the texture property.
-     * @param texture - The texture to set, or a temporary render texture ID.
+     * @param name - The shader property name to bind, matching a sampler declared in the shader.
+     * @param texture - The texture to set, or a temporary render texture ID obtained from {@link propertyToID}.
      */
     setGlobalTexture(name: string, texture: number | Texture): void;
     /**
-     * @description Adds a command to set the active render target.
+     * @description Adds a command to set the active render target. Subsequent draw and clear
+     * commands in this buffer target it once it executes. A falsy `target` is a no-op.
      *
-     * @param target - The render target texture or a temporary render texture ID.
+     * @param target - The render target texture, or a temporary render texture ID obtained from {@link propertyToID}.
      */
     setRenderTexture(target: Texture | number): void;
   }
@@ -1920,6 +2264,9 @@ declare namespace APJS {
    * Base class for everything attached to a SceneObject.
    * <br/>Note that your code will never directly create a Component. Instead, you write script code, and attach the script to a SceneObject.
    * <br/>Note that SceneObject.addComponent() can return null if the component type is invalid or cannot be added.
+   * <br/>Typical usage is: obtain a component from `SceneObject.addComponent()` or `getComponent()`,
+   * inspect or toggle {@link enabled}, query the effective state with {@link isInheritedEnabled},
+   * and use {@link getSceneObject} to reach the owning object.
    * @example
    * ```typescript
    * const sceneObject = scene.findSceneObject("Cube");
@@ -1942,13 +2289,18 @@ declare namespace APJS {
      */
     set enabled(value: boolean);
     /**
-     * @description Checks if the component is inheritedEnabled.
-     * @returns True if the component is inherited and enabled, false otherwise.
+     * @description Checks the component's effective enabled state.
+     * The inherited part comes from the attached {@link SceneObject}'s visibility in the hierarchy.
+     * Unlike {@link enabled}, which only reflects the component's own flag, this returns `true`
+     * only when the component is enabled and its attached scene object is visible.
+     * If the component is not attached to a scene object, this behaves the same as {@link enabled}.
+     * @returns `true` if the component is effectively enabled, `false` otherwise.
      */
     isInheritedEnabled(): boolean;
     /**
      * @description Gets the scene object this component is attached to.
      * @returns The scene object this component is attached to.
+     * if the component is not attached to a scene object, this returns `null`.
      */
     getSceneObject(): SceneObject;
   }
@@ -1970,7 +2322,7 @@ declare namespace APJS {
    * Not returned for instantaneous modes ({@link ForceMode2D.Impulse}, {@link ForceMode2D.VelocityChange}).
    */
   class ConstantForce2D {
-    /** World-space force in Newtons. */
+    /** World-space force in Newtons, as a `Vector2f` where `x`/`y` are the force components along the world X/Y axes. */
     readonly worldForce: Vector2f;
     /** World-space torque in Newton-meters. */
     readonly worldTorque: number;
@@ -2042,7 +2394,9 @@ declare namespace APJS {
   }
   /**
    * @namespace DeviceInfo
-   * @description Get information of current device.
+   * @description Static utility namespace for querying information about the current device and camera input.
+   * Use it to read environment values such as the operating system, camera facing type, and current camera input resolution.
+   * This type is not meant to be instantiated.
    */
   namespace DeviceInfo {
     /**
@@ -2052,55 +2406,76 @@ declare namespace APJS {
     function getOS(): OS;
     /**
      * @description Gets the camera facing type of the device.
+     * Returns the numeric camera-facing identifier reported by the platform.
+     * `0` means the front camera and `1` means the rear camera.
      * @returns The camera facing type identifier.
      */
     function getCameraFacingType(): number;
     /**
      * @memberof DeviceInfo
-     * @description Get the resolution of the device camera input texture.
+     * @description Gets the resolution of the current device camera input texture.
+     * The returned vector uses pixel units: `x` is the input texture width and `y` is the input texture height.
      */
     function getDeviceCameraResolution(): Vector2f;
   }
   /**
    * @class DirectionalLight
    * @description Represents a directional light source in the scene.
+   * This light exposes a group of shadow settings that work together: shadow
+   * rendering starts only when {@link castShadow} is enabled; soft shadow tuning
+   * is only meaningful when {@link softShadow} is enabled; and manual frustum
+   * controls such as {@link shadowFrustumArea}, {@link shadowFrustumNear}, and
+   * {@link shadowFrustumFar} are only used when {@link shadowAutoFrustum} is `false`.
    */
   class DirectionalLight extends Light {
     protected constructor();
     /**
      * @description Gets whether this light casts shadows.
+     * Default: `false`.
+     * When disabled, the engine hides or ignores the other shadow tuning fields.
      */
     get castShadow(): boolean;
     /**
      * @description Sets whether this light casts shadows.
+     * When disabled, the engine hides or ignores the other shadow tuning fields.
      */
     set castShadow(value: boolean);
     /**
-     * @description Gets the resolution of the shadow map.
+     * @description Gets the resolution of the shadow map texture in pixels.
+     * `x` is the width and `y` is the height of the shadow map texture.
+     * Default: `(256, 256)`. Engine-side power-of-two values are recommended; values are passed through to the native layer without clamping.
      */
     get shadowResolution(): Vector2f;
     /**
-     * @description Sets the resolution of the shadow map.
+     * @description Sets the resolution of the shadow map texture in pixels.
+     * `x` is the width and `y` is the height of the shadow map texture.
      */
     set shadowResolution(value: Vector2f);
     /**
      * @description Gets the shadow bias to prevent shadow acne (self-shadowing artifacts).
+     * Default: `0`.
+     * Recommended range: `[0, 1]`.
      */
     get shadowBias(): number;
     /**
      * @description Sets the shadow bias to prevent shadow acne (self-shadowing artifacts).
+     * Recommended range: `[0, 1]`.
      */
     set shadowBias(value: number);
     /**
      * @description Gets the strength of the shadows.
+     * Conventionally a normalized factor in `[0, 1]` where `0` makes shadows invisible and `1` applies full-strength shadows; the value is multiplied into shader output without clamping.
+     * Runtime default: `1`.
      */
     get shadowStrength(): number;
     /**
      * @description Sets the strength of the shadows.
+     * Conventionally a normalized factor in `[0, 1]` where `0` makes shadows invisible and `1` applies full-strength shadows; the value is multiplied into shader output without clamping.
      */
     set shadowStrength(value: number);
     /**
      * @description Gets whether to use soft shadows.
+     * Default: `false`.
      */
     get softShadow(): boolean;
     /**
@@ -2109,50 +2484,82 @@ declare namespace APJS {
     set softShadow(value: boolean);
     /**
      * @description Gets the softness of the shadows when soft shadows are enabled.
+     * This value only affects rendering when {@link softShadow} is `true`.
      */
     get shadowSoftness(): number;
     /**
      * @description Sets the softness of the shadows when soft shadows are enabled.
+     * This API does not clamp or validate the stored value.
+     * Range: [0, 5], default: 1
+     * This value only affects rendering when {@link softShadow} is `true`.
      */
     set shadowSoftness(value: number);
     /**
      * @description Gets the color of the shadows cast by this light.
+     * Default: black `(0, 0, 0, 1)`.
+     * APJS exposes this as a `Color`, but only the RGB channels are forwarded to
+     * the native light; alpha is not stored in the native shadow color field.
+     * Each RGB channel uses the normalized `[0, 1]` range and is not clamped.
      */
     get shadowColor(): Color;
     /**
      * @description Sets the color of the shadows cast by this light.
+     * Only `r`, `g`, and `b` are forwarded to the native light; the alpha channel
+     * is ignored by this wrapper.
      */
     set shadowColor(value: Color);
     /**
-     * @description Gets the area of the shadow frustum.
+     * @description Gets the width and height of the square shadow area, using the same unit scale as the scene's world coordinates.
+     * Default: `100`.
+     * Together with `shadowFrustumNear` and `shadowFrustumFar`, this defines the manual shadow frustum.
+     * Only takes effect when `shadowAutoFrustum` is `false`; when auto-frustum is enabled, the engine recomputes the size from the scene caster/receiver bounds and ignores this field.
      */
     get shadowFrustumArea(): number;
     /**
-     * @description Sets the area of the shadow frustum.
+     * @description Sets the width and height of the square shadow area, using the same unit scale as the scene's world coordinates.
+     * Together with `shadowFrustumNear` and `shadowFrustumFar`, this defines the manual shadow frustum.
+     * Only takes effect when `shadowAutoFrustum` is `false`.
      */
     set shadowFrustumArea(value: number);
     /**
      * @description Gets whether the shadow frustum should be calculated automatically.
+     * Default: `true`.
+     * When enabled, the engine recomputes shadow frustum bounds from scene data and
+     * ignores manual frustum controls such as {@link shadowFrustumArea},
+     * {@link shadowFrustumNear}, and {@link shadowFrustumFar}.
      */
     get shadowAutoFrustum(): boolean;
     /**
      * @description Sets whether the shadow frustum should be calculated automatically.
+     * When enabled, the engine recomputes shadow frustum bounds from scene data and
+     * ignores manual frustum controls such as {@link shadowFrustumArea},
+     * {@link shadowFrustumNear}, and {@link shadowFrustumFar}.
      */
     set shadowAutoFrustum(value: boolean);
     /**
-     * @description Gets the near plane of the shadow frustum.
+     * @description Gets the near plane of the shadow frustum, using the same unit scale as the scene's world coordinates.
+     * Default: `1`. This value must be less than `shadowFrustumFar`.
+     * This API does not clamp or validate the stored value.
+     * Only takes effect when `shadowAutoFrustum` is `false`; otherwise the engine recomputes near/far from the scene bounds and ignores this field.
      */
     get shadowFrustumNear(): number;
     /**
-     * @description Sets the near plane of the shadow frustum.
+     * @description Sets the near plane of the shadow frustum, using the same unit scale as the scene's world coordinates.
+     * This value must be less than `shadowFrustumFar`. This API does not clamp or validate the assigned value.
+     * Only takes effect when `shadowAutoFrustum` is `false`.
      */
     set shadowFrustumNear(value: number);
     /**
-     * @description Gets the far plane of the shadow frustum.
+     * @description Gets the far plane of the shadow frustum, using the same unit scale as the scene's world coordinates.
+     * Default: `100`. This value must be greater than `shadowFrustumNear`.
+     * This API does not clamp or validate the stored value.
+     * Only takes effect when `shadowAutoFrustum` is `false`; otherwise the engine recomputes near/far from the scene bounds and ignores this field.
      */
     get shadowFrustumFar(): number;
     /**
-     * @description Sets the far plane of the shadow frustum.
+     * @description Sets the far plane of the shadow frustum, using the same unit scale as the scene's world coordinates.
+     * This value must be greater than `shadowFrustumNear`. This API does not clamp or validate the assigned value.
+     * Only takes effect when `shadowAutoFrustum` is `false`.
      */
     set shadowFrustumFar(value: number);
   }
@@ -2171,18 +2578,28 @@ declare namespace APJS {
   /**
    * @class DynamicBitset
    * @description A set of bits that can be dynamically resized.
+   * `new DynamicBitset()` creates a bitset with `64` bits, all initialized to `0`.
+   * @example
+   * ```ts
+   * const bitset = new APJS.DynamicBitset();
+   * bitset.set(3);
+   * bitset.set(5, 0);
+   *
+   * const enabled = bitset.test(3);
+   * const text = bitset.toString();
+   * ```
    */
   class DynamicBitset {
     /**
      * @constructor
-     * @description Constructs a new instance of the DynamicBitset class.
+     * @description Constructs a new DynamicBitset with `64` bits, all initialized to `0`.
      */
     constructor();
     /**
      * @constructor
      * @description Constructs a new DynamicBitset with a specified number of bits.
-     * @param num_bits - The initial number of bits. All bits are initialized to 0.
-     * @param value - The initial value for all bits.
+     * @param num_bits - The initial number of bits.
+     * @param value - The initial fill value passed to the native bitset constructor.
      */
     constructor(num_bits: number, value: number);
     /**
@@ -2192,13 +2609,24 @@ declare namespace APJS {
      */
     equals(v: DynamicBitset): boolean;
     /**
-     * @description Returns a string representation of the DynamicBitset.
-     * @returns A string representing the current state of the DynamicBitset.
+     * @description Returns a debug string for the current bitset state.
+     * The native output format is:
+     * `numbits:<numBits>; numblock:<numBlocks>; hexadecimal:0x<blockN> <blockN-1> ...`
+     * Each storage block is appended in uppercase hexadecimal from the highest block index to the lowest.
+     * @example
+     * ```ts
+     * const bitset = new APJS.DynamicBitset(64, 0b1010111);
+     * const text = bitset.toString();
+     * // "numbits:64; numblock:2; hexadecimal:0x0 57 "
+     * ```
+     * @returns A native-formatted debug string describing the current bitset contents.
      */
     toString(): string;
     /**
-     * @description Tests if a bit is set.
-     * @param v - The index of the bit to test.
+     * @description Tests whether the bit at zero-based index `v` is set to `1`.
+     * Use indices in the range `[0, numBits - 1]`.
+     * Current engine tests show that `test(numBits)` returns `false`.
+     * @param v - The zero-based bit index to test.
      * @returns `true` if the bit at index `v` is set, `false` otherwise.
      */
     test(v: number): boolean;
@@ -2213,18 +2641,18 @@ declare namespace APJS {
      */
     none(): boolean;
     /**
-     * @description Resets the bitset to a specified value.
-     * @param v - The value to reset the bitset to.
+     * @description Resets the bit at zero-based index `v` to `0`.
+     * Current engine tests show that calling `reset()` with an index outside the bitset range leaves the bitset unchanged.
+     * @param v - The zero-based bit index to clear.
      * @returns The modified DynamicBitset instance.
      */
     reset(v: number): DynamicBitset;
     /**
-     * @description Set the value in the dynamic bitset.
-     * If no arguments are provided, sets the default value.
-     * If one argument is provided, sets the value at the specified index.
-     * If two arguments are provided, sets the range of values from the start index to the end index.
-     * @param v - The index or start index for setting the value.
-     * @param v1 - The end index for setting a range of values.
+     * @description Sets bits in the bitset.
+     * `set()` sets all bits to `1`, `set(index)` sets one bit to `1`, and `set(index, value)` sets one bit to the specified value.
+     * Current script tests use `value` as `0` or `1`.
+     * @param v - The zero-based bit index to set.
+     * @param v1 - The value written to the bit at `v`.
      */
     set(v?: number, v1?: number): void;
     /**
@@ -2237,86 +2665,151 @@ declare namespace APJS {
   }
   /**
    * @class DynamicChain
+   * @description A dynamic chain component for simulating secondary motion on a transform hierarchy.
+   * Most user-facing controls, including `damping`, `elasticity`, `stiffness`, `inertia`, and `physicsAnimationRate`, are typically set in the range [0, 1].
+   * `force` works together with `isLocalForce`, `isRelative`, and `relativeTarget` to determine which coordinate space the force uses.
+   * `physicsAnimationRate` takes effect only when `physicsAnimation` is enabled.
    */
   class DynamicChain extends DynamicComponent {
     protected constructor();
     /**
-     * @description Gets the damping value of the dynamic chain which controls how quickly the chain movement slows down.
+     * @description Gets the user-facing damping control for the dynamic chain.
+     * This property controls how strongly the chain resists oscillation or vibration.
+     * Range: [0, 1], larger values make the chain more stable by damping motion more effectively, while smaller values make it more fluid and less stable.
+     * The default value is 0.2.
+     * Values outside the recommended range are not clamped and are applied directly, which can produce unexpectedly weak or strong damping.
      * @returns The damping value of the dynamic chain.
      */
     get damping(): number;
     /**
-     * @description Sets the damping value of the dynamic chain which controls how quickly the chain movement slows down.
+     * @description Sets the user-facing damping control for the dynamic chain.
+     * This property controls how strongly the chain resists oscillation or vibration.
+     * Range: [0, 1], larger values make the chain more stable by damping motion more effectively, while smaller values make it more fluid and less stable.
+     * The default value is 0.2.
+     * Values outside the recommended range are not clamped and are applied directly, which can produce unexpectedly weak or strong damping.
      * @param value - The damping value of the dynamic chain.
      */
     set damping(value: number);
     /**
-     * @description Gets the elasticity value of the dynamic chain which controls how bouncy the chain is.
+     * @description Gets the user-facing elasticity control for the dynamic chain.
+     * This property controls the spring-like behavior of the chain.
+     * Range: [0, 1], larger values make the chain bouncier and more elastic, while smaller values make it more rigid.
+     * The default value is 0.1.
+     * Values outside the recommended range are not clamped and are applied directly, which can produce unexpectedly weak or strong elasticity.
      */
     get elasticity(): number;
     /**
-     * @description Sets the elasticity value of the dynamic chain which controls how bouncy the chain is.
+     * @description Sets the user-facing elasticity control for the dynamic chain.
+     * This property controls the spring-like behavior of the chain.
+     * Range: [0, 1], larger values make the chain bouncier and more elastic, while smaller values make it more rigid.
+     * The default value is 0.1.
+     * Values outside the recommended range are not clamped and are applied directly, which can produce unexpectedly weak or strong elasticity.
      * @param value - The elasticity value of the dynamic chain.
      */
     set elasticity(value: number);
     /**
-     * @description Gets the stiffness value of the dynamic chain which controls how stiff the chain is.
+     * @description Gets the user-facing stiffness control for the dynamic chain.
+     * This property controls the strength of the chain's spring-like behavior.
+     * Range: [0, 1], larger values make the chain more rigid and reduce oscillation under the same force, while smaller values make it more fluid and easier to oscillate.
+     * The default value is 0.2.
+     * Values outside the recommended range are not clamped and are applied directly, which can produce unexpectedly weak or strong stiffness.
      */
     get stiffness(): number;
     /**
-     * @description Sets the stiffness value of the dynamic chain which controls how stiff the chain is.
+     * @description Sets the user-facing stiffness control for the dynamic chain.
+     * This property controls the strength of the chain's spring-like behavior.
+     * Range: [0, 1], larger values make the chain more rigid and reduce oscillation under the same force, while smaller values make it more fluid and easier to oscillate.
+     * The default value is 0.2.
+     * Values outside the recommended range are not clamped and are applied directly, which can produce unexpectedly weak or strong stiffness.
      * @param value - The stiffness value of the dynamic chain.
      */
     set stiffness(value: number);
     /**
-     * @description Gets the total inertia of the dynamic chain which controls how fast the chain moves.
+     * @description Gets the user-facing inertia control for the dynamic chain.
+     * This property controls how strongly the chain resists changes in motion.
+     * Range: [0, 1], larger values make the chain more stable and slower to start or stop moving under the same force, while smaller values make it more responsive and fluid.
+     * The default value is 0.5.
+     * Values outside the recommended range are not clamped and are applied directly, which can produce unexpectedly weak or strong inertia.
      */
     get inertia(): number;
     /**
-     * @description Sets the total inertia of the dynamic chain which controls how fast the chain moves.
-     * @param value - The total inertia of the dynamic chain.
+     * @description Sets the user-facing inertia control for the dynamic chain.
+     * This property controls how strongly the chain resists changes in motion.
+     * Range: [0, 1], larger values make the chain more stable and slower to start or stop moving under the same force, while smaller values make it more responsive and fluid.
+     * The default value is 0.5.
+     * Values outside the recommended range are not clamped and are applied directly, which can produce unexpectedly weak or strong inertia.
+     * @param value - The inertia value of the dynamic chain.
      */
     set inertia(value: number);
     /**
-     * @description the consistent external force applied to the dynamic chain
+     * @description Gets the consistent external force applied to the dynamic chain.
      */
     get force(): Vector3f;
     /**
-     * @description Sets the consistent external force applied to the dynamic chain.
-     * @param value - The consistent external force applied to the dynamic chain.
+     * @description Sets the user-facing continuous external force applied to the dynamic chain.
+     * This property simulates pushes or pulls such as gravity-like effects, collisions, or user input.
+     * The value must be a `Vector3f(x, y, z)`.
+     * The default value is `Vector3f(0, 0, 0)`.
+     * Coordinate system: world space by default, local space when `isLocalForce` is `true`, and relative to `relativeTarget` when `isRelative` is `true`.
+     * @param value - The continuous external force applied to the dynamic chain.
      */
     set force(value: Vector3f);
     /**
-     * @description Gets whether the force applied to the dynamic chain is local or not.
+     * @description Gets whether the force applied to the dynamic chain uses local space or world space.
+     * When `true`, the force is applied in the chain's local space, relative to its orientation and position.
+     * When `false`, the force is applied in world space.
      */
     get isLocalForce(): boolean;
     /**
-     * @description Sets whether the force applied to the dynamic chain is local or not.
+     * @description Sets whether the force applied to the dynamic chain uses local space or world space.
+     * When `true`, the force is applied in the chain's local space, relative to its orientation and position.
+     * When `false`, the force is applied in world space.
+     * @param value - Whether the force is applied in the chain's local space.
      */
     set isLocalForce(value: boolean);
     /**
-     * @description Gets whether the force applied to the dynamic chain is relative to another object.
+     * @description Gets whether the chain uses relative or absolute positioning.
+     * When `true`, the chain is positioned relative to another object or chain link in the scene.
+     * When `false`, the chain uses an absolute position and orientation in world space.
+     * If `true` but {@link relativeTarget} is `null`, the chain falls back to world space and
+     * behaves the same as the `false` case until a `relativeTarget` is assigned.
      */
     get isRelative(): boolean;
     /**
-     * @description Sets whether the force applied to the dynamic chain is relative to another object.
-     * @param value - Whether the force applied to the dynamic chain is relative to another object.
+     * @description Sets whether the chain uses relative or absolute positioning.
+     * When `true`, the chain is positioned relative to another object or chain link in the scene.
+     * When `false`, the chain uses an absolute position and orientation in world space.
+     * If `true` but {@link relativeTarget} is `null`, the chain falls back to world space and
+     * behaves the same as the `false` case until a `relativeTarget` is assigned.
+     * @param value - Whether the chain uses relative positioning.
      */
     set isRelative(value: boolean);
     /**
-     * @description Gets whether animation physics blending is enabled for the dynamic chain.
+     * @description Gets whether overlay of physical and animation effects is enabled for the dynamic chain.
+     * When this component and an `Animation` component are attached to the same entity, animation does not take effect unless this option is enabled.
+     * When enabled, animation and physical simulation are blended together.
      */
     get physicsAnimation(): boolean;
     /**
-     * @description Sets whether animation physics blending is enabled for the dynamic chain.
+     * @description Sets whether overlay of physical and animation effects is enabled for the dynamic chain.
+     * When this component and an `Animation` component are attached to the same entity, animation does not take effect unless this option is enabled.
+     * When enabled, animation and physical simulation are blended together.
+     * @param value - Whether overlay of physical and animation effects is enabled for the dynamic chain.
      */
     set physicsAnimation(value: boolean);
     /**
-     * @description Gets the animation physics blending value for the dynamic chain.
+     * @description Gets the blend amount between physical and animation effects for the dynamic chain. Only valid when `physicsAnimation` is enabled.
+     * Range: [0, 1]. The larger the value, the more physical simulation is blended with animation-driven motion.
+     * The default value is 0.0.
+     * This value takes effect only when `physicsAnimation` is enabled.
      */
     get physicsAnimationRate(): number;
     /**
-     * @description Sets the animation physics blending value for the dynamic chain.
+     * @description Sets the blend amount between physical and animation effects for the dynamic chain. Only valid when `physicsAnimation` is enabled.
+     * Range: [0, 1]. The larger the value, the more physical simulation is blended with animation-driven motion.
+     * The default value is 0.0.
+     * This value takes effect only when `physicsAnimation` is enabled.
+     * @param value - The animation physics blending value for the dynamic chain.
      */
     set physicsAnimationRate(value: number);
   }
@@ -2333,6 +2826,10 @@ declare namespace APJS {
    * not behave like a filled polygon.
    * Inherited properties such as {@link offset}, {@link isTangible}, and
    * {@link emitCollisionEvent} still apply.
+   * The shape comes from {@link points}, authored in the collider's local 2D
+   * space; at least two points are required to form a valid edge. Assigning
+   * {@link points} after the collider exists rebuilds it. If fewer than two
+   * points are provided, no valid edge is produced.
    *
    * @example
    * const edge = obj.getComponent("EdgeCollider2D") as APJS.EdgeCollider2D;
@@ -2357,49 +2854,73 @@ declare namespace APJS {
   /**
    * @class EnvironmentLight
    * @description Represents an environment light component.
+   * Typical setup is: choose the affected {@link renderLayer}, assign a cubemap
+   * through {@link environmentMap}, then tune {@link intensity},
+   * {@link rotation}, and {@link color} for the final lighting look.
    */
   class EnvironmentLight extends Component {
     protected constructor();
     /**
      * @description Gets the render layer of the environment light.
+     * The returned {@link LayerSet} is the layer mask currently stored on the
+     * native environment-light component. It is 64-bit wide, with zero-based
+     * layer indices in `[0, 63]`. Modifying the returned set in place is not
+     * guaranteed to write back; assign a {@link LayerSet} to this property to
+     * apply changes. The default set of affected layers is configured in the editor.
      */
     get renderLayer(): LayerSet;
     /**
      * @description Sets the render layer of the environment light.
+     * This replaces the native environment-light layer mask with the provided
+     * {@link LayerSet}.
      */
     set renderLayer(value: LayerSet);
     /**
      * @description Sets the environment map used for specular reflections.
      * Only cubemap textures are accepted by this API.
+     * Passing `null` clears the current cubemap. Passing a non-cubemap texture leaves the current value unchanged.
      */
     set environmentMap(value: Texture);
     /**
      * @description Gets the environment map used for specular reflections.
-     * The returned texture is expected to be a cubemap texture.
+     * The returned texture is the current cubemap texture stored on the native environment light.
      */
     get environmentMap(): Texture;
     /**
      * @description Sets the intensity of the environment light.
+     * The default value is `1.0`.
+     * This value controls the strength of environment-map lighting.
+     * The recommended range is [`0.0`, `7`]. Values are not clamped, and negative values may produce unexpected shading.
      */
     set intensity(value: number);
     /**
-     * @description Gets the intensity of the environment light.
+     * @description Gets the intensity value currently stored on the native environment light.
+     * The default value is `1.0`.
+     * This value controls the strength of environment-map lighting.
+     * The recommended range is [`0.0`, `7`]. Values are not clamped, and negative values may produce unexpected shading.
      */
     get intensity(): number;
     /**
-     * @description Sets the rotation of the environment light in degrees.
+     * @description Sets the rotation of the environment light, the unit is round(e.g. when the value is 0.5, the environment light has rotated 180 degrees).
+     * Recommended range: `[0, 1]`.
      */
     set rotation(value: number);
     /**
-     * @description Gets the rotation of the environment light in degrees.
+     * @description Gets the environment-light rotation in degrees.
+     * This is the current value stored on the native component.
      */
     get rotation(): number;
     /**
      * @description The tint color of the environment light.
+     * APJS forwards the provided {@link Color} to the native tint color field, where
+     * all four RGBA channels are applied as a multiplier on the environment lighting.
+     * Each channel uses the normalized linear range `[0, 1]` and is not clamped.
      */
     set color(color: Color);
     /**
      * @description The tint color of the environment light.
+     * This is the current tint {@link Color} stored on the native environment light.
+     * Each channel uses the normalized linear range `[0, 1]`.
      */
     get color(): Color;
   }
@@ -2407,11 +2928,18 @@ declare namespace APJS {
    * @namespace
    * EventManager
    */
+  /**
+   * @namespace EventManager
+   * @description Static entry point for APJS events.
+   * Use it to define custom event types, create event objects, and retrieve
+   * emitters for the global scope, a specific object, or gesture input.
+   */
   namespace EventManager {
     /**
      * @description Defines a user-defined event type.
      * This method allows you to create and register a custom event type with a unique identifier,
      * which can be used to trigger and handle events in your application.
+     * Passing the same `eventName` again returns the same event type value.
      *
      * @param eventName - The unique identifier for the user event type. Can be either a number or a string.
      * @returns The newly defined or existing UserEventType associated with the provided identifier.
@@ -2426,7 +2954,7 @@ declare namespace APJS {
     /**
      * @description Creates and returns a new event instance based on the provided event type.
      * @param eventType - The type of the event, which can be either a numeric code or a predefined UserEventType enum value.
-     * @returns An IEvent object representing the created event.
+     * @returns An `IEvent` whose initial `type` is `eventType` and whose initial `args` is `[]`.
      * @example
      * ```ts
      * const event = APJS.EventManager.createEvent(myEventType);
@@ -2434,7 +2962,8 @@ declare namespace APJS {
      */
     function createEvent(eventType: number | UserEventType): IEvent;
     /**
-     * @description Retrieves the global event emitter instance. If it doesn't exist, it creates a new one.
+     * @description Retrieves the global event emitter instance.
+     * Repeated calls return the same emitter for the current APJS runtime.
      * @returns The global event emitter instance.
      * @example
      * ```ts
@@ -2446,7 +2975,8 @@ declare namespace APJS {
     /**
      * @description Retrieves the event emitter associated with a given object.
      * @param obj - The object for which to get the event emitter. This can be an AObject.
-     * @returns The event emitter for the specified object. Returns undefined only when the input object is invalid or not supported.
+     * @returns The event emitter for the specified object. Returns undefined when `obj` is falsy;
+     * callers that may pass uncertain inputs should null-check the result.
      * @example
      * ```ts
      * const emitter = APJS.EventManager.getObjectEmitter(myObject);
@@ -2456,7 +2986,10 @@ declare namespace APJS {
     function getObjectEmitter(obj: AObject): IEventEmitter;
     /**
      * @description Retrieves the event emitter associated with gesture.
-     * @returns The event emitter for the gesture, which can be used to subscribe to gesture events defined in GestureType.
+     * Use it to subscribe to {@link GestureType.Tap}, {@link GestureType.LongTap},
+     * {@link GestureType.Drag}, and {@link GestureType.Drop}. Gesture callbacks
+     * receive {@link GestureInfo} in `event.args[0]`.
+     * @returns The event emitter for gesture input.
      * @example
      * const emitter = APJS.EventManager.getGestureEmitter();
      * const callback = (event:APJS.IEvent) => {
@@ -2498,7 +3031,13 @@ declare namespace APJS {
   }
   /**
    * @interface
-   * Face106Interface
+   * @description Snapshot of a single detected face's basic landmark and pose result.
+   * Returned by {@link FaceBaseInfoInterface.getFaceBaseInfo} and contains the unique
+   * tracking `ID`, the `score`, the bounding `rect`, head pose angles
+   * (`pitch` / `roll` / `yaw`), the 106-point landmark layout (`pointsArray`),
+   * per-point `visibilityArray`, and the helper `hasAction` for facial actions.
+   * All numeric properties are read-only snapshots; the array properties share a common
+   * length / index convention (see `pointsArray` and `visibilityArray`).
    */
   interface Face106Interface {
     /**
@@ -2509,13 +3048,16 @@ declare namespace APJS {
     readonly ID: number;
     /**
      * @readonly
-     * @description Eye distance
+     * @description Inter-eye distance, normalized by the input texture width (i.e. native `eye_dist / width`).
+     * The value is a unit-less scalar in the same horizontal-normalized space as `pointsArray.x`;
+     * it is not an absolute pixel distance.
      */
     readonly eyeDistance: number;
     /**
      * @readonly
-     * @description Pitch angle in radians. Positive and negative values represent
-     * opposite up/down head tilts.
+     * @description Pitch angle in radians. Runtime verification shows negative values
+     * represent the head tilting upward and positive values represent the head
+     * tilting downward.
      * @example
      * const face = result.getFaceBaseInfo(0);
      * const upWard = face.pitch < -0.2;
@@ -2524,20 +3066,24 @@ declare namespace APJS {
     readonly pitch: number;
     /**
      * @readonly
-     * @description Vector2f **Flat Array** <br/>Array of 106 key points of the human face.
+     * @description Flat `Float32Array` of 106 face landmark points, length `212`, laid out as `[x0, y0, x1, y1, ..., x105, y105]`.
+     * Coordinates are expressed in normalized input-texture space (`x` divided by width, `y` is `1 - py / height` so the Y axis points up),
+     * but runtime values are not guaranteed to be clamped to `[0, 1]`; points may fall outside the nominal image extent.
+     * The point order follows the standard ST/LM-106 face landmark convention used by the native algorithm (e.g. eyes around indices 74/75/77, nose tip near index 46).
      */
     readonly pointsArray: Float32Array;
     /**
      * @readonly
      * @description Bounding rectangle of the detected face in normalized coordinates [0.0, 1.0],
      * relative to the camera input image. `x` and `y` represent the bottom-left corner;
-     * `width` and `height` extend rightward and upward.
+     * `width` extends rightward and `height` extends upward.
      */
     readonly rect: Rect;
     /**
      * @readonly
-     * @description Roll angle in radians. Positive and negative values represent
-     * opposite head tilts around the forward axis.
+     * @description Roll angle in radians. Runtime verification shows positive values
+     * represent a left tilt and negative values represent a right tilt around the
+     * forward axis.
      * @example
      * const face = result.getFaceBaseInfo(0);
      * const isTiltedLeft = face.roll > 0.2;
@@ -2551,13 +3097,19 @@ declare namespace APJS {
     readonly score: number;
     /**
      * @readonly
-     * @description Visibility of corresponding points. The point is not occluded: 1.0, and occluded: 0.0
+     * @description Per-landmark visibility indicators, length `106`, with index `i`
+     * corresponding to the `i`-th point in `pointsArray`. Values are reported by the
+     * native model; do not assume they are always exact `0.0` / `1.0` flags. Runtime
+     * verification also shows the current model may report `-1` for every point when
+     * visibility is unavailable / not populated, so consumers should treat this array
+     * as model-specific numeric metadata rather than a guaranteed boolean mask.
      */
     readonly visibilityArray: Float32Array;
     /**
      * @readonly
-     * @description Yaw angle in radians. Positive and negative values represent
-     * opposite side-to-side head rotations.
+     * @description Yaw angle in radians. Runtime verification shows positive values
+     * represent the face turning left and negative values represent the face turning
+     * right.
      * @example
      * const face = result.getFaceBaseInfo(0);
      * const facingLeft = face.yaw > 0.2;
@@ -2565,8 +3117,11 @@ declare namespace APJS {
      */
     readonly yaw: number;
     /**
-     * @description Returns whether the specified facial action is currently detected.
-     * @param action - The action enum value or numeric action identifier to test.
+     * @description Returns whether the specified facial action is currently detected
+     * for this face.
+     * @param action - A {@link FaceAction} enum value, or its underlying numeric value
+     * (a non-negative integer). For an unknown / unsupported numeric input this method
+     * simply returns `false` rather than throwing.
      * @example
      * const face = result.getFaceBaseInfo(0);
      * if (face.hasAction(APJS.FaceAction.MouthAh)) {
@@ -2636,7 +3191,12 @@ declare namespace APJS {
   }
   /**
    * @interface
-   * FaceAttributeInterface
+   * @description Snapshot of per-face attribute estimates produced by the face-attribute model.
+   * Includes age (`age`), attractiveness (`attractive`), gender signals (`gender` and the
+   * raw `boyProbability`), the discrete `expressionType`, the per-class
+   * `expressionProbabilities` array, and the convenience `happyScore`. Indices into
+   * `expressionProbabilities` align with the {@link FaceAttrExpression} enum values
+   * (excluding `Unknown`); see that property for the exact order.
    */
   interface FaceAttributeInterface {
     /**
@@ -2656,12 +3216,15 @@ declare namespace APJS {
     readonly boyProbability: number;
     /**
      * @readonly
-     * @description The probabilities of facial expression types
+     * @description Per-expression probability scores. Fixed length of `7`;
+     * indices follow {@link FaceAttrExpression} values `0..6` (excluding
+     * `Unknown`): `[Angry, Disgust, Fear, Happy, Sad, Surprise, Neutral]`.
+     * Each value is in the range `[0, 1]`.
      */
     readonly expressionProbabilities: Float32Array;
     /**
      * @readonly
-     * @description The classified facial expression for this face.
+     * @description The classified facial expression. See {@link FaceAttrExpression}.
      * @example
      * const attr = result.getFaceAttributeInfo(0);
      * if (attr.expressionType === APJS.FaceAttrExpression.Happy) {
@@ -2671,7 +3234,7 @@ declare namespace APJS {
     readonly expressionType: FaceAttrExpression;
     /**
      * @readonly
-     * @description gender
+     * @description Gender classification. See {@link FaceAttrGender}.
      */
     readonly gender: FaceAttrGender;
     /**
@@ -2682,7 +3245,12 @@ declare namespace APJS {
   }
   /**
    * @interface
-   * FaceFaceMaskInterface
+   * @description Snapshot of a single face's whole-face mask result. Exposes the unique
+   * tracking `ID`, the square mask buffer (`faceMask`), and its edge length
+   * (`faceMaskSize`). The mask describes per-pixel face coverage and is only valid for
+   * the frame in which it was produced; consumers should re-fetch it via
+   * {@link FaceBaseInfoInterface.getFaceFaceMask} on subsequent frames rather than
+   * caching the buffer.
    */
   interface FaceFaceMaskInterface {
     /**
@@ -2693,12 +3261,19 @@ declare namespace APJS {
     readonly ID: number;
     /**
      * @readonly
-     * @description Face mask. size = faceMaskSize * faceMaskSize
+     * @description Face mask data as a square grayscale image of size
+     * `faceMaskSize × faceMaskSize`. Pixels are stored row-major with the origin at
+     * the top-left corner: the value for column `x`, row `y` is
+     * `faceMask[y * faceMaskSize + x]` (`x` to the right, `y` downward). The mask
+     * lives in its own normalized square space and is not aligned pixel-for-pixel
+     * with the input camera image. Pixel values range `[0, 255]`; higher values
+     * indicate stronger face-region confidence, `0` means outside the mask.
      */
     readonly faceMask: Uint8Array;
     /**
      * @readonly
-     * @description Face mask size.
+     * @description Edge length, in pixels, of the square `faceMask` image.
+     * `0` means no mask is available for this face.
      */
     readonly faceMaskSize: number;
   }
@@ -2709,23 +3284,27 @@ declare namespace APJS {
   class FaceMakeup extends Component {
     protected constructor();
     /**
-     * @description Gets the intensity level of the face makeup component
+     * @description Gets or sets the intensity level of the face makeup component.
+     * Recommended range is `[0, 1]`, where `0` hides the effect and `1` is full strength.
+     * Default: `1`.
      */
     get intensity(): number;
-    /**
-     * @description Sets the intensity level of the face makeup component.
-     */
     set intensity(value: number);
     /**
-     * @description Gets the main texture applied to the face makeup component
+     * @description Gets the main texture applied to the face makeup component.
+     * Returns `null` when no main texture has been bound yet.
      */
     get makeupTexture(): Texture | null;
     /**
      * @description Sets the main texture applied to the face makeup component.
+     * Passing `null` does not clear the currently displayed texture; the previous
+     * texture remains visible until a new non-null texture is assigned.
      */
     set makeupTexture(value: Texture | null);
     /**
-     * @description Gets whether the opacity effect is enabled for the face makeup component
+     * @description Gets whether the opacity effect is enabled for the face makeup component.
+     * When `true`, the bound {@link opacityTexture} modulates the makeup opacity; when `false`,
+     * the opacity texture is ignored. Default: `false`.
      */
     get opacityEnabled(): boolean;
     /**
@@ -2733,19 +3312,27 @@ declare namespace APJS {
      */
     set opacityEnabled(value: boolean);
     /**
-     * @description Gets the texture used for opacity control in the face makeup component
+     * @description Gets the texture used for opacity control in the face makeup component.
+     * Returns `null` when no opacity texture has been bound yet.
      */
     get opacityTexture(): Texture | null;
     /**
      * @description Sets the texture used for opacity control in the face makeup component.
+     * Only takes visible effect when `opacityEnabled` is `true`. Passing `null` clears the
+     * cached reference on the component but does NOT unbind the previously bound native texture
+     * from the material — the previously assigned opacity texture continues to be used until a
+     * new non-null texture is supplied.
      */
     set opacityTexture(value: Texture | null);
     /**
-     * @description Gets the base color applied to the face makeup component
+     * @description Gets the base color applied to the face makeup component.
      */
     get color(): Color;
     /**
      * @description Sets the base color applied to the face makeup component.
+     * Each channel of `value` (`r`, `g`, `b`, `a`) is expected to be in `[0, 1]` (linear / RGBA),
+     * matching the {@link Color} convention used elsewhere in APJS, and is forwarded as-is to
+     * the material's `_BaseColor` uniform without clamping.
      */
     set color(value: Color);
     /**
@@ -2756,8 +3343,10 @@ declare namespace APJS {
      * or {@link setMaterialProperty} instead.
      *
      * @param {string} key - Shader uniform name. Common keys and values are _Intensity, _Opacity
-     * @param {number} face - The tracked face index to apply the property to.
-     * @param {number} value - Float value to set.
+     * @param {number} face - The tracked face index to apply the property to. Must be a non-negative
+     * integer; index `0` refers to the first tracked face. Out-of-range or unknown indices are
+     * silently ignored (no error, no effect).
+     * @param {number} value - Float value to set. Forwarded as-is to the shader uniform without clamping.
      * @example
      * comp.setMaterialPropertyByIndex("_Intensity", 1, 1.0);
      * comp.setMaterialPropertyByIndex("_Intensity", 1, 0.8);
@@ -2799,7 +3388,12 @@ declare namespace APJS {
   }
   /**
    * @interface
-   * FaceMouthMaskInterface
+   * @description Snapshot of a single face's mouth mask result. Exposes the unique
+   * tracking `ID`, the square mask buffer (`faceMask`), and its edge length
+   * (`faceMaskSize`). The mask describes per-pixel mouth coverage and is only valid
+   * for the frame in which it was produced; consumers should re-fetch it via
+   * {@link FaceBaseInfoInterface.getFaceMouthMask} on subsequent frames rather than
+   * caching the buffer.
    */
   interface FaceMouthMaskInterface {
     /**
@@ -2810,18 +3404,28 @@ declare namespace APJS {
     readonly ID: number;
     /**
      * @readonly
-     * @description Face mask. size = faceMaskSize * faceMaskSize
+     * @description Mouth mask data as a square grayscale image of size
+     * `faceMaskSize × faceMaskSize`. Pixels are stored row-major with the origin at
+     * the top-left corner: the value for column `x`, row `y` is
+     * `faceMask[y * faceMaskSize + x]` (`x` to the right, `y` downward). The mask
+     * lives in its own normalized square space and is not aligned pixel-for-pixel
+     * with the input camera image. Pixel values range `[0, 255]`; higher values
+     * indicate stronger mouth-region confidence, `0` means outside the mask.
      */
     readonly faceMask: Uint8Array;
     /**
      * @readonly
-     * @description Face mask size.
+     * @description Edge length, in pixels, of the square `faceMask` image.
+     * `0` means no mask is available for this face.
      */
     readonly faceMaskSize: number;
   }
   /**
    * @interface
-   * FacePetInfoInterface
+   * @description Read-only snapshot of a single face detected by the pet-face
+   * algorithm in the current frame. The detected category (cat, dog, etc.) is
+   * indicated by `facePetType`. All properties are valid only for the producing
+   * frame.
    */
   interface FacePetInfoInterface {
     /**
@@ -2833,51 +3437,75 @@ declare namespace APJS {
     readonly ID: number;
     /**
      * @readonly
-     * @description Action type <br/>
-     The 1st, 2nd, and 3rd digits are respectively encoded as: left eye open/close, right eye open/close, mouth open/close
+     * @description Bitmask describing the pet face's per-feature open/close state.
+     * Only the lowest 3 bits are currently defined (other bits are reserved by the native model):
+     * - bit 0 (`action & 0x1`): left eye - `0` closed, `1` open
+     * - bit 1 (`action & 0x2`): right eye - `0` closed, `1` open
+     * - bit 2 (`action & 0x4`): mouth - `0` closed, `1` open
+     * Example: `action = 0b011` means left eye open, right eye open, mouth closed.
      */
     readonly action: number;
     /**
      * @readonly
-     * @description Ear status <br/>
-     0 indicates the ears are upright, and 1 indicates the ears are drooping.
+     * @description Ear status. `0` = ears upright; `1` = ears drooping.
+     * Only meaningful for `facePetType` values whose anatomy supports it (typically
+     * dogs / cats); for the human entry of {@link FacePetType} the value is reported
+     * but does not carry a useful interpretation.
      */
     readonly earType: number;
     /**
      * @readonly
-     * @description Pet face types (cat, dog, human)
+     * @description Discrete pet face category for this detection (e.g. cat / dog / human).
+     * The set of possible values is defined by {@link FacePetType}; a face is classified
+     * into exactly one type per frame based on the native model output.
      */
     readonly facePetType: FacePetType;
     /**
      * @readonly
-     * @description Pitch angle, with the real measurement being negative above and positive below, in radians
+     * @description Pitch angle in radians. Negative values represent the head tilting up,
+     * positive values represent the head tilting down. Typical values stay within
+     * roughly `[-pi/2, pi/2]`.
      */
     readonly pitch: number;
     /**
      * @readonly
-     * @description Vector2f **Flat Array**. Normalized, 2D key point coordinates.
+     * @description Flat `Float32Array` of 2D pet-face landmarks laid out as
+     * `[x0, y0, x1, y1, ...]`. The array always contains 90 point slots (180 floats);
+     * the number of valid points depends on `facePetType` (cat: 82, dog: 76) and the
+     * point order follows the native pet-landmark convention for that type. Coordinates
+     * are normalized to the input texture, in the same space as
+     * {@link Face106Interface.pointsArray}: `x` is divided by width and `y` is
+     * `1 - py / height` (the Y axis points up), both typically in `[0, 1]`.
      */
     readonly pointsArray: Float32Array;
     /**
      * @readonly
-     * @description The rectangular area of the pet face
+     * @description Bounding rectangle of the detected pet face in normalized
+     * coordinates `[0.0, 1.0]`, relative to the camera input image, in the same
+     * space as {@link Face106Interface.rect}. `x` and `y` are the bottom-left
+     * corner; `width` and `height` extend rightward and upward.
      */
     readonly rect: Rect;
     /**
      * @readonly
-     * @description Rotation angle in radians. Negative values indicate left tilt
-     * and positive values indicate right tilt.
+     * @description Roll angle in radians. Negative values indicate left tilt and
+     * positive values indicate right tilt around the forward axis. Runtime verification
+     * shows values can span roughly `[-pi, pi]`.
      */
     readonly roll: number;
     /**
      * @readonly
-     * @description Confidence score in the range [0, 1].
+     * @description Confidence score in the range `[0, 1]`. Higher values indicate
+     * a more confident detection; consumers typically use a threshold (e.g. `0.5`)
+     * to decide whether to consume the result for this frame.
      */
     readonly score: number;
     /**
      * @readonly
-     * @description Horizontal rotation angle in radians. Negative values indicate
-     * rightward rotation and positive values indicate leftward rotation.
+     * @description Yaw angle in radians. Negative values indicate the pet face
+     * turning right, positive values indicate turning left, with `0` meaning the
+     * face is roughly aligned with the camera's forward direction. Typical values
+     * stay within roughly `[-pi/2, pi/2]`.
      */
     readonly yaw: number;
   }
@@ -2935,35 +3563,53 @@ declare namespace APJS {
   class FaceReshapeRenderer extends Renderer {
     protected constructor();
     /**
-     * @description Indexes of faces to apply reshaping to, using zero-based face slots.
-     * For example, `0` means the first tracked face.
+     * @description Indexes of faces to apply reshaping to, using zero-based face slots
+     * (e.g. `0` is the first tracked face). Default after construction is `[0, 1, 2, 3, 4]`.
+     * Setting an empty array `[]` disables reshaping for all faces (no face slot will be processed).
+     * Each index is forwarded as an unsigned 8-bit integer; values outside `0..255` wrap to that
+     * range. The setter does not validate or de-duplicate values.
      * @type {number[]}
      */
     get faceIndexes(): number[];
     set faceIndexes(value: number[]);
     /**
-     * @description Gets the list of face reshape feature names
+     * @description Returns the list of face reshape feature names supported by the
+     * currently bound model. The order matches the underlying organ warp configuration
+     * and is stable across calls within the same component instance, so callers can use
+     * the index returned here directly with {@link getFeatureWeight} / {@link setFeatureWeight}.
+     * The returned array is the live internal storage — do not mutate it.
      * @returns {string[]} Array of face reshape feature names
      */
     getFeatureNames(): string[];
     /**
      * @description Gets the weight value of the face reshape feature with the specified name or index.
-     * Returns 0 if no corresponding organ slider is found or if the feature is out of bounds.
-     * @param feature The name (string) or index (number) of the face reshape feature
-     * @returns The weight value of the face reshape feature
+     * @param feature The face reshape feature, identified either by name (string, must match an entry
+     * in {@link getFeatureNames}) or by zero-based index (number) into that array. Unknown names or
+     * out-of-range indices return `0`.
+     * @returns The current weight value of the face reshape feature, or `0` when the feature does not
+     * exist or is not currently bound.
      */
     getFeatureWeight(feature: string | number): number;
     /**
      * @description Sets the weight value of the face reshape feature with the specified name or index.
-     * Clamps weight between 0 and 1. Updates both organ and boundary sliders if they exist.
-     * @param feature The name (string) or index (number) of the face reshape feature
-     * @param weight The weight value to set for the face reshape feature
+     * The new weight applies to subsequent frames; no immediate refresh / repaint is needed.
+     * @param feature The face reshape feature, identified either by name (string, must match an entry
+     * in {@link getFeatureNames}) or by zero-based index (number) into that array. Unknown names or
+     * out-of-range indices are silently ignored — the call does nothing and does not throw.
+     * @param weight Target weight; clamped to `[0, 1]` (values below `0` are treated as `0`,
+     * values above `1` are treated as `1`).
      */
     setFeatureWeight(feature: string | number, weight: number): void;
   }
   /**
    * @interface
    * FaceTeethMaskInterface
+   * @description Per-face teeth mask result produced by the native face-warp algorithm.
+   * Despite the shared `face_mask` field name (the native layer reuses the same
+   * `FaceBaseMask` structure for face / mouth / teeth masks), this interface
+   * specifically carries the **teeth** mask channel intended for teeth-targeted
+   * effects (whitening, highlights, etc.). Use `FaceFaceMaskInterface` for the
+   * whole-face mask and `FaceMouthMaskInterface` for the mouth mask.
    */
   interface FaceTeethMaskInterface {
     /**
@@ -2974,12 +3620,20 @@ declare namespace APJS {
     readonly ID: number;
     /**
      * @readonly
-     * @description Face mask. size = faceMaskSize * faceMaskSize
+     * @description Teeth mask data, a contiguous 8-bit single-channel image buffer of size
+     * `faceMaskSize x faceMaskSize` whose array length is exactly `faceMaskSize * faceMaskSize`.
+     * The buffer is laid out in row-major order (left to right, top to bottom). Each element is in `[0, 255]`,
+     * representing the per-pixel teeth-mask intensity from the native model; larger values indicate
+     * stronger teeth coverage, with `0` meaning fully outside the mask.
+     * The mask is defined in its own warped texture space rather than the input image space.
      */
     readonly faceMask: Uint8Array;
     /**
      * @readonly
-     * @description Face mask size.
+     * @description Edge length, in pixels, of the square teeth-mask image. The mask buffer
+     * always satisfies `faceMask.length === faceMaskSize * faceMaskSize`. A value of `0`
+     * (or any non-positive value) means no teeth mask is available for this frame and
+     * downstream rendering / sampling should be skipped.
      */
     readonly faceMaskSize: number;
   }
@@ -3110,7 +3764,7 @@ declare namespace APJS {
     get type(): GestureType;
     /**
      * @readonly
-     * @description The gesture start position of this gesture. Only valid when gesture type is Drag or Drop. The value is 0 - 1. 0 is the top-left corner of the screen. 1 is the bottom-right corner of the screen.
+     * @description The gesture start position of this gesture. Only valid when gesture type is Drag or Drop. The value is 0 - 1. 0 is the top-left corner of the screen. 1 is the bottom-right corner of the screen. For other gesture types this is not populated and returns `(0, 0)`.
      */
     get startPoint(): Vector2f;
     /**
@@ -3120,7 +3774,7 @@ declare namespace APJS {
     get endPoint(): Vector2f;
     /**
      * @readonly
-     * @description Start dragging. When a drag-and-drop action occurs, a series of Drag events will be received. This flag can be used to obtain the event that triggered the drag-and-drop action. Only valid when gesture type is Drag.
+     * @description Start dragging. When a drag-and-drop action occurs, a series of Drag events will be received. This flag can be used to obtain the event that triggered the drag-and-drop action. Only valid when gesture type is Drag. For other gesture types it is `false`.
      * @example Control the position of an object by drag gesture.
      * const gestureEmitter = APJS.EventManager.getGestureEmitter();
      * const dragCallback = (event:APJS.IEvent) => {
@@ -3137,7 +3791,7 @@ declare namespace APJS {
     get firstTrigger(): boolean;
     /**
      * @readonly
-     * @description The duration of long-tap gesture. Only valid for LongTap gesture. The value is in milliseconds.
+     * @description The duration of long-tap gesture. Only valid for LongTap gesture. The value is in milliseconds. For other gesture types it is `0`.
      */
     get duration(): number;
   }
@@ -3183,38 +3837,55 @@ declare namespace APJS {
   class GifTextureProvider extends TextureDelegateProvider {
     /**
      * @description Gets the loop count of the GIF asset.
+     * - `-1` (default): play indefinitely; the loop never completes.
+     * - `0`: do not animate - the provider stays on frame `0` (special-cased in `onUpdate`).
+     * - positive integer `N`: play exactly `N` loops, then stop on the last frame and emit `playEndEventType`.
+     * - other negative values: playback is treated as already completed.
      */
     get loopCount(): number;
     /**
      * @description Sets the loop count of the GIF asset.
-     * @param value - The loop count of the GIF asset.
+     * `-1` plays indefinitely, `0` freezes on the first frame during time-based playback updates,
+     * positive integers limit the total number of loops, and other negative values are treated as already completed.
+     * @param value - The loop count to set.
      */
     set loopCount(value: number);
     /**
-     * @description Gets the frames per second (fps) of the GIF asset.
+     * @description Gets the playback frame rate of the GIF asset, in frames per second.
+     * Default is `25`.
      */
     get fps(): number;
     /**
-     * @description Sets the frames per second (fps) of the GIF asset.
-     * @param value - The frames per second (fps) of the GIF asset.
+     * @description Sets the playback frame rate of the GIF asset, in frames per second.
+     * Invalid values (`<= 0`) are ignored, and assigning the current fps is a no-op.
+     * On a successful change, playback state is reset and the loop / frame indices go back to `0`.
+     * @param value - The frames per second to set.
      */
     set fps(value: number);
     /**
-     * @description Gets the duration of the GIF asset.
+     * @description Gets the total playback duration of the GIF asset, in **seconds**.
+     * This is a derived value computed as `frameCount / fps`; it is not stored independently.
      */
     get duration(): number;
     /**
-     * @description Sets the duration of the GIF asset.
-     * @param value - The duration of the GIF asset.
+     * @description Sets the playback duration of the GIF asset, in **seconds**, by adjusting `fps`.
+     * The frame count is fixed by the underlying GIF asset and is not changed.
+     * Invalid values (`<= 0`) and assigning the current duration are ignored.
+     * On a successful change, playback state is reset.
+     * @param value - The desired duration, in seconds.
      */
     set duration(value: number);
     /**
-     * @description Gets the frame count of the GIF asset.
-     * @returns The frame count of the GIF asset.
+     * @description Returns the total frame count of the bound GIF asset.
      */
     getFrameCount(): number;
     /**
-     * @description Gets the current playing frame index of the GIF asset.
+     * @description Returns the current playing frame index of the GIF asset.
+     * The index is zero-based; valid range is `[0, frameCount - 1]`.
+     * - During normal playback (including while paused) returns the integer floor of the
+     *   current internal frame index.
+     * - After all loops have completed (when `loopCount > 0`), returns `frameCount - 1`
+     *   (the last frame), matching what is currently displayed.
      * @returns The current playing frame index of the GIF asset.
      */
     getCurrentPlayingFrame(): number;
@@ -3223,16 +3894,21 @@ declare namespace APJS {
      */
     playFromStart(): void;
     /**
-     * @description Pauses the GIF asset.
+     * @description Pauses playback at the current frame.
+     * Repeated calls keep playback paused and still emit the GIF pause event.
      */
     pause(): void;
     /**
-     * @description Resumes the GIF asset.
+     * @description Resumes playback from the current frame.
+     * Repeated calls while already playing keep playback running and still emit the GIF resume event.
      */
     resume(): void;
     /**
-     * @description Seeks to the specified frame index.
-     * @param frameIndex - The index of the frame to seek to.
+     * @description Seeks to the specified frame index and applies the resulting frame to the texture.
+     * The index is zero-based; valid indices are `[0, frameCount - 1]`. Out-of-range indices are
+     * clamped: negative values become `0`, and indices `>= frameCount` become `frameCount - 1`.
+     * The provider's current frame index is updated to the clamped value.
+     * @param frameIndex - The zero-based frame index to seek to.
      */
     seek(frameIndex: number): void;
   }
@@ -3343,30 +4019,47 @@ declare namespace APJS {
   }
   /**
    * @interface
-   * HandInfo
+   * @description Snapshot of a single detected hand. Exposes the tracking `ID`,
+   * the discrete current gesture `action`, the bounding `rect`, the in-plane
+   * `rotation` value forwarded from the native hand SDK, and a helper
+   * {@link HandInfo.getHandType} for left / right classification.
+   *
+   * `action` (gesture) and `getHandType()` (left / right) are independent dimensions of
+   * the same hand and can be combined freely - reading one does not affect the other.
+   * All numeric properties are read-only snapshots valid only for the producing frame.
    */
   interface HandInfo {
     /**
      * @readonly
-     * @description ID
+     * @description Tracking ID assigned to the detected hand. Default value before any detection
+     * is `-1`. The native side does not guarantee a particular numeric range or upper bound;
+     * treat the value as an opaque identifier and only compare for equality.
      * @type {number}
      */
     readonly ID: number;
     /**
      * @readonly
-     * @description action
+     * @description The discrete gesture this hand is currently making, expressed as a
+     * {@link HandAction} enum value (e.g. fist, palm, pointing). This is the gesture /
+     * action dimension of the hand and is independent of the left / right classification
+     * returned by {@link HandInfo.getHandType}: a single hand always has both an `action`
+     * and a hand type, and the two should be read separately.
      * @type {HandAction}
      */
     readonly action: HandAction;
     /**
      * @readonly
-     * @description rect
+     * @description Bounding rectangle of the detected hand in normalized coordinates `[0.0, 1.0]`,
+     * relative to the input image. `x` and `y` are the bottom-left corner; `width` extends rightward
+     * and `height` extends upward in the same Y-up normalized space used by other hand fields.
      * @type {Rect}
      */
     readonly rect: Rect;
     /**
      * @readonly
-     * @description rot_angle
+     * @description Hand rotation angle (`rot_angle`) reported by the native hand-tracking model.
+     * Runtime verification shows this value is expressed in degrees and typically falls within
+     * `[-180, 180]`. Default value before any detection is `0`.
      * @type {number}
      */
     readonly rotation: number;
@@ -3421,6 +4114,7 @@ declare namespace APJS {
     /**
      * @description Minimum allowed relative rotation around the hinge axis, in degrees.
      * This limit is measured between the two connected bodies and is used only when {@link useLimits} is enabled.
+     * Expected range is `[-180, 180]` and should not exceed {@link maxAngle}. Defaults to -180.
      * @type {number}
      */
     get minAngle(): number;
@@ -3428,6 +4122,7 @@ declare namespace APJS {
     /**
      * @description Maximum allowed relative rotation around the hinge axis, in degrees.
      * This limit is measured between the two connected bodies and is used only when {@link useLimits} is enabled.
+     * Expected range is `[-180, 180]` and should not be less than {@link minAngle}. Defaults to 180.
      * @type {number}
      */
     get maxAngle(): number;
@@ -3490,33 +4185,74 @@ declare namespace APJS {
   }
   /**
    * @interface IAudioDetector
-   * @description The interface for audio detector to get the enabled property.
+   * @description Common control surface implemented by every audio detector
+   * (e.g. {@link BaseAudioDetector} subclasses such as the sound-event detector).
+   * Currently exposes a single `enabled` switch that gates whether the detector
+   * actively produces detection results; when `enabled = false` the detector's
+   * result accessors return their no-result values instead of live data.
+   * Additional control surface beyond `enabled` is exposed by the concrete
+   * detector classes, not by this interface.
    */
   interface IAudioDetector {
     /**
      * @description Whether the detector is enabled.
+     * Default for built-in detectors is `true`. Setting `false` immediately
+     * suspends detection: subsequent reads of detector-specific result APIs
+     * return their no-result values until `enabled` is set back to `true`.
      */
     enabled: boolean;
   }
   /**
    * @interface
-   * @description Represents an event.
+   * @description Represents an event dispatched through the event system.
+   * @example
+   *  const emitter = APJS.EventManager.getGlobalEmitter();
+   *  emitter.on(APJS.EventType.Touch, (event: APJS.IEvent) => {
+   *    const touch = event.args[0] as APJS.TouchData;
+   *    console.log(event.type, touch.phase);
+   *  });
    */
   interface IEvent {
     /**
-     * @description The type of the event, which can be either a number or a UserEventType.
+     * @description The numeric event type.
+     * Valid values include:
+     * - {@link EventType}, which identifies built-in global events such as touch
+     *   and record callbacks;
+     * - {@link SceneEventType}, which identifies built-in scene lifecycle events
+     *   such as `OnStart`, `OnUpdate`, and `OnLateUpdate`;
+     * - {@link GifEvent}, which identifies GIF playback events emitted by
+     *   `GifTextureProvider`; and
+     * - {@link UserEventType} values returned by `EventManager.defineUserEventType`,
+     *   which identify custom user-defined events.
      */
     get type(): number | UserEventType;
     /**
-     * @description Sets the type of the event, which can be a number or a UserEventType.
+     * @description Sets the numeric event type.
+     * Valid values include:
+     * - {@link EventType}, which identifies built-in global events such as touch
+     *   and record callbacks;
+     * - {@link SceneEventType}, which identifies built-in scene lifecycle events
+     *   such as `OnStart`, `OnUpdate`, and `OnLateUpdate`;
+     * - {@link GifEvent}, which identifies GIF playback events emitted by
+     *   `GifTextureProvider`; and
+     * - {@link UserEventType} values returned by `EventManager.defineUserEventType`,
+     *   which identify custom user-defined events.
      */
     set type(value: number | UserEventType);
     /**
-     * @description Arguments passed to the event. The payload shape depends on the event type: `EventType.Touch` uses `[TouchData]`, pinch events use `[IPinchInfo]`, collision events use `[CollisionInfo]` or `[CollisionInfo2D]`.
+     * @description Arguments passed with the event.
+     * The payload shape depends on {@link type}. Common values include
+     * `[TouchData]` for `EventType.Touch`, `[IPinchInfo]` for pinch events,
+     * `[CollisionInfo[]]` or `[CollisionInfo2D[]]` for collision events, and
+     * `[{ eventType, eventName, prevFrameIndex, curFrameIndex, gifTexture }]`
+     * for {@link GifEvent}. These are common examples, not a complete list; user
+     * code may also emit arbitrary payloads through `EventManager.createEvent`.
      */
     get args(): any[];
     /**
-     * @description The arguments to be set for the event.
+     * @description Replaces the event payload.
+     * Arrays are shallow-copied with `Array.from` before storage. For compatibility, runtime code
+     * also accepts `undefined` and normalizes it to `[]`.
      * @param args - The arguments to be set for the event.
      */
     set args(args: any[]);
@@ -3528,6 +4264,10 @@ declare namespace APJS {
   interface IEventEmitter {
     /**
      * @description Registers an event listener for a specified event type.
+     * A registration is identified by the `(eventType, callback, context)` triple.
+     * Registering the same triple again is ignored (no duplicate listeners are added),
+     * so a callback fires at most once per emit. Use a different `callback` or `context`
+     * to register a distinct listener.
      * @param eventType - The type of event to listen for.
      * @param callback - The callback function to be invoked when the event is triggered.
      * @param context - The execution context for the callback function.
@@ -3539,6 +4279,10 @@ declare namespace APJS {
     on(eventType: number | UserEventType, callback: (event: IEvent) => void, context?: object): void;
     /**
      * @description Registers a one-time event listener for a specified event type.
+     * The listener fires at most once: it is automatically removed before the
+     * callback is invoked, so a callback that re-emits the same event will not
+     * re-enter itself. Matching rules are identical to {@link IEventEmitter.on}
+     * (the `(eventType, callback, context)` triple).
      * @param eventType - The type of event to listen for.
      * @param callback - The callback function to be invoked when the event is triggered.
      * @param context - The execution context for the callback function.
@@ -3550,6 +4294,10 @@ declare namespace APJS {
     once(eventType: number | UserEventType, callback: (event: IEvent) => void, context?: object): void;
     /**
      * @description Unregisters an event listener for a specified event type.
+     * Removes the registration matching the exact `(eventType, callback, context)`
+     * triple previously passed to {@link IEventEmitter.on} or
+     * {@link IEventEmitter.once}. If no such registration exists this is a no-op
+     * (no throw). Only one matching registration is removed per call.
      * @param eventType - The type of event to unregister.
      * @param callback - The callback function that was previously registered.
      * @param context - The execution context that was used when registering the callback.
@@ -3561,6 +4309,13 @@ declare namespace APJS {
     off(eventType: number | UserEventType, callback: (event: IEvent) => void, context?: object): void;
     /**
      * Emits a specified event.
+     * Dispatch is synchronous: every matching listener (registered via
+     * {@link IEventEmitter.on} or {@link IEventEmitter.once}) is invoked in
+     * registration order before this call returns. Listeners registered via
+     * `once` are removed before being invoked. The method returns `void` and
+     * does not surface listener exceptions to the caller. The event payload
+     * shape is determined by the event type; see {@link IEvent} for the
+     * `type -> args` mapping.
      * @param event - The event object to be emitted.
      * @example
      * ```ts
@@ -3579,57 +4334,96 @@ declare namespace APJS {
   class Image extends Renderer {
     protected constructor();
     /**
-     * @description The main texture of the Image component.
+     * @description Gets the texture currently bound to this Image.
+     * Returns the currently bound texture, or `null` when no texture is bound.
      */
     get texture(): Texture;
+    /**
+     * @description Sets the texture bound to this Image.
+     * At runtime, assigning `null` or `undefined` clears the current texture binding.
+     */
     set texture(value: Texture);
     /**
      * @description The opacity of the image.
+     * Default: 1, range: [0, 1]
      */
     get opacity(): number;
     set opacity(value: number);
     /**
-     * @description The base color of the current material.
+     * @description The base color (tint) applied to the rendered image.
+     * RGBA channels are each in the range `[0, 1]`; values are forwarded to the
+     * native renderer as-is (out-of-range values are passed through and may be
+     * clamped by the underlying material/shader).
+     * The alpha channel multiplies with {@link opacity} to produce the final
+     * fragment alpha; setting `color.a` to `0` makes the image fully transparent
+     * regardless of {@link opacity}.
      */
     get color(): Color;
     set color(value: Color);
     /**
-     * @description The size of the image, takes effect according to the stretch mode
+     * @description The size of the image rect in scene/world units. `x` is the width and `y` is the height.
+     * The default value is `(2, 2)`. Negative width or height values are clamped to `0`.
+     *
+     * How `size` works with `stretchMode`:
+     * - `Fill`: stretches the texture to the `size` rect.
+     * - `Fit`: scales the texture to fit inside the `size` rect while keeping its aspect ratio.
+     * - `Crop`: scales the texture to cover the `size` rect while keeping its aspect ratio.
+     * - Tiled / nine-slice modes: use `size` as the laid-out region.
      */
     get size(): Vector2f;
     set size(value: Vector2f);
     /**
-     * @description The pivot point of the Image.
-     * Typical values are in the range [0, 1]. Values outside that range are still passed through and place the pivot outside the image rect.
+     * @description The pivot point of the Image, expressed in normalized image-rect coordinates.
+     * Default `(0.5, 0.5)` (center). `(0, 0)` is the bottom-left corner of the
+     * image rect and `(1, 1)` is the top-right corner. Values outside `[0, 1]`
+     * are still passed through and place the pivot outside the image rect.
      */
     get pivot(): Vector2f;
+    /**
+     * @description Sets the pivot point of the Image, expressed in normalized image-rect coordinates.
+     * Default `(0.5, 0.5)` (center). `(0, 0)` is the bottom-left corner of the
+     * image rect and `(1, 1)` is the top-right corner. Values outside `[0, 1]`
+     * are still passed through and place the pivot outside the image rect.
+     * @param value - The pivot point to assign.
+     */
     set pivot(value: Vector2f);
     /**
-     * @description Determine whether to flip the image horizontally
+     * @description Whether the image is mirrored along its horizontal axis.
+     * Default `false`. Flipping is purely a render-time effect: it does not
+     * change {@link size}, {@link pivot}, or the `Vector3f` returned by
+     * {@link getWorldCorners} / {@link getContentWorldCorners}.
      */
     get flipX(): boolean;
     set flipX(value: boolean);
     /**
-     * @description Determine whether to flip the image vertically
+     * @description Whether the image is mirrored along its vertical axis.
+     * Default `false`. Flipping is purely a render-time effect: it does not
+     * change {@link size}, {@link pivot}, or the `Vector3f` returned by
+     * {@link getWorldCorners} / {@link getContentWorldCorners}.
      */
     get flipY(): boolean;
     set flipY(value: boolean);
     /**
-     * @description Determine how the image is stretched to the required size
+     * @description Determines how the texture is laid out inside the {@link size} rect.
+     * Supported values are `Fit`, `FitWidth`, `FitHeight`, `Stretch`, `Fill`, `FillAndCut`,
+     * and `TextureSize`. For Image, setting `TextureSize` falls back to `Fill`.
      */
     get stretchMode(): StretchMode;
     set stretchMode(value: StretchMode);
     /**
      * @description Gets the current Image material property value for the specified key.
-     * For general material properties, `key` must match a property exposed by the Image's current material.
+     * Reads the current value stored in this Image's material property map for the exact `key` string.
+     * For general material properties, keys commonly come from properties exposed by the Image's current material.
      * Built-in Filled-mode keys such as `_filledType`, `_startPoint`, and `_filledRange` are also supported when the Image DrawMode is configured as Filled in the editor.
      * @param key - The material property key to read.
-     * @returns The current value of the specified material property.
+     * @returns The current stored value for `key`, or the engine's empty result if no value is found.
      */
     getMaterialProperty(key: string): number | Vector2f | Vector3f | Vector4f | Texture | Matrix4x4f;
     /**
      * @description Sets a material property for the current Image.
-     * For general material properties, `key` must match a property exposed by the Image's current material.
+     * Stores the exact `key` and `value` pair in this Image's material property map.
+     * For general material properties, keys typically come from properties exposed by the Image's current material.
+     * This APJS layer does not validate the key name before storing it.
      * Commonly used to implement material property-driven UI effects such as health bars, progress bars,
      * timer bars, water levels, pole growth, and image slicing effects.
      *
@@ -3652,6 +4446,9 @@ declare namespace APJS {
      * 3. Fill range (progress): key = "_filledRange", number, in the range [0, 1]
      *    - Represents the current fill percentage: 0 is 0%, 1 is 100%.
      *
+     * Setting one of these keys only affects rendering when the current Image setup actually consumes that key,
+     * for example through the configured material or Filled draw mode.
+     *
      * Example:
      * ```ts
      * // Horizontal fill, starting from the left, currently filled to 50%
@@ -3665,13 +4462,20 @@ declare namespace APJS {
     setMaterialProperty(key: string, arg1: number | Vector2f | Vector3f | Vector4f | Texture | Matrix4x4f): void;
   }
   /**
-   * @description Pinch event information includes scale and angle.
-   * @enum
+   * @description Pinch event information.
+   * @interface
    */
   interface IPinchInfo {
-    /** Pinch scale. */
+    /**
+     * Scale ratio relative to the initial two-pointer distance.
+     * `1` = unchanged, `> 1` = fingers moved apart, `< 1` = fingers moved closer.
+     * Range: `[0, +∞)`. Returns `1` when the initial distance is zero.
+     */
     scale: number;
-    /** Pinch angle. */
+    /**
+     * Signed rotation in radians between the current and initial two-pointer direction.
+     * Positive = counter-clockwise, negative = clockwise. Range: `(-π, π]`.
+     */
     angle: number;
   }
   /**
@@ -3695,6 +4499,8 @@ declare namespace APJS {
     /**
      * @description Local anchor point on this body.
      * The value is authored in this joint's own local 2D space, not world space.
+     * Default: `(0, 0)`. Changing it after the joint is initialized rebuilds the
+     * joint so the new anchor takes effect immediately.
      * @type {Vector2f}
      */
     get anchor(): Vector2f;
@@ -3702,6 +4508,8 @@ declare namespace APJS {
     /**
      * @description Local anchor point on the connected body.
      * The value is authored in the connected body's local 2D space, not world space.
+     * Default: `(0, 0)`. Changing it after the joint is initialized rebuilds the
+     * joint so the new anchor takes effect immediately.
      * @type {Vector2f}
      */
     get connectedAnchor(): Vector2f;
@@ -3714,15 +4522,19 @@ declare namespace APJS {
     get breakable(): boolean;
     set breakable(value: boolean);
     /**
-     * @description Force threshold that breaks this joint.
+     * @description Force threshold that breaks this joint, in 2D physics force units.
      * This is a break limit, not a force actively applied by the joint, and it is used only when {@link breakable} is true.
+     * It is compared against the joint's reaction force each step; the joint breaks once that force reaches the threshold.
+     * A negative value disables the force break check. Defaults to 9999.
      * @type {number}
      */
     get breakingForce(): number;
     set breakingForce(value: number);
     /**
-     * @description Torque threshold that breaks this joint.
+     * @description Torque threshold that breaks this joint, in 2D physics torque units.
      * This is a break limit, not a torque actively applied by the joint, and it is used only when {@link breakable} is true.
+     * It is compared against the joint's reaction torque each step; the joint breaks once that torque reaches the threshold.
+     * A negative value disables the torque break check. Defaults to 9999.
      * @type {number}
      */
     get breakingTorque(): number;
@@ -3758,11 +4570,13 @@ declare namespace APJS {
     get breakingForce(): number;
     set breakingForce(value: number);
     /**
-     * @description Torque threshold that breaks this 3D joint.
+     * @description Torque threshold that breaks this 3D joint, expressed in the
+     * engine's internal torque units.
      * This is a break limit, not a torque actively applied by the joint.
      * A value of -1 disables break checks for this constraint.
      * This property is used only by joint types that create a second angular
-     * constraint, such as {@link FixedJoint} and {@link HingeJoint}.
+     * constraint, such as {@link FixedJoint} and {@link HingeJoint}; for joints
+     * without an angular constraint it has no effect. Defaults to 9999.
      * @type {number}
      */
     get breakingTorque(): number;
@@ -3770,6 +4584,9 @@ declare namespace APJS {
     /**
      * @description Local anchor point on this body.
      * It is authored relative to this joint's own SceneObject and converted to a world-space point when the native joint is created.
+     * The conversion happens only at joint creation, so changing this at runtime
+     * after the joint exists does not move the existing anchor; the joint must be
+     * recreated for a new value to take effect. Defaults to `(0, 0, 0)`.
      * @type {Vector3f}
      */
     get anchor(): Vector3f;
@@ -3777,27 +4594,59 @@ declare namespace APJS {
     /**
      * @description Local anchor point on the connected body.
      * It is authored relative to the connected body and converted to a world-space point when the native joint is created.
+     * The conversion happens only at joint creation, so changing this at runtime
+     * after the joint exists does not move the existing anchor; the joint must be
+     * recreated for a new value to take effect. A connected body must be set for
+     * the joint to be created; without one the joint is not built. Defaults to
+     * `(0, 0, 0)`.
      * @type {Vector3f}
      */
     get connectedAnchor(): Vector3f;
     set connectedAnchor(value: Vector3f);
   }
   /**
-   * @class
+   * @class JsonAsset
+   * @description A read-only JSON resource asset. Wraps a text-based asset (`.json` file)
+   * imported by the editor and exposes its parsed content through {@link JsonAsset.json}.
+   * Each access of {@link JsonAsset.json} parses the underlying raw text on demand and returns
+   * a fresh JS value, so multiple reads do not share the same object reference; mutating the
+   * returned value does not write back to the asset, and there is no setter. When the file
+   * cannot be loaded, the JSON cannot be parsed, or the top-level value is not an object/array,
+   * {@link JsonAsset.json} returns `undefined` and an error is logged via the engine logger.
+   * Typical usage: assign a JSON file to a serialized `JsonAsset` field in a script and read
+   * `asset.json` at runtime to access configuration data.
    */
   class JsonAsset {
     protected constructor();
     /**
      * @readonly
      * @description Gets the parsed JSON object or array represented by this asset.
-     * Each access parses the current raw text and returns a new JS value; modifying the returned object does not write back to the asset.
-     * Returns `undefined` when the file cannot be loaded, the JSON is invalid, or the top-level value is not an object/array.
+     * Each access parses the current raw text and returns a <b>new</b> JS value;
+     * the returned object is <b>not</b> shared with any cache, and mutating it
+     * (e.g. `obj.foo = 1`) does <b>not</b> write back to the asset or persist.
+     * Returns `undefined` when the file cannot be loaded, the JSON is invalid,
+     * or the top-level value is not an object/array.
      * @type {any}
+     * @example
+     * const data = jsonAsset.json;
+     * if (data) {
+     *     console.log(data.someField);
+     * }
      */
     get json(): any;
   }
   /**
    * @class LayerSet
+   * @description A bitset-backed set of render or query layers.
+   * Layer indices are zero-based and map directly to the underlying `DynamicBitset`.
+   * The default constructor (`new LayerSet()`) creates a 64-bit set with all layers
+   * disabled; an explicit positive bit count may be passed to allocate a different
+   * width (passing `0` falls back to 64). The bit count is fixed once the LayerSet
+   * is constructed; methods such as {@link LayerSet.set}/{@link LayerSet.get} do
+   * not grow the set, and accessing an index `>= numBits` is forwarded to the
+   * native `DynamicBitset` without runtime range checks at the APJS layer.
+   * The set's internal width is observable via the `numbits:<n>` field of
+   * {@link LayerSet.toString}.
    */
   class LayerSet {
     /**
@@ -3809,14 +4658,18 @@ declare namespace APJS {
      */
     constructor(bitset?: number, mask?: number);
     /**
-     * @description Clears the layer set by setting all bits to false.
-     * @param bitsNum - Optional parameter specifying the number of bits to clear.
-     *                  If not provided or 0, defaults to 64 bits.
+     * @description Clears the layer set by setting all bits to false up to the
+     * requested width. Note this does NOT reallocate the underlying storage:
+     * the bit count of the LayerSet itself is fixed at construction time, and
+     * `bitsNum` only controls how many bits are walked through and zeroed.
+     * @param bitsNum - Optional number of leading bits to clear. When omitted,
+     *                  `null`, or `0`, defaults to `64`. Valid range is `0` to
+     *                  the bit count of this LayerSet (default `64`).
      * @returns This LayerSet instance for chaining.
      */
     clear(bitsNum?: number): this;
     /**
-     * @description Retrieves the value of a specific layer.
+     * @description Retrieves the enabled state of a specific zero-based layer index.
      * @param layerIndex - The index of the layer to retrieve.
      * @returns A boolean indicating whether the specified layer is active or not.
      * @example
@@ -3826,7 +4679,7 @@ declare namespace APJS {
      */
     get(layerIndex: number): boolean;
     /**
-     * @description Sets the value of a specific layer.
+     * @description Sets the enabled state of a specific zero-based layer index.
      * @param layer - The index of the layer to set.
      * @param value - The boolean value to assign to the layer.
      * @returns This LayerSet instance for chaining.
@@ -3845,13 +4698,26 @@ declare namespace APJS {
     isEmpty(): boolean;
     /**
      * @description Compares the current LayerSet with another LayerSet for equality.
+     * Equality requires both LayerSets to share the same bit count and identical bit
+     * patterns; LayerSets with different widths are never equal even if all set bits
+     * fall within the smaller width. Comparing against `null`/`undefined` is not
+     * supported.
      * @param v - The LayerSet to compare against.
      * @returns A boolean indicating whether the two LayerSets have identical bit patterns.
      */
     equals(v: LayerSet): boolean;
     /**
-     * @description Returns a string representation of the LayerSet object.
-     * @returns A string representing the LayerSet object.
+     * @description Returns the native `DynamicBitset` debug string used by this layer set.
+     * The format starts with `numbits:<numBits>; numblock:<numBlocks>; hexadecimal:0x`
+     * and then appends storage blocks in uppercase hexadecimal from the highest block to the lowest.
+     * @example
+     * ```ts
+     * const layers = new APJS.LayerSet();
+     * layers.set(0, true).set(2, true).set(4, true);
+     * const text = layers.toString();
+     * // "numbits:64; numblock:2; hexadecimal:0x0 15 "
+     * ```
+     * @returns A debug string representing the current bit pattern of the layer set.
      */
     toString(): string;
   }
@@ -3863,81 +4729,121 @@ declare namespace APJS {
     protected constructor();
     /**
      * @description Gets the color of the light.
+     * default: `APJS.Color(1, 1, 1, 1)`
+     * The returned "Color" only contains the RGB channels, the alpha channel is set to 1.
      */
     get color(): Color;
     /**
      * @description Sets the color of the light.
+     * Only the `r`, `g`, `b` channels are written to the native light color; `a` is
+     * ignored by this API. Use {@link Light.intensity} to scale the resulting
+     * radiance — `color` carries the tint, `intensity` carries the magnitude.
      */
     set color(value: Color);
     /**
-     * @description Gets the intensity of the light.
+     * @description Gets the light intensity scalar.
+     * Range: [0.0, 7.0], default `1.0` set by editor.
      */
     get intensity(): number;
     /**
-     * @description Sets the intensity of the light.
+     * @description Sets the light intensity scalar.
+     * Range: [0.0, 7.0], default `1.0` set by editor.
      */
     set intensity(value: number);
     /**
-     * @description Gets the layers that are affected by this light.
+     * @description Gets the {@link LayerSet} that are affected by this light.
+     * The set is 64-bit wide, with zero-based layer indices in `[0, 63]`; only scene
+     * objects on an enabled layer receive this light. By default, all 64 layers are enabled.
      */
     get renderLayer(): LayerSet;
     /**
-     * @description Sets the layers that are affected by this light.
+     * @description Sets the {@link LayerSet} that are affected by this light.
+     * Layer indices are zero-based and in `[0, 63]`. Changes take effect from the next
+     * rendered frame; modifying the {@link LayerSet} returned by the getter in place is not
+     * guaranteed to apply, so assign a {@link LayerSet} to this property.
      */
     set renderLayer(value: LayerSet);
   }
   /**
    * @class LookAt
-   * @description A component that makes the current object's orientation follow a target's position or orientation.
+   * @description Orients this object toward a target each frame. When {@link target} is `null`,
+   * the look-at computation is skipped and the orientation is left unchanged.
    */
   class LookAt extends Component {
     protected constructor();
     /**
-     * @description Gets the transform of the target object to look at.
+     * @description Target transform. Role depends on {@link mode}:
+     * - `LookAtDirection`: aim direction = target's world forward axis.
+     * - `LookAtPoint`: aim direction = target.worldPosition − this.worldPosition.
+     * `null` skips the look-at calculation. default: `null`.
+     * @return the target transform, or `null`.
      */
     get target(): Transform | null;
     /**
-     * @description Sets the transform of the target object to look at.
+     * @description Target transform. Pass `null` to disable.
+     * @param value - The target transform.
      */
     set target(value: Transform | null);
     /**
-     * @description Gets the mode for the look-at calculation.
+     * @description Look-at mode. default: `LookAtDirection`.
+     * - `LookAtDirection`: aim = target's world forward axis.
+     * - `LookAtPoint`: aim = target.worldPosition − this.worldPosition.
+     * @return the look-at mode.
      */
     get mode(): LookAtMode;
     /**
-     * @description Sets the mode for the look-at calculation.
+     * @description Look-at mode.
+     * @param value - The mode.
      */
     set mode(value: LookAtMode);
     /**
-     * @description Gets the world-up vector for the look-at calculation.
+     * @description World-up reference. default: `SceneY`.
+     * - `SceneX / SceneY / SceneZ`: fixed scene axes.
+     * - `ObjectX / ObjectY / ObjectZ`: this object's world axes.
+     * - `TargetX / TargetY / TargetZ`: target's world axes (skipped when target is `null`).
+     * @return the world-up mode.
      */
     get worldUp(): LookAtWorldUp;
     /**
-     * @description Sets the world-up vector for the look-at calculation.
+     * @description World-up reference.
+     * @param value - The world-up mode.
      */
     set worldUp(value: LookAtWorldUp);
     /**
-     * @description Gets the direction of the object that will point to the target.
+     * @description Local axis that points toward the target. default: `Z`.
+     * Must differ from {@link directionUp}; same axis or opposite sign yields a
+     * degenerate frame (orientation may flip or freeze).
+     * @return the aim direction.
      */
     get directionAim(): LookAtDirection;
     /**
-     * @description Sets the direction of the object that will point to the target.
+     * @description Local axis that points toward the target.
+     * @param value - The aim direction.
      */
     set directionAim(value: LookAtDirection);
     /**
-     * @description Gets the direction of the object that will be aligned with the world up direction.
+     * @description Local axis aligned with the world-up direction. default: `Y`.
+     * Must not be the same axis as {@link directionAim} (e.g. aim=`X` + up=`X` or
+     * aim=`X` + up=`NegativeX`); when they conflict, the aim/up mapping is skipped
+     * and only the raw look-at rotation plus {@link offsetRotation} is applied.
+     * @return the up direction.
      */
     get directionUp(): LookAtDirection;
     /**
-     * @description Sets the direction of the object that will be aligned with the world up direction.
+     * @description Local axis aligned with the world-up direction.
+     * @param value - The up direction.
      */
     set directionUp(value: LookAtDirection);
     /**
-     * @description Gets An additional rotation applied after the look-at calculation. The value is in Euler angles.
+     * @description Additional Euler rotation applied after look-at, in degrees
+     * `(pitch, yaw, roll)` using the native YXZ rotation order. Applied in the
+     * look-at result's local space. default: `(0, 0, 0)`.
+     * @return the offset rotation.
      */
     get offsetRotation(): Vector3f;
     /**
-     * @description Sets An additional rotation applied after the look-at calculation. The value is in Euler angles.
+     * @description Additional Euler rotation in degrees `(pitch, yaw, roll)`, YXZ order.
+     * @param value - The offset rotation.
      */
     set offsetRotation(value: Vector3f);
   }
@@ -3994,104 +4900,119 @@ declare namespace APJS {
   class Material extends AObject {
     protected constructor();
     /**
-     * @description Gets the render queue for the material.
+     * @description The render queue index controlling draw order. Lower values render earlier.
+     * Valid range is integer `[1, 4999]`. When set to `-1` (default) with an `XShader` bound, falls back to `xshader.renderQueue`.
      */
     get renderQueue(): number;
     /**
-     * @description Sets the render queue for the material.
+     * @description Sets the render queue for the material. Valid range is integer `[1, 4999]`.
      */
     set renderQueue(value: number);
     /**
-     * @description Gets the passes for the material.
+     * @description Gets the render passes for this material. Prefers `xshader.passes` when
+     * an `XShader` is bound, otherwise falls back to the material's own passes.
      */
     get passes(): Pass[];
     /**
-     * @description Sets the passes for the material.
+     * @description Replaces the render passes. Follows the same `XShader`-first rule as the getter.
      */
     set passes(value: Pass[]);
     /**
-     * @description Checks whether a shader macro is enabled on this material.
-     * The macro name must match the shader macro/key exactly.
-     * @param value - The name of the macro.
-     * @returns True if the macro is enabled, false otherwise.
+     * @description Checks whether a shader macro is enabled on this material (case-sensitive).
+     * Only macros added via {@link Material.enableMacro} are reported.
+     * @param value - The macro name to check.
+     * @returns `true` if the macro was enabled and not yet removed, `false` otherwise.
+     * @example
+     * material.enableMacro('USE_NORMAL_MAP', 1);
+     * material.isMacroEnabled('USE_NORMAL_MAP'); // true
      */
     isMacroEnabled(value: string): boolean;
     /**
-     * @description Create a clone of this material.
-     * @returns A new Material instance that is a clone of this material.
+     * @description Creates an independent copy of this material. Properties, macros, and
+     * passes are deep-copied; GPU resources (textures, XShader) are reference-shared.
+     * @returns A new {@link Material} instance.
      */
     clone(): Material;
     /**
-     * @description Sets a named float value.
-     * The property name must match a float uniform/property exposed by the material shader.
-     * @param name - The name of the float property.
-     * @param value - The float value to set.
+     * @description Sets a `float` property by name. The value is stored regardless of whether
+     * the shader declares this uniform; unmatched names have no visible effect.
+     * @param name - Property key matching a shader-declared float uniform.
+     * @param value - The float value to write.
      */
     setFloat(name: string, value: number): void;
     /**
-     * @description Gets a named float value from the material.
-     * The property name must match a float uniform/property exposed by the material shader.
-     * @param name - The name of the float property.
-     * @returns The float value if found, undefined otherwise.
+     * @description Reads a `float` property by name.
+     * @param name - Property key matching a shader-declared float uniform.
+     * @returns The float value, or `undefined` when not found. A name stored under a
+     * different property type is treated as not found.
      */
     getFloat(name: string): number | undefined;
     /**
-     * @description Sets a named matrix value.
-     * The property name must match a matrix uniform/property exposed by the material shader.
-     * @param name - The name of the matrix property.
-     * @param m - The matrix value to set.
+     * @description Sets a `mat4` property by name. The matrix is stored by value and is kept
+     * regardless of whether the shader declares this uniform; unmatched names have no visible effect.
+     * @param name - Property key matching a shader-declared `mat4` uniform.
+     * @param m - The matrix value to write; `null` / `undefined` is ignored.
      */
     setMatrix(name: string, m: Matrix4x4f): void;
     /**
-     * @description Gets a named matrix value.
-     * The property name must match a matrix uniform/property exposed by the material shader.
-     * @param name - The name of the matrix property.
-     * @returns The matrix value if found, undefined otherwise.
+     * @description Reads a `mat4` property by name.
+     * @param name - Property key matching a shader-declared `mat4` uniform.
+     * @returns A {@link Matrix4x4f}, or `undefined` when not found. A name stored under a
+     * different property type is treated as not found.
      */
     getMatrix(name: string): Matrix4x4f | undefined;
     /**
-     * @description Sets a named texture value.
-     * The property name must match a texture slot exposed by the material shader.
-     * @param name - The name of the texture property.
-     * @param texture - The texture value to set.
+     * @description Sets a texture property by name. Passing `null` / `undefined` is a no-op
+     * and does **not** clear the existing binding.
+     * @param name - Property key matching a shader-declared texture sampler slot.
+     * @param texture - The texture to bind; `null` / `undefined` is ignored.
      */
     setTexture(name: string, texture: Texture): void;
     /**
-     * @description Gets a named texture value from the material.
-     * The property name must match a texture slot exposed by the material shader.
-     * @param name - The name of the texture property.
-     * @returns The texture value if found, null otherwise.
+     * @description Reads a texture property by name.
+     * @param name - Property key matching a shader-declared texture sampler slot.
+     * @returns The bound {@link Texture}, or `null` when not found. Note that this method
+     * uses `null` for the empty result, unlike {@link getFloat} / {@link getMatrix} which
+     * return `undefined`.
      */
     getTexture(name: string): Texture | null;
     /**
-     * @description Sets a named integer value.
-     * The property name must match an integer uniform/property exposed by the material shader.
-     * @param name - The name of the integer property.
-     * @param value - The integer value to set.
+     * @description Sets an `int` property by name. Non-integer values are not rounded;
+     * truncation behavior is platform-defined. The value is stored regardless of whether the
+     * shader declares this uniform; unmatched names have no visible effect.
+     * @param name - Property key matching a shader-declared int uniform.
+     * @param value - The integer value to write.
      */
     setInt(name: string, value: number): void;
     /**
-     * @description Gets a named integer value.
-     * The property name must match an integer uniform/property exposed by the material shader.
-     * @param name - The name of the integer property.
+     * @description Reads an `int` property by name.
+     * @param name - Property key matching a shader-declared int uniform.
+     * @returns The integer value, or `undefined` when not found. A name stored under a
+     * different property type is treated as not found.
      */
     getInt(name: string): number | undefined;
     /**
-     * @description Sets a shader macro that is enabled by this material.
-     * The macro name must match the shader macro/key exactly.
-     * @param macro - The name of the shader macro.
-     * @param value - The value to set for the shader macro.
+     * @description Enables a shader macro with a numeric value, making it available to the
+     * shader at draw time. Triggers a shader rebuild when the value changes; same-value
+     * reassignment is a no-op.
+     * @param macro - The macro name (case-sensitive).
+     * @param value - The numeric value to store for the macro.
+     * @example
+     * material.enableMacro('USE_NORMAL_MAP', 1);
+     * material.enableMacro('SAMPLE_COUNT', 4);
      */
     enableMacro(macro: string, value: number): void;
     /**
-     * @description Unsets a shader macro.
-     * The macro name must match the shader macro/key exactly.
-     * @param macro - The name of the shader macro.
+     * @description Removes a previously enabled shader macro. Unknown or already-disabled
+     * names are silently ignored.
+     * @param macro - The macro name to disable (case-sensitive).
      */
     disableMacro(macro: string): void;
     /**
-     * @description Gets the main pass of the material. If no passes exist, a new one is created and returned.
-     * @returns The main Pass object for the material.
+     * @description The first render pass of this material. Prefers `xshader.passes[0]` when
+     * an `XShader` is bound. If no passes exist, a fresh {@link Pass} is created and
+     * inserted as a side effect. Only touches index `0`; use {@link Material.passes} to
+     * replace the full list.
      */
     get mainPass(): Pass;
     /**
@@ -4100,140 +5021,90 @@ declare namespace APJS {
      */
     set mainPass(value: Pass);
     /**
-     * @description Checks whether this material currently has a float property with the specified name.
-     * Property names are matched exactly and should come from the material/shader property definitions used by this material.
-     * @param key - The float property name to check.
-     * @returns True if a float property with that exact name exists; otherwise false.
+     * @description Checks whether a float property with the given name exists.
+     * @param key - The property name to check.
+     * @returns `true` if the property exists.
      */
     hasFloatKey(key: string): boolean;
     /**
-     * @description Checks whether this material currently has a Vector4 property with the specified name.
-     * Property names are matched exactly and should come from the material/shader property definitions used by this material.
-     * @param key - The Vector4 property name to check.
-     * @returns True if a Vector4 property with that exact name exists; otherwise false.
+     * @description Checks whether a Vector4 property with the given name exists.
+     * @param key - The property name to check.
+     * @returns `true` if the property exists.
      */
     hasVector4Key(key: string): boolean;
     /**
-     * @description Checks whether this material currently has a Vector3 property with the specified name.
-     * Property names are matched exactly and should come from the material/shader property definitions used by this material.
-     * @param key - The Vector3 property name to check.
-     * @returns True if a Vector3 property with that exact name exists; otherwise false.
+     * @description Checks whether a Vector3 property with the given name exists.
+     * @param key - The property name to check.
+     * @returns `true` if the property exists.
      */
     hasVector3Key(key: string): boolean;
     /**
-     * @description Checks whether this material currently has a Vector2 property with the specified name.
-     * Property names are matched exactly and should come from the material/shader property definitions used by this material.
-     * @param key - The Vector2 property name to check.
-     * @returns True if a Vector2 property with that exact name exists; otherwise false.
+     * @description Checks whether a Vector2 property with the given name exists.
+     * @param key - The property name to check.
+     * @returns `true` if the property exists.
      */
     hasVector2Key(key: string): boolean;
     /**
-     * @description Checks whether this material currently has a matrix property with the specified name.
-     * Property names are matched exactly and should come from the material/shader property definitions used by this material.
-     * @param key - The matrix property name to check.
-     * @returns True if a matrix property with that exact name exists; otherwise false.
+     * @description Checks whether a matrix property with the given name exists.
+     * @param key - The property name to check.
+     * @returns `true` if the property exists.
      */
     hasMatrixKey(key: string): boolean;
     /**
-     * @description Checks whether this material currently has a texture property with the specified name.
-     * Property names are matched exactly and should come from the material/shader property definitions used by this material.
-     * @param key - The texture property name to check.
-     * @returns True if a texture property with that exact name exists; otherwise false.
+     * @description Checks whether a texture property with the given name exists.
+     * @param key - The property name to check.
+     * @returns `true` if the property exists.
      */
     hasTextureKey(key: string): boolean;
     /**
-     * @description Checks whether this material currently has an integer property with the specified name.
-     * Property names are matched exactly and should come from the material/shader property definitions used by this material.
-     * @param key - The integer property name to check.
-     * @returns True if an integer property with that exact name exists; otherwise false.
+     * @description Checks whether an integer property with the given name exists.
+     * @param key - The property name to check.
+     * @returns `true` if the property exists.
      */
     hasIntKey(key: string): boolean;
     /**
-     * @description Sets a vector value in the material by its name.
-     * The property name must match a vector property exposed by the material shader.
-     * The vector dimension must also match the target property: pass Vector2f for vec2, Vector3f for vec3, and Vector4f for vec4.
-     * @param name - The name of the vector property to set.
-     * @param value - The vector value to set, which can be of type Vector2f, Vector3f, or Vector4f.
+     * @description Sets a vector property by name. The dimension is inferred from the runtime
+     * type: {@link Vector2f} → `vec2`, {@link Vector3f} → `vec3`, {@link Vector4f} → `vec4`.
+     * Dimensions are not auto-converted. Passing a {@link Vector4f} writes the same `vec4`
+     * slot as {@link setColor}; use {@link setColor} when the value is a color.
+     * @param name - Property key matching a shader-declared vector uniform.
+     * @param value - The vector value.
      */
     setVector(name: string, value: Vector2f | Vector3f | Vector4f): void;
     /**
-     * @description Retrieves a vector property by name from the material.
-     * The property name must match a vector property exposed by the material shader.
-     * The returned type depends on the stored property kind: Vector2f for vec2, Vector3f for vec3, and Vector4f for vec4.
-     * @param name - The name of the vector property to retrieve.
-     * @returns A Vector2f, Vector3f, or Vector4f object if found; otherwise, undefined.
+     * @description Reads a vector property by name. Lookup order: `vec2` → `vec3` → `vec4`.
+     * Use `instanceof` to narrow the returned union.
+     * @param name - Property key matching a shader-declared vector uniform.
+     * @returns A {@link Vector2f}, {@link Vector3f}, or {@link Vector4f}; `undefined` if not found.
+     * @example
+     * const v = material.getVector('u_Param');
+     * if (v instanceof Vector4f) { console.log(v.x, v.y, v.z, v.w); }
      */
     getVector(name: string): Vector2f | Vector3f | Vector4f | undefined;
     /**
-     * @description Sets the color of a material property by name.
-     * The property name must match a color/vec4 property exposed by the material shader.
-     * @param name - The name of the material property to set the color for.
-     * @param color - The Color object containing the RGBA values to be set.
+     * @description Sets a `vec4` property by name using a {@link Color}. Writes as
+     * `(r, g, b, a)`. A falsy `color` is a no-op. This targets the same `vec4` slot as
+     * {@link setVector} called with a {@link Vector4f}; the only difference is that the
+     * channels are sourced from the color's `r`/`g`/`b`/`a`.
+     * @param name - Property key matching a shader-declared `vec4` uniform.
+     * @param color - The color to write; a falsy value is ignored.
      */
     setColor(name: string, color: Color): void;
     /**
-     * @description Retrieves the color associated with a given name from the material's properties.
-     * The property name must match a color/vec4 property exposed by the material shader.
-     * Returns `undefined` when the property does not exist or the named property is not stored as a Vector4f color value.
-     * @param name - The name of the property to retrieve the color from.
-     * @returns A Color object if the property exists and is a Vector4f, otherwise undefined.
+     * @description Reads a {@link Color} from a `vec4` property by name. The four components
+     * are mapped back as `r = x`, `g = y`, `b = z`, `a = w`. Returns `undefined` when the
+     * property is absent or not stored as a `vec4` (e.g. a `vec2`/`vec3` of the same name).
+     * @param name - Property key matching a shader-declared `vec4` uniform.
+     * @returns A {@link Color}, or `undefined` when not found.
      */
     getColor(name: string): Color | undefined;
   }
   /**
    * @class MaterialPropertyBlock
    * @extends AObject
-   * @description A container for material properties that can be applied to materials or renderers.
-   * Allows dynamic modification of material properties without creating new materials.
-   *
-   * ### Core Features
-   * - Enables dynamic modification of material properties
-   * - Reduces material duplication by allowing per-instance property overrides
-   * - Supports various property types including floats, vectors, matrices, and textures
-   * - Can be applied to multiple materials or renderers
-   * - Efficiently batches property changes
-   *
-   * ### Usage Examples
-   * @example <caption>Basic Usage: Changing Material Color</caption>
-   * // Create a property block
-   * const props = new MaterialPropertyBlock();
-   *
-   * // Set a color property
-   * const color = new Color(1, 0, 0, 1); // Red color
-   * props.setVector('u_Color', new Vector4f(color.r, color.g, color.b, color.a));
-   *
-   * // Apply to a renderer
-   * renderer.properties = props;
-   *
-   * @example <caption>Advanced Usage: Per-Instance Properties</caption>
-   * // Create multiple property blocks for different instances
-   * const props1 = new MaterialPropertyBlock();
-   * const props2 = new MaterialPropertyBlock();
-   *
-   * // Set different colors for each instance
-   * props1.setVector('u_Color', new Vector4f(1, 0, 0, 1)); // Red
-   * props2.setVector('u_Color', new Vector4f(0, 1, 0, 1)); // Green
-   *
-   * // Apply to different renderers
-   * renderer1.properties = props1;
-   * renderer2.properties = props2;
-   *
-   * @example <caption>Using Textures</caption>
-   * // Create a property block
-   * const props = new MaterialPropertyBlock();
-   *
-   * // Use an existing texture resource
-   * props.setTexture('u_MainTexture', texture);
-   *
-   * // Apply to a renderer
-   * renderer.properties = props;
-   *
-   * @see Material
-   * @see Texture
-   * @see Vector2f
-   * @see Vector3f
-   * @see Vector4f
-   * @see Matrix4x4f
+   * @description A per-renderer override container for material properties. Values written
+   * here override the corresponding uniform on the renderer for that draw call and never
+   * mutate the source {@link Material}.
    */
   class MaterialPropertyBlock extends AObject {
     /**
@@ -4242,72 +5113,70 @@ declare namespace APJS {
      */
     constructor();
     /**
-     * @description Sets a float property value in the material property block.
-     * `name` should match a float property defined by the target material/shader that will consume this block.
-     * @param name - The name of the float property to set.
-     * @param val - The float value to assign to the property.
+     * @description Sets a float property.
+     * @param name - Property key matching a shader-declared float uniform.
+     * @param val - The float value to store.
      */
     setFloat(name: string, val: number): void;
     /**
-     * @description Sets a float array property in the material property block.
-     * `name` should match a float-array property defined by the target material/shader that will consume this block.
-     * When `data` is a Float32Array, it is treated as a tightly packed scalar array.
-     * @param name - The name of the property to set.
-     * @param data - An array of numbers or a Float32Array containing the float values.
+     * @description Sets a float-array property. `Float32Array` is forwarded as-is;
+     * `number[]` is copied into a `Float32Array`. Passing `undefined` is a no-op.
+     * @param name - Property key matching a shader-declared `float[]` uniform.
+     * @param data - The packed float values; `undefined` is ignored.
      */
     setFloatArray(name: string, data: number[] | Float32Array): void;
     /**
-     * @description Sets a vector2 array property in the material property block.
-     * `name` should match a vec2-array property defined by the target material/shader that will consume this block.
-     * When `data` is a Float32Array, values are read as a tightly packed `[x0, y0, x1, y1, ...]` layout.
-     * @param name - The name of the property to set.
-     * @param data - An array of Vector2f objects or a Float32Array containing the vector2 data.
+     * @description Sets a vec2-array property. Tightly packed `[x0, y0, x1, y1, ...]`.
+     * `Float32Array` is uploaded as-is; `Vector2f[]` is flattened. `undefined` is a no-op.
+     * @param name - Property key matching a shader-declared `vec2[]` uniform.
+     * @param data - Packed `Float32Array` or `Vector2f[]`; `undefined` is ignored.
      */
     setVector2Array(name: string, data: Vector2f[] | Float32Array): void;
     /**
-     * @description Sets a vector3 array property in the material property block.
-     * `name` should match a vec3-array property defined by the target material/shader that will consume this block.
-     * When `data` is a Float32Array, values are read as a tightly packed `[x0, y0, z0, x1, y1, z1, ...]` layout.
-     * @param name - The name of the property to set.
-     * @param data - An array of Vector3f objects or a Float32Array containing the vector data.
+     * @description Sets a vec3-array property. Tightly packed `[x0, y0, z0, ...]`.
+     * `Float32Array` is uploaded as-is; `Vector3f[]` is flattened. `undefined` is a no-op.
+     * @param name - Property key matching a shader-declared `vec3[]` uniform.
+     * @param data - Packed `Float32Array` or `Vector3f[]`; `undefined` is ignored.
      */
     setVector3Array(name: string, data: Vector3f[] | Float32Array): void;
     /**
-     * @description Sets a texture property in the material property block.
-     * `name` should match a texture property defined by the target material/shader that will consume this block.
-     * @param name - The name of the texture property to set.
-     * @param texture - The Texture object to assign to the property.
-     * @returns {void}
+     * @description Sets a texture property. A falsy `texture` is silently ignored and does
+     * **not** clear the existing binding.
+     * @param name - Property key matching a shader-declared sampler slot.
+     * @param texture - The texture to bind; a falsy value is ignored.
      */
     setTexture(name: string, texture: Texture): void;
     /**
-     * @description Sets a vector4 array property in the material property block.
-     * `name` should match a vec4-array property defined by the target material/shader that will consume this block.
-     * When `data` is a Float32Array, values are read as a tightly packed `[x0, y0, z0, w0, x1, y1, z1, w1, ...]` layout.
-     * @param name - The name of the property to set.
-     * @param data - An array of Vector4f objects or a Float32Array containing the vector data.
+     * @description Sets a vec4-array property. Tightly packed `[x0, y0, z0, w0, ...]`.
+     * `Float32Array` is uploaded as-is; `Vector4f[]` is flattened. `undefined` is a no-op.
+     * @param name - Property key matching a shader-declared `vec4[]` uniform.
+     * @param data - Packed `Float32Array` or `Vector4f[]`; `undefined` is ignored.
      */
     setVector4Array(name: string, data: Vector4f[] | Float32Array): void;
     /**
-     * @description Sets a matrix property in the material property block.
-     * `name` should match a matrix property defined by the target material/shader that will consume this block.
-     * @param name - The name of the matrix property to set.
-     * @param mat - The Matrix4x4f value to assign to the property.
-     * @returns {void}
+     * @description Sets a `mat4` property by name. The matrix is stored by value and follows the
+     * column-major layout of {@link Matrix4x4f}.
+     * @param name - Property key matching a shader-declared `mat4` uniform.
+     * @param mat - The matrix to store.
      */
     setMatrix(name: string, mat: Matrix4x4f): void;
     /**
-     * @description Sets a vector property in the material property block with the specified name.
-     * `name` should match a vector property defined by the target material/shader that will consume this block.
-     * The vector dimension must also match the target property: pass Vector2f for vec2, Vector3f for vec3, and Vector4f for vec4.
-     * @param name - The name of the vector property to set.
-     * @param value - The vector value to assign, which can be of type Vector2f, Vector3f, or Vector4f.
+     * @description Sets a vector property. Dimension is inferred from the runtime type:
+     * {@link Vector2f} → `vec2`, {@link Vector3f} → `vec3`, {@link Vector4f} → `vec4`.
+     * Dimensions are independent and not auto-converted.
+     * @param name - Property key matching a shader-declared vector uniform.
+     * @param value - Vector value; runtime type selects the target dimension slot.
      */
     setVector(name: string, value: Vector2f | Vector3f | Vector4f): void;
   }
   /**
    * @class Matrix3x3f
-   * A standard 3x3 transformation matrix.（<b>column major</b>]
+   * @description A 3x3 transformation matrix used for 3D linear transforms (rotation,
+   * scale, shear) without translation. Storage and indexing follow the **column-major**
+   * convention shared by the rest of APJS math types.
+   *
+   * Instances are created directly via `new Matrix3x3f(...)`; for transform-related helpers
+   * see the static factories on this class (e.g. `identity` / `makeFromRotation`).
    */
   class Matrix3x3f {
     /**
@@ -4343,32 +5212,40 @@ declare namespace APJS {
      */
     set(row: number, column: number, value: number): this;
     /**
-     * @description The first column of the matrix.
+     * @description Returns a copy of the first column (column index 0) of the matrix
+     * as a `Vector3f`.
+     * The returned vector is a new instance — mutating it does not change the matrix; use
+     * the setter to write back.
      */
     get column0(): Vector3f;
     /**
-     * @description Sets the values of column 0 in the Matrix3x3f using a Vector3f.
+     * @description Sets the first column of the 3x3 matrix with the provided Vector3f values.
      */
     set column0(value: Vector3f);
     /**
-     * @description The second column of the matrix.
+     * @description Returns a copy of the second column of the 3x3 matrix as a `Vector3f`.
+     * The returned vector is a new instance — mutating it does not change the matrix; use
+     * the setter to write back.
      */
     get column1(): Vector3f;
     /**
-     * @description Sets the values of the first column in the 3x3 matrix.
+     * @description Sets the second column of the 3x3 matrix with the provided Vector3f values.
      */
     set column1(value: Vector3f);
     /**
-     * @description The third column of the matrix.
+     * @description Returns a copy of the third column of the 3x3 matrix as a `Vector3f`.
+     * The returned vector is a new instance — mutating it does not change the matrix; use
+     * the setter to write back.
      */
     get column2(): Vector3f;
     /**
-     * @description Sets the values of the second column in the 3x3 matrix.
+     * @description Sets the third column of the 3x3 matrix with the provided Vector3f values.
      */
     set column2(value: Vector3f);
     /**
      * @description Compares this matrix with another matrix for equality.
-     * This method performs a direct value comparison of the elements in both matrices.
+     * This is a strict element-wise comparison with no floating-point tolerance. Use
+     * {@link Matrix3x3f.compareApproximately} when approximate comparison is needed.
      * @param other - The Matrix3x3f object to compare with this matrix.
      * @returns A boolean indicating whether the two matrices are equal.
      */
@@ -4379,56 +5256,90 @@ declare namespace APJS {
      */
     clone(): Matrix3x3f;
     /**
-     * @description Returns a string representation of the Matrix3x3f, with each element formatted to five decimal places.
-     * @returns The string representation of the matrix.
+     * @description Returns a string representation of this matrix.
+     *
+     * Each element is formatted with `Number.prototype.toFixed(5)` (five decimal digits,
+     * fixed notation; large magnitudes are not switched to exponential form). Elements are
+     * laid out in row-major reading order with three rows on three lines.
+     *
+     * Format example for an identity matrix:
+     * ```
+     * Matrix3x3f(1.00000, 0.00000, 0.00000,
+     *            0.00000, 1.00000, 0.00000,
+     *            0.00000, 0.00000, 1.00000)
+     * ```
+     *
+     * Intended for logging / debugging only — the format is human-readable, not stable
+     * for parsing.
+     *
+     * @returns The formatted string.
      */
     toString(): string;
     /**
-     * @description Adds the specified matrix to this matrix and returns the result.
+     * @description Performs element-wise addition of another matrix to this matrix, in place.
+     * Non-finite values such as `Infinity`, `-Infinity`, and `NaN` are not handled
+     * specially and propagate according to normal floating-point arithmetic.
      * @param other - The matrix to add to this matrix.
-     * @returns This matrix after addition.
+     * @returns This matrix instance after performing the addition operation.
      */
     add(other: Matrix3x3f): this;
     /**
-     * @description Returns the result of subtracting another 3x3 matrix from this matrix.
-     * @param other - The matrix to be subtracted from this matrix.
-     * @returns This matrix after performing the subtraction.
+     * @description Performs element-wise subtraction of another matrix from this matrix, in place.
+     * Non-finite values such as `Infinity`, `-Infinity`, and `NaN` are not handled
+     * specially and propagate according to normal floating-point arithmetic.
+     * @param other - The matrix to subtract from this matrix.
+     * @returns This matrix instance after performing the subtraction operation.
      */
     subtract(other: Matrix3x3f): this;
     /**
-     * @description Multiplies the current matrix by another matrix or a scalar.
-     * @param other - The matrix or scalar to multiply with.
-     * @returns The modified instance of the current matrix after multiplication.
+     * @description Multiplies this matrix in place.
+     * When `other` is a `Matrix3x3f`, this performs standard matrix multiplication
+     * (`this * other`). When `other` is a `number`, it scales every element of this
+     * matrix by that scalar.
+     * @param other - The matrix or scalar to multiply this matrix by.
+     * @returns This matrix instance after performing the multiplication operation.
      */
     multiply(other: Matrix3x3f | number): this;
     /**
-     * @description Multiplies each element of the matrix by a given scalar.
-     * @param scalar - The scalar value to multiply with each element of the matrix.
-     * @returns This instance of Matrix3x3f after performing the scalar multiplication.
+     * @description Multiplies each element of the matrix by a scalar value in place.
+     * @param scalar - The scalar value to multiply each element of the matrix by.
+     * @returns This matrix instance after performing the scalar multiplication.
      */
     multiplyScalar(scalar: number): this;
     /**
      * @description Divides each element of the current matrix by the corresponding element of another matrix.
+     * If a divisor is `0`, the result may become `Infinity` or `NaN`. Existing `NaN`
+     * values also propagate according to normal floating-point arithmetic.
      * @param other - The matrix to divide by.
      * @returns This matrix after performing the division.
      */
     divide(other: Matrix3x3f): this;
     /**
-     * @description Returns the inverse of the matrix.
-     * @returns The current instance with its values set to the inverse of the original matrix.
+     * @description Computes and sets this matrix to its inverse.
+     * If this matrix is not invertible, it is replaced with a zero matrix.
+     * @returns This matrix instance after computing the inverse.
      */
     inverse(): this;
     /**
-     * @description Returns the transpose of this matrix.
-     * @returns The transposed matrix.
+     * @description Computes and sets this matrix to its transpose in place.
+     * @returns This matrix instance after computing the transpose.
      */
     transpose(): this;
   }
   /**
    * @class Matrix4x4f
-   * A standard 4x4 transformation matrix.（<b>column major</b>]
-   * A transformation matrix can perform arbitrary linear 3D transformations
-   * (i.e. translation, rotation, scale, shear etc.) and perspective transformations using homogenous coordinates.
+   * @description A 4x4 transformation matrix used for arbitrary affine 3D transforms
+   * (translation, rotation, scale, shear) and projective / perspective transforms via
+   * homogeneous coordinates. Storage and indexing follow the **column-major** convention
+   * shared by the rest of APJS math types.
+   *
+   * All Euler-angle related methods on `Matrix4x4f` (e.g. {@link Matrix4x4f.getEulerAngles})
+   * use **radians**, whereas {@link Transform.localEulerAngles} / {@link Transform.getWorldEulerAngles}
+   * use **degrees**; convert with `radians = degrees * Math.PI / 180` when crossing the boundary.
+   *
+   * Instances are created directly via `new Matrix4x4f(...)` (16-element constructor or
+   * native handoff); for transform-related helpers see the static factories on this class
+   * (e.g. `identity` / `makeFromTRS`).
    */
   class Matrix4x4f {
     /**
@@ -4472,54 +5383,68 @@ declare namespace APJS {
     set(row: number, column: number, value: number): this;
     /**
      * @description Sets the values of a specified row in the matrix using a Vector4f.
-     * @param row - The index of the row to set [0-3].
+     * @param row - The index of the row to set [0-3]. Out-of-range values are not validated
+     *   and may write to unintended indices without throwing.
      * @param v - A Vector4f containing the values (c0, c1, c2, c3) for the row.
      * @returns This instance of Matrix4x4f with the updated row values.
      */
     setRow(row: number, v: Vector4f): this;
     /**
      * @description Sets the values of a specified column in the matrix.
-     * @param col - The index of the column to set (0-3).
+     * @param col - The index of the column to set (0-3). Out-of-range values are not
+     *   validated and may write to unintended indices without throwing.
      * @param v - A Vector4f object containing the new values for the column (r0, r1, r2, r3).
      * @returns This instance of Matrix4x4f with the updated column values.
      */
     setColumn(col: number, v: Vector4f): this;
     /**
-     * @description The first column of the matrix.
+     * @description Returns a copy of the first column (column index 0) of the matrix
+     * as a `Vector4f`. The vector's `x`, `y`, `z`, `w` map to rows 0, 1, 2, 3 of that column.
+     * The returned vector is a new instance — mutating it does not change the matrix; use
+     * the setter to write back.
      */
     get column0(): Vector4f;
     /**
      * @description Sets the first column of the 4x4 matrix with the provided Vector4f values.
+     * The vector's `x`, `y`, `z`, `w` are written to rows 0, 1, 2, 3 of column 0 respectively.
      */
     set column0(value: Vector4f);
     /**
-     * @description The second column of the matrix.
+     * @description Returns a copy of the second column of the 4x4 matrix as a `Vector4f`.
+     * The returned vector is a new instance — mutating it does not change the matrix; use
+     * the setter to write back.
      */
     get column1(): Vector4f;
     /**
-     * @description Sets the values of the first column in the 4x4 matrix.
+     * @description Sets the second column of the 4x4 matrix with the provided Vector4f values.
      */
     set column1(value: Vector4f);
     /**
-     * @description The third column of the matrix.
+     * @description Returns a copy of the third column of the 4x4 matrix as a `Vector4f`.
+     * The returned vector is a new instance — mutating it does not change the matrix; use
+     * the setter to write back.
      */
     get column2(): Vector4f;
     /**
-     * @description Sets the second column of the 4x4 matrix with the provided Vector4f values.
+     * @description Sets the third column of the 4x4 matrix with the provided Vector4f values.
      */
     set column2(value: Vector4f);
     /**
-     * @description The fourth column of the matrix.
-     * @returns {Vector4f} A Vector4f representing the fourth column of the matrix.
+     * @description Returns a copy of the fourth column of the 4x4 matrix as a `Vector4f`.
+     * The returned vector is a new instance — mutating it does not change the matrix; use
+     * the setter to write back.
      */
     get column3(): Vector4f;
     /**
-     * @description Sets the third column of the 4x4 matrix with the provided Vector4f values.
+     * @description Sets the fourth column of the 4x4 matrix with the provided Vector4f values.
      */
     set column3(value: Vector4f);
     /**
-     * @description Compares this matrix with another matrix for equality.
-     * This method performs a direct value comparison of the elements in both matrices.
+     * @description Returns whether this matrix and `other` have exactly the same 16 values.
+     *
+     * This is a strict element-wise comparison with no floating-point tolerance. Use
+     * {@link Matrix4x4f.compareApproximately} when approximate comparison is needed.
+     *
      * @param other - The Matrix4x4f object to compare with this matrix.
      * @returns A boolean indicating whether the two matrices are equal.
      */
@@ -4532,62 +5457,105 @@ declare namespace APJS {
     /**
      * @description Returns a formatted string representation of the matrix showing all 16 elements.
      * @returns A string representation of the matrix with elements arranged in a 4x4 grid.
+     * Format example for an identity matrix:
+     * ```
+     * Matrix4x4f(1.00000, 0.00000, 0.00000, 0.00000,
+     *            0.00000, 1.00000, 0.00000, 0.00000,
+     *            0.00000, 0.00000, 1.00000, 0.00000,
+     *            0.00000, 0.00000, 0.00000, 1.00000)
+     * ```
      */
     toString(): string;
     /**
-     * @description Performs element-wise addition of another matrix to this matrix.
+     * @description Performs element-wise addition of another matrix to this matrix, in place.
+     * Non-finite values such as `Infinity`, `-Infinity`, and `NaN` are not handled
+     * specially and propagate according to normal floating-point arithmetic.
      * @param other - The matrix to add to this matrix.
      * @returns This matrix instance after performing the addition operation.
      */
     add(other: Matrix4x4f): this;
     /**
-     * @description Performs element-wise subtraction of another matrix from this matrix.
+     * @description Performs element-wise subtraction of another matrix from this matrix, in place.
+     * Non-finite values such as `Infinity`, `-Infinity`, and `NaN` are not handled
+     * specially and propagate according to normal floating-point arithmetic.
      * @param other - The matrix to subtract from this matrix.
      * @returns This matrix instance after performing the subtraction operation.
      */
     subtract(other: Matrix4x4f): this;
     /**
-     * @description Multiplies this matrix by another matrix using standard matrix multiplication (this * other).
-     * @param other - The matrix to multiply this matrix by.
+     * @description Multiplies this matrix in place.
+     * When `other` is a `Matrix4x4f`, this performs standard matrix multiplication
+     * (`this * other`). When `other` is a `number`, it scales every element of this
+     * matrix by that scalar.
+     * @param other - The matrix or scalar to multiply this matrix by.
      * @returns This matrix instance after performing the multiplication operation.
      */
     multiply(other: Matrix4x4f | number): this;
     /**
-     * @description Multiplies each element of the matrix by a scalar value.
+     * @description Multiplies each element of the matrix by a scalar value in place.
+     * Equivalent to `multiply(scalar)` when passing a number; prefer this method when the
+     * operand is always a scalar, and use {@link multiply} when the operand may be a matrix.
      * @param scalar - The scalar value to multiply each element of the matrix by.
      * @returns This matrix instance after performing the scalar multiplication.
      */
     multiplyScalar(scalar: number): this;
     /**
      * @description Divides each element of the current matrix by the corresponding element of another matrix.
+     * If a divisor is `0`, the result may become `Infinity` or `NaN`. Existing `NaN`
+     * values also propagate according to normal floating-point arithmetic.
      * @param other - The matrix to divide by.
      * @returns This matrix after performing the division.
      */
     divide(other: Matrix4x4f): this;
     /**
      * @description Returns an Euler angle representation of this matrix's rotation.
+     * The result uses the engine's native `YXZ` Euler convention and is intended to match
+     * {@link Matrix4x4f.makeFromEulerAngles}. Near singular configurations, the result may
+     * be non-unique.
      * @returns - A vector containing the Euler angles (pitch, yaw, roll) in radians.
      */
     getEulerAngles(): Vector3f;
     /**
      * @description Computes and sets this matrix to its inverse.
+     * If this matrix is not invertible, it is replaced with a zero matrix.
      * @returns This matrix instance after computing the inverse.
      */
     inverse(): this;
     /**
      * @description Multiplies the given direction vector by this matrix and returns the resulting vector.
+     * Treats `dir` as a homogeneous direction with `w = 0`, so the translation column is
+     * ignored. This method returns the transformed xyz components directly and does not
+     * perform a perspective divide.
      * @param dir - The direction vector to be multiplied.
      * @returns A new Vector3f representing the result of the multiplication.
      */
     multiplyDirection(dir: Vector3f): Vector3f;
     /**
      * @description Multiplies the given 3D point by this 4x4 matrix and returns the resulting point.
+     * Treats `point` as a homogeneous position with `w = 1`, so the translation column is
+     * applied. This method returns the transformed xyz components directly and does not
+     * perform a perspective divide.
      * @param point - The 3D point to be multiplied by the matrix.
      * @returns A new Vector3f representing the result of the multiplication.
      */
     multiplyPoint(point: Vector3f): Vector3f;
     /**
      * @description Multiplies the given vector by this 4x4 matrix and returns the resulting vector.
+     * Uses this class's column-vector convention and computes the full homogeneous result
+     * `M * vec`, including the returned `w` component. This method does not perform a
+     * perspective divide.
+     *
+     * Example:
+     * ```ts
+     * const m = new Matrix4x4f(
+     *   1, 0, 0, 0,
+     *   0, 1, 0, 0,
+     *   0, 0, 1, 0,
+     *   10, 20, 30, 1
+     * );
+     * const result = m.multiplyVector(new Vector4f(1, 2, 3, 1));
+     * // result is Vector4f(11, 22, 33, 1)
+     * ```
      * @param vec - A 4-dimensional vector (Vector4f) to be multiplied by the matrix.
      * @returns The resulting 4-dimensional vector after multiplication.
      */
@@ -4598,49 +5566,65 @@ declare namespace APJS {
      */
     transpose(): this;
     /**
-     * @description Sets the translation component of the matrix using a Vector3f.
+     * @description Replaces this matrix with a pure translation matrix.
+     * The upper-left `3x3` is reset to identity, the translation column is set from `v`,
+     * and the bottom row becomes `(0, 0, 0, 1)`.
      * @param v - The translation vector to be applied.
      * @returns This instance of Matrix4x4f with the updated translation.
      */
     setTranslate(v: Vector3f): this;
     /**
-     * @description Applies a translation to this matrix by multiplying it with a translation matrix.
+     * @description Applies a translation by post-multiplying this matrix with the
+     * translation matrix built from `vec` (`this = this * T(vec)`).
+     * The translation is expressed in the current basis of this matrix, and only the
+     * translation column is updated.
      * @param vec - The translation vector to apply to this matrix.
      * @returns This matrix instance after applying the translation transformation.
      */
     translate(vec: Vector3f): this;
     /**
      * @description Sets this matrix to a scaling matrix using the specified scaling factors.
+     * All non-scale entries are cleared to `0`, and the bottom-right element is set to `1`.
      * @param v - A Vector3f representing the scaling factors along the x, y, and z axes.
      * @returns This matrix instance after setting it to the scaling matrix.
      */
     setScale(v: Vector3f): this;
     /**
-     * @description Scales the matrix by the components of the given vector.
+     * @description Applies a non-uniform scale by post-multiplying this matrix with the
+     * diagonal scale matrix built from `vec` (`this = this * S(vec)`).
      * @param vec - A Vector3f object representing the scaling factors along each axis.
      * @returns The modified Matrix4x4f instance.
      */
     scale(vec: Vector3f): this;
     /**
      * @description Sets the matrix to a rotation that aligns the vector `from` to the vector `to`.
+     * This replaces the current matrix with a rotation-only transform.
+     * This method does not normalize or validate the inputs. Both `from` and `to` must be
+     * normalized, non-zero vectors. Other inputs produce implementation-defined results.
      * @param from - The initial vector.
      * @param to - The target vector.
      * @returns This matrix with the applied rotation.
      */
     setFromToRotation(from: Vector3f, to: Vector3f): this;
     /**
-     * @description Retrieves the X-axis vector from the matrix.
-     * @returns - The X-axis vector represented as a 3D vector.
+     * @description Returns the xyz components of the **first column** of the matrix.
+     * The returned vector is not normalized; any scale or shear stored in that column is
+     * preserved.
+     * @returns - The X-axis column as stored in the matrix.
      */
     getAxisX(): Vector3f;
     /**
-     * @description Retrieves the Y-axis vector from the matrix.
-     * @returns - The Y-axis vector represented as a 3D vector.
+     * @description Returns the xyz components of the **second column** of the matrix.
+     * The returned vector is not normalized; any scale or shear stored in that column is
+     * preserved.
+     * @returns - The Y-axis column as stored in the matrix.
      */
     getAxisY(): Vector3f;
     /**
-     * @description Retrieves the Z-axis vector from the matrix.
-     * @returns - The Z-axis vector represented as a 3D vector.
+     * @description Returns the xyz components of the **third column** of the matrix.
+     * The returned vector is not normalized; any scale or shear stored in that column is
+     * preserved.
+     * @returns - The Z-axis column as stored in the matrix.
      */
     getAxisZ(): Vector3f;
     /**
@@ -4650,13 +5634,22 @@ declare namespace APJS {
     setIdentity(): this;
     /**
      * @description Decomposes the matrix into its translation, rotation, and scale components.
+     * Overwrites the provided output objects in place. Translation is taken from the
+     * matrix's translation column, scale is derived from the magnitudes of the first three
+     * columns, and rotation is computed from the remaining rotation part.
+     * If the matrix contains a mirrored basis, the negative sign is reported on `scale.x`.
+     * This overload does not return shear/skew separately; use a TRS-style affine matrix for
+     * the most predictable result.
      * @param translation - The vector to store the translation component.
      * @param rotation - The quaternion to store the rotation component.
      * @param scale - The vector to store the scale component.
      */
     getDecompose(translation: Vector3f, rotation: Quaternionf, scale: Vector3f): void;
     /**
-     * @description Composes the matrix by setting its translation, rotation, and scale (TRS).
+     * @description Replaces this matrix with a TRS transform built from translation,
+     * rotation, and scale.
+     * Under this class's column-vector convention, the result is equivalent to
+     * `T(translation) * R(rotation) * S(scale)`.
      * @param translation - The translation vector to apply.
      * @param rotation - The quaternion representing the rotation to apply.
      * @param scale - The scaling vector to apply.
@@ -4672,15 +5665,18 @@ declare namespace APJS {
      */
     static compareApproximately(mat1: Matrix4x4f, mat2: Matrix4x4f, dist: number): boolean;
     /**
-     * @description Generates a new transformation matrix that orients an object to look at a specified target.
-     * @param eye - The position of the viewer/camera.
-     * @param center - The position of the target to look at.
-     * @param up - The upward direction in the world, typically (0, 1, 0).
-     * @returns A new Matrix4x4f representing the transformation that orients an object to look from 'eye' towards 'center'.
+     * @description Returns a rotation-only model matrix that orients an object so its
+     * forward direction points from `eye` toward `center`.
+     * This is a model matrix (object-to-world), not a view matrix (world-to-camera).
+     * @param eye - The reference position used to compute the forward direction.
+     * @param center - The target position the object should face.
+     * @param up - The upward direction used to build the orientation basis, typically (0, 1, 0).
+     * @returns A new rotation-only Matrix4x4f.
      */
     static lookAt(eye: Vector3f, center: Vector3f, up: Vector3f): Matrix4x4f;
     /**
-     * @description Returns a new 4x4 matrix with the specified Euler angles (in radians).
+     * @description Returns a new 4x4 rotation matrix from the specified Euler angles (in radians).
+     * Uses the same native `YXZ` Euler convention as {@link Matrix4x4f.getEulerAngles}.
      * @param euler - A Vector3f representing the Euler angles.
      * @returns A new Matrix4x4f instance constructed from the given Euler angles.
      */
@@ -4704,23 +5700,31 @@ declare namespace APJS {
      */
     static makeFromTranslation(translation: Vector3f): Matrix4x4f;
     /**
-     * @description Generates a new orthographic projection matrix using the provided arguments.
-     * @param left - The coordinate for the left vertical clipping plane.
-     * @param right - The coordinate for the right vertical clipping plane.
-     * @param bottom - The coordinate for the bottom horizontal clipping plane.
-     * @param top - The coordinate for the top horizontal clipping plane.
-     * @param zNear - The distance to the near depth clipping plane. This value is negative if the plane is behind the viewer.
-     * @param zFar - The distance to the far depth clipping plane. This value is negative if the plane is behind the viewer.
-     * @returns A new orthographic projection matrix as a Matrix4x4f object.
+     * @description Generates a right-handed orthographic projection matrix.
+     * Camera looks along **-Z**; `zNear`/`zFar` are positive distances.
+     * Depth maps `z = -zNear` → `-1`, `z = -zFar` → `+1`.
+     * No validation; violating `zFar > zNear > 0`, `right > left`, or `top > bottom`
+     * causes division by zero or a flipped axis.
+     * @param left - Left clipping plane coordinate.
+     * @param right - Right clipping plane coordinate.
+     * @param bottom - Bottom clipping plane coordinate.
+     * @param top - Top clipping plane coordinate.
+     * @param zNear - Positive distance to the near plane.
+     * @param zFar - Positive distance to the far plane.
+     * @returns A new orthographic projection matrix.
      */
     static orthographic(left: number, right: number, bottom: number, top: number, zNear: number, zFar: number): Matrix4x4f;
     /**
-     * @description Generates a perspective projection matrix using the provided field of view, aspect ratio, and near/far clipping planes.
-     * @param fovY - The vertical field of view angle in degrees.
-     * @param aspect - The aspect ratio (width divided by height) of the viewport.
-     * @param zNear - The distance to the near clipping plane.
-     * @param zFar - The distance to the far clipping plane.
-     * @returns A new Matrix4x4f representing the perspective projection matrix.
+     * @description Generates a right-handed perspective projection matrix.
+     * Camera looks along **-Z**; `zNear`/`zFar` are positive distances.
+     * Depth maps `z = -zNear` → `-1`, `z = -zFar` → `+1` after perspective divide.
+     * `fovY` is in **degrees**; {@link Camera.fov} is in radians — convert when forwarding.
+     * No validation; `aspect` ≤ 0, `fovY` ≤ 0, or `zNear` = `zFar` produces `Infinity`/`NaN`.
+     * @param fovY - Vertical field of view in degrees.
+     * @param aspect - Viewport aspect ratio (width / height).
+     * @param zNear - Positive distance to the near plane.
+     * @param zFar - Positive distance to the far plane.
+     * @returns A new perspective projection matrix.
      */
     static perspective(fovY: number, aspect: number, zNear: number, zFar: number): Matrix4x4f;
   }
@@ -4732,16 +5736,24 @@ declare namespace APJS {
   class Mesh extends AObject {
     protected constructor();
     /**
-     * @description Gets the axis-aligned bounding box (AABB) of the mesh.
+     * @description Gets the axis-aligned bounding box. The returned object is a reference
+     * to the mesh's bounding box.
+     * @return the bounding box.
      */
     get boundingBox(): AABB;
     /**
-     * @description Sets the axis-aligned bounding box (AABB) of the mesh.
+     * @description Sets the axis-aligned bounding box. The value is forwarded as-is
+     * without validation or recalculation from vertex data.
      */
     set boundingBox(aabb: AABB);
     /**
-     * @description Gets the vertex attributes of the mesh.
-     * @returns An array of vertex attribute descriptors.
+     * @description Describes the layout of per-vertex data in the vertex buffer.
+     * Each entry has:
+     * - `attribute` — the semantic slot (e.g. `VertexAttributeType.Position`, `VertexAttributeType.Normal`, `VertexAttributeType.TexCoord0`).
+     * - `name` — the shader-facing string identifier.
+     * - `componentCount` — number of floats per vertex for this attribute (1–4).
+     * Use this to compute stride and offset when parsing the raw buffer from {@link getVertices}.
+     * @return array of vertex attribute descriptors.
      */
     getVertexAttributes(): VertexAttributeDesc[];
     /**
@@ -4755,13 +5767,24 @@ declare namespace APJS {
      */
     getTopology(): MeshTopology;
     /**
-     * @description Gets the vertex data of the mesh.
-     * @returns A Float32Array containing the vertex positions.
+     * @description Raw interleaved vertex buffer as a flat Float32Array. Layout depends on
+     * the mesh's vertex attribute configuration (see {@link getVertexAttributes}); the
+     * first attribute typically starts at offset 0. To extract only positions, use
+     * {@link getVertexAttributes} to compute stride and offset, or use the private
+     * `getVertexArray()` helper.
+     * @return the raw vertex buffer data.
      */
     getVertices(): Float32Array;
     /**
-     * @description Gets the triangle indices of the mesh as a 16-bit array.
-     * @returns A Uint16Array of vertex indices forming the triangles.
+     * @description Concatenated 16-bit triangle indices from all sub-meshes.
+     * Every three consecutive values `(i0, i1, i2)` form one triangle referencing
+     * the vertex stream from {@link getVertices}.
+     * - Non-`Triangles` topology: if any sub-mesh's topology is not
+     *   `MeshTopology.Triangles`, the entire result is cleared to an empty array.
+     * - Index upper limit: stored as `Uint16Array`, so each index is in `[0, 65535]`.
+     *   Sub-meshes with 32-bit indices that exceed this range cannot be represented;
+     *   use per-submesh accessors instead.
+     * @return a Uint16Array whose length is a multiple of 3 (or empty).
      */
     getTriangles(): Uint16Array;
   }
@@ -4770,10 +5793,12 @@ declare namespace APJS {
    * @description A 3D collider that uses mesh geometry for collision.
    * Use this when primitive shapes such as boxes, spheres, or capsules are not
    * accurate enough for the object.
-   * A mesh must be assigned before the collider can initialize.
+   * A mesh must be assigned before the collider can initialize; the mesh is
+   * authored in the editor (it is not set through a scripting property). When the
+   * SceneObject also has a skinned mesh renderer using the same mesh, the
+   * collider follows that deforming mesh at runtime. If no mesh is assigned, the
+   * collider fails to initialize.
    * {@link convex} switches the runtime shape toward convex-hull collision.
-   * If the collider is tied to a matching skinned mesh path, APJS updates the
-   * deformable collision mesh during update.
    *
    * @example
    * const meshCollider = obj.getComponent("MeshCollider") as APJS.MeshCollider;
@@ -4799,7 +5824,9 @@ declare namespace APJS {
   }
   /**
    * @class MeshRenderer
-   * @description class for the mesh renderer
+   * @description Renderer component that draws a static {@link Mesh} using a shared
+   * {@link Material}. Attach a `MeshRenderer` to a {@link SceneObject} that already owns a
+   * mesh to make the geometry visible to the rendering pipeline.
    */
   class MeshRenderer extends Renderer {
     protected constructor();
@@ -4809,28 +5836,37 @@ declare namespace APJS {
      */
     get mesh(): Mesh;
     /**
-     * @description Set the mesh for the renderer.
+     * @description Sets the mesh for this renderer.
+     * The new mesh takes effect on the next render frame.
      * @param value - The mesh to set for the renderer.
      */
     set mesh(value: Mesh);
     /**
-     * @description Get the first shared material used by the MeshRenderer.
-     * @returns The first shared material used by the MeshRenderer, or null if none is assigned.
+     * @description Gets the first shared material used by the MeshRenderer. This is the same
+     * material that {@link mainPass} reads its first pass from.
+     * @returns The shared material, or `null` if none is assigned.
      */
     get mainMaterial(): Material | null;
     /**
      * @description Sets the main material for the MeshRenderer.
-     * @param value - The material to set as the main material.
+     * The material is shared — mutating it affects all renderers that reference it.
+     * Setting `null` detaches the material, after which {@link mainPass} returns `null`.
+     * @param value - The material to set as the main material, or `null` to detach.
      */
     set mainMaterial(value: Material | null);
     /**
-     * @description Retrieves the main pass from the object's shared material.
-     * @returns The first pass of the shared material, or null if no passes are available.
+     * @description Retrieves the main pass from this renderer's shared material.
+     * Returns `null` when no shared material is assigned or the material has no passes.
+     * @returns The first pass of the shared material, or `null` if unavailable.
      */
     get mainPass(): Pass | null;
     /**
-     * @description Retrieves the axis-aligned bounding box (AABB) for this mesh renderer.
-     * @returns The axis-aligned bounding box representing the bounds of the mesh.
+     * @description Retrieves the renderer's axis-aligned bounding box in world space.
+     * The AABB is derived from the assigned mesh's bounds transformed by the
+     * scene object's world matrix. The value is recomputed on each call. When no mesh
+     * is assigned (or the mesh has empty bounds), the last computed box is returned,
+     * which is an empty/default AABB if none has been computed yet.
+     * @returns The bounding box wrapped as an APJS {@link AABB}.
      */
     getBoundingBox(): AABB;
   }
@@ -4858,7 +5894,18 @@ declare namespace APJS {
   }
   /**
    * @class MorpherComponent
-   * @description morpher component
+   * @description Component that drives blend-shape (morph-target) deformation on a mesh.
+   *
+   * The morpher reads the base mesh referenced by the host renderer and combines it with
+   * named blend-shape channels at runtime to produce the deformed result. Per-channel
+   * weights are managed via {@link MorpherComponent.hasBlendShapeWeight},
+   * {@link MorpherComponent.getBlendShapeWeight}, {@link MorpherComponent.setBlendShapeWeight}
+   * and {@link MorpherComponent.clearBlendShapeWeights}; whether normals are recomputed
+   * after morphing is controlled by {@link MorpherComponent.calculateNormal}.
+   *
+   * Instances are obtained from a scene object that already owns a renderer with
+   * blend-shape channels (`sceneObject.getComponent('MorpherComponent')`); construct
+   * directly only via the engine's component creation path.
    */
   class MorpherComponent extends Component {
     constructor();
@@ -4870,24 +5917,62 @@ declare namespace APJS {
     get calculateNormal(): boolean;
     set calculateNormal(value: boolean);
     /**
-     * @description Checks if this component has a weight for the blend shape with the specified name.
-     * The name must match a blend shape channel defined on the mesh/morpher.
-     * @param name The name of the blend shape to check
-     * @returns True if a weight exists for the blend shape, false otherwise
+     * @description Checks whether this morpher has a weight registered for the blend
+     * shape with the specified name.
+     *
+     * **Name source.** `name` must exactly match a blend shape channel name as
+     * authored on the source mesh asset (typically a glTF/FBX morph target name or
+     * the channel name configured on the SkinMeshRenderer's mesh). To enumerate the
+     * available channel names at runtime, query the underlying mesh asset's
+     * blend-shape metadata; channel names are **case-sensitive** and not normalized
+     * (whitespace is preserved). Passing an unknown or differently-cased name simply
+     * returns `false`; this method does not throw.
+     *
+     * @param name The blend shape channel name, exactly as defined on the mesh asset.
+     * @returns True if a weight exists for the blend shape, false otherwise.
      */
     hasBlendShapeWeight(name: string): boolean;
     /**
-     * @description Gets the weight value of the blend shape channel with the specified name.
-     * The name must match a blend shape channel defined on the mesh/morpher. Returns 0 if no weight is found for the given name.
-     * @param name The name of the blend shape channel
-     * @returns The weight value of the blend shape channel
+     * @description Gets the current weight value of the blend shape channel with the
+     * specified name.
+     *
+     * **Name source.** As with {@link MorpherComponent.hasBlendShapeWeight}, `name`
+     * must exactly match a blend shape channel authored on the source mesh asset and
+     * is **case-sensitive**.
+     *
+     * **Disambiguating "missing" from "weight is 0".** This method returns `0` both
+     * when the channel exists with a weight of zero and when no channel of that name
+     * is registered. To distinguish the two cases, call
+     * {@link MorpherComponent.hasBlendShapeWeight} first:
+     * ```ts
+     * if (morpher.hasBlendShapeWeight(name)) {
+     *   const w = morpher.getBlendShapeWeight(name); // truly the channel's weight
+     * } else {
+     *   // channel does not exist; getBlendShapeWeight would also return 0
+     * }
+     * ```
+     *
+     * @param name The blend shape channel name, exactly as defined on the mesh asset.
+     * @returns The weight value of the blend shape channel, or `0` if no channel is registered with that name.
      */
     getBlendShapeWeight(name: string): number;
     /**
      * @description Sets the weight value of the blend shape channel with the specified name.
-     * The name should normally match an existing blend shape channel defined on the mesh/morpher. If no channel exists with the given name, one will be created.
-     * @param name The name of the blend shape channel
-     * @param weight The weight value to set for the blend shape channel
+     *
+     * **Name source.** Pass a blend shape channel name that already exists on the
+     * source mesh asset (i.e. the same names you would see via
+     * {@link MorpherComponent.hasBlendShapeWeight}). Channel names are
+     * **case-sensitive** and are taken verbatim from the authoring tool (glTF/FBX
+     * morph target name or the SkinMeshRenderer mesh's blend-shape channel).
+     *
+     * **Unknown-channel behavior.** If no channel exists with the given name on the
+     * underlying mesh asset, the call is a **silent no-op** — no weight slot is
+     * created and no error is raised. Driving the model requires a matching channel
+     * on the source mesh; production code should pass a known channel name and may
+     * call `hasBlendShapeWeight` first if the input is untrusted.
+     *
+     * @param name The blend shape channel name, exactly as defined on the mesh asset.
+     * @param weight The weight value to set for the blend shape channel (typically `[0, 1]`; values outside this range are accepted but their visual effect depends on the source mesh).
      */
     setBlendShapeWeight(name: string, weight: number): void;
     /**
@@ -4920,25 +6005,55 @@ declare namespace APJS {
   }
   /**
    * @class Mp4TextureProvider
+   * @description Texture provider that decodes an MP4 video and exposes the
+   * latest decoded frame as a regular {@link Texture}.
+   *
+   * Playback is controlled by {@link Mp4TextureProvider.play}, {@link Mp4TextureProvider.pause},
+   * {@link Mp4TextureProvider.resume} and {@link Mp4TextureProvider.stop}, and loops according to
+   * {@link Mp4TextureProvider.loopCount}. State transitions emit the corresponding
+   * {@link Mp4Event} (`PlayBegin`, `Pause`, `Resume`, `Stop`, `PlayEnd`, and a per-second
+   * `KeyFrameInSecond` tick) on the texture's object emitter. All time-related values
+   * ({@link Mp4TextureProvider.duration}, {@link Mp4TextureProvider.currentTime}) are expressed
+   * in microseconds (1 second = 1,000,000).
    */
   class Mp4TextureProvider extends TextureDelegateProvider {
     /**
-     * @description Gets the number of times the video will loop. -1 means infinite loop.
+     * @description Gets the number of times the video will loop.
+     *
+     * - `-1` (default): loop indefinitely; `PlayEnd` is never emitted from the loop
+     *   counter and the time wraps back to `0` on every cycle.
+     * - `0`: do not advance time — the texture is held at frame `0` (see
+     *   {@link Mp4TextureProvider.seekTime}).
+     * - Any positive integer `n`: play `n` cycles, then emit `Mp4Event.PlayEnd` and stop
+     *   advancing.
+     *
+     * The value is read by the native loop logic; this wrapper does not clamp out-of-range
+     * values, but values other than the documented set are not guaranteed to be meaningful.
      */
     get loopCount(): number;
     /**
-     * @description Sets the number of times the video will loop.
+     * @description Sets the number of times the video will loop. See the getter for the
+     * accepted values; assigning resets the playback state via
+     * {@link Mp4TextureProvider.reset} (loop index back to 0, time back to 0, playing
+     * resumed).
      */
     set loopCount(value: number);
     /**
      * @readonly
-     * @description duration
+     * @description The total length of the video, in <b>microseconds</b>
+     * (1 second = 1,000,000). Returns `-1` when the controller or its video
+     * info is not yet available.
      * @type {number}
      */
     get duration(): number;
     /**
      * @readonly
-     * @description currentTime
+     * @description The current playback position in the video, in
+     * <b>microseconds</b> (1 second = 1,000,000). Use the same unit as
+     * {@link Mp4TextureProvider.duration}; divide by 1,000,000 to convert to seconds.
+     * While paused (via {@link Mp4TextureProvider.pause}) the value holds at the
+     * position reached so far; {@link Mp4TextureProvider.stop} and
+     * {@link Mp4TextureProvider.play} reset it to `0`.
      * @type {number}
      */
     get currentTime(): number;
@@ -4966,6 +6081,13 @@ declare namespace APJS {
    * An onset is detected when the difference in spectrum magnitude between the current and
    * previous audio frames exceeds the configured threshold. Higher threshold = less sensitive,
    * fewer onsets triggered; lower threshold = more sensitive.
+   *
+   * The detector consumes audio frame-by-frame from the audio graph; each call to
+   * {@link OnsetDetector.getResult} returns the value computed for the most recent
+   * processed frame, or `-1` while no frame is yet available (e.g. before the first
+   * audio buffer has been pushed through the graph). For continuous polling, call
+   * `getResult()` from `onUpdate` so each frame's value is read in step with the
+   * engine update.
    *
    * @example
    * onInit() {
@@ -5007,8 +6129,12 @@ declare namespace APJS {
     protected constructor();
     /**
      * @description Set the source of the detector.
-     * @param type - The type of audio source. Default is None. When the type is ExternalFile, the audioComponent must be provided.
-     * @param audioComponent - The audio component which plays the external audio file.
+     * `Microphone` reads from the microphone input and `Music` reads from the online music input;
+     * both ignore `audioComponent`.
+     * `ExternalFile` reads from the `audioComponent`'s audio clip player, so `audioComponent` must be provided.
+     * `None` leaves the builder without a valid detector source.
+     * @param type - The type of audio source. When the type is ExternalFile, the audioComponent must be provided.
+     * @param audioComponent - The audio component which plays the external audio file; pass `null` for other source types.
      * @example
      * audioDetectorBuilder
      *     .setDetectorSource(APJS.AudioSourceType.ExternalFile, audioComponent)
@@ -5022,7 +6148,11 @@ declare namespace APJS {
      */
     setThreshold(threshold: number): this;
     /**
-     * @description Build the onset detector. Note that the detector should be built in onInit, otherwise it will return null.
+     * @description Build the onset detector. The detector should be built in `onInit`.
+     * Returns `null` when audio detection is not available in the current runtime
+     * environment; otherwise returns the built detector. A misconfigured source
+     * (e.g. `None`, or `ExternalFile` without a valid audio component) still returns a
+     * detector instance but it will not produce results.
      */
     build(): OnsetDetector | null;
   }
@@ -5046,7 +6176,12 @@ declare namespace APJS {
   }
   /**
    * @class Pass
-   * @description Pass
+   * @description Represents a single render pass of a {@link Material}.
+   * Each Material exposes one or more {@link Pass} objects via
+   * {@link Material.mainPass} and {@link Material.passes}; modifying a Pass
+   * (uniforms, render state, keywords, etc.) directly affects how the owning
+   * material renders. Pass instances are created and managed by the engine and
+   * should not be constructed manually.
    */
   class Pass extends AObject {
     protected constructor();
@@ -5082,17 +6217,20 @@ declare namespace APJS {
     set depthFunction(value: DepthFunction);
     /**
      * @description The stencil state of the pass.
-     * @returns The stencil state.
+     * The returned object is a reference to the depth-stencil block;
+     * modifying its properties takes effect immediately.
+     * @return the stencil state.
      */
     get stencilState(): StencilState;
     /**
-     * @description Sets the stencil state for the pass.
+     * @description Sets the stencil state for the pass. The existing {@link depthTest},
+     * {@link depthWrite}, and {@link depthFunction} values are preserved.
      * @param value - The stencil state to set.
      */
     set stencilState(value: StencilState);
     /**
      * @description The blend state of the pass, which defines how colors are blended during rendering.
-     * @returns The blend state.
+     * @return The blend state.
      */
     get blendState(): BlendState;
     /**
@@ -5101,8 +6239,12 @@ declare namespace APJS {
      */
     set blendState(value: BlendState);
     /**
-     * @description The color mask for the first attachment in the render state's color blend settings.
-     * @returns The color mask.
+     * @description Controls which color channels (R, G, B, A) are written to the
+     * screen. Combine {@link ColorMask} flags with bitwise OR to enable multiple
+     * channels (e.g. `ColorMask.R | ColorMask.G | ColorMask.B` writes RGB but
+     * not alpha). Channels not included in the mask are left unchanged in the
+     * output. default: `0xF` (all channels enabled).
+     * @return the color write mask.
      */
     get colorMask(): ColorMask;
     /**
@@ -5165,7 +6307,7 @@ declare namespace APJS {
      *
      * @param ray The ray with origin and direction. Origin and direction are interpreted in 2D world XY space; Z is ignored. Direction must be non-zero.
      * @param maxDistance Maximum cast distance in 2D world units. Must be positive.
-     * @param nearest If true, returns only the closest hit. If false, returns all hits along the ray.
+     * @param nearest If true, returns only the closest hit. If false, returns all hits along the ray (up to 16). The non-nearest hits are returned in the order the engine reports them, not sorted by distance.
      * @param layerMask Optional layer mask to filter which layers can be hit. If omitted, all layers are tested.
      * @returns Array of {@link RaycastHit2D}. Empty array if nothing was hit.
      *
@@ -5213,12 +6355,11 @@ declare namespace APJS {
     static get gravity(): Vector3f;
     static set gravity(value: Vector3f);
     /**
-     * @description Internal engine unit scaling factor. Defaults to 100 in normal mode, 10 in
-     * framerate-independent mode (set automatically during init).
+     * @description World-wide scalar that multiplies forces and gravity before they reach the engine.
+     * Defaults to `100` in normal mode, `10` in framerate-independent mode (set automatically during init).
      *
-     * All forces applied via {@link RigidBody.addForce} and the gravity value read from
-     * scene settings are multiplied by this factor before being passed to the engine.
-     * This keeps forces and gravity in the same internal unit system.
+     * **Setting this at runtime is a no-op** — the engine snapshots gravity at scene load.
+     * To control world gravity from script, use {@link Physics3D.gravity} directly.
      */
     static get gravityFactor(): number;
     static set gravityFactor(value: number);
@@ -5258,27 +6399,63 @@ declare namespace APJS {
   }
   /**
    * @class PhysicsMaterial
-   * @description physics material
+   * @description Physics material used to control collider contact response.
+   * Its public properties `staticFriction`, `dynamicFriction`, and `bounciness` typically use values in the range [0, 1], and their default values are 0.
+   * These properties work together to control how surfaces resist sliding and how strongly they bounce after collision.
+   * In 2D physics, the collider uses `staticFriction` as its friction value. Changing `dynamicFriction` alone does not change the actual 2D friction result.
+   * The material takes effect after it is assigned to a `Collider` or `Collider2D` that participates in physics simulation.
    */
   class PhysicsMaterial extends AObject {
     protected constructor();
     /**
-     * @description Gets the static friction.
+     * @description Gets the static friction coefficient.
+     * Range: [0, 1].
+     * Larger values make surfaces harder to start sliding when they are in contact.
+     * The default value is 0.
      * @type {number}
      */
     get staticFriction(): number;
+    /**
+     * @description Sets the static friction coefficient.
+     * Range: [0, 1].
+     * Larger values make surfaces harder to start sliding when they are in contact.
+     * The default value is 0.
+     * @param value - The static friction coefficient.
+     */
     set staticFriction(value: number);
     /**
-     * @description Gets the dynamic friction.
+     * @description Gets the dynamic friction coefficient.
+     * Range: [0, 1].
+     * Larger values make surfaces lose motion more quickly while sliding in contact.
+     * The default value is 0.
+     * In 2D physics, dynamic friction is currently treated the same as `staticFriction`, so this value does not take effect independently.
      * @type {number}
      */
     get dynamicFriction(): number;
+    /**
+     * @description Sets the dynamic friction coefficient.
+     * Range: [0, 1].
+     * Larger values make surfaces lose motion more quickly while sliding in contact.
+     * The default value is 0.
+     * In 2D physics, dynamic friction is currently treated the same as `staticFriction`, so this value does not take effect independently.
+     * @param value - The dynamic friction coefficient.
+     */
     set dynamicFriction(value: number);
     /**
      * @description Gets the bounciness (also elasticity).
+     * Range: [0, 1].
+     * Larger values make the material more elastic and bouncier after collision.
+     * The default value is 0.
      * @type {number}
      */
     get bounciness(): number;
+    /**
+     * @description Sets the bounciness (also elasticity).
+     * Range: [0, 1].
+     * Larger values make the material more elastic and bouncier after collision.
+     * The default value is 0.
+     * @param value - The bounciness value.
+     */
     set bounciness(value: number);
   }
   /**
@@ -5362,16 +6539,31 @@ declare namespace APJS {
   }
   /**
    * @class PointLight
-   * @description Represents a point light source in 3D space.
+   * @description Represents a point light source in 3D space. It emits light
+   * equally in all directions from the light's world position, fading with distance.
+   * Key parameters:
+   * <br/>- {@link PointLight.attenuationRange}: distance (in world units) over which the light fades;
+   *   range `[0.01, 9999]`, values below `0.01` are clamped.
+   * <br/>- {@link Light.color}: RGB tint, channels in `[0, 1]`, default `(1, 1, 1)`.
+   * <br/>- {@link Light.intensity}: brightness scalar, range `[0, 7]`, default `1`.
+   * <br/>- {@link Light.renderLayer}: the {@link LayerSet} of scene objects this light affects.
    */
   class PointLight extends Light {
     protected constructor();
     /**
      * @description Gets the attenuation range of the point light.
+     * The value uses the same distance unit as the scene transform.
+     * It controls how quickly the light fades as distance increases in world space.
+     * Larger values make the light affect a farther area, while smaller values make it fade more quickly.
+     * Range: [`0.01`, `9999`]. Values less than `0.01` are clamped to `0.01`.
      */
     get attenuationRange(): number;
     /**
      * @description Sets the attenuation range of the point light.
+     * The value uses the same distance unit as the scene transform.
+     * It controls how quickly the light fades as distance increases in world space.
+     * Larger values make the light affect a farther area, while smaller values make it fade more quickly.
+     * Range: [`0.01`, `9999`]. Values less than `0.01` are clamped to `0.01`.
      */
     set attenuationRange(value: number);
   }
@@ -5392,33 +6584,39 @@ declare namespace APJS {
   /**
    * @class PolylineCollider2D
    * @description A collider that generates a polyline shape for physics and rendering.
-   * * ### Core Features
+   * ### Core Features
    * - Generates a ribbon-like polyline collider from a list of Vector2f points
    * - Automatically synchronizes the physics collider shape with the visual mesh
    * - Supports dynamic updates of width, points, and resolution (pixelPerUnit) at runtime
-   * * ### Physics & Rendering Integration
+   *
+   * ### Physics & Rendering Integration
    * Unlike standard colliders, PolylineCollider2D automatically generates a renderable mesh based on its shape.
    * - **Rendering:** To make the line visible, you must assign the `.renderMesh` property to a `MeshRenderer` component on the same or different object.
    * - **Physics:** Internally, it creates a composite PolygonCollider. It requires a `RigidBody2D` to function in the physics simulation (it will auto-attach to one if available, or create a static one).
-   * * ### Usage Examples
+   *
    * @example Basic Usage: Creating a V-Shape Line
-   * // @input Component.PolylineCollider2D polyline
-   * * // 1. Configure visual properties
-   * script.polyline.width = 20.0;
-   * script.polyline.pixelPerUnit = 32.0;
-   * * // 2. Define points (e.g. a V-shape)
+   * // Add the component via script (not available in the editor UI)
+   * const polyline = sceneObject.addComponent('PolylineCollider2D') as PolylineCollider2D;
+   *
+   * // 1. Configure visual properties
+   * polyline.width = 20.0;
+   * polyline.pixelPerUnit = 32.0;
+   *
+   * // 2. Define points (e.g. a V-shape)
    * const points = [
-   * new Vector2f(-100, 100),
-   * new Vector2f(0, 0),
-   * new Vector2f(100, 100)
+   *   new Vector2f(-100, 100),
+   *   new Vector2f(0, 0),
+   *   new Vector2f(100, 100)
    * ];
-   * * // 3. Set positions (This triggers Mesh generation and Physics update)
-   * script.polyline.positions = points;
-   * * // 4. Visualize it (Optional)
+   *
+   * // 3. Set positions (This triggers Mesh generation and Physics update)
+   * polyline.positions = points;
+   *
+   * // 4. Visualize it (Optional)
    * // Assign the generated mesh to a MeshRenderer to see it
-   * const meshRenderer = script.getSceneObject().getComponent("MeshRenderer");
+   * const meshRenderer = sceneObject.getComponent('MeshRenderer') as MeshRenderer | null;
    * if (meshRenderer) {
-   * meshRenderer.mesh = script.polyline.getRenderMesh();
+   *   meshRenderer.mesh = polyline.getRenderMesh();
    * }
    */
   class PolylineCollider2D extends Collider2D {
@@ -5426,28 +6624,39 @@ declare namespace APJS {
     /**
      * @property positions
      * @description Set or Get the center positions of points in the polyline collider.
+     * Points are given in pixel-space coordinates (converted to world units by
+     * dividing by {@link PolylineCollider2D.pixelPerUnit}).
+     * At least 2 points are required to build a valid collider and mesh; with
+     * fewer points (including an empty array) the geometry is treated as invalid,
+     * the collider stops colliding, and {@link getRenderMesh} yields no geometry.
      * * **Note:** Setting this property will trigger a regeneration of the collider geometry.
      */
     get positions(): Array<Vector2f>;
     set positions(value: Array<Vector2f>);
     /**
      * @property width
-     * @description Set or Get the width of the polyline collider.
-     * * **Note:** Setting this property will trigger a regeneration of the collider geometry.
+     * @description Line width in pixels. Divided by {@link PolylineCollider2D.pixelPerUnit} to
+     * convert to world units. Non-positive values are clamped to a minimum effective width
+     * (0.01 world units) so the collider never collapses to zero thickness.
+     * Default: `1.0`.
      */
     get width(): number;
     set width(value: number);
     /**
      * @property pixelPerUnit
-     * @description Set or Get the pixel per unit scale for the polyline collider.
-     * * **Note:** Setting this property will trigger a regeneration of the collider geometry.
+     * @description Pixels-per-unit scale that converts pixel-space values (both
+     * {@link PolylineCollider2D.width} and {@link PolylineCollider2D.positions}) to world units.
+     * Must be > 0; a zero or negative value produces undefined geometry.
+     * Default: `32.0`.
      */
     get pixelPerUnit(): number;
     set pixelPerUnit(value: number);
     /**
-     * @description Get the visual mesh.
-     * If the polyline shape is changed, it updates.
-     * to ensure you get the valid state.
+     * @description Returns the renderable mesh for this polyline. The mesh is lazily synced
+     * on access when the shape has changed; otherwise returns the cached mesh.
+     * @returns The mesh, or `null` when there are fewer than 2 positions (insufficient
+     * geometry to form a ribbon). Once a mesh has been created, invalid geometry clears
+     * its vertex data but does not reset the return to `null`.
      */
     getRenderMesh(): Mesh | null;
   }
@@ -5460,9 +6669,13 @@ declare namespace APJS {
   class Prefab extends AObject {
     protected constructor();
     /**
-     * @description Instantiates a scene object.
-     * @param parent - The parent scene object of the instantiated scene object.
-     * @returns The instantiated scene object, or null if instantiation fails.
+     * @description Instantiates a copy of this prefab as a child of `parent`.
+     * The new instance joins the same scene as `parent`.
+     * @param parent - The parent scene object that will own the new instance.
+     * Required; must be a live `SceneObject` attached to a scene.
+     * @returns The instantiated scene object, or `null` if instantiation fails — for example
+     * when this prefab holds no valid prefab data, or when `parent` is not a live scene object
+     * attached to a scene.
      */
     instantiate(parent: SceneObject): SceneObject | null;
   }
@@ -5475,29 +6688,47 @@ declare namespace APJS {
   }
   /**
    * @class Quaternionf
-   * <br/> Quaternions are used to represent rotations.
-   * <br/> A quaternion is a four-tuple of real numbers {x,y,z,w}.
-   * <br/> A quaternion is a mathematically convenient alternative to the euler angle representation.
-   * <br/> You can interpolate a quaternion without experiencing gimbal lock.
-   * <br/> You can also use a quaternion to concatenate a series of rotations into a single representation.
-   * @example
-   * print(Quaternionf.dot(transform.localRotation, Quaternionf.identity()));
+   * A quaternion `{x, y, z, w}` representing a rotation in 3D space.
+   * The four components are mutable plain numbers; only the combination is
+   * meaningful as a rotation — do not interpret individual components in isolation.
+   * Compared to Euler angles, quaternions support smooth interpolation
+   * ({@link slerp} / {@link lerp}) and do not suffer from gimbal lock.
+   * Use {@link multiply} to concatenate multiple rotations into a single quaternion.
+   * Rotation operations assume a unit quaternion; call {@link normalize}
+   * after manual component changes or accumulated multiplications to avoid drift.
+   * Angle inputs/outputs use **radians**.
    */
   class Quaternionf {
     /**
-     * @description Represents the x component of the quaternion, which is a part of the Quaternionf object used to describe rotations in 3D space.
+     * @description The x component of the quaternion vector part.
+     * Defaults to `0`. No range validation is performed;
+     * for a valid rotation the four components must satisfy `x² + y² + z² + w² = 1`.
+     * Avoid editing individual components — use {@link setFromAxisAngle},
+     * {@link setFromEuler}, or {@link set} instead.
      */
     x: number;
     /**
-     * @description Represents the y component of the quaternion in a Quaternionf object.
+     * @description The y component of the quaternion vector part.
+     * Defaults to `0`. No range validation is performed;
+     * for a valid rotation the four components must satisfy `x² + y² + z² + w² = 1`.
+     * Avoid editing individual components — use {@link setFromAxisAngle},
+     * {@link setFromEuler}, or {@link set} instead.
      */
     y: number;
     /**
-     * @description Represents the z component of the quaternion in a Quaternionf object.
+     * @description The z component of the quaternion vector part.
+     * Defaults to `0`. No range validation is performed;
+     * for a valid rotation the four components must satisfy `x² + y² + z² + w² = 1`.
+     * Avoid editing individual components — use {@link setFromAxisAngle},
+     * {@link setFromEuler}, or {@link set} instead.
      */
     z: number;
     /**
-     * @description The w component of the quaternion, representing the scalar part in a 4-dimensional space.
+     * @description The w (scalar) component of the quaternion.
+     * Defaults to `1` (identity rotation). No range validation is performed;
+     * for a valid rotation the four components must satisfy `x² + y² + z² + w² = 1`.
+     * Avoid editing individual components — use {@link setFromAxisAngle},
+     * {@link setFromEuler}, or {@link set} instead.
      */
     w: number;
     /**
@@ -5533,48 +6764,63 @@ declare namespace APJS {
      */
     dot(other: Quaternionf): number;
     /**
-     * @description Returns whether this quaternion is equal to the specified quaternion.
+     * @description Strict component-wise equality (`===`). No tolerance, no antipodal
+     * handling — `q` and `-q` (same rotation) are **not** equal.
+     * For approximate comparison use `Math.abs(a.dot(b)) > 1 - epsilon`.
      * @param other - The quaternion to compare with.
-     * @returns A boolean indicating whether the two quaternions are equal.
+     * @returns `true` if all four components are strictly equal.
      */
     equals(other: Quaternionf): boolean;
     /**
-     * @description Returns the rotation angle of the quaternion.
+     * @description Returns the rotation angle in `[0, π]` radians.
+     * Assumes a unit quaternion; the result is meaningless otherwise.
      * @returns The rotation angle in radians.
      */
     getAngle(): number;
     /**
-     * @description Returns the rotation axis of the quaternion.
-     * @returns The rotation axis as a Vector3f object.
+     * @description Returns the rotation axis as a unit vector.
+     * Assumes a unit quaternion. For the identity rotation (angle ≈ 0) the axis
+     * is undefined and the result may contain `Infinity` or `NaN`.
+     * @returns The rotation axis as a `Vector3f`.
      */
     getAxis(): Vector3f;
     /**
-     * @description Returns an inverted version of the Quaternionf by negating its x, y, and z components.
-     * @returns The current instance of Quaternionf with inverted values.
+     * @description Inverts this quaternion **in place** to represent the
+     * opposite rotation. Valid only for a unit quaternion; on a non-unit
+     * quaternion the result is the conjugate, not the true inverse.
+     * Modifies this quaternion in place and returns it for chaining.
+     * @returns This instance after inversion.
      */
     inverse(): this;
     /**
-     * @description Multiplies this quaternion by another quaternion `other` and updates the current quaternion with the result.
-     * @param other - The quaternion to multiply with.
+     * @description Multiplies this quaternion by `other` in place (`this = this * other`).
+     * Not commutative: `a * b` means "apply rotation `b` first, then `a`".
+     * Both operands should be unit quaternions; call {@link normalize} after
+     * long chains to compensate for floating-point drift.
+     * @param other - The right-hand-side quaternion.
      * @returns This quaternion after multiplication.
      */
     multiply(other: Quaternionf): Quaternionf;
     /**
-     * @description Returns the result of rotating direction vector `other` by this quaternion.
+     * @description Returns the result of rotating `other` by this quaternion.
+     * Assumes a unit quaternion; the result is meaningless otherwise.
      * @param other - The vector to be rotated.
      * @returns A new `Vector3f` representing the rotated vector.
      */
     multiplyVector(other: Vector3f): Vector3f;
     /**
-     * @description Normalizes the quaternion, ensuring it has a unit length.
-     * If the quaternion's length is zero, it sets the quaternion to (0, 0, 0, 1).
-     * Otherwise, it scales the quaternion components so that its length becomes one.
-     * @returns The quaternion instance after normalization.
+     * @description Normalizes this quaternion in place to unit length.
+     * If the length is `0`, resets to identity `(0, 0, 0, 1)`.
+     * Modifies this quaternion in place and returns it for chaining.
+     * @returns This quaternion after normalization.
      */
     normalize(): Quaternionf;
     /**
-     * @description Converts the quaternion to an Euler angle representation in radians.
-     * @returns A vector containing the Euler angles (pitch, yaw, roll) in radians.
+     * @description Converts this quaternion to its Euler-angle representation.
+     * The intrinsic rotation order is **Y → X → Z** (yaw → pitch → roll);
+     * components map to `(x = pitch, y = yaw, z = roll)`. All values are
+     * in **radians**. Assumes a unit quaternion.
+     * @returns A {@link Vector3f} containing `(pitch, yaw, roll)` in radians.
      */
     toEulerAngles(): Vector3f;
     /**
@@ -5583,16 +6829,21 @@ declare namespace APJS {
      */
     toString(): string;
     /**
-     * @description Returns a new quaternion with the specified angle and axis.
-     * @param angle - The rotation angle in radians.
-     * @param axis - The axis of rotation as a Vector3f object.
-     * @returns A new Quaternionf representing the rotation.
+     * @description Returns a new quaternion representing a rotation by `angle`
+     * radians around `axis`. `axis` must be a unit vector; a non-unit axis
+     * produces a non-unit quaternion. A zero-length axis produces undefined
+     * results.
+     * @param angle - The rotation angle in **radians**.
+     * @param axis - The rotation axis; must be unit length.
+     * @returns A new {@link Quaternionf} representing the rotation.
      */
     static makeFromAngleAxis(angle: number, axis: Vector3f): Quaternionf;
     /**
-     * @description Returns a new quaternion using the Euler angles provided in `eulerVec` (in radians).
-     * @param eulerVec - A Vector3f representing the Euler angles in radians.
-     * @returns A new Quaternionf created from the given Euler angles.
+     * @description Returns a new quaternion built from Euler angles.
+     * The intrinsic rotation order is **Y → X → Z** (yaw → pitch → roll);
+     * `eulerVec` is interpreted as `(x = pitch, y = yaw, z = roll)` in **radians**.
+     * @param eulerVec - A {@link Vector3f} of `(pitch, yaw, roll)` in radians.
+     * @returns A new {@link Quaternionf} created from the given Euler angles.
      */
     static makeFromEulerAngles(eulerVec: Vector3f): Quaternionf;
     /**
@@ -5601,45 +6852,67 @@ declare namespace APJS {
      */
     static identity(): Quaternionf;
     /**
-     * @description Returns a new quaternion linearly interpolated between two quaternions.
-     * @param a The first quaternion.
-     * @param b The second quaternion.
-     * @param t The interpolation factor, typically ranging from 0 to 1.
-     * @returns A new quaternion representing the linear interpolation.
+     * @description Linearly interpolates between `a` and `b`, choosing the
+     * shorter great-circle path when `a · b < 0`. The result is **not**
+     * normalized — call {@link normalize} before using it as a rotation.
+     * For constant angular velocity use {@link slerp}.
+     * @param a - The first quaternion.
+     * @param b - The second quaternion.
+     * @param t - Interpolation factor; not clamped to `[0, 1]`.
+     * @returns A new linearly interpolated quaternion (not normalized).
      */
     static lerp(a: Quaternionf, b: Quaternionf, t: number): Quaternionf;
     /**
-     * @description Returns a new Quaternionf that represents the rotation needed to look in the direction of the `forward` vector with the specified `up` vector.
-     * @param forward - The forward direction vector.
-     * @param up - The upward direction vector.
-     * @returns A new Quaternionf representing the orientation.
+     * @description Returns a quaternion that rotates the local `+Z` axis to
+     * point along `forward`, with `up` as the reference up direction.
+     * Inputs do not need to be pre-normalized. Zero-length `forward` or `up`,
+     * or parallel `forward`/`up`, return the identity quaternion.
+     * @param forward - The forward direction.
+     * @param up - The reference up direction.
+     * @returns A new {@link Quaternionf} representing the orientation.
      */
     static lookAt(forward: Vector3f, up: Vector3f): Quaternionf;
     /**
-     * @description Returns a rotation quaternion that represents the shortest arc rotation from one direction vector to another.
-     * @param from The initial direction vector.
-     * @param to The target direction vector.
-     * @returns A quaternion representing the rotation.
+     * @description Returns the shortest-arc rotation that maps `from` to `to`.
+     * Inputs do not need to be pre-normalized. Parallel inputs return the
+     * identity; anti-parallel inputs return a 180° rotation around an
+     * arbitrary perpendicular axis. Zero-length inputs return the identity.
+     * @param from - The initial direction.
+     * @param to - The target direction.
+     * @returns A {@link Quaternionf} representing the shortest-arc rotation.
      */
     static rotationFromTo(from: Vector3f, to: Vector3f): Quaternionf;
     /**
-     * @description Returns a new Quaternionf spherically linearly interpolated between `a` and `b`.
-     * @param a - The starting Quaternionf.
-     * @param b - The ending Quaternionf.
-     * @param t - The interpolation factor, typically ranging from 0 to 1.
-     * @returns A new Quaternionf representing the spherical linear interpolation between `a` and `b`.
+     * @description Spherically interpolates between `a` and `b` along the
+     * shorter great-circle arc, producing a unit quaternion. Both inputs
+     * should be unit quaternions. `t` is not clamped; only `0` and `1`
+     * are special-cased to return clones.
+     * @param a - The starting quaternion.
+     * @param b - The ending quaternion.
+     * @param t - Interpolation factor; not clamped to `[0, 1]`.
+     * @returns A new unit {@link Quaternionf} on the great-circle path.
      */
     static slerp(a: Quaternionf, b: Quaternionf, t: number): Quaternionf;
     /**
-     * @description Returns the angle between two quaternions `a` and `b`.
+     * @description Returns the rotation angle between `a` and `b` in `[0, π]`
+     * radians. Antipodal quaternions are treated as the same rotation.
+     * Both inputs must be unit quaternions; the result is incorrect on non-unit inputs.
      * @param a - The first quaternion.
      * @param b - The second quaternion.
-     * @returns The angle in radians between the two quaternions.
+     * @returns The angle in radians, in `[0, π]`.
      */
     static angleBetween(a: Quaternionf, b: Quaternionf): number;
   }
   /**
    * @class Ray
+   * @description An infinite half-line in 3D space defined by a world-space
+   * `origin` and a unit-length `direction`. Used as input to spatial queries
+   * such as {@link Physics3D.raycast} and {@link Physics2D.raycast2D}.
+   *
+   * Setting `direction` auto-normalizes the vector. A zero-length direction
+   * produces `NaN` components. Reading `direction` always returns a unit vector.
+   *
+   * Equality is strict component-wise (`===`) comparison with no tolerance.
    */
   class Ray {
     /**
@@ -5663,13 +6936,16 @@ declare namespace APJS {
      */
     set origin(value: Vector3f);
     /**
-     * @description Gets the normalized vector representing the direction of the ray.
+     * @description The direction of the ray (always unit-length after setting).
      * @returns The direction vector of the ray.
      */
     get direction(): Vector3f;
     /**
-     * @description Sets the direction of the ray using a 3D vector.
-     * @param value - The 3D vector to set as the direction of the ray.
+     * @description Sets the ray direction to the given vector.
+     * The value is **auto-normalized** before being stored — you do not need
+     * to normalize it yourself. A zero-length vector will produce `NaN`
+     * components after normalization.
+     * @param value - The direction vector (will be normalized automatically).
      */
     set direction(value: Vector3f);
     /**
@@ -5678,14 +6954,18 @@ declare namespace APJS {
      */
     clone(): Ray;
     /**
-     * @description Compares this ray with another ray for equality.
+     * @description Strict component-wise equality (`===`) on both `origin`
+     * and `direction`. No tolerance.
      * @param other - The ray to compare with.
-     * @returns A boolean indicating whether the two rays are equal.
+     * @returns `true` only when origin and direction match exactly.
      */
     equals(other: Ray): boolean;
     /**
-     * @description Returns a string representation of the Ray object.
-     * @returns A string describing the Ray object.
+     * @description Returns a string representation of this ray.
+     * @example
+     * new Ray(new Vector3f(1, 2, 3), new Vector3f(0, 1, 0)).toString()
+     * // "Ray(origin: 1.00000, 2.00000, 3.00000,\n     dir: 0.00000, 1.00000, 0.00000)"
+     * @returns A string representation of this ray.
      */
     toString(): string;
   }
@@ -5739,22 +7019,30 @@ declare namespace APJS {
   }
   /**
    * @class Rect
+   * @description A mutable rectangle value with `x`, `y`, `width`, and `height`.
+   * `new Rect()` creates `(0, 0, 0, 0)`.
    */
   class Rect {
     /**
-     * @description The x-coordinate of the rectangle's position.
+     * @description The x-coordinate of the rectangle's origin corner, from which `width` extends.
+     * The coordinate space and units depend on the API consuming this rectangle.
+     * Default is `0`. No range validation is performed.
      */
     x: number;
     /**
-     * @description The y-coordinate of the rectangle's position.
+     * @description The y-coordinate of the rectangle's origin corner, from which `height` extends.
+     * The coordinate space and units depend on the API consuming this rectangle.
+     * Default is `0`. No range validation is performed.
      */
     y: number;
     /**
      * @description The width of the rectangle.
+     * Default is `0`. No range validation is performed.
      */
     width: number;
     /**
      * @description The height of the rectangle.
+     * Default is `0`. No range validation is performed.
      */
     height: number;
     /**
@@ -5772,23 +7060,52 @@ declare namespace APJS {
     clone(): Rect;
     /**
      * @description Determines if this rectangle is equal to another rectangle.
+     * Performs a strict component-wise comparison of `x`, `y`, `width`, and `height`
+     * with no floating-point tolerance; all four fields must match exactly.
      * @param other - The rectangle to compare with.
      * @returns Whether the rectangles are equal.
      */
     equals(other: Rect): boolean;
     /**
      * @description Returns a string representation of the rectangle.
+     * The format is `Rect(x, y, width, height)`, and each number is written with `5` decimal places.
+     *
+     * @example
+     * ```ts
+     * new Rect(1, 2, 3, 4).toString(); // "Rect(1.00000, 2.00000, 3.00000, 4.00000)"
+     * ```
      * @returns A formatted string describing the rectangle.
      */
     toString(): string;
   }
   /**
    * @class Renderer
+   * @description Base component for objects that can be rendered. Owns the
+   * shared {@link Material} list applied to the underlying mesh and the
+   * shadow configuration ({@link shadowMode}). Concrete renderer types
+   * (`MeshRenderer`, `SkinMeshRenderer`, etc.) extend this base class and
+   * add geometry-specific behavior.
+   *
+   * The two public surfaces are:
+   * - {@link materials} — the shared materials applied to the renderer; assigning
+   *   new materials replaces the entire list and is shared across all renderers
+   *   that hold the same {@link Material} reference (mutating one affects all).
+   * - {@link shadowMode} — combines the underlying `castShadow` and `receiveShadow`
+   *   booleans; only effective on `MeshRenderer` / `SkinMeshRenderer` (set on
+   *   other subclasses is ignored).
+   *
    */
   class Renderer extends Component {
     protected constructor();
     /**
-     * @description Retrieves the shared materials used by the Renderer.
+     * @description Returns the **shared** materials applied to this renderer.
+     * Each call constructs a new JavaScript array, but the {@link Material}
+     * elements are **live references** to the same `Material` instances held
+     * by the engine — mutating any property (uniforms, textures, blend state,
+     * etc.) on a returned element affects every renderer that uses that
+     * material instance. Slots that the engine reports as empty are returned
+     * as the same falsy value the engine produced (do not assume non-null).
+     * The returned array length matches the renderer's slot count.
      */
     get materials(): Material[];
     /**
@@ -5823,48 +7140,83 @@ declare namespace APJS {
   }
   /**
    * @class RenderTextureProvider
+   * @description A `TextureProvider` for render textures.
+   * Use {@link Texture} when you need the texture object itself, such as passing it
+   * to another API or binding it as an input. Use `RenderTextureProvider` when you
+   * need to configure how that render texture is produced, such as its input
+   * texture, clear behavior, or render-texture properties.
    */
   class RenderTextureProvider extends TextureProvider {
     protected constructor();
     /**
-     * @description Gets the clear type for the render texture.
-     * @returns The camera clear type used for this render texture.
+     * @description Gets the clear type that is applied to the render texture.
+     * Default: {@link CameraClearType.Texture}.
+     * @returns The current clear type used for this render texture.
      */
     get clearType(): CameraClearType;
     /**
-     * @description Sets the clear type for the render texture.
+     * @description Sets the clear type for the render texture. Takes effect on the
+     * next render. Texture-based clear types use {@link inputTexture} (falling back
+     * to {@link clearColor} when no input texture is bound); color-based clear types
+     * use {@link clearColor}.
      * @param ct The camera clear type to use for this render texture.
      */
     set clearType(ct: CameraClearType);
     /**
-     * @description Gets the color used to clear the render texture when inputTexture is null.
+     * @description Gets the color used to clear the render texture when
+     * {@link inputTexture} is `undefined`/`null`. RGBA channels use the same
+     * `[0, 1]` convention as {@link Color}. The returned `Color` is a separate
+     * object; changing it does not update the render texture unless you assign
+     * it back through this property.
      * @default Color(0,0,0,1)
      * @returns The clear color for the render texture.
      */
     get clearColor(): Color;
     /**
-     * @description Sets the color used to clear the render texture when inputTexture is null.
+     * @description Sets the color used to clear the render texture when
+     * {@link inputTexture} is `undefined`/`null`. RGBA channels use the same
+     * `[0, 1]` convention as {@link Color}. The current channel values are
+     * copied from the assigned `Color`.
      * @param color The clear color to use for the render texture.
      */
     set clearColor(color: Color);
     /**
-     * @description Gets the input texture for this render texture.
-     * @returns The input texture or undefined if none is set.
+     * @description Gets the input texture currently feeding this render texture.
+     *
+     * **Empty-value semantics — `undefined` vs `null`.** This API uses
+     * `Texture | undefined` to mean "no input texture is assigned"; a `null` value
+     * is treated equivalently in the setter (see below). Note this differs from
+     * `Camera.inputTexture`, which uses `Texture | null` for the same concept.
+     * The discrepancy is purely a historical API style difference — both shapes
+     * mean "no input"; APJS does **not** distinguish between `undefined` and
+     * `null` for these slots. New code should prefer the `?` (undefined) form on
+     * `RenderTextureProvider` and the explicit `null` form on `Camera`, but
+     * checks of the form `if (rt.inputTexture)` work uniformly.
+     *
+     * @returns The input texture, or `undefined` if no input texture is bound;
+     * when `undefined`, the render texture is cleared with `clearColor` instead
+     * of being copied from a source.
      */
     get inputTexture(): Texture | undefined;
     /**
-     * @description Sets the input texture for this render texture.
-     * @param value The input texture to use for this render texture.
+     * @description Sets the input texture for this render texture. Both `undefined`
+     * and `null` clear the binding and cause the render texture to fall back to
+     * {@link clearColor}. The input texture is only used when {@link clearType} is a
+     * texture-based mode; with a color-based clear type it is ignored.
      */
     set inputTexture(value: Texture | undefined);
     /**
-     * @description Sets the width of the render texture.
-     * @param value The width to set for the render texture.
+     * @description Sets the width of the render texture in pixels.
+     * This API does not validate a minimum value; use a positive integer.
+     * If this render texture is not resizable, the call has no effect and does not report failure.
+     * @param value The new width in pixels.
      */
     setWidth(value: number): void;
     /**
-     * @description Sets the height of the render texture.
-     * @param value The height to set for the render texture.
+     * @description Sets the height of the render texture in pixels.
+     * This API does not validate a minimum value; use a positive integer.
+     * If this render texture is not resizable, the call has no effect and does not report failure.
+     * @param value The new height in pixels.
      */
     setHeight(value: number): void;
   }
@@ -6021,14 +7373,16 @@ declare namespace APJS {
     set mass(value: number);
     /**
      * @description Gets or sets the linear damping coefficient that reduces linear velocity over time.
-     * Value typically ranges from 0 (no damping) to 1 (maximum damping). Higher values cause the body to slow down faster.
+     * Recommended range [0, 1]: 0 means no damping, 1 means maximum damping; higher values slow the body faster.
+     * Values are not clamped; stay within [0, 1] for predictable behavior.
      * @default 0.0
      */
     get damping(): number;
     set damping(value: number);
     /**
      * @description Gets or sets the angular damping coefficient that reduces angular velocity over time.
-     * Value typically ranges from 0 (no damping) to 1 (maximum damping). Higher values cause the body to stop rotating faster.
+     * Recommended range [0, 1]: 0 means no damping, 1 means maximum damping; higher values slow rotation faster.
+     * Values are not clamped; stay within [0, 1] for predictable behavior.
      * @default 0.0
      */
     get angularDamping(): number;
@@ -6079,6 +7433,9 @@ declare namespace APJS {
      * @description Gets or sets whether the rigid body behaves as an immovable kinematic body.
      * When enabled, the PBD simulator stops treating this body as dynamically simulated.
      * Use this for environment geometry or authored placement that should not respond to forces.
+     *
+     * Switching at runtime takes effect immediately. If set before the body is initialized,
+     * the value is applied when the body is created.
      * @default false
      */
     get static(): boolean;
@@ -6093,6 +7450,8 @@ declare namespace APJS {
      * - `physicsAnimation = true`, `rate = 1.0`: mostly physics, loosely follows animation
      *
      * **Requires** the SceneObject or an ancestor to have an Animator component.
+     * If no Animator is found in the hierarchy, setting `physicsAnimation = true` is
+     * **silently ignored** (no shadow body/joints are created and the flag has no effect).
      * **Performance:** Creates two additional constraints per body.
      * @default false
      */
@@ -6106,6 +7465,8 @@ declare namespace APJS {
      * - `1` = mostly physics (animation only loosely guides, gravity/forces dominate)
      *
      * Internally maps to joint compliance: low rate = stiff springs = tight animation tracking.
+     * When {@link physicsAnimation} is `false`, the value is stored but not applied; it takes effect
+     * the next time physics animation is enabled.
      * @default 0.0
      */
     get physicsAnimationRate(): number;
@@ -6187,6 +7548,8 @@ declare namespace APJS {
      * @description Gets or sets the diagonal inertia tensor of the rigid body.
      * These values describe resistance to angular acceleration around the body's principal axes.
      * They are usually computed automatically from mass and collider shape, but can be overridden for custom behavior.
+     * Each component should be positive; a component at or near zero locks rotation around that axis.
+     * Changes take effect immediately only after the body has been created.
      * @default Vector3f(1, 1, 1)
      */
     get inertiaTensor(): Vector3f;
@@ -6280,6 +7643,9 @@ declare namespace APJS {
     /**
      * @description Gets or sets the body's mass in kilograms.
      * Larger mass reduces acceleration from the same applied force and affects collision response.
+     * Mass should be positive; a non-positive value (`<= 0`) is treated as `1.0 kg`.
+     * Mass only affects `dynamic` bodies and has no effect on `static`/`kinematic` bodies.
+     * @default 1.0
      */
     get mass(): number;
     set mass(value: number);
@@ -6307,30 +7673,43 @@ declare namespace APJS {
     set rotation(value: number);
     /**
      * @description Gets or sets the body's linear damping coefficient.
-     * Value typically ranges from 0 (no damping) to 1 (maximum damping).
-     * Larger values make linear velocity decay faster during simulation.
+     * Recommended range [0, 1]: 0 means no damping, 1 means maximum damping; larger values make
+     * linear velocity decay faster. Values are not clamped; stay within [0, 1] for predictable behavior.
      */
     get damping(): number;
     set damping(value: number);
     /**
      * @description Gets or sets the body's angular damping coefficient.
-     * Value typically ranges from 0 (no damping) to 1 (maximum damping).
-     * Larger values make angular velocity decay faster.
+     * Recommended range [0, 1]: 0 means no damping, 1 means maximum damping; larger values make
+     * angular velocity decay faster. Values are not clamped; stay within [0, 1] for predictable behavior.
      */
     get angularDamping(): number;
     set angularDamping(value: number);
     /**
      * @description Gets or sets whether this body is locked against horizontal movement.
+     * Enabling the lock immediately zeroes the body's current horizontal velocity and prevents
+     * further horizontal motion; disabling it restores normal horizontal movement.
      */
     get freezeX(): boolean;
     set freezeX(value: boolean);
     /**
      * @description Gets or sets whether this body is locked against vertical movement.
+     * Enabling the lock immediately zeroes the body's current vertical velocity and prevents
+     * further vertical motion; disabling it restores normal vertical movement.
      */
     get freezeY(): boolean;
     set freezeY(value: boolean);
     /**
-     * @description Gets or sets whether this body is locked against rotation.
+     * @description **In 2D this freezes rotation, not Z-axis translation.** Despite the
+     * `freezeZ` name (mirrored from `RigidBody`'s 3D rotation/translation lock layout),
+     * the 2D rigid body has only one rotational degree of freedom — around the Z axis —
+     * so this flag locks/unlocks that rotation. Setting it to `true` prevents the body
+     * from spinning under physics forces or collisions; X/Y translation is controlled
+     * separately by `freezeX` / `freezeY`. Enabling the lock immediately zeroes the body's
+     * current angular velocity; disabling it restores normal rotation.
+     *
+     * Note: this is **not** equivalent to `RigidBody.freezeZ` (3D), which freezes
+     * translation along the world Z axis.
      */
     get freezeZ(): boolean;
     set freezeZ(value: boolean);
@@ -6441,11 +7820,16 @@ declare namespace APJS {
     protected constructor();
     /**
      * @description Creates and adds a scene object to this scene.
+     * The `name` is stored as provided. It does not need to be unique, and an empty string is allowed.
+     * The created scene object starts as a root-level scene object with no parent until you reparent it.
      * @param name - The name of the SceneObject to create.
      * @returns The created SceneObject.
      * @example
      * const scene = this.getSceneObject().scene;
-     * const newObj = scene.createSceneObject('newObj');
+     * const newObj = scene.createSceneObject('SpawnedObject');
+     * const transform = newObj.getTransform();
+     * transform.position = new APJS.Vector3f(0, 0, 0);
+     * newObj.layer = this.getSceneObject().layer;
      */
     createSceneObject(name: string): SceneObject;
     /**
@@ -6462,31 +7846,37 @@ declare namespace APJS {
     removeSceneObject(obj: SceneObject): boolean;
     /**
      * @description
-     * get all the root scene objects in the Scene.
+     * Returns the root scene objects of the Scene — those whose transform has no parent.
+     * The result is a new array snapshot taken at call time, ordered by the scene's internal
+     * creation/registration order; later changes to the scene are not reflected in it.
      */
     getRootSceneObjects(): SceneObject[];
     /**
      * @description
-     * get all the sceneObject in the Scene.
+     * Returns every scene object in the Scene, both root objects and their descendants.
+     * The result is a new array snapshot taken at call time, ordered by the scene's internal
+     * creation/registration order (not by hierarchy); later changes to the scene are not
+     * reflected in it.
      * @example
-     * var sceneObjects = this.getSceneObject().scene.getAllSceneObjects();
-     * sceneObjects.forEach(obj => {
-     *   // TODO
-     * })
+     * const sceneObjects = this.getSceneObject().scene.getAllSceneObjects();
+     * sceneObjects.forEach((obj) => {
+     *   console.log(obj.name);
+     * });
      */
     getAllSceneObjects(): SceneObject[];
     /**
-     * @description Finds a scene object by name from a scene object tree or subtree in the scene.
-     * If the root is not provided, the search is performed from the root of the scene.
-     * If multiple scene objects share the same name, only the first matching object is returned.
-     * So unique names are recommended when using this method, or ensure that the name is unique within the subtree.
-     * @param name - The name of the scene object to find.
-     * @param root - The root scene object of the scene object tree or subtree.
-     * @returns The found scene object, or null if not found.
+     * @description Finds a scene object by its exact, case-sensitive name.
+     * When `root` is omitted or is not a `SceneObject`, the search starts from the scene's root-level scene objects.
+     * When `root` is provided, the search checks `root` first and then walks its descendants in depth-first order,
+     * returning the first matching scene object.
+     * @param name - The exact name to search for.
+     * @param root - Optional subtree root.
+     * @returns The first matching scene object, or `null` if no match is found.
      * @example
-     * let foundObj = this.getSceneObject().scene.findSceneObject('newObj');
+     * const foundObj = this.getSceneObject().scene.findSceneObject('newObj');
      * if (foundObj) {
-     *   this.getSceneObject().scene.removeSceneObject(foundObj);
+     *   const transform = foundObj.getComponent('Transform') as APJS.Transform;
+     *   console.log(transform.position.toString());
      * }
      */
     findSceneObject(name: string, root?: SceneObject): SceneObject | null;
@@ -6515,8 +7905,17 @@ declare namespace APJS {
      */
     postResetEvent(): void;
     /**
-     * @description commitCommandBuffer
-     * @param buffer - command buffer
+     * @description Submits a recorded `CommandBuffer` to this scene.
+     * Create the buffer with `new CommandBuffer()`, record the commands you need, and then pass it here.
+     * The submitted commands are executed during the scene's render flow. Depending on when you call this method,
+     * they can take effect in the current rendering work or in a later render step.
+     * This method does not return whether submission or execution succeeded.
+     * @param buffer - A `CommandBuffer` that already contains the commands to run.
+     * @example
+     * const cmdBuffer = new APJS.CommandBuffer();
+     * cmdBuffer.clearAll();
+     * cmdBuffer.blit(sourceTexture, targetTexture);
+     * this.getSceneObject().scene.commitCommandBuffer(cmdBuffer);
      */
     commitCommandBuffer(buffer: CommandBuffer): void;
   }
@@ -6534,15 +7933,19 @@ declare namespace APJS {
     get enabled(): boolean;
     /**
      * @description Sets whether the SceneObject is enabled, which affects its visibility and interaction in the scene.
-     * If need to enable child SceneObject, use '**setEnabledInHierarchy**' instead.
+     * If need to enable child SceneObject, use {@link SceneObject.setEnabledInHierarchy} instead.
      */
     set enabled(enabled: boolean);
     /**
-     * @description Layers can be used for selective rendering from cameras.
+     * @description The zero-based numeric layer used for selective rendering and filtering.
+     * Cameras and other layer-based systems compare this value against their render-layer masks.
+     * Range: [0, 63], default 0. Values outside this range are not validated by this API.
      */
     get layer(): number;
     /**
-     * @description Sets the layer of the SceneObject.
+     * @description Sets the zero-based numeric layer of the SceneObject.
+     * Range: [0, 63], default 0.
+     * @param value - The layer number to assign.
      */
     set layer(value: number);
     /**
@@ -6570,32 +7973,44 @@ declare namespace APJS {
      */
     isEnabledInHierarchy(): boolean;
     /**
-     * @description Sets whether the scene object is enabled in the hierarchy.
-     * @param enabled - True to enable the scene object in the hierarchy, false to disable it.
+     * @description Sets this SceneObject's hierarchy-visible state.
+     * Updates this object's native `visible` flag and recursively notifies descendant
+     * `DynamicComponent`s of inherited visibility changes.
+     * This does not change descendants' local `enabled` values.
+     * @param enabled - True to enable the object in hierarchy, false to disable it.
      */
     setEnabledInHierarchy(enabled: boolean): void;
     /**
-     * @description Finds a child by name and returns it.
-     * This lookup uses the child object name and returns the first matching child found by the underlying scene query.
+     * @description Finds a descendant by name and returns it.
+     * The search is recursive: it traverses the entire descendant subtree depth-first and
+     * returns the first scene object whose name matches, not only direct children.
      * @param name - The name of the sceneObject to find.
-     * @returns The found child SceneObject, or null if no child with matching name is found.
+     * @returns The found descendant SceneObject, or null if no matching name is found.
      */
     getChild(name: string): SceneObject | null;
     /**
-     * @description Gets all children scene objects of the scene object.
-     * @returns An array of child SceneObjects.
+     * @description Gets the direct child SceneObjects of this SceneObject.
+     * The returned array is built from the current transform children list, does not recurse into
+     * descendants, and preserves the current child-list order.
+     * The result is a snapshot array: later hierarchy changes are not reflected in a previously
+     * returned array.
+     * @returns A snapshot array of direct child SceneObjects in current child-list order.
      */
     getChildren(): SceneObject[];
     /**
      * @description Adds a component of the specified type to the scene object.
-     * The type string should use the public APJS component name.
-     * @param type - The type of component to add.
-     * @returns The added component, or null if the component could not be added.
+     * @param type - The component type name, which must be one of the supported public APJS
+     * component names (e.g. `'Camera'`, `'MeshRenderer'`, `'Animator'`, `'Text'`, `'BoxCollider'`,
+     * a registered custom DynamicComponent name, etc.).
+     * @returns The added component, or `null` if `type` is not a supported/recognized component
+     * name or the component otherwise could not be created.
      */
     addComponent(type: string): Component | null;
     /**
      * @description Gets a component of the specified type from the scene object.
      * The type string should use the public APJS component name.
+     * When several components of the same type are attached, the first one found on this scene
+     * object (in attachment order) is returned.
      * @param type The type of component to get.
      * @returns The component of the specified type, or null if not found.
      */
@@ -6610,29 +8025,50 @@ declare namespace APJS {
     /**
      * @description Gets components of the specified type from this scene object and its descendants.
      * The type string should use the public APJS component name.
+     * Results are ordered by a depth-first, pre-order traversal: this scene object's matching
+     * components come first (in attachment order), followed by each child's subtree in child order.
      * @param type - Component type name.
      * @returns Matching components from the hierarchy.
      */
     getComponentsRecursive(type: string): Component[];
     /**
-     * @description Clones the scene object.
+     * @description Creates a new scene object in the same scene and copies this object's current state into it.
+     * The clone keeps the same name, transform type, enabled state, layer, hierarchy parent, visibility flag, tag,
+     * asset manager, prefab object GUID, transform values, and current components.
+     * Child scene objects are not cloned by this method.
      * @returns A cloned scene object.
      */
     clone(): SceneObject;
     /**
-     * @description Gets the transform component of the scene object.
-     * @returns The transform component.
+     * @description Gets this scene object's transform component.
+     * @returns The transform component. Every scene object always has exactly one transform, so
+     * this never returns null. Mutating the returned transform updates the scene object's
+     * position, rotation, and scale.
      */
     getTransform(): Transform;
     /**
      * @description Removes the specified component instance from the scene object.
+     * Pass the component instance currently attached to this scene object.
+     * This method removes by instance, not by component type.
      * @param comp - The component instance to remove.
-     * @returns True if the component was successfully removed, false otherwise.
+     * @returns `true` if the component was removed; `false` if `comp` is null/invalid (e.g. an
+     * already-destroyed component).
      */
     removeComponent(comp: Component): boolean;
   }
   /**
    * @class ScreenTextureProvider
+   * @description A `RenderTextureProvider` for `ScreenRenderTexture`.
+   * A screen texture is a render texture with screen-related sizing behavior. Its
+   * size can follow the screen, follow the input texture, or use a custom size,
+   * depending on {@link sizeMode}. Use this provider when you need to configure
+   * how that screen texture is produced. Use the `Texture` object itself when you
+   * only need to pass the texture to another API or bind it as an input.
+   * @example
+   * const desc = new ScreenTextureCreateDesc();
+   * const screenTexture = TextureUtils.createScreenTexture(desc);
+   * const screenProvider = screenTexture.getControl() as ScreenTextureProvider;
+   * screenProvider.sizeMode = ScreenTextureSizeMode.FollowScreen;
    */
   class ScreenTextureProvider extends RenderTextureProvider {
     protected constructor();
@@ -6642,7 +8078,12 @@ declare namespace APJS {
      */
     get sizeMode(): ScreenTextureSizeMode;
     /**
-     * @description Sets the size mode for screen texture sizing.
+     * @description Sets the size mode for screen texture sizing. Default:
+     * {@link ScreenTextureSizeMode.FollowScreen}. With `FollowScreen` the texture
+     * matches the screen size and with `FollowInput` it matches the input texture
+     * size; in both cases the custom normalized width/height are ignored. The custom
+     * normalized size only takes effect when the mode is `Custom`. The new mode is
+     * applied to the underlying texture on assignment.
      * @param value The size mode for screen texture sizing.
      */
     set sizeMode(value: ScreenTextureSizeMode);
@@ -6733,12 +8174,17 @@ declare namespace APJS {
      *   bottom = anchoredPosition.y - sizeDelta.y * pivot.y
      *   top    = anchoredPosition.y + sizeDelta.y * (1 - pivot.y)
      * Writing offsets back-calculates and updates sizeDelta and anchoredPosition accordingly.
+     * The values are not clamped: if `right < left` or `top < bottom`, the element's size becomes
+     * negative on that axis. The current `pivot` is used as-is for the back-calculation, so the
+     * resulting anchoredPosition depends on it.
      */
     get offsets(): Vector4f;
     set offsets(value: Vector4f);
     /**
      * @description Gets or sets the 2D scaling factor applied to the UI element.
-     * Values greater than 1 enlarge the element, while values between 0 and 1 shrink it.
+     * Default is `(1, 1)` (no scaling). Values greater than 1 enlarge the element, while values
+     * between 0 and 1 shrink it. A component of `0` collapses the element to zero size on that
+     * axis (it becomes invisible); negative values mirror the element along that axis.
      * The scale is applied relative to the parent transform and centered on the pivot point.
      */
     get scale(): Vector2f;
@@ -6752,6 +8198,15 @@ declare namespace APJS {
   }
   /**
    * @description Defines the shadow casting and receiving modes for a renderable object.
+   *
+   * **Engine limitation — no combined "cast & receive" mode.**
+   * Unlike many engines that expose a `CastAndReceive` (or "On") mode in addition to
+   * `Off`/`ShadowsOnly`/`ReceiveOnly`, this enum is intentionally exclusive: a single
+   * renderable can be a `Caster`, a `Receiver`, or `None`, but **not both at the same
+   * time**. If you need an object to both cast and receive shadows, you must split it
+   * into two renderables (for example, two materials/meshes on the same scene object)
+   * and assign one `Caster` and one `Receiver`.
+   *
    * @enum
    */
   enum ShadowMode {
@@ -6764,38 +8219,59 @@ declare namespace APJS {
   }
   /**
    * @class SkinMeshRenderer
-   * @description A renderer component specifically designed for rendering skinned meshes with skeletal animation support.
+   * @description A renderer component that draws a skinned {@link Mesh} deformed by skeletal
+   * animation. It requires a mesh carrying skinning data (joint indices and weights) bound to a
+   * skeleton; without skinning data it renders like a static mesh. {@link getBoundingBox} returns
+   * the world-space bounds computed from the joint bounding boxes when a skin is present, or the
+   * mesh bounds otherwise.
    */
   class SkinMeshRenderer extends Renderer {
     protected constructor();
     /**
-     * @description Gets the mesh with the SkinMeshRenderer.
+     * @description Gets the mesh associated with the SkinMeshRenderer.
      */
     get mesh(): Mesh;
     /**
-     * @description Sets the mesh for the SkinMeshRenderer.
+     * @description Sets the mesh for the SkinMeshRenderer. For correct skinning the mesh
+     * must be compatible with the bound skeleton; a mesh without skinning data may not
+     * deform. The new mesh takes effect on the next render frame.
      */
     set mesh(value: Mesh);
     /**
-     * @description Gets the main material for the SkinMeshRenderer.
+     * @description Gets the first shared material used by the SkinMeshRenderer.
+     * The material is shared — mutating it affects all renderers that reference it.
+     * @returns The shared material, or `null` if none is assigned.
      */
     get mainMaterial(): Material | null;
     /**
      * @description Sets the main material for the SkinMeshRenderer.
+     * The material is shared — mutating it affects all renderers that reference it.
+     * Setting `null` detaches the material, after which {@link mainPass} returns `null`.
+     * @param value - The material to set as the main material, or `null` to detach.
      */
     set mainMaterial(value: Material | null);
     /**
-     * @description Gets the main rendering pass from the object's main material.
+     * @description Retrieves the main pass from this renderer's shared material.
+     * Returns `null` when no shared material is assigned or the material has no passes.
+     * The returned {@link Pass} wraps the shared material's first pass, so mutating it
+     * affects every renderer that references that material.
+     * @returns The first pass of the shared material, or `null` if unavailable.
      */
     get mainPass(): Pass | null;
     /**
-     * @description Gets the axis-aligned bounding box (AABB) for the skin mesh renderer.
+     * @description Retrieves the renderer's axis-aligned bounding box in world space.
+     * When a skin is assigned, the AABB is computed from the joint bounding boxes;
+     * otherwise it is derived from the assigned mesh's bounds. The value is
+     * recomputed on each call.
+     * @returns The bounding box wrapped as an APJS {@link AABB}.
      */
     getBoundingBox(): AABB;
   }
   /**
    * @class SoundEventDetector
    * @description Sound event detector.
+   * Reads the latest frame of audio features from its input source and exposes predicted sound event types.
+   * Use `enabled` to temporarily stop reading results without rebuilding the detector.
    * @example
    * onInit() {
    *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.SoundEvent);
@@ -6815,12 +8291,18 @@ declare namespace APJS {
     protected constructor();
     /**
      * @description Whether the detector is enabled.
+     * Default: `true`.
+     * When `false`, `getResult()` returns an empty array and `getSimilarityByType()` returns `-1`.
      * @example
      * this.audioEventDetector.enabled = false;
      */
     enabled: boolean;
     /**
-     * @description get sound event detection result
+     * @description Returns the current frame's sound event results.
+     * Only event types whose similarity is greater than `0` are included in the returned array.
+     * Each `similarity` is in the range `[0, 1]`. The array is ordered by sound event type
+     * (matching the {@link SoundEventType} declaration order), not sorted by similarity.
+     * Returns an empty array when the detector is disabled or no extractor result is available.
      * @example
      * const results = this.audioEventDetector.getResult();
      * for (const result of results) {
@@ -6829,7 +8311,10 @@ declare namespace APJS {
      */
     getResult(): SoundEventResult[];
     /**
-     * @description get similarity of specific sound event type
+     * @description Returns the current frame's similarity for a specific sound event type.
+     * The returned similarity is in the range `[0, 1]`, where higher values mean a stronger match.
+     * Returns `-1` when the detector is disabled, no extractor result is available, or the type is not found.
+     * When there are other event types, but the target type is not predicted, the return values will be `0` instead of `-1`.
      * @example
      * const catResult = this.audioEventDetector.getSimilarityByType(APJS.SoundEventType.Cat);
      * console.log(catResult);
@@ -6841,7 +8326,7 @@ declare namespace APJS {
    * @description Builder for SoundEventDetector.
    * @example
    * onInit() {
-   *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.SoundEvent);
+   *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.SoundEvent) as APJS.SoundEventDetectorBuilder;
    *     builder.setDetectorSource(APJS.AudioSourceType.Microphone, null);
    *     const detector = builder.build();
    * }
@@ -6849,13 +8334,18 @@ declare namespace APJS {
   class SoundEventDetectorBuilder extends AudioDetectorBuilder<SoundEventDetector> {
     protected constructor();
     /**
-     * @description Build the SoundEventDetector. Note that the detector should be built in onInit, otherwise it will return null.
+     * @description Build the SoundEventDetector. The detector should be built in `onInit`.
+     * Returns `null` when audio detection is not available in the current runtime
+     * environment, or when the configured source type is not one of `Microphone`,
+     * `Music` or `ExternalFile` (e.g. left as `None`). Each call constructs and returns
+     * a new detector instance; calling it repeatedly does not reuse a previously built
+     * detector.
      */
     build(): SoundEventDetector | null;
   }
   /**
    * @class SoundEventResult
-   * @description Result of sound event detection.
+   * @description One sound event prediction returned by {@link SoundEventDetector.getResult()}.
    * @example
    * const results = this.audioEventDetector.getResult();
    * for (const result of results) {
@@ -6865,17 +8355,36 @@ declare namespace APJS {
   class SoundEventResult {
     constructor(type: SoundEventType, similarity: number);
     /**
-     * @description sound event type
+     * @description Detected sound event type.
      */
     type: SoundEventType;
     /**
-     * @description sound event similarity
+     * @description Similarity score for this sound event type.
+     * Range: [0, 1], where 1 means a high confidence of the sound event type.
      */
     similarity: number;
   }
   /**
    * @enum SoundEventType
-   * @description Audio sound event type. These string values are the public identifiers used by the detector and should be treated as stable, case-sensitive names.
+   * @description Audio sound event type used by `SoundEventDetector` and related APIs
+   * (e.g. `getSimilarityByType`).
+   *
+   * **String stability.** This is a string enum and the underlying string values
+   * (e.g. `"Speech"`, `"Cat"`, `"BabyCry"`) correspond to the labels exported from
+   * the underlying audio classification model. Reference them through
+   * `APJS.SoundEventType.<Member>` rather than typing the raw string is recommended.
+   *
+   * **Case sensitivity.** The string values are **case-sensitive**. Always reference
+   * them through `APJS.SoundEventType.<Member>` (or `SoundEventType.<Member>`) rather
+   * than typing the raw string, so a future internal rename cannot silently break
+   * your code.
+   *
+   * **Serialization / interop.** Because the values are plain strings, they may be
+   * persisted (e.g. into save data, analytics events, or remote configs) and round-
+   * tripped through `SoundEventType[someString as SoundEventType]`. When doing so,
+   * always validate the incoming string against `Object.values(SoundEventType)`
+   * before passing it to detector APIs — unknown strings are not guaranteed to throw
+   * and may silently match nothing.
    * @example
    * const catResult = this.audioEventDetector.getSimilarityByType(APJS.SoundEventType.Cat);
    */
@@ -7032,88 +8541,116 @@ declare namespace APJS {
   class SpotLight extends Light {
     protected constructor();
     /**
-     * @description Gets the attenuation range of the spot light. This determines how far the light can reach.
+     * @description Gets the attenuation range of the spot light.
+     * The value uses the same distance unit as the scene transform.
+     * It controls how quickly the light fades as distance increases in world space.
+     * Larger values make the light affect a farther area, while smaller values make it fade more quickly.
+     * Range: [`0.01`, `+inf`). Values less than `0.01` are clamped to `0.01`.
      */
     get attenuationRange(): number;
     /**
-     * @description Sets the attenuation range of the spot light. This determines how far the light can reach.
+     * @description Sets the attenuation range of the spot light.
+     * The value uses the same distance unit as the scene transform.
+     * It controls how quickly the light fades as distance increases in world space.
+     * Larger values make the light affect a farther area, while smaller values make it fade more quickly.
+     * Range: [`0.01`, `+inf`). Values less than `0.01` are clamped to `0.01`.
      */
     set attenuationRange(value: number);
     /**
      * @description Gets the inner angle of the spot light's cone, in degrees. Within this angle, the light is at its full intensity.
+     * Default: `0`. Should be kept smaller than {@link outerAngle}; the light falls off from this angle out to the outer angle.
      */
     get innerAngle(): number;
     /**
      * @description Sets the inner angle of the spot light's cone, in degrees. Within this angle, the light is at its full intensity.
+     * Default: `0`. This value is not clamped here; set it smaller than {@link outerAngle}, because the
+     * outer angle is internally forced to stay at least slightly larger than the inner angle.
      */
     set innerAngle(value: number);
     /**
      * @description Gets the outer angle of the spot light's cone, in degrees. The light intensity gradually falls off from the inner angle to this outer angle.
+     * Default: `45`. Beyond this angle the light contributes nothing.
      */
     get outerAngle(): number;
     /**
      * @description Sets the outer angle of the spot light's cone, in degrees. The light intensity gradually falls off from the inner angle to this outer angle.
+     * Default: `45`. The stored value is forced to be at least slightly larger than {@link innerAngle}, so assigning a value
+     * smaller than or equal to the current inner angle is raised to just above it.
      */
     set outerAngle(value: number);
   }
   /**
    * @class SpringJoint
-   * @description A 3D spring joint. Acts like a damped spring connecting two
-   * RigidBodies.
-   * Uses an elastic distance constraint with compliance (from
-   * {@link tolerance}) and damping (from {@link damping}).
-   * Can break at {@link breakingForce}. If it breaks, only that distance
-   * constraint stops solving; the connected RigidBodies do not freeze.
-   *
-   * @example
-   * const springJoint = obj.getComponent("SpringJoint") as APJS.SpringJoint;
-   * springJoint.breakingForce = -1; // keep the spring constraint from breaking
-   * springJoint.damping = 0.5; // 50% damping
-   * springJoint.tolerance = 0.5; // 50% softness
+   * @description A 3D spring joint that pulls two RigidBodies back toward their
+   * initial relative positions. Can break at {@link breakingForce}; when it
+   * breaks, only this joint stops solving.
    */
   class SpringJoint extends Joint3D {
     protected constructor();
     /**
-     * @description User-facing damping control for this spring joint from 0 to 1.
-     * Larger values make oscillation die out faster, so the connected bodies stop bouncing and settle sooner.
-     * @type {number}
+     * @description Spring damping. Higher values make the spring settle faster.
+     * Recommended range `[0, 1]`. Values outside this range are stored but produce
+     * exponentially extreme behavior and should be avoided. default: `0`.
+     * @returns The damping value.
      */
     get damping(): number;
+    /**
+     * @description Spring damping. Higher values make the spring settle faster.
+     * Recommended range `[0, 1]`. Values outside this range are stored but produce
+     * exponentially extreme behavior and should be avoided.
+     * @param value - The damping value.
+     */
     set damping(value: number);
     /**
-     * @description User-facing softness control for this spring joint from 0 to 1.
-     * Larger values let the connected bodies stretch or compress farther from their rest distance before the spring pulls back strongly.
-     * @type {number}
+     * @description Spring softness. Higher values let the bodies separate farther before
+     * the spring pulls back strongly. Recommended range `[0, 1]`. Values outside this range
+     * are stored but produce exponentially extreme behavior and should be avoided. default: `0`.
+     * @returns The tolerance value.
      */
     get tolerance(): number;
+    /**
+     * @description Spring softness. Higher values let the bodies separate farther before
+     * the spring pulls back strongly. Recommended range `[0, 1]`. Values outside this range
+     * are stored but produce exponentially extreme behavior and should be avoided.
+     * @param value - The tolerance value.
+     */
     set tolerance(value: number);
   }
   /**
    * @class SpringJoint2D
-   * @description A 2D spring joint. Applies a force to pull two bodies back to their initial relative positions,
-   * like a spring connecting them. Configurable with {@link damping} and {@link tolerance} (stiffness).
-   * @example
-   * // Set a spring between two objects (configured in editor via connectedBody reference)
-   * const springJoint = obj.getComponent("SpringJoint2D") as APJS.SpringJoint2D;
-   * springJoint.damping = 0.7; // 0.7 is a common value for a natural spring
-   * springJoint.tolerance = 0.5; // 0.5 is a common value for a natural spring
+   * @description A 2D spring joint that pulls two bodies back toward their initial relative positions.
    */
   class SpringJoint2D extends Joint2D {
     protected constructor();
     /**
-     * @description User-facing damping control for this 2D spring joint.
-     * Value typically ranges from 0 (no damping) to 1 (maximum damping).
-     * Larger values make the spring stop oscillating sooner, so the two connected bodies settle more quickly.
-     * @type {number}
+     * @description Spring damping. Higher values make the spring settle faster.
+     * Authoring range `[0, 1]` (enforced by the editor). Script values outside this range
+     * are stored but produce exponentially extreme behavior and should be avoided. default: `0.7`.
+     * @return the damping value.
      */
     get damping(): number;
+    /**
+     * @description Spring damping. Higher values make the spring settle faster.
+     * Authoring range `[0, 1]` (enforced by the editor). Script values outside this range
+     * are stored but produce exponentially extreme behavior and should be avoided.
+     * @param value - The damping value.
+     */
     set damping(value: number);
     /**
-     * @description User-facing softness control for this 2D spring joint.
-     * Larger values let the two connected bodies separate or compress farther before the spring pulls back strongly.
-     * @type {number}
+     * @description Spring softness. Higher values let the bodies separate farther before
+     * the spring pulls back strongly. Authoring range `[0, 1]` (enforced by the editor).
+     * Script values outside this range are stored but produce exponentially extreme
+     * behavior and should be avoided. default: `0.5`.
+     * @return the tolerance value.
      */
     get tolerance(): number;
+    /**
+     * @description Spring softness. Higher values let the bodies separate farther before
+     * the spring pulls back strongly. Authoring range `[0, 1]` (enforced by the editor).
+     * Script values outside this range are stored but produce exponentially extreme
+     * behavior and should be avoided.
+     * @param value - The tolerance value.
+     */
     set tolerance(value: number);
   }
   /**
@@ -7162,13 +8699,16 @@ declare namespace APJS {
   }
   /**
    * @class DepthStencilState
-   * @description depth stencil state
+   * @description Script-facing stencil state for a render pass.
+   * Stencil testing is disabled by default.
+   * APJS mirrors the operation, compare, mask, and reference accessors to both front and back faces
+   * through one shared `StencilOpState`, which is created lazily on the first setter call.
    */
   class StencilState extends AObject {
     protected constructor();
     /**
      * @description Indicates whether stencil testing is enabled.
-     * @returns True if stencil testing is enabled, false otherwise.
+     * @return whether stencil testing is enabled. default: `false`
      */
     get enable(): boolean;
     /**
@@ -7177,28 +8717,32 @@ declare namespace APJS {
      */
     set enable(value: boolean);
     /**
-     * @description Get the operation to perform when the stencil test fails.
-     * @returns The stencil operation to perform when the stencil test fails.
+     * @description Operation to perform when the stencil test fails.
+     * @return the stencil fail operation. default: `StencilOperation.Keep`
      */
     get failOperation(): StencilOperation;
     /**
-     * @description Set the operation to perform when the stencil test fails for both front and back faces.
+     * @description Sets the operation to perform when the stencil test fails for both front and back faces.
+     * The first write lazily creates one shared stencil operation state and applies the same value
+     * to both faces.
      * @param value - The stencil operation to set.
      */
     set failOperation(value: StencilOperation);
     /**
-     * @description Get the operation to perform when the stencil test passes.
-     * @returns The stencil operation to perform when the stencil test passes.
+     * @description Operation to perform when the stencil test passes.
+     * @return the stencil pass operation. default: `StencilOperation.Keep`
      */
     get passOperation(): StencilOperation;
     /**
-     * @description Set the operation to perform when the stencil test passes for both front and back faces.
+     * @description Sets the operation to perform when the stencil test passes for both front and back faces.
+     * The first write lazily creates one shared stencil operation state and applies the same value
+     * to both faces.
      * @param value - The stencil operation to set.
      */
     set passOperation(value: StencilOperation);
     /**
-     * @description The comparison function used for the stencil test.
-     * @returns The stencil function used for the stencil test.
+     * @description Comparison function for the stencil test.
+     * @return the stencil compare function. default: `StencilFunction.Always`
      */
     get compareFunction(): StencilFunction;
     /**
@@ -7207,33 +8751,41 @@ declare namespace APJS {
      */
     set compareFunction(value: StencilFunction);
     /**
-     * @description The mask applied to the stencil buffer for reading operations.
-     * @returns The mask applied to the stencil buffer for reading operations.
+     * @description Mask applied to stencil-buffer compare operations. 32-bit unsigned;
+     * range `[0, 255]`.
+     * @return the compare mask. Default: 255
      */
     get readMask(): number;
     /**
      * @description Sets the read mask for the stencil state.
+     * APJS mirrors the same value to both front and back compare masks. The underlying native field
+     * is a `uint32`, and this wrapper does not clamp or validate the provided number.
      * @param value - The mask value to set for reading operations.
      */
     set readMask(value: number);
     /**
-     * @description The write mask for the stencil state, which determines which bits can be written to the stencil buffer.
-     * @returns The mask applied to the stencil buffer for writing operations.
+     * @description Mask applied to stencil-buffer write operations.
+     * range `[0, 255]`. This wrapper does not validate or clamp the provided number.
+     * @return the write mask. Default: 255
      */
     get writeMask(): number;
     /**
      * @description Sets the write mask for both front and back stencil states.
+     * APJS mirrors the same value to both faces. The underlying native field is a `uint32`, and
+     * this wrapper does not clamp or validate the provided number.
      * @param value - The mask value to set for writing operations.
      */
     set writeMask(value: number);
     /**
-     * @description The reference value for the stencil state.
-     * @returns The reference value used for stencil testing.
+     * @description Reference value for the stencil test. 32-bit unsigned;
+     * Values outside this range are truncated by the native uint32 binding without warning.
+     * @return the reference value. Default: `0`. Range `[0, 0xFFFFFFFF]`.
      */
     get referenceValue(): number;
     /**
      * @description Sets the reference value for both front and back stencil operations.
-     * @param value - The reference value to set for stencil testing.
+     * Values outside `[0, 255]` are truncated by the native binding.
+     * @param value - The reference value to set.
      */
     set referenceValue(value: number);
   }
@@ -7260,32 +8812,53 @@ declare namespace APJS {
   /**
    * @class Text
    * @description Represents a text component in the scene, used to display strings of text.
-   * This class provides properties to control the text's appearance, such as font, color, and alignment.
+   * Style properties such as {@link fontSize}, {@link color}, {@link bold}, and {@link italic}
+   * primarily mutate {@link activeTextStyle}, while layout properties such as
+   * {@link horizontalAlignment}, {@link verticalAlignment}, {@link letterSpacing}, and
+   * {@link lineSpacing} primarily mutate {@link typeSettingParam}.
+   * New wrapper instances start with centered horizontal / vertical alignment, `AutoLineBreak`,
+   * fixed font size, and vector background enabled.
+   * Assigning {@link textLocale} also refreshes the fallback font list used for RTL locales.
    */
   class Text extends Renderer {
     protected constructor();
     /**
      * @description Gets the font size in points (pt).
+     * This wrapper does not clamp or enforce a minimum when reading or writing this value.
      */
     get fontSize(): number;
     /**
      * @description Sets the font size in points (pt).
+     * Default: 72 set by editor.
+     * This wrapper does not clamp or enforce a minimum.
      */
     set fontSize(value: number);
     /**
-     * @description Gets the spacing between letters, with the unit being the single line height.
+     * @description Gets the spacing between letters, in units of line height (same as
+     * font size). Default is `0` (no extra gap). For example, with a font size of `32`,
+     * a value of `0.5` adds `16` pixels of extra spacing between letters. Negative values
+     * pull letters closer together; the value is not range-clamped.
      */
     get letterSpacing(): number;
     /**
-     * @description Sets the spacing between letters, with the unit being the single line height.
+     * @description Sets the spacing between letters, in units of line height (same as
+     * font size). Default is `0` (no extra gap). For example, with a font size of `32`,
+     * a value of `0.5` adds `16` pixels of extra spacing between letters. Negative values
+     * pull letters closer together; the value is not range-clamped.
      */
     set letterSpacing(value: number);
     /**
-     * @description Gets the spacing between lines, with the unit being the single line height.
+     * @description Gets the spacing between lines, in units of line height (same as
+     * font size). Default is `0` (no extra gap between baselines). For example, with a font
+     * size of `32`, a value of `0.5` adds `16` pixels of extra spacing between lines. Negative
+     * values move lines closer together; the value is not range-clamped.
      */
     get lineSpacing(): number;
     /**
-     * @description Sets the spacing between lines, with the unit being the single line height.
+     * @description Sets the spacing between lines, in units of line height (same as
+     * font size). Default is `0` (no extra gap between baselines). For example, with a font
+     * size of `32`, a value of `0.5` adds `16` pixels of extra spacing between lines. Negative
+     * values move lines closer together; the value is not range-clamped.
      */
     set lineSpacing(value: number);
     /**
@@ -7294,46 +8867,77 @@ declare namespace APJS {
     get text(): string;
     /**
      * @description Sets the plain text content of the text component.
+     * Does not strip line breaks, escape sequences, or other characters.
      */
     set text(value: string);
     /**
      * @description Gets the global opacity of the text, its styles, and the background.
+     * Range `[0, 1]`, default `1.0`. Values outside this range are forwarded as-is
+     * (no clamping); rendering multiplies this value into the text and background alpha.
      */
     get opacity(): number;
     /**
      * @description Sets the global opacity of the text, its styles, and the background.
+     * Range `[0, 1]`, default `1.0`. Values outside this range are forwarded as-is
+     * (no clamping); rendering multiplies this value into the text and background alpha.
      */
     set opacity(value: number);
     /**
      * @description Gets the current bold state based on font style.
+     * Returns `true` only when the bold style flag is set on the active text style. Note this
+     * reflects the requested flag, not whether the font actually rendered a bold glyph.
      */
     get bold(): boolean;
     /**
      * @description Sets the current bold state based on font style.
+     * The bold style flag is toggled regardless of the font. The bold appearance only shows if
+     * the active font provides a bold variant; if it does not, the flag has no visible effect and
+     * the text keeps its regular weight.
      */
     set bold(enable: boolean);
     /**
      * @description Gets the current italic state based on font style.
+     * Returns `true` only when the italic style flag is set on the active text style. Note this
+     * reflects the requested flag, not whether the font actually rendered an italic glyph.
      */
     get italic(): boolean;
     /**
      * @description Sets the current italic state based on font style.
+     * The italic style flag is toggled regardless of the font. The italic appearance only shows
+     * if the active font provides an italic variant; if it does not, the flag has no visible
+     * effect and the text keeps its upright form.
      */
     set italic(enable: boolean);
     /**
-     * @description Gets the local horizontal alignment, which refers to the horizontal alignment relative to the writing direction. The actual alignment value depends on the typesetting kind (horizontal or vertical).
+     * @description Gets the local horizontal alignment relative to the writing direction.
+     * Values: `Left`, `Center`, `Right`, `Flush` (justified). When set to `Flush` and
+     * the text contains RTL characters, the alignment falls back to `Center`.
      */
     get horizontalAlignment(): HorizontalAlignment;
     /**
-     * @description Sets the local horizontal alignment, which refers to the horizontal alignment relative to the writing direction. Handles special cases for RTL characters and adjusts typesetting alignment accordingly based on the current typesetting kind.
+     * @description Sets the local horizontal alignment relative to the writing direction.
+     * Values: `Left`, `Center`, `Right`, `Flush` (justified). When set to `Flush` and
+     * the text contains RTL characters, the alignment falls back to `Center`.
+     * @example
+     * ```ts
+     * text.horizontalAlignment = HorizontalAlignment.Center;
+     * ```
      */
     set horizontalAlignment(value: HorizontalAlignment);
     /**
-     * @description Gets the local vertical alignment, which refers to the vertical alignment relative to the writing direction.
+     * @description Gets the local vertical alignment relative to the writing direction.
+     * Values: `Top`, `Center`, `Bottom`. This mapping is independent of the current
+     * writing mode (horizontal or vertical).
      */
     get verticalAlignment(): VerticalAlignment;
     /**
-     * @description Sets the local vertical alignment, which refers to the vertical alignment relative to the writing direction.
+     * @description Sets the local vertical alignment relative to the writing direction.
+     * Values: `Top`, `Center`, `Bottom`. This mapping is independent of the current
+     * writing mode (horizontal or vertical).
+     * @example
+     * ```ts
+     * text.verticalAlignment = VerticalAlignment.Center;
+     * ```
      */
     set verticalAlignment(value: VerticalAlignment);
     /**
@@ -7406,130 +9010,184 @@ declare namespace APJS {
   }
   /**
    * @class Texture
+   * @description Base wrapper for runtime texture objects such as `Texture2D`, `TextureCube`,
+   * `RenderTexture`, `DrawTexture`, and related derived texture types.
+   * Use {@link getControl} to access the provider object that exposes editable settings for the
+   * concrete texture source.
    */
   class Texture extends AObject {
     protected constructor();
     /**
-     * @description Gets whether mipmap is enabled for the texture.
-     * @returns Whether mipmap is enabled.
+     * @description Gets whether mipmapping is enabled for this texture.
+     * Default: `false`.
+     * @returns Whether mipmapping is enabled.
      */
     get enableMipmap(): boolean;
     /**
-     * @description Enables or disables mipmapping for the texture.
+     * @description Enables or disables mipmapping for this texture.
+     * New native textures default to `false`.
+     * Setting this property forwards the boolean directly to native texture state. In native code,
+     * disabling mipmaps forces the mip-level count back to `1`, while enabling restores the
+     * texture's possible mip count.
+     * Native texture code explicitly warns that toggling this at runtime may be expensive because
+     * texture uploads can be slow.
      * @param value - Whether to enable mipmapping.
      */
     set enableMipmap(value: boolean);
     /**
-     * @description Gets the minimization filter mode of the texture.
+     * @description Gets the minimization filter mode of this texture.
+     * Default: {@link FilterMode.Linear}.
      * @returns The current minimization filter mode.
      */
     get filterMin(): FilterMode;
     /**
-     * @description Sets the minimum filter mode for the texture.
+     * @description Sets the minimization filter mode of this texture.
+     * Default: {@link FilterMode.Linear}.
      * @param value - The filter mode to set for minimization.
      */
     set filterMin(value: FilterMode);
     /**
-     * @description Gets the magnification filter mode of the texture.
+     * @description Gets the magnification filter mode of this texture.
+     * Default: {@link FilterMode.Linear}.
      * @returns The current magnification filter mode.
      */
     get filterMag(): FilterMode;
     /**
-     * @description Sets the magnification filter mode for the texture.
+     * @description Sets the magnification filter mode of this texture.
+     * Default: {@link FilterMode.Linear}.
      * @param value - The filter mode to set for magnification.
      */
     set filterMag(value: FilterMode);
     /**
-     * @description Gets the mipmap mode for the texture.
+     * @description Gets the mipmap filtering mode of this texture.
+     * New native textures default to {@link FilterMipmapMode.None}.
+     * This property controls how sampling chooses between mip levels when mipmaps are available.
      * @returns The current mipmap mode.
      */
     get filterMipmap(): FilterMipmapMode;
     /**
-     * @description Sets the mipmap filtering mode for the texture.
+     * @description Sets the mipmap filtering mode of this texture.
+     * New native textures default to {@link FilterMipmapMode.None}.
+     * This property controls how sampling chooses between mip levels when mipmaps are available.
      * @param value - The mipmap filtering mode to set.
      */
     set filterMipmap(value: FilterMipmapMode);
     /**
-     * @description Get the wrap mode of the S dimension.
-     * @returns The current wrap mode for the S dimension.
+     * @description Gets the wrap mode for the `S` coordinate dimension.
+     * `S` is the first texture-coordinate dimension.
+     * Default: {@link WrapMode.Clamp}.
+     * @returns The current wrap mode for the `S` coordinate dimension.
      */
     get wrapModeS(): WrapMode;
     /**
-     * @description Sets the wrap mode for the S coordinate of the texture.
-     * @param value - The wrap mode to set for the S dimension.
+     * @description Sets the wrap mode for the `S` coordinate dimension.
+     * `S` is the first texture-coordinate dimension.
+     * Default: {@link WrapMode.Clamp}.
+     * @param value - The wrap mode to set for the `S` coordinate dimension.
      */
     set wrapModeS(value: WrapMode);
     /**
-     * @description Get the wrap mode of the T dimension.
-     * @returns The current wrap mode for the T dimension.
+     * @description Gets the wrap mode for the `T` coordinate dimension.
+     * `T` is the second texture-coordinate dimension.
+     * Default: {@link WrapMode.Clamp}.
+     * @returns The current wrap mode for the `T` coordinate dimension.
      */
     get wrapModeT(): WrapMode;
     /**
-     * @description Sets the vertical wrapping mode of the texture.
-     * @param value - The wrap mode to set for the T dimension.
+     * @description Sets the wrap mode for the `T` coordinate dimension.
+     * `T` is the second texture-coordinate dimension.
+     * Default: {@link WrapMode.Clamp}.
+     * @param value - The wrap mode to set for the `T` coordinate dimension.
      */
     set wrapModeT(value: WrapMode);
     /**
-     * @description Gets the wrap mode of the R dimension.
-     * @returns The current wrap mode for the R dimension.
+     * @description Gets the wrap mode for the `R` coordinate dimension.
+     * `R` is the third texture-coordinate dimension.
+     * Default: {@link WrapMode.Clamp}.
+     * @returns The current wrap mode for the `R` coordinate dimension.
      */
     get wrapModeR(): WrapMode;
     /**
-     * @description Sets the wrap mode for the red component of the texture.
-     * @param value - The wrap mode to set for the R dimension.
+     * @description Sets the wrap mode for the `R` coordinate dimension.
+     * `R` is the third texture-coordinate dimension.
+     * Default: {@link WrapMode.Clamp}.
+     * @param value - The wrap mode to set for the `R` coordinate dimension.
      */
     set wrapModeR(value: WrapMode);
     /**
-     * @description Gets the maximum anisotropy level of the current texture.
+     * @description Gets the maximum anisotropy level of this texture.
+     * New native textures default to `1`.
+     * Native texture state stores this as an integer sampler parameter.
      * @returns The maximum anisotropy level as a number.
      */
     get maxAnisotropy(): number;
     /**
-     * @description Sets the maximum anisotropy for the texture, which improves texture quality when viewed at oblique angles.
+     * @description Sets the maximum anisotropy level of this texture.
+     * New native textures default to `1`.
+     * Larger values can improve texture quality at oblique viewing angles. Native texture code caps
+     * values above `16` to `16` (`MAX_TEXTURE_ANISOTROPY`), but APJS does not clamp negative or
+     * otherwise low values in this layer before forwarding them.
      * @param value - The maximum anisotropy level to set.
      */
     set maxAnisotropy(value: number);
     /**
-     * @description Retrieves the width of the texture.
+     * @description Retrieves the current native width of this texture in pixels.
+     * APJS returns the native `width` field directly without recomputing or normalizing it.
      * @returns The width of the texture as a number.
      */
     getWidth(): number;
     /**
-     * @description Retrieves the height of the texture.
+     * @description Retrieves the current native height of this texture in pixels.
+     * APJS returns the native `height` field directly without recomputing or normalizing it.
      * @returns The height of the texture as a number.
      */
     getHeight(): number;
     /**
-     * @description Retrieves the depth of the source texture.
+     * @description Retrieves the native depth value reported by this texture.
+     * APJS returns the native `depth` / layer field directly. Native texture code returns `0` for
+     * `Texture2D`.
      * @returns The depth of the texture as a number.
      */
     getDepth(): number;
     /**
-     * @description Retrieves the control associated with the texture.
-     *              In runtime, it checks and loads the JS asset if necessary,
-     *              then retrieves the JS asset by GUID from the map. If the JS asset is found,
-     *              it returns the asset as a TextureProvider; otherwise, it returns the internal __control property.
-     * @returns The control associated with the texture, either as a TextureProvider or the internal __control property.
+     * @description Returns the {@link TextureProvider} associated with this texture.
+     * The provider exposes the texture's underlying data source (for example an image asset,
+     * render texture, or other dynamic source) and is the recommended way to inspect or replace
+     * texture content from script.
+     * In runtime builds, APJS first asks the dynamic-asset manager to load JSAsset providers if
+     * needed, then tries to resolve a provider by this texture's `guid`. If no runtime provider is
+     * found, APJS falls back to the cached provider created in the constructor or supplied by the
+     * caller.
+     * @returns The provider that backs this texture.
      */
     getControl(): TextureProvider;
   }
   /**
    * @class Texture2DProvider
-   * @description
-   * <br/><b>new Texture2DProvider() is an invalid constructor</b>
-   * <br/>If you need a 2D texture, you can get a texture by calling TextureUtil.createTexture2D()
+   * @description A `TextureProvider` for 2D textures.
+   * Use this provider when you need to configure or inspect 2D-texture-specific
+   * state, such as readability, pixel access, the bound {@link ImageAsset}, or
+   * alpha premultiplication metadata. Use the Texture object itself when you
+   * only need to pass the texture to another API or bind it as an input.
    * @example
-   * let provider = tex.getControl() as Texture2DProvider;
+   * const tex = TextureUtils.createTexture2D();
+   * const provider = tex.getControl() as Texture2DProvider;
    */
   class Texture2DProvider extends TextureProvider {
     protected constructor();
     /**
-     * @description Whether to initialize the memory data for transparency premultiplication.
+     * @description Gets whether the bound image's inner memory data is marked as alpha premultiplied.
+     * This flag is read from `Texture2D.image.alphaPermul`, not from the texture sampler state.
+     * Native `Image` objects default this inner-memory flag to `false`.
+     * If this texture currently has no bound image, APJS returns `false`.
      * @default false
      */
     get alphaPremul(): boolean;
     /**
-     * @description Sets whether to initialize the memory data for transparency premultiplication.
+     * @description Sets whether the bound image's inner memory data is marked as alpha premultiplied.
+     * This property only writes `Texture2D.image.alphaPermul`. It does not change sampler settings
+     * or create a new image object for the texture.
+     * If this texture currently has no bound image, the setter does nothing.
      * @param value - Whether to enable alpha premultiplication.
      */
     set alphaPremul(value: boolean);
@@ -7568,6 +9226,7 @@ declare namespace APJS {
      * @readonly
      * @description Gets the position of the touch in normalized screen coordinates.
      * Coordinates use the range [0, 1]. `x` is horizontal (0 = left, 1 = right).
+     * This is the same coordinate format used by {@link TouchUtils.isScreenPointOnImage}.
      *
      * **Important:** `y` is in a flipped coordinate space — 0 = top of screen, 1 = bottom.
      * This is the **opposite** of standard screen space and world space (where y increases upward).
@@ -7583,7 +9242,8 @@ declare namespace APJS {
     get position(): Vector2f;
     /**
      * @readonly
-     * @description Get the force of the touch. Typically a normalized value between 0 and 1.
+     * @description Get the touch pressure value reported by the underlying platform input API.
+     * APJS forwards this value as-is; it does not normalize it or apply a fallback value.
      */
     get force(): number;
     /**
@@ -7594,7 +9254,8 @@ declare namespace APJS {
     get touchId(): number;
     /**
      * @readonly
-     * @description Get the number of active touches.
+     * @description Get the number of active touches on the screen at the moment this touch
+     * event was generated, including this touch itself.
      * @returns The total number of active touches on the screen.
      */
     get touchCount(): number;
@@ -7615,16 +9276,22 @@ declare namespace APJS {
   }
   /**
    * @namespace TouchUtils
-   * @description Utility class for handling touch events, e.g. detecting whether a touch is on an image.
+   * @description Static helpers for touch-related queries and derived gestures.
+   * This namespace contains hit-testing utilities for normalized touch points and the APJS pinch
+   * event emitter entry point. Pinch events are exposed through {@link getPinchEmitter} and deliver
+   * one {@link IPinchInfo}-shaped payload in `event.args[0]`.
    */
   namespace TouchUtils {
     /**
      * @description Whether a normalized touch point is on an image.
-     * @param {Vector2f} screenPoint A normalized screen point in the range [0, 1], typically from `TouchData.position`.
+     * Although the parameter name is `screenPoint`, pass the normalized touch coordinates from `TouchData.position`.
+     * @param {Vector2f} screenPoint A normalized touch point in the range [0, 1], typically from `TouchData.position`.
      * (0, 0) is the top-left corner of the screen; (1, 1) is the bottom-right corner; x increases rightward and y increases downward.
      * This is not the pixel-based screen space used by camera conversion APIs such as `Camera.screenToWorldPoint`
      * (which uses bottom-left origin with y increasing upward).
      * @param {Image} image The image component to judge. The image should be enabled and have a valid screen transform component. It should be rendered by a camera with the Orthographic type.
+     * If `screenPoint` / `image` is missing, the image is invalid, or no compatible orthographic
+     * camera can evaluate the image, this method returns `false`.
      * @returns {boolean} True if the normalized touch point is on the image, otherwise false.
      * @example
      * let callback = (event:APJS.IEvent) => {
@@ -7638,8 +9305,12 @@ declare namespace APJS {
      */
     function isScreenPointOnImage(screenPoint: Vector2f, image: Image): boolean;
     /**
-     * @description Retrieves the event emitter associated with pinch.
-     * @returns The event emitter for the pinch, which can be used to subscribe to pinch events defined in IPinchInfo.
+     * @description Retrieves the singleton event emitter associated with pinch gestures.
+     * The returned emitter derives pinch updates from global touch events and dispatches
+     * `event.args[0]` as an {@link IPinchInfo} object with `scale` and `angle`.
+     * Its `on` / `once` / `off` implementations ignore the `eventType` argument, so listener
+     * registration is effectively keyed only by callback and optional context.
+     * @returns The event emitter for pinch gestures.
      * @example
      * const emitter = APJS.TouchUtils.getPinchEmitter();
      * const callback = (event: APJS.IEvent) => {
@@ -7676,16 +9347,21 @@ declare namespace APJS {
     set localPosition(value: Vector3f);
     /**
      * @description Gets the Transform's rotation relative to its parent.
+     * Returned as a unit quaternion `{x, y, z, w}`; only the combination encodes a rotation,
+     * so do not interpret individual components in isolation.
      * @returns The local rotation as a Quaternionf.
      */
     get localRotation(): Quaternionf;
     /**
      * @description Sets the local rotation of the transform using a quaternion.
+     * The value should be a unit quaternion (`x² + y² + z² + w² = 1`); non-normalized inputs
+     * may produce skew or scale artifacts. The identity rotation is `{0, 0, 0, 1}`.
      * @param value - The Quaternionf value to set as the local rotation.
      */
     set localRotation(value: Quaternionf);
     /**
      * @description Gets the Transform's local euler angles in degrees.
+     * <br/><b>Unit:</b> degrees. {@link Matrix4x4f.getEulerAngles} returns radians — convert when interoperating.
      * @returns The local Euler angles of the Transform.
      */
     get localEulerAngles(): Vector3f;
@@ -7706,11 +9382,16 @@ declare namespace APJS {
     set localScale(value: Vector3f);
     /**
      * @description Gets the local transformation matrix of the Transform.
+     * The matrix combines local position, rotation and scale relative to the parent, and uses the
+     * column-major convention shared by {@link Matrix4x4f}.
      * @returns The local matrix representing the object's position, rotation, and scale relative to its parent.
      */
     get localMatrix(): Matrix4x4f;
     /**
      * @description Sets the local transformation matrix of the object.
+     * The matrix is interpreted column-major (see {@link Matrix4x4f}). It should be a valid affine
+     * transform; the resulting localPosition/localRotation/localScale are derived from it, so shear
+     * or non-affine parts are not represented exactly and are approximated.
      * @param value - The Matrix4x4f value to set as the local matrix.
      */
     set localMatrix(value: Matrix4x4f);
@@ -7722,6 +9403,10 @@ declare namespace APJS {
     getWorldMatrix(): Matrix4x4f;
     /**
      * @description Sets the world transformation matrix for the object.
+     * The matrix is interpreted column-major (see {@link Matrix4x4f}) and should be a valid affine
+     * transform. The world position, rotation and scale are derived from it and combined with the
+     * parent's world transform to update this object's local values, so shear or non-affine parts
+     * are approximated.
      * @param matrix - The 4x4 matrix representing the new world transformation.
      */
     setWorldMatrix(matrix: Matrix4x4f): void;
@@ -7740,24 +9425,31 @@ declare namespace APJS {
     /**
      * @description Returns the Transform's rotation relative to the world.
      * <br/>Obtaining the rotation in world space may trigger a matrix transformation operation.
+     * Returned as a unit quaternion `{x, y, z, w}`; only the combination encodes a rotation, so do
+     * not interpret individual components in isolation.
      * @returns The rotation of the transform in world space.
      */
     getWorldRotation(): Quaternionf;
     /**
      * @description Sets the Transform's rotation relative to the world.
      * <br/> Setting the world space rotation may trigger a matrix transformation operation.
+     * The value should be a unit quaternion (`x² + y² + z² + w² = 1`); non-normalized inputs may
+     * produce skew or scale artifacts. The identity rotation is `{0, 0, 0, 1}`.
      * @param worldRotation - The world space rotation as a Quaternionf.
      */
     setWorldRotation(worldRotation: Quaternionf): void;
     /**
      * @description Returns the Transform's Euler angles relative to the world.
      * <br/>Obtaining the rotation in world space may trigger a matrix transformation operation.
+     * <br/><b>Unit:</b> degrees, applied in `YXZ` order (per-axis components: pitch X, yaw Y, roll Z).
+     * {@link Matrix4x4f.getEulerAngles} returns radians — convert when interoperating.
      * @returns The world space Euler angles.
      */
     getWorldEulerAngles(): Vector3f;
     /**
      * @description Sets the Transform's Euler angles relative to the world.
      * <br/> Setting the world space rotation may trigger a matrix transformation operation.
+     * <br/><b>Unit:</b> degrees, applied in `YXZ` order (per-axis components: pitch X, yaw Y, roll Z).
      * @param euler - The world space Euler angles.
      */
     setWorldEulerAngles(euler: Vector3f): void;
@@ -7782,13 +9474,13 @@ declare namespace APJS {
    * @class Vector2f
    * A two-dimensional vector.
    *
-   * Most instance math methods mutate this vector and return `this` for chaining.
-   * Use {@link clone} first when you need to preserve the original value.
+   * Most instance math methods (`add`, `subtract`, `multiply`, `divide`,
+   * `multiplyScalar`, `divideScalar`, `negate`, `normalize`, `set`, etc.) modify
+   * this vector in place and return `this` for chaining. To compute a derived
+   * value without mutating the source, {@link clone} first.
    *
    * @example
-   * let zero_p = new Vector2f();
-   * let custom_p = new Vector2f(88, 88);
-   * let offset = custom_p.clone().subtract(new Vector2f(8, 8));
+   * const next = pos.clone().add(velocity);
    */
   class Vector2f {
     /**
@@ -7811,6 +9503,7 @@ declare namespace APJS {
     constructor(x?: number, y?: number);
     /**
      * @description Determines if this vector is equal to the specified vector.
+     * This is a strict component-wise comparison with no floating-point tolerance.
      * @param vec - The vector to compare with.
      * @returns True if the vectors are equal, false otherwise.
      */
@@ -7842,6 +9535,8 @@ declare namespace APJS {
     subtract(vec: Vector2f): this;
     /**
      * @description Returns the angle in radians between the current vector and the specified vector `vec`.
+     * The returned angle is in the closed range `[0, Math.PI]`.
+     * If either vector has zero length, this method returns `Math.PI / 2` as the fallback value.
      * @param vec - The target vector to calculate the angle against.
      * @returns The angle in radians between the two vectors.
      */
@@ -7857,7 +9552,10 @@ declare namespace APJS {
      */
     magnitude(): number;
     /**
-     * @description Clamps the length of this vector to the specified `length` and returns this vector.
+     * @description Clamps the length of this vector to `length` in place.
+     * If the current length exceeds `length`, the vector is scaled down to `length`.
+     * Zero-length vectors are left unchanged. Negative `length` is not rejected
+     * and will flip the direction, producing a vector with magnitude `abs(length)`.
      * @param length - The maximum length to clamp the vector to.
      * @returns This vector with its length clamped to the specified value.
      */
@@ -7870,6 +9568,8 @@ declare namespace APJS {
     distance(vec: Vector2f): number;
     /**
      * @description Divides this vector by `vec` component-wise in place.
+     * Dividing by `0` produces `Infinity`, `-Infinity`, or `NaN` per component;
+     * no exception is thrown.
      * @param vec - The vector to divide by, where each component divides the matching component of this vector.
      * @returns This vector after performing the division.
      */
@@ -7884,6 +9584,8 @@ declare namespace APJS {
      * @description Multiplies this vector in place.
      * If `value` is a number, both components are scaled by that number.
      * If `value` is a Vector2f, multiplication is performed component-wise.
+     * When the operand is always a scalar, {@link multiplyScalar} is a more direct equivalent;
+     * use this overload when the operand may be either a number or a Vector2f.
      * @param value - A number or another Vector2f to multiply with.
      * @returns This vector after performing the multiplication.
      */
@@ -7909,13 +9611,18 @@ declare namespace APJS {
     project(vec: Vector2f): this;
     /**
      * @description Reflects this vector across the plane defined by the normal `vec` in place.
+     * `vec` must be a unit normal for a geometrically correct reflection; it is not
+     * normalized automatically.
+     *
      * @param vec - The normal vector defining the reflection plane.
      * @returns This vector after reflection.
      */
     reflect(vec: Vector2f): this;
     /**
      * @description Replaces each component with its reciprocal in place.
-     * @returns This vector with inverted x and y values.
+     * If `x` or `y` is `0`, the corresponding result becomes `Infinity` (or
+     * `-Infinity` for `-0`); no exception is thrown.
+     * @returns `this` after inversion.
      */
     inverse(): this;
     /**
@@ -7965,13 +9672,13 @@ declare namespace APJS {
    * @class Vector3f
    * A three-dimensional vector.
    *
-   * Most instance math methods mutate this vector and return `this` for chaining.
-   * Use {@link clone} first when you need to preserve the original value.
+   * Most instance math methods (`add`, `subtract`, `multiply`, `divide`,
+   * `multiplyScalar`, `divideScalar`, `negate`, `normalize`, `cross`, `set`, etc.)
+   * modify this vector in place and return `this` for chaining. To compute a derived
+   * value without mutating the source, {@link clone} first.
    *
    * @example
-   * let zero_p = new Vector3f();
-   * let custom_p = new Vector3f(88.8, 88.8, 88.8);
-   * let offset = custom_p.clone().subtract(new Vector3f(8, 8, 8));
+   * transform.localPosition = transform.localPosition.clone().add(delta);
    */
   class Vector3f {
     /**
@@ -8009,6 +9716,8 @@ declare namespace APJS {
     sqrMagnitude(): number;
     /**
      * @description Determines if this vector is equal to the specified vector.
+     * Comparison is strict and component-wise: `x`, `y`, and `z` must all match exactly.
+     * This method does not apply any floating-point tolerance.
      * @param other - The vector to compare with.
      * @returns A boolean indicating whether the vectors are equal.
      */
@@ -8028,14 +9737,20 @@ declare namespace APJS {
     set(x: number, y: number, z: number): this;
     /**
      * @description Returns the angle in radians between the current vector and another specified vector.
+     * The returned angle is in the closed range `[0, Math.PI]`.
+     * If either vector has zero length, this method returns `Math.PI / 2` as the fallback value.
      * @param other - The target vector to calculate the angle against.
      * @returns The angle in radians between the two vectors.
      */
     angleTo(other: Vector3f): number;
     /**
-     * @description Clamps the length of this vector to the specified `length` and returns this vector.
-     * @param length - The length to which the vector's length should be clamped.
-     * @returns This vector with its length clamped to the specified value.
+     * @description Clamps the length of this vector to `length` in place.
+     * If the current length exceeds `length`, the vector is scaled down to `length`.
+     * Zero-length vectors are left unchanged. A `length` of `0`, `NaN`, or another
+     * falsy value falls back to `1`. Negative values are not rejected
+     * and will flip the direction.
+     * @param length - The maximum length to clamp the vector to.
+     * @returns `this` after clamping.
      */
     clampLength(length: number): this;
     /**
@@ -8057,9 +9772,11 @@ declare namespace APJS {
      */
     distance(other: Vector3f): number;
     /**
-     * @description Divides this vector in place by `value`.
-     * @param value - The divisor, which can be either a Vector3f or a number.
-     * @returns This vector after division.
+     * @description Divides this vector by `value` component-wise (or by a scalar) in place.
+     * Dividing by `0` produces `Infinity`, `-Infinity`, or `NaN` per component;
+     * no exception is thrown.
+     * @param value - The divisor (Vector3f for component-wise, or number for scalar).
+     * @returns `this` after division.
      */
     divide(value: number | Vector3f): this;
     /**
@@ -8096,13 +9813,18 @@ declare namespace APJS {
      */
     project(other: Vector3f): this;
     /**
-     * @description Projects the current vector onto the plane defined by the given normal vector.
+     * @description Projects this vector onto the plane defined by `normal` in place.
+     * `normal` is normalized internally; it does not need to be a unit vector.
+     * If `normal` has zero length, normalization yields `(0, 0, 0)` and this vector
+     * is left unchanged.
      * @param normal - The normal vector of the plane to project onto.
      * @returns This vector after being projected onto the specified plane.
      */
     projectOnPlane(normal: Vector3f): this;
     /**
      * @description Reflects this vector across the plane defined by the normal `normal` in place.
+     * `normal` must be a unit normal for a geometrically correct reflection; it is not
+     * normalized automatically.
      * @param normal - The normal vector defining the reflection plane.
      * @returns This vector after reflection.
      */
@@ -8121,7 +9843,9 @@ declare namespace APJS {
     subtract(other: Vector3f): this;
     /**
      * @description Replaces each component with its reciprocal in place.
-     * @returns This vector with inverted x, y, and z values.
+     * If `x`, `y`, or `z` is `0`, the corresponding result becomes `Infinity`
+     * (or `-Infinity` for `-0`); no exception is thrown.
+     * @returns `this` after inversion.
      */
     inverse(): this;
     /**
@@ -8164,13 +9888,13 @@ declare namespace APJS {
    * @class Vector4f
    * A four-dimensional vector.
    *
-   * Most instance math methods mutate this vector and return `this` for chaining.
-   * Use {@link clone} first when you need to preserve the original value.
+   * Most instance math methods (`add`, `subtract`, `multiply`, `divide`,
+   * `multiplyScalar`, `divideScalar`, `negate`, `normalize`, `set`, etc.)
+   * modify this vector in place and return `this` for chaining. To compute a derived
+   * value without mutating the source, {@link clone} first.
    *
    * @example
-   * let zero_p = new Vector4f();
-   * let custom_p = new Vector4f(88.8, 88.8, 88.8, 88.8);
-   * let offset = custom_p.clone().subtract(new Vector4f(8, 8, 8, 8));
+   * const dimmed = color.clone().multiplyScalar(0.5);
    */
   class Vector4f {
     /**
@@ -8245,9 +9969,13 @@ declare namespace APJS {
      */
     subtract(other: Vector4f): this;
     /**
-     * @description Clamps the length of this vector to the specified `length` and returns this vector.
-     * @param length - The length to which the vector's length should be clamped.
-     * @returns This vector with its length clamped to the specified value.
+     * @description Clamps the length of this vector to `length` in place.
+     * If the current length exceeds `length`, the vector is scaled down to `length`.
+     * Zero-length vectors are left unchanged. A `length` of `0`, `NaN`, or another
+     * falsy value falls back to `1`. Negative values are not rejected
+     * and will flip the direction.
+     * @param length - The maximum length to clamp the vector to.
+     * @returns `this` after clamping.
      */
     clampLength(length: number): this;
     /**
@@ -8264,9 +9992,11 @@ declare namespace APJS {
      */
     distance(other: Vector4f): number;
     /**
-     * @description Divides this vector in place by `other` component-wise.
+     * @description Divides this vector by `other` component-wise in place.
+     * Dividing by `0` produces `Infinity`, `-Infinity`, or `NaN` per component;
+     * no exception is thrown.
      * @param other - The vector to divide by.
-     * @returns This vector after division.
+     * @returns `this` after division.
      */
     divide(other: Vector4f): this;
     /**
@@ -8277,6 +10007,8 @@ declare namespace APJS {
     dot(other: Vector4f): number;
     /**
      * @description Determines if this Vector4f is equal to another Vector4f.
+     * Comparison is strict and component-wise: `x`, `y`, `z`, and `w` must all match exactly.
+     * This method does not apply any floating-point tolerance.
      * @param other - The Vector4f to compare with.
      * @returns True if the two vectors are equal, false otherwise.
      */
@@ -8303,7 +10035,9 @@ declare namespace APJS {
     normalize(): this;
     /**
      * @description Replaces each component with its reciprocal in place.
-     * @returns This vector with inverted components.
+     * If any component is `0`, the corresponding result becomes `Infinity`
+     * (or `-Infinity` for `-0`); no exception is thrown.
+     * @returns `this` after inversion.
      */
     inverse(): this;
     /**
@@ -8327,6 +10061,8 @@ declare namespace APJS {
     static compareApproximately(vec1: Vector4f, vec2: Vector4f, dist: number): boolean;
     /**
      * @description Linearly interpolates between the two vectors 'vecA' and 'vecB' by the factor 't'.
+     * `t` is not clamped in this helper. Values outside `[0, 1]` therefore extrapolate beyond
+     * `vecA` and `vecB` instead of being limited to the segment between them.
      * @param vecA - The starting vector.
      * @param vecB - The ending vector.
      * @param t - The interpolation factor, typically ranging from 0 to 1.
@@ -8350,7 +10086,9 @@ declare namespace APJS {
   }
   /**
    * @class VertexAttributeDesc
-   * @description Describes the attributes of a vertex in a mesh.
+   * @description Describes one vertex-attribute entry in a mesh-creation request.
+   * All three fields are optional and only take effect when set. Typically set `attribute` together
+   * with the matching `name`.
    * @example
    * ```ts
    * let desc = new VertexAttributeDesc();
@@ -8360,16 +10098,20 @@ declare namespace APJS {
    */
   class VertexAttributeDesc {
     /**
-     * @description The vertex attribute type.
+     * @description The semantic slot of this vertex attribute. Optional; defaults to `undefined`,
+     * in which case the entry contributes no semantic.
      */
     attribute?: VertexAttributeType;
     /**
-     * @description The name of the vertex attribute.
-     * This should match the attribute name expected by the shader or mesh consumer.
+     * @description The attribute name. Optional; defaults to `undefined`, and is not required
+     * when the semantic slot is identified by {@link attribute}. When used, set it together
+     * with {@link attribute}.
      */
     name?: string;
     /**
-     * @description The number of components of the attribute.
+     * @description Number of components for this attribute. Valid values are 1–4, mapping to a
+     * scalar, Vector2, Vector3 and Vector4 respectively; other values are ignored. Optional;
+     * defaults to `undefined`.
      */
     componentCount?: number;
   }
@@ -8450,11 +10192,19 @@ declare namespace APJS {
    * `stop()` supports two modes: `StopEmitting` (stop emitting, keep existing particles) and
    * `StopEmittingAndClear` (stop and clear all particles immediately). Use `play()` / `pause()` /
    * `stop()` / `reset()` for lifecycle control.
+   * APJS also tracks a wrapper-side `isEmitting` flag in addition to native `isPlaying`, exposes the
+   * current profile through {@link asset}, forwards `setStartSeed()` directly to the native VFX
+   * system seed setter, and can optionally mirror native alive-particle counts into a fresh JS
+   * array through {@link aliveParticleCounts}.
    */
   class VisualEffect extends Component {
     protected constructor();
     /**
      * @description The VFX profile asset used by this effect.
+     * The getter wraps the current native `profile` reference, and may be `null` when no
+     * profile is assigned. The setter accepts `null` to detach the current profile.
+     * Setting this property only swaps the native profile reference in this wrapper layer; it does
+     * not automatically call `reset()`, `play()`, or rebuild exposed-slot caches.
      */
     get asset(): VisualEffectAsset;
     set asset(value: VisualEffectAsset);
@@ -8477,12 +10227,19 @@ declare namespace APJS {
      */
     stop(behavior?: VFXStopBehavior): void;
     /**
-     * @description Set the random seed for the VFX simulation.
+     * @description Sets the random seed for the VFX simulation.
+     * No range validation is performed.
+     * The new seed is used by subsequent simulation updates.
+     * Calling this method does not automatically `reset()` or `play()` the effect.
      * @param seed Random seed value
      */
     setStartSeed(seed: number): void;
     /**
      * @description Reset the visual effect to its initial state.
+     * Clears particle data and {@link aliveParticleCounts}.
+     * Does not change whether the effect is currently playing.
+     * Does not restore the random seed to its default value.
+     * Does not modify the wrapper-side `isEmitting` flag by itself.
      */
     reset(): void;
     /**
@@ -8523,10 +10280,19 @@ declare namespace APJS {
     get isEmitting(): boolean;
     /**
      * @description Current alive particle counts for each system in the effect.
+     * Each getter call copies the current native counts into a new JS array.
+     * The order matches the native particle-system order used by the effect.
+     * Counts are refreshed during effect updates only while {@link enableAliveParticleCount} is `true`.
+     * When tracking is disabled, the last available counts remain unchanged until tracking is enabled
+     * again or the effect is {@link reset}.
      */
     get aliveParticleCounts(): number[];
     /**
      * @description Enable or disable tracking of alive particle counts.
+     * Disabled by default.
+     * When enabled, native effect updates perform extra work to rebuild {@link aliveParticleCounts}.
+     * When disabled, {@link aliveParticleCounts} stops refreshing and keeps its last available
+     * values; before any counts are collected, or after {@link reset}, reading it returns an empty array.
      */
     get enableAliveParticleCount(): boolean;
     set enableAliveParticleCount(value: boolean);
@@ -8537,6 +10303,10 @@ declare namespace APJS {
    * It stores graph structure, point caches, attribute maps,
    * and simulation settings (such as instancing and prewarm).
    * Used as the asset backing a VisualEffect component.
+   * Runtime key-based getters/setters such as {@link hasBoolKey}, {@link getFloat}, or
+   * {@link setVector} discover legal keys by scanning each {@link contextBlocks} entry's
+   * `exposeProperties` maps. Those APIs edit the profile resource itself; a {@link VisualEffect}
+   * component consumes the current profile through its {@link VisualEffect.asset} reference.
    */
   class VisualEffectAsset extends AObject {
     protected constructor();
@@ -8557,6 +10327,8 @@ declare namespace APJS {
     /**
      * @description Sets a named boolean value on the VFX Profile.
      * The key must match an exposed boolean property name from the VFX profile.
+     * If multiple context blocks expose the same key, this method updates every matching block.
+     * If no matching exposed boolean key exists, this method does nothing.
      * @param name - The name of the boolean property.
      * @param value - The boolean value to set.
      * @example
@@ -8576,9 +10348,20 @@ declare namespace APJS {
     setBool(name: string, value: boolean): void;
     /**
      * @description Checks if the VFX profile has an integer key.
-     * The key can be either an exposed integer property name or a supported derived spawn key such as `burstcount_<index>`, `spawnratemin_<index>`, or `spawnratemax_<index>`.
-     * @param name - The key to check for in the integer map.
-     * @returns A boolean indicating whether the key exists in the VFX Profile.
+     *
+     * Two kinds of keys are accepted:
+     * - **Exposed integer property names** declared on a {@link VisualEffectAsset.contextBlocks} entry's
+     *   `exposeProperties` (the names you author/expose in the VFX graph). Names must match exactly
+     *   (case-sensitive). When multiple context blocks expose the same name, returns `true` if any block contains it.
+     * - **Derived spawn keys** of the form `burstcount_<index>`, `spawnratemin_<index>`,
+     *   or `spawnratemax_<index>`, where `<index>` is the zero-based position in
+     *   {@link VisualEffectAsset.contextBlocks} (i.e. `contextBlocks[<index>]`). The prefix
+     *   is matched case-insensitively. Returns `true` when `<index>` is a valid block index.
+     *
+     * To discover available exposed names, inspect the VFX graph's exposed properties in the editor
+     * or iterate {@link VisualEffectAsset.contextBlocks}.
+     * @param name - The integer key to check.
+     * @returns `true` if the key matches an exposed int property or a supported derived spawn key.
      */
     hasIntKey(name: string): boolean;
     /**
@@ -8591,6 +10374,12 @@ declare namespace APJS {
     /**
      * @description Sets a named integer value to VFX Profile.
      * The key can be either an exposed integer property name or a supported derived spawn key such as `burstcount_<index>`, `spawnratemin_<index>`, or `spawnratemax_<index>`.
+     * For derived spawn keys, APJS writes the underlying float spawn parameters directly:
+     * `burstcount_<index>` becomes `spawnRateMin = value - 0.0001` and
+     * `spawnRateMax = value + 0.0001`; `spawnratemin/max_<index>` write the corresponding
+     * float field as-is.
+     * For exposed integer keys, APJS forwards the authored `number` directly and does not clamp,
+     * round, or validate it in this wrapper layer. If no key matches, this method does nothing.
      * @param name - The name of the integer property.
      * @param value - The integer value to set.
      * @example
@@ -8627,12 +10416,22 @@ declare namespace APJS {
     hasFloatKey(name: string): boolean;
     /**
      * @description Gets a named float value from VFX Profile.
+     * Returns `undefined` when `name` is empty, no matching exposed/derived float key exists, or
+     * a supported derived key cannot be resolved from the required underlying properties.
+     * For `burstdelay_<index>`, APJS only returns a number when `delayMin` and `delayMax` differ
+     * by less than `0.0003`; otherwise it returns `undefined`.
      * @param name - The name of the float property.
      * @returns The value of the float property or undefined.
      */
     getFloat(name: string): number | undefined;
     /**
      * @description Sets a named float value to VFX Profile.
+     * Supports both exposed float keys and derived spawn keys.
+     * For `spawnrate_<index>`, APJS rewrites several underlying float properties together:
+     * `originalSpawnRate`, `spawnRateMin`, `spawnRateMax`, `delayMin`, and `delayMax`.
+     * For `burstdelay_<index>`, `delaymin_<index>`, and `delaymax_<index>`, APJS writes the
+     * corresponding delay fields directly. The wrapper does not clamp or validate `value`; if no
+     * key matches, this method does nothing.
      * @param name - The name of the float property.
      * @param value - The float value to set.
      * @example
@@ -8652,10 +10451,17 @@ declare namespace APJS {
     setFloat(name: string, value: number): void;
     /**
      * @description Checks if the VFX profile has a texture key.
-     * Texture keys must match exposed texture property names from the VFX graph/profile exactly.
-     * If multiple context blocks expose the same key, this method returns true when any matching block contains it.
+     *
+     * Texture keys must match the **exposed texture property names** declared on a
+     * {@link VisualEffectAsset.contextBlocks} entry's `exposeProperties.texmap` (the names
+     * you expose in the VFX graph). Matching is exact and case-sensitive. If multiple
+     * context blocks expose the same key, this method returns `true` whenever any matching
+     * block contains it.
+     *
+     * To discover available texture key names, inspect the VFX graph's exposed texture
+     * properties in the editor, or iterate {@link VisualEffectAsset.contextBlocks} at runtime.
      * @param name - The texture key to check.
-     * @returns A boolean indicating whether the property exists in the VFX Profile.
+     * @returns `true` if any context block exposes a texture under this name.
      */
     hasTextureKey(name: string): boolean;
     /**
@@ -8689,25 +10495,48 @@ declare namespace APJS {
     setTexture(name: string, value: Texture): void;
     /**
      * @description Checks if the VFX profile has a vector key.
-     * Vector keys must match exposed vector property names from the VFX graph/profile exactly.
-     * This method checks vec2, vec3, and vec4-backed exposed properties.
+     *
+     * Vector keys must match the **exposed vector property names** declared on a
+     * {@link VisualEffectAsset.contextBlocks} entry's `exposeProperties` (the names you
+     * expose in the VFX graph). The check covers vec2, vec3, and vec4 backed exposed
+     * properties, so a vector key found here may resolve to a `Vector2f`, `Vector3f`,
+     * or `Vector4f` value at read time. Matching is exact and case-sensitive. The
+     * dimension is decided by which underlying map (`vec2map`, `vec3map`, or
+     * `vec4map`) holds the entry; see {@link VisualEffectAsset.getVector} for the
+     * exact return-type rules.
+     *
+     * To discover available vector key names, inspect the VFX graph's exposed
+     * properties in the editor, or iterate {@link VisualEffectAsset.contextBlocks}
+     * at runtime.
      * @param name - The vector key to check.
-     * @returns A boolean indicating whether the property exists in the VFX Profile.
+     * @returns `true` if any context block exposes a vec2/vec3/vec4 property under this name.
      */
     hasVectorKey(name: string): boolean;
     /**
      * @description Gets a named vector value from VFX Profile.
      * Vector keys must match exposed vector property names from the VFX graph/profile exactly.
-     * Returns Vector2f for vec2 keys. For vec4-backed keys whose name starts with `Vector3f_`, this method trims the stored vec4 value to a Vector3f; other vec4-backed keys return Vector4f.
+     * Returns Vector2f for vec2 keys.
+     * This wrapper currently reads vec2-backed keys from `vec2map` and vec4-backed keys from
+     * `vec4map`. Although {@link hasVectorKey} also checks `vec3map`, this getter does not have a
+     * dedicated vec3 branch in the current implementation.
+     * For vec4-backed keys whose name starts with `Vector3f_`, this method trims the stored vec4 value to a Vector3f.
+     * Other vec4-backed keys return Vector4f.
      * @param name - The name of the vector property.
-     * @returns The value of the vector property or null.
+     * @returns The value of the vector property, or `null` when no matching exposed vector key exists.
      */
     getVector(name: string): Vector2f | Vector3f | Vector4f | null;
     /**
      * @description Sets a named vector value to VFX Profile.
      * Vector keys must match exposed vector property names from the VFX graph/profile exactly.
-     * For vec2-backed keys, pass Vector2f. For vec4-backed keys, pass Vector4f, or pass Vector3f only for keys that use the `Vector3f_` naming convention and are stored internally as vec4.
+     * For vec2-backed keys, pass Vector2f.
+     * For vec4-backed keys, pass Vector4f, or pass Vector3f only for keys that use the `Vector3f_` naming convention and are stored internally as vec4.
+     * This wrapper currently writes only `vec2map` and `vec4map` entries; it does not have a
+     * dedicated `vec3map` write path in the current implementation.
+     * When a Vector3f is written to a matching vec4-backed key, APJS stores it as `(x, y, z, 0)`.
      * If multiple context blocks expose the same key, this method updates every matching block.
+     * If the passed vector type does not match the key's backing dimension (for example, a
+     * Vector3f/Vector4f for a vec2 key, or a Vector2f for a vec4 key), the value is silently
+     * ignored for that block and nothing is written.
      * @param name - The name of the vector property.
      * @param value - The vector value to set.
      * @example
@@ -8729,16 +10558,28 @@ declare namespace APJS {
     setVector(name: string, value: Vector2f | Vector3f | Vector4f): void;
     /**
      * @description Checks if the VFX profile has a color key.
-     * Color keys are exposed color properties stored in the profile's vec4-backed property map and must match exactly.
+     *
+     * Color keys are stored in the same vec4-backed `exposeProperties.vec4map` as
+     * Vector4 keys, so a color key is essentially an exposed vec4 property authored
+     * as a color in the VFX graph. Matching is exact and case-sensitive; if multiple
+     * context blocks expose the same name, returns `true` if any block contains it.
+     * Because color keys share the namespace with `Vector4f` keys, the same name will
+     * also be reported by {@link VisualEffectAsset.hasVectorKey}; pick the lookup that
+     * matches the value type you want to read with {@link VisualEffectAsset.getColor}
+     * or {@link VisualEffectAsset.getVector}.
+     *
+     * To discover available color key names, inspect the VFX graph's exposed color
+     * properties in the editor, or iterate {@link VisualEffectAsset.contextBlocks}
+     * at runtime.
      * @param name - The color key to check.
-     * @returns A boolean indicating whether the property exists in the VFX Profile.
+     * @returns `true` if any context block exposes a vec4-backed color property under this name.
      */
     hasColorKey(name: string): boolean;
     /**
      * @description Gets a named color value from VFX Profile.
      * Color keys are exposed color properties stored in the profile's vec4-backed property map and must match exactly.
      * @param name - The name of the color property.
-     * @returns The value of the color property, or `null` when no matching exposed color key exists.
+     * @returns The value of the color property, or `null` when no matching exposed color key exists or no vec4 value is currently available.
      */
     getColor(name: string): Color | null;
     /**
@@ -8771,6 +10612,8 @@ declare namespace APJS {
    *
    * Returns a value from 0 (complete silence) to 1 (loudest sound in the audio stream).
    * Useful for driving animations or transformations that respond to audio loudness.
+   * Build it through {@link VolumeDetectorBuilder}. Until the detector is enabled and the extractor
+   * has produced at least one frame result, {@link getResult} returns `-1`.
    *
    * @example
    * onInit() {
@@ -8789,6 +10632,8 @@ declare namespace APJS {
     protected constructor();
     /**
      * @description Gets the current volume detection result.
+     * Returns `-1` when the detector is disabled, when no frame result is available yet, or when
+     * the current frame result has no values.
      * @returns A normalized volume value in the range [0, 1], or -1 when no result is available.
      */
     getResult(): number;
@@ -8796,6 +10641,8 @@ declare namespace APJS {
   /**
    * @class VolumeDetectorBuilder
    * @description A builder for volume detector to set the source of the detector and build the detector.
+   * Stores the source configuration provided by {@link setDetectorSource} and creates a new
+   * {@link VolumeDetector} when {@link build} is called.
    * @example
    * onInit() {
    *     const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.Volume);
@@ -8808,6 +10655,8 @@ declare namespace APJS {
     /**
      * @description Set the source of the detector.
      * @param type - The type of audio source. Default is None. When the type is ExternalFile, the audioComponent must be provided.
+     * APJS only stores these parameters in the builder at this step; the actual detector is not
+     * created until {@link build} is called.
      * @param audioComponent - The audio component which plays the external audio file.
      * @example
      * audioDetectorBuilder

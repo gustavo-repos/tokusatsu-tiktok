@@ -3,6 +3,7 @@ export const PPU = 32
 export var jumpPressed = false  
 export var leftPressed = false
 export var rightPressed = false
+export var resetPressed = false
 export var platforms: any
 export var solids: any
 export var grounds: any
@@ -98,6 +99,7 @@ export class Game extends APJS.BasicScriptComponent {
   buttonActionRect: any  
   buttonLeftRect: any
   buttonRightRect: any
+  buttonResetRect: any
   ground1: any
   // tabletop: any
   rightWall: any
@@ -105,6 +107,7 @@ export class Game extends APJS.BasicScriptComponent {
   jumpTouchId: any
   leftTouchId: any
   rightTouchId: any
+  resetButtonId: any
   // sofaSeat: any
   platform1: any
   platform2: any
@@ -126,7 +129,38 @@ export class Game extends APJS.BasicScriptComponent {
     const outputTouchPhase = touchInfo.phase
     const outputTouchId = touchInfo.touchId
     this.lastTouchPos = touchInfo.position
-    
+
+    const isInsideReset = this.checkPointInRect(this.screenTouchToUnits(this.lastTouchPos), this.buttonResetRect)
+    if (isInsideReset && 
+    outputTouchPhase == 0) {
+      resetPressed = true
+      this.resetButtonId = outputTouchId
+    }
+    if (isInsideReset && 
+    outputTouchPhase == 1) {
+      resetPressed = true
+      this.resetButtonId = outputTouchId
+    }
+    if (!isInsideReset && 
+    resetPressed && 
+    outputTouchPhase == 1 && 
+    outputTouchId == this.resetButtonId) {
+      resetPressed = false
+    }
+    if (resetPressed && 
+      outputTouchPhase == 2 && 
+      outputTouchId == this.resetButtonId) {
+      resetPressed = false
+      this.resetButtonId = -1
+    }
+    if (
+    outputTouchPhase == 3 && 
+    resetPressed && 
+    outputTouchId == this.resetButtonId) {
+      resetPressed = false
+      this.resetButtonId = -1
+    }
+
     const isInsideAction = this.checkPointInRect(this.screenTouchToUnits(this.lastTouchPos), this.buttonActionRect)
     if (isInsideAction && 
     outputTouchPhase == 0) {
@@ -223,6 +257,7 @@ export class Game extends APJS.BasicScriptComponent {
     this.buttonActionRect = getElementRect(this.getSceneObject().scene.findSceneObject('buttonAction'), 0)
     this.buttonLeftRect = getElementRect(this.getSceneObject().scene.findSceneObject('buttonLeft'), 0)
     this.buttonRightRect = getElementRect(this.getSceneObject().scene.findSceneObject('buttonRight'), 0)
+    this.buttonResetRect = getElementRect(this.getSceneObject().scene.findSceneObject('buttonReset'), 0)
     this.ground1 = this.getSceneObject().scene.findSceneObject('ground1')
     this.rightWall = this.getSceneObject().scene.findSceneObject('rightWall')
     this.leftWall = this.getSceneObject().scene.findSceneObject('leftWall')
@@ -244,12 +279,22 @@ export class Game extends APJS.BasicScriptComponent {
     deltaTime = Math.min(deltaTime, 0.25)
     this.accumulator += deltaTime
 
+    if (resetPressed) {
+      time = 35
+      substate = 3
+      this.accumulator = 0
+      isTimeRunning = false
+      conect.name = 'conect'
+      //this.onStart()
+    }
+
     if (deltaTime > 0.2) {
       leftPressed = false
       rightPressed = false
     }
 
     while (this.accumulator >= fixedTime) {
+
       if (isTimeRunning && time >= 0) {
         time -= fixedTime
         conect.name = Math.round(time).toString()

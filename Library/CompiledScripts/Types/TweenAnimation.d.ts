@@ -28,7 +28,9 @@ declare namespace APJS {
    * and `tweenAnimation`. **All animation config lives on the subclass returned by
    * `tweenAnimation` — NOT on Tween itself.**
    *
-   * Changing `tweenType` recreates the internal object — previous config is lost.
+   * Changing `tweenType` recreates the internal object; previous config on the old subtype is lost.
+   * `TweenType.None` keeps the base placeholder `TweenAnimation`, which exposes no concrete tween
+   * behavior until a real subtype is selected.
    * Pattern: get Tween → set tweenType → get tweenAnimation → cast → configure.
    * Do NOT `getComponent('TweenXxx')` on subclasses directly.
    *
@@ -54,6 +56,12 @@ declare namespace APJS {
        * - Material → `TweenMaterial` (startColor, endColor, startVector2...)
        * All inherit `duration`, `delay`, `playMode`, `easingFunction`, `easingType`,
        * `object`, `targetType`, `motionType`, `start/pause/resume/stop` from TweenAnimation.
+       *
+       * When `tweenType` is `None`, this returns a base `TweenAnimation` placeholder that
+       * only exposes the shared properties above and performs no actual tween until a
+       * concrete subtype is selected. Always cast to the subclass matching the current
+       * `tweenType`: casting to a non-matching subclass does not convert the object — the
+       * mismatched subclass-specific properties read their default values and have no effect.
        */
     get tweenAnimation(): TweenAnimation;
   
@@ -203,13 +211,17 @@ declare namespace APJS {
    * TweenTransformFollow, or TweenMaterial) based on `tweenType`.
    * Provides common properties: `duration`, `delay`, `playMode`, `easingFunction`,
    * `easingType`, `object`, `targetType`, `motionType`, and playback methods.
+   * The default base instance uses `TweenType.None`, so it mainly acts as a placeholder until a
+   * concrete tween subtype is selected on the owning {@link Tween} component.
    */
   class TweenAnimation extends ScriptCustomObject {
     protected constructor();
   
     /**
-       * @description Delay in seconds before the animation starts after calling `start()`.
-       */
+     * @description Delay in seconds before the animation starts after calling `start()`.
+     * Defaults to 0 (no delay). Changing it at runtime takes effect the next time the
+     * animation is (re)started.
+     */
     get delay(): number;
   
     set delay(value: number);
@@ -222,20 +234,22 @@ declare namespace APJS {
     set duration(value: number);
   
     /**
-       * @description Easing curve shape.
-       * Combine with `easingType`. Non-Linear auto-defaults
-       * easingType to Out if it was None.
-       */
+     * @description Easing curve shape.
+     * Combine with `easingType`. Non-Linear auto-defaults
+     * easingType to Out if it was None.
+     * `GeneratePow` uses a custom power exponent (default 4) configured in the editor;
+     * a larger exponent produces a sharper curve. It is not parameterized through this API.
+     */
     get easingFunction(): TweenEasingFunction;
   
     set easingFunction(value: TweenEasingFunction);
   
     /**
-       * @description Easing direction:
-       * `None` (only valid with Linear), `In` (slow start),
-       * `Out` (fast start), `InOut` (both).
-       * Setting None on non-Linear is rejected.
-       */
+     * @description Easing direction:
+     * `None` (only valid with Linear), `In` (slow start),
+     * `Out` (fast start), `InOut` (both).
+     * Setting None on non-Linear is rejected.
+     */
     get easingType(): TweenEasingType;
   
     set easingType(value: TweenEasingType);
@@ -250,49 +264,58 @@ declare namespace APJS {
     set motionType(value: TweenMotionType);
   
     /**
-       * @description Target SceneObject to animate. Set to `null` to clear target.
-       */
+     * @description Target SceneObject to animate. Set to `null` to clear target.
+     */
     get object(): SceneObject | null;
   
     set object(value: SceneObject | null);
   
     /**
-       * @description Loop behavior:
-       * `Loop` (continuous), `LoopOnce` (play once),
-       * `PingPong` (forward+reverse continuous),
-       * `PingPongOnce` (forward+reverse once).
-       */
+     * @description Loop behavior:
+     * `Loop` (continuous), `LoopOnce` (play once),
+     * `PingPong` (forward+reverse continuous),
+     * `PingPongOnce` (forward+reverse once).
+     */
     get playMode(): TweenPlayMode;
   
     set playMode(value: TweenPlayMode);
   
     /**
-       * @description Property to animate.
-       * Transform/Path/Follow: `Position`/`Rotation`/`Scale`.
-       * Material: `AlbedoColor`/`EmissionColor`/`UV`.
-       */
+     * @description Property to animate.
+     * Transform/Path/Follow: `Position`/`Rotation`/`Scale`.
+     * Material: `AlbedoColor`/`EmissionColor`/`UV`.
+     * In Transform/Path/Follow subclasses only `Position`/`Rotation`/`Scale` are accepted;
+     * any other value (including the Material types) is silently ignored and the current
+     * value is kept.
+     */
     get targetType(): TweenTargetType;
   
     set targetType(value: TweenTargetType);
   
     /**
-       * @description Pause the tween animation. Call `resume()` to continue from the paused position.
-       */
+     * @description Pause the tween animation. Call `resume()` to continue from the paused position.
+     * Safe to call when not yet started or already paused (idempotent): the paused state is set
+     * and no error is raised.
+     */
     pause(): void;
   
     /**
-       * @description Resume the tween animation from a paused state.
-       */
+     * @description Resume the tween animation from a paused state.
+     * No-op if the animation is not currently paused.
+     */
     resume(): void;
   
     /**
-       * @description Start tween animation from initial state.
-       */
+     * @description Start tween animation from initial state. Requires `object` to be set,
+     * otherwise the call is ignored. If the animation is already playing or paused,
+     * calling it again has no effect (it does not restart); use `stop()` first to replay
+     * from the beginning.
+     */
     start(): void;
   
     /**
-       * @description Stop the tween animation and keep the current state.
-       */
+     * @description Stop the tween animation and keep the current state.
+     */
     stop(): void;
   }
   
@@ -408,14 +431,17 @@ declare namespace APJS {
     protected constructor();
   
     /**
-       * @description End number (2D Rotation).
+       * @description End number (2D Rotation). Used in FromTo and To modes.
+       * Angle in degrees about the 2D screen plane.
        */
     get endNumber(): number;
   
     set endNumber(value: number);
   
     /**
-       * @description End Vector2 (2D Position/Scale).
+       * @description End Vector2 (2D Position/Scale). Used in FromTo and To modes.
+       * In the object's local 2D space: anchored position for Position, scale factors for Scale.
+       * Not used for Rotation (use `endNumber`).
        */
     get endVector2(): Vector2f;
   
@@ -423,6 +449,8 @@ declare namespace APJS {
   
     /**
        * @description End Vector3 (3D, all targets). Used in FromTo and To modes.
+       * Interpreted in the object's local space: local position for Position, local Euler
+       * angles in degrees for Rotation, and local scale factors for Scale.
        */
     get endVector3(): Vector3f;
   
@@ -430,6 +458,7 @@ declare namespace APJS {
   
     /**
        * @description Offset number (2D Rotation). Only used when motionType=Offset.
+       * Angle offset in degrees, added to the object's current 2D rotation at start.
        */
     get offsetNumber(): number;
   
@@ -437,6 +466,8 @@ declare namespace APJS {
   
     /**
        * @description Offset Vector2 (2D Position/Scale). Only used when motionType=Offset.
+       * Added to the object's current local 2D value at start: anchored position for Position,
+       * scale factors for Scale.
        */
     get offsetVector2(): Vector2f;
   
@@ -444,6 +475,8 @@ declare namespace APJS {
   
     /**
        * @description Offset Vector3 (3D). Only used when motionType=Offset.
+       * Added to the object's current local value at start: local position for Position,
+       * local Euler angles in degrees for Rotation, local scale factors for Scale.
        */
     get offsetVector3(): Vector3f;
   
@@ -451,6 +484,7 @@ declare namespace APJS {
   
     /**
        * @description Start number (2D Rotation). Only used when motionType=FromTo.
+       * Angle in degrees about the 2D screen plane.
        */
     get startNumber(): number;
   
@@ -458,6 +492,8 @@ declare namespace APJS {
   
     /**
        * @description Start Vector2 (2D Position/Scale). Only used when motionType=FromTo.
+       * In the object's local 2D space: anchored position for Position, scale factors for Scale.
+       * Not used for Rotation (use `startNumber`).
        */
     get startVector2(): Vector2f;
   
@@ -465,6 +501,8 @@ declare namespace APJS {
   
     /**
        * @description Start Vector3 (3D, all targets). Only used when motionType=FromTo.
+       * Interpreted in the object's local space: local position for Position, local Euler
+       * angles in degrees for Rotation, and local scale factors for Scale.
        */
     get startVector3(): Vector3f;
   
@@ -478,22 +516,30 @@ declare namespace APJS {
     get targetType(): TweenTargetType;
   
     /**
-       * @description Pause tween animation.
+       * @description Pauses the tween animation. While paused, `update` is skipped and
+       * the transform holds its current value.  A subsequent {@link resume} continues
+       * from the paused point. Calling pause again while already paused is a safe no-op.
+       * Starting a new animation while paused immediately re-pauses it.
        */
     pause(): void;
   
     /**
-       * @description Resume tween animation.
+       * @description Resumes a paused tween animation. No-op if the animation is not
+       * paused.
        */
     resume(): void;
   
     /**
-       * @description Start tween animation from initial state.
+       * @description Starts the tween animation. Requires `object` (target transform)
+       * to be set; otherwise the call is ignored. If the animation is already playing
+       * or paused, this call has no effect.
        */
     start(): void;
   
     /**
-       * @description Stop the tween animation and keep the current state.
+       * @description Stops the tween animation. The transform stays at its current
+       * interpolated value. The paused state and tween objects are preserved; calling
+       * {@link start} afterward replays the animation from the beginning.
        */
     stop(): void;
   }
@@ -533,6 +579,7 @@ declare namespace APJS {
   
     /**
        * @description Start number value. Used for 2D Rotation only. Only used when `motionType` is `FromTo`.
+       * Angle in degrees about the 2D screen plane.
        */
     get startNumber(): number;
   
@@ -540,6 +587,8 @@ declare namespace APJS {
   
     /**
        * @description Start Vector2 value. Used for 2D targets (Position, Scale). Only used when `motionType` is `FromTo`.
+       * In the object's local 2D space: anchored position for Position, scale factors for Scale.
+       * In `To` mode the object's current value is used as the start instead.
        */
     get startVector2(): Vector2f;
   
@@ -548,6 +597,8 @@ declare namespace APJS {
     /**
        * @description Start Vector3 value. Used for 3D targets. Only used when `motionType` is `FromTo`;
        * in `To` mode the current transform value is used as the start.
+       * Interpreted in the object's local space: local position for Position, local Euler angles
+       * in degrees for Rotation, local scale factors for Scale.
        */
     get startVector3(): Vector3f;
   
@@ -566,16 +617,21 @@ declare namespace APJS {
   
     /**
        * @description Pauses the tween animation for the follow target transform.
+       * Sets the paused state and holds the current value. Safe to call before start or
+       * when already paused (no-op). Call `resume()` to continue following.
        */
     pause(): void;
   
     /**
        * @description Resumes the tween animation for the follow target transform.
+       * No-op if the animation is not currently paused.
        */
     resume(): void;
   
     /**
-       * @description Start tween animation from initial state.
+       * @description Start tween animation from initial state. Requires `object` and a
+       * dimension-matching `followTarget` to be set, otherwise the call is ignored.
+       * If already playing or paused, calling it again has no effect; use `stop()` first to replay.
        */
     start(): void;
   
@@ -665,6 +721,8 @@ declare namespace APJS {
     /**
        * @description Waypoints for 2D Rotation path animation (used when the target object has a `ScreenTransform` with `targetType=Rotation`).
        * Requires ≥ 2 values. The path is closed: the last value automatically loops back to the first.
+       * Each value is an angle in degrees about the 2D screen plane.
+       * If fewer than 2 values are provided, no animation is created.
        */
     get pointsPathNumber(): number[];
   
@@ -673,6 +731,8 @@ declare namespace APJS {
     /**
        * @description Waypoints for 2D Position or Scale path animation (used when the target object has a `ScreenTransform`).
        * Requires ≥ 2 points. The path is closed: the last point automatically loops back to the first.
+       * Values are in the object's local 2D space (anchored position for Position, scale factors for Scale).
+       * If fewer than 2 points are provided, no animation is created.
        */
     get pointsPathVector2(): Vector2f[];
   
@@ -681,6 +741,9 @@ declare namespace APJS {
     /**
        * @description Waypoints for 3D path animation (used when the target object has a 3D `Transform`).
        * Requires ≥ 2 points. The path is closed: the last point automatically loops back to the first.
+       * Coordinates are in the object's local space (local position for Position; the same array is
+       * reused as local Euler angles in degrees for Rotation and as local scale factors for Scale).
+       * If fewer than 2 points are provided, no animation is created.
        */
     get pointsPathVector3(): Vector3f[];
   

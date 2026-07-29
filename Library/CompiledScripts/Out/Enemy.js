@@ -67,6 +67,16 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
     onUpdate(deltaTime) {
         deltaTime = Math.min(deltaTime, 0.25);
         this.accumulator += deltaTime;
+        if (Game_1.resetPressed) {
+            this.accumulator = 0;
+            this.spawnTimer = 0;
+            this.spawnInterval = 3;
+            this.playerAttackingTimer = 0;
+            this.playerAttackingInterval = 0.4;
+            this.enemyWasHit = false;
+            this.points = 0;
+            this.scenePoints.name = 'points';
+        }
         while (this.accumulator >= Game_1.fixedTime) {
             this.spawnTimer += Game_1.fixedTime;
             if (Game_1.substate == 4)
@@ -78,10 +88,6 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
             if (!this.enemyWasHit) {
                 this.enemyScene.name = 'enemy';
             }
-            // if (this.startTimer && time >= 0) {
-            //   time -= fixedTime
-            //   conect.name = Math.round(time).toString()
-            // }
             if (!this.enemyWasHit && (0, Game_1.checkRectOverlap)(this.getPlayerRect(), (0, Game_1.getElementRect)(this.getSceneObject(), 0))) {
                 (0, Game_1.startTimer)();
                 (0, Game_1.setSubstate)(4);
@@ -91,6 +97,16 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
                 this.enemyScene.name = 'hit';
                 this.enemyWasHit = true;
                 this.spawnTimer = 1;
+                this.spawnInterval = 3;
+            }
+            if (this.spawnTimer >= this.spawnInterval) {
+                //console.log(this.spawnTimer, this.spawnInterval)
+                // this.currentSpot = this.getRandomItem(this.spawnSpots)
+                this.setCurrentSpot(this.spawnSpots);
+                (0, Game_1.teleport)(this.getSceneObject(), this.currentSpot[0], this.currentSpot[1]);
+                this.spawnTimer = 0;
+                this.enemyScene.name = 'respawn';
+                this.enemyWasHit = false;
                 if (this.points == 4) {
                     this.spawnInterval = 2.5;
                 }
@@ -109,14 +125,6 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
                 else if (this.points == 25) {
                     // adiocionar o KO!
                 }
-            }
-            if (this.spawnTimer >= this.spawnInterval) {
-                // this.currentSpot = this.getRandomItem(this.spawnSpots)
-                this.setCurrentSpot(this.spawnSpots);
-                (0, Game_1.teleport)(this.getSceneObject(), this.currentSpot[0], this.currentSpot[1]);
-                this.spawnTimer = 0;
-                this.enemyScene.name = 'respawn';
-                this.enemyWasHit = false;
             }
             this.accumulator -= Game_1.fixedTime;
         }

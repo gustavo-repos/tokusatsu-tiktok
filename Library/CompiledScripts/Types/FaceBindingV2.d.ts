@@ -57,6 +57,9 @@ declare namespace APJS {
    * @class FaceBinding
    * Class responsible for binding 3D objects to specific points on a detected face.
    * <br/> Supports various anchor points like eyes, forehead, mouth, etc.
+   * <br/> The binding updates every frame against the configured target {@link faceID}. When the
+   * selected face is unavailable or fitting data is not ready, the component stops applying the
+   * binding and hides or disables the affected renderers until valid data returns.
    * @example
    * ```typescript
    * // Using preset anchor
@@ -81,12 +84,14 @@ declare namespace APJS {
     customAnchorPoint: Vector3f;
   
     /**
-     * @description Gets the face ID of the face binding, must be between 1 and 5.
+     * @description Gets the configured target face ID of this binding, in the range `1` to `5`.
+     * This returns the selected slot, not the current face-tracking status.
      */
     get faceID(): number;
   
     /**
-     * @description Sets the face ID for the face binding, must be between 1 and 5.
+     * @description Sets the target face ID for the face binding, in the range `1` to `5`.
+     * Values outside that range are rejected, log an error, and leave the previous target unchanged.
      */
     set faceID(value: number);
   }

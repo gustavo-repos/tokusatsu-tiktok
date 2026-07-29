@@ -9,9 +9,9 @@ function customNode() {
   };
 }
 exports.customNode = customNode;
-function component() {
+function component(optionalParams) {
   return target => {
-    APJS.UserScriptComponentUtils.registerUserComponent(target);
+    APJS.UserScriptComponentUtils.registerUserComponent(target, optionalParams);
   };
 }
 exports.component = component;

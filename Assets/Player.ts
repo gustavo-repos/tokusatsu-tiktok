@@ -1,5 +1,6 @@
 import { gravity, move, jumpPressed, checkRectOverlap, getElementRect, snapY, PPU, platforms, 
-leftPressed, rightPressed, fixedTime, conect, time, substate, setSubstate } from "Game"
+leftPressed, rightPressed, fixedTime, conect, time, substate, setSubstate, 
+resetPressed} from "Game"
 
 /* 
 state:
@@ -79,9 +80,6 @@ export class Player extends APJS.BasicScriptComponent {
   setPlayerSprite () {
     if (substate == this.lastSubstate) return
 
-    // this.playerSprite.name = this.substate.toString()
-    // console.log(this.substate.toString())
-
     switch (substate) {
       case 0:
         this.playerSprite.name = 'idle'
@@ -117,6 +115,18 @@ export class Player extends APJS.BasicScriptComponent {
 
     deltaTime = Math.min(deltaTime, 0.25)
     this.accumulator += deltaTime
+
+    if (resetPressed) {
+      this.state = 1
+      this.lastSubstate = 3
+      this.previousState = 1
+      this.jumpCycle = false
+      this.jumpPower = 30
+      this.velocityY = 0
+      this.frameCounter = 0
+      this.accumulator = 0
+      //this.onStart()
+    }
 
     while (this.accumulator >= fixedTime) {
       this.substateHandle()

@@ -51,7 +51,10 @@ declare namespace APJS {
   
   /**
    * @class SegmentationTexture
-   * @description Represents a provider specifically designed for the SegmentationTexture asset.
+   * @description Screen-texture provider that renders a segmentation mask.
+   * The active mask algorithm is selected by {@link segmentationType}; related secondary settings
+   * such as {@link trackIndex} and {@link petType} only have effect for compatible segmentation
+   * types. The default internal type is `-1`, which means no active segmentation mode.
    */
   class SegmentationTextureProvider extends ScreenTextureProvider implements IDynamicAsset {
     protected constructor();
@@ -66,7 +69,9 @@ declare namespace APJS {
   
     /**
      * @description Selected pet categories used when `segmentationType` is `SegmentationType.Pet`.
-     * Values must come from the `PetType` enum (`PetType.Cat = 1`, `PetType.Dog = 2`)
+     * Values must come from the {@link PetType} enum.
+     * Reading or writing this property when `segmentationType` is not `Pet` will take effect
+     * when `segmentationType` is set to `Pet`.
      * `null`, `undefined`, or an empty array on set are silently ignored.
      */
     get petType(): PetType[];
@@ -76,8 +81,8 @@ declare namespace APJS {
     /**
      * @description The segmentation type used by this provider.
      * Determines which segmentation algorithm is active and which secondary properties (`trackIndex`, `petType`) apply.
-     * No validation is applied on set; the default internal value is `-1` (no active type).
-     * Setting an out-of-enum value leaves the provider in an inactive state.
+     * Default is `-1` (not a valid {@link SegmentationType} value), meaning no segmentation is active.
+     * Setting a value outside the enum leaves the provider inactive.
      */
     get segmentationType(): SegmentationType;
   

@@ -88,8 +88,6 @@ let Player = class Player extends APJS.BasicScriptComponent {
     setPlayerSprite() {
         if (Game_1.substate == this.lastSubstate)
             return;
-        // this.playerSprite.name = this.substate.toString()
-        // console.log(this.substate.toString())
         switch (Game_1.substate) {
             case 0:
                 this.playerSprite.name = 'idle';
@@ -124,6 +122,17 @@ let Player = class Player extends APJS.BasicScriptComponent {
         }
         deltaTime = Math.min(deltaTime, 0.25);
         this.accumulator += deltaTime;
+        if (Game_1.resetPressed) {
+            this.state = 1;
+            this.lastSubstate = 3;
+            this.previousState = 1;
+            this.jumpCycle = false;
+            this.jumpPower = 30;
+            this.velocityY = 0;
+            this.frameCounter = 0;
+            this.accumulator = 0;
+            //this.onStart()
+        }
         while (this.accumulator >= Game_1.fixedTime) {
             this.substateHandle();
             this.setPlayerSprite();

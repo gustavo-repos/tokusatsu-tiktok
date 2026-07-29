@@ -1,4 +1,4 @@
-import { leftPressed, rightPressed, move, PPU, checkRectOverlap, solids, getElementRect, snapX, fixedTime, time } from "Game"
+import { leftPressed, rightPressed, move, PPU, checkRectOverlap, solids, getElementRect, snapX, fixedTime, time, resetPressed } from "Game"
 
 @component()
 export class Level extends APJS.BasicScriptComponent {
@@ -32,6 +32,12 @@ export class Level extends APJS.BasicScriptComponent {
 
     deltaTime = Math.min(deltaTime, 0.25)
     this.accumulator += deltaTime
+
+    if (resetPressed) {
+      this.frameCounter = 0
+      this.accumulator = 0
+    }
+    
 
     while (this.accumulator >= fixedTime) {
       this.velocityX = 12 * fixedTime

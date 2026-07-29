@@ -76,6 +76,578 @@
   },
   {
     "guid": {
+      "a": "e0e16981-aaaa-54b6-505c-24487ac1c8c7",
+      "b": ""
+    },
+    "objGuid": "Guid(5651192235560387100, 2445160299406150292)",
+    "extraType": "Entity",
+    "name": "Face Shape",
+    "version": "0.1.0",
+    "rttiType": "SceneObject",
+    "expanded": true,
+    "type": "none",
+    "isAnimatorBound": false,
+    "modelGUID": "",
+    "createdEffectNodeKey": "",
+    "disableSelection": false,
+    "hiddenInHierarchy": false,
+    "editorTags": []
+  },
+  {
+    "guid": {
+      "a": "9df90aea-f50b-a6c6-346d-c33672931343",
+      "b": ""
+    },
+    "objGuid": "Guid(5360342389352398776, 5309507727638364047)",
+    "extraType": "Transform",
+    "name": "Transform",
+    "version": "0.1.0",
+    "rttiType": "Transform",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.0.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "eulerAngle": [
+      0,
+      0,
+      0
+    ],
+    "linkage": 0
+  },
+  {
+    "guid": {
+      "a": "d8033162-4df4-4e70-646a-4eb03a50bacc",
+      "b": ""
+    },
+    "objGuid": "Guid(4766690065586551189, 15390205395793574794)",
+    "extraType": "EffectNode",
+    "name": "Render Group",
+    "version": "0.1.0",
+    "rttiType": "EffectNode",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.0.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "type": 4,
+    "sortMethod": 1,
+    "enableInputTexture": false,
+    "inputTexture": "00000000-0000-0000-0000-00000000004b"
+  },
+  {
+    "guid": {
+      "a": "847d356d-809b-9bf0-c08c-30a67639a10d",
+      "b": ""
+    },
+    "objGuid": "Guid(4845819091516854661, 15955027324300213378)",
+    "extraType": "Entity",
+    "name": "Face Shape Camera",
+    "version": "0.1.0",
+    "rttiType": "SceneObject",
+    "expanded": true,
+    "type": "none",
+    "isAnimatorBound": false,
+    "modelGUID": "",
+    "createdEffectNodeKey": "effect_node_face_shape",
+    "disableSelection": false,
+    "hiddenInHierarchy": false,
+    "editorTags": []
+  },
+  {
+    "guid": {
+      "a": "6543838a-188e-363d-ccb5-34fbcbaf453e",
+      "b": ""
+    },
+    "objGuid": "Guid(5454085575237182134, 5733867298004021171)",
+    "extraType": "Transform",
+    "name": "Transform",
+    "version": "0.1.0",
+    "rttiType": "Transform",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.0.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "eulerAngle": [
+      0,
+      0,
+      0
+    ],
+    "linkage": 0
+  },
+  {
+    "guid": {
+      "a": "0d552531-b717-17f3-2b3f-cbbcf83b1efd",
+      "b": ""
+    },
+    "objGuid": "Guid(5675721354640189726, 1647291952203150248)",
+    "extraType": "Camera",
+    "name": "Camera",
+    "version": "0.4.0",
+    "rttiType": "Camera",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.0.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "enableMask": false,
+    "maskTexture": "00000000-0000-0000-0000-000000000802",
+    "physicalFovy": false,
+    "fov": 60,
+    "cachedInputTexture": "00000000-0000-0000-0000-00000000004b",
+    "isAnimatorBound": false
+  },
+  {
+    "guid": {
+      "a": "8eb714df-c8d6-80c4-17ad-4a6505132368",
+      "b": ""
+    },
+    "objGuid": "Guid(5603578429506500372, 11112225935169887666)",
+    "extraType": "Entity",
+    "name": "Cat Face Stretch",
+    "version": "0.1.0",
+    "rttiType": "SceneObject",
+    "expanded": true,
+    "type": "none",
+    "isAnimatorBound": false,
+    "modelGUID": "",
+    "createdEffectNodeKey": "effect_node_face_shape",
+    "disableSelection": false,
+    "hiddenInHierarchy": false,
+    "editorTags": []
+  },
+  {
+    "guid": {
+      "a": "a1ee9a1e-5225-1821-a701-eb6268ba2971",
+      "b": ""
+    },
+    "objGuid": "Guid(5399634980264452322, 4375311309135110319)",
+    "extraType": "Transform",
+    "name": "Transform",
+    "version": "0.1.0",
+    "rttiType": "Transform",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.0.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "eulerAngle": [
+      0,
+      0,
+      0
+    ],
+    "linkage": 0
+  },
+  {
+    "guid": {
+      "a": "f6eb304d-db77-f2e3-bbf6-be9e1c68a278",
+      "b": ""
+    },
+    "objGuid": "Guid(4762427721488822567, 14462645470636573060)",
+    "extraType": "MeshRenderer",
+    "name": "Mesh Renderer",
+    "version": "0.2.0",
+    "rttiType": "MeshRenderer",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.0.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": false
+    },
+    "visualization": false,
+    "shadowMode": 0
+  },
+  {
+    "guid": {
+      "a": "0fd862bb-334b-fa92-9e33-44b156e9c804",
+      "b": ""
+    },
+    "objGuid": "Guid(5242036583634899903, 12894406053659659916)",
+    "extraType": "CatFaceStretchComponent",
+    "name": "Cat Face Stretch",
+    "version": "0.1.0",
+    "rttiType": "FaceStretchComponent",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.0.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "Intensity": 50,
+    "externalIntensity": 1,
+    "symmetry": true,
+    "allPointsLocked": false,
+    "lockedPointIndexes": [
+      0,
+      8,
+      16,
+      21,
+      29,
+      36,
+      42,
+      44,
+      48,
+      52,
+      60,
+      64,
+      72
+    ],
+    "stretchPoints": [
+      {
+        "x": 91,
+        "y": 494
+      },
+      {
+        "x": 73,
+        "y": 563
+      },
+      {
+        "x": 70,
+        "y": 638
+      },
+      {
+        "x": 88,
+        "y": 711
+      },
+      {
+        "x": 124,
+        "y": 775
+      },
+      {
+        "x": 173,
+        "y": 824
+      },
+      {
+        "x": 233,
+        "y": 888
+      },
+      {
+        "x": 295,
+        "y": 909
+      },
+      {
+        "x": 360,
+        "y": 916
+      },
+      {
+        "x": 425,
+        "y": 909
+      },
+      {
+        "x": 487,
+        "y": 888
+      },
+      {
+        "x": 547,
+        "y": 824
+      },
+      {
+        "x": 596,
+        "y": 775
+      },
+      {
+        "x": 632,
+        "y": 711
+      },
+      {
+        "x": 650,
+        "y": 638
+      },
+      {
+        "x": 647,
+        "y": 563
+      },
+      {
+        "x": 629,
+        "y": 494
+      },
+      {
+        "x": 580,
+        "y": 443
+      },
+      {
+        "x": 524,
+        "y": 396
+      },
+      {
+        "x": 473,
+        "y": 360
+      },
+      {
+        "x": 421,
+        "y": 351
+      },
+      {
+        "x": 360,
+        "y": 349
+      },
+      {
+        "x": 299,
+        "y": 351
+      },
+      {
+        "x": 247,
+        "y": 360
+      },
+      {
+        "x": 196,
+        "y": 396
+      },
+      {
+        "x": 140,
+        "y": 443
+      },
+      {
+        "x": 74,
+        "y": 414
+      },
+      {
+        "x": 61,
+        "y": 334
+      },
+      {
+        "x": 56,
+        "y": 255
+      },
+      {
+        "x": 77,
+        "y": 182
+      },
+      {
+        "x": 122,
+        "y": 201
+      },
+      {
+        "x": 170,
+        "y": 248
+      },
+      {
+        "x": 214,
+        "y": 303
+      },
+      {
+        "x": 506,
+        "y": 303
+      },
+      {
+        "x": 550,
+        "y": 248
+      },
+      {
+        "x": 598,
+        "y": 201
+      },
+      {
+        "x": 643,
+        "y": 182
+      },
+      {
+        "x": 664,
+        "y": 255
+      },
+      {
+        "x": 659,
+        "y": 334
+      },
+      {
+        "x": 646,
+        "y": 414
+      },
+      {
+        "x": 360,
+        "y": 422
+      },
+      {
+        "x": 360,
+        "y": 494
+      },
+      {
+        "x": 360,
+        "y": 566
+      },
+      {
+        "x": 360,
+        "y": 622
+      },
+      {
+        "x": 360,
+        "y": 675
+      },
+      {
+        "x": 310,
+        "y": 696
+      },
+      {
+        "x": 410,
+        "y": 696
+      },
+      {
+        "x": 360,
+        "y": 746
+      },
+      {
+        "x": 360,
+        "y": 772
+      },
+      {
+        "x": 346,
+        "y": 786
+      },
+      {
+        "x": 330,
+        "y": 795
+      },
+      {
+        "x": 314,
+        "y": 804
+      },
+      {
+        "x": 298,
+        "y": 813
+      },
+      {
+        "x": 314,
+        "y": 812
+      },
+      {
+        "x": 330,
+        "y": 806
+      },
+      {
+        "x": 346,
+        "y": 802
+      },
+      {
+        "x": 360,
+        "y": 789
+      },
+      {
+        "x": 374,
+        "y": 802
+      },
+      {
+        "x": 390,
+        "y": 806
+      },
+      {
+        "x": 406,
+        "y": 812
+      },
+      {
+        "x": 422,
+        "y": 813
+      },
+      {
+        "x": 406,
+        "y": 804
+      },
+      {
+        "x": 390,
+        "y": 795
+      },
+      {
+        "x": 374,
+        "y": 786
+      },
+      {
+        "x": 180,
+        "y": 540
+      },
+      {
+        "x": 210,
+        "y": 516
+      },
+      {
+        "x": 249,
+        "y": 519
+      },
+      {
+        "x": 278,
+        "y": 550
+      },
+      {
+        "x": 280,
+        "y": 592
+      },
+      {
+        "x": 250,
+        "y": 613
+      },
+      {
+        "x": 209,
+        "y": 610
+      },
+      {
+        "x": 180,
+        "y": 581
+      },
+      {
+        "x": 540,
+        "y": 540
+      },
+      {
+        "x": 510,
+        "y": 516
+      },
+      {
+        "x": 471,
+        "y": 519
+      },
+      {
+        "x": 442,
+        "y": 550
+      },
+      {
+        "x": 440,
+        "y": 592
+      },
+      {
+        "x": 470,
+        "y": 613
+      },
+      {
+        "x": 511,
+        "y": 610
+      },
+      {
+        "x": 540,
+        "y": 581
+      },
+      {
+        "x": 230,
+        "y": 564
+      },
+      {
+        "x": 490,
+        "y": 564
+      }
+    ]
+  },
+  {
+    "guid": {
+      "a": "5c459c11-605c-38cb-4dae-c7ff9e0bb7c0",
+      "b": ""
+    },
+    "objGuid": "Guid(5016242339353952799, 11847697419327206051)",
+    "extraType": "FaceStretchController",
+    "name": "FaceStretchController",
+    "version": "0.1.0",
+    "rttiType": "JSScriptComponent",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.0.0",
+    "extendedInfo": {
+      "isVisibleInInspector": false,
+      "expanded": true
+    }
+  },
+  {
+    "guid": {
       "a": "602a125f-adef-400a-1092-0fec2f5a3f83",
       "b": ""
     },
@@ -1247,6 +1819,75 @@
   },
   {
     "guid": {
+      "a": "29ce59e1-fc5e-bf3e-1a15-5281ea2215c2",
+      "b": ""
+    },
+    "objGuid": "Guid(5451151136402045008, 15772636521311639188)",
+    "extraType": "Entity",
+    "name": "buttonReset",
+    "version": "0.1.0",
+    "rttiType": "SceneObject",
+    "expanded": true,
+    "type": "none",
+    "isAnimatorBound": false,
+    "modelGUID": "",
+    "createdEffectNodeKey": "effect_node_2D_foreground",
+    "disableSelection": false,
+    "hiddenInHierarchy": false,
+    "editorTags": []
+  },
+  {
+    "guid": {
+      "a": "efb25136-6904-d4dd-ab7f-65df6072a055",
+      "b": ""
+    },
+    "objGuid": "Guid(5027656683655857728, 3078846365007901583)",
+    "extraType": "ScreenTransform",
+    "name": "Screen Transform",
+    "version": "0.1.0",
+    "rttiType": "ScreenTransform",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "horizontalConstraint": 2,
+    "verticalConstraint": 2,
+    "linkageScale": 0,
+    "linkageSize": 0
+  },
+  {
+    "guid": {
+      "a": "81e7557c-0714-1471-96e9-8bfd3b64d652",
+      "b": ""
+    },
+    "objGuid": "Guid(4958776096186339648, 16515489667721940159)",
+    "extraType": "Image",
+    "name": "Image",
+    "version": "0.1.0",
+    "rttiType": "Image",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "sharedMaterial": "00000000-0000-0000-0000-000000000132",
+    "segBlendMode": "Normal_v2",
+    "segRadius": 0.5,
+    "segSoftness": 0.5,
+    "blendMode": "Normal",
+    "drawMode": "Normal",
+    "filledType": 0,
+    "startPoint": 0,
+    "filledRange": 1,
+    "ellipseX": 1,
+    "ellipseY": 1,
+    "alphaNOPM": true
+  },
+  {
+    "guid": {
       "a": "649f9982-4cdd-c968-5771-d043ca33b277",
       "b": ""
     },
@@ -1255,7 +1896,7 @@
     "name": "player",
     "version": "0.1.0",
     "rttiType": "SceneObject",
-    "expanded": true,
+    "expanded": false,
     "type": "none",
     "isAnimatorBound": false,
     "modelGUID": "",
@@ -1495,6 +2136,8 @@
     "inAnimationDuration": 1,
     "loopAnimationDuration": 1,
     "outAnimationDuration": 1,
+    "userEditable": false,
+    "maxInputWords": 0,
     "templateId": ""
   },
   {
@@ -1602,6 +2245,146 @@
     "inAnimationDuration": 1,
     "loopAnimationDuration": 1,
     "outAnimationDuration": 1,
+    "userEditable": false,
+    "maxInputWords": 0,
+    "templateId": ""
+  },
+  {
+    "guid": {
+      "a": "c1991052-035a-c3c2-2b85-b417a6ff2694",
+      "b": ""
+    },
+    "objGuid": "Guid(5647130856212298110, 17860199670269414051)",
+    "extraType": "Entity",
+    "name": "2D Text (1)",
+    "version": "0.1.0",
+    "rttiType": "SceneObject",
+    "expanded": true,
+    "type": "none",
+    "isAnimatorBound": false,
+    "modelGUID": "",
+    "createdEffectNodeKey": "effect_node_2D_foreground",
+    "disableSelection": false,
+    "hiddenInHierarchy": false,
+    "editorTags": []
+  },
+  {
+    "guid": {
+      "a": "bac84a05-790e-85ed-bad7-a5b8cbfda49d",
+      "b": ""
+    },
+    "objGuid": "Guid(5351211254819297888, 10363705907576276667)",
+    "extraType": "ScreenTransform",
+    "name": "Screen Transform",
+    "version": "0.1.0",
+    "rttiType": "ScreenTransform",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.0.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "horizontalConstraint": 2,
+    "verticalConstraint": 2,
+    "linkageScale": 0,
+    "linkageSize": 0
+  },
+  {
+    "guid": {
+      "a": "d4bf06a4-00fa-5fef-2dc0-8733c43ba87c",
+      "b": ""
+    },
+    "objGuid": "Guid(5580037062203788724, 16550869268570618505)",
+    "extraType": "Text2D",
+    "name": "Text",
+    "version": "1.1.0",
+    "rttiType": "Text",
+    "editable": true,
+    "_lazyUpgrateVersion": "1.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "artTextNameDropdown": "00000000-0000-0000-0000-000000008000",
+    "boxDimension": 0,
+    "totalAnimationTime": 0,
+    "inAnimationAssetID": "",
+    "loopAnimationAssetID": "",
+    "outAnimationAssetID": "",
+    "inAnimationDuration": 1,
+    "loopAnimationDuration": 1,
+    "outAnimationDuration": 1,
+    "userEditable": false,
+    "maxInputWords": 0,
+    "templateId": ""
+  },
+  {
+    "guid": {
+      "a": "5f25aa41-c9b1-f0dc-724e-3e67a169e98d",
+      "b": ""
+    },
+    "objGuid": "Guid(5418281006514250348, 10129024691397664914)",
+    "extraType": "Entity",
+    "name": "2D Text",
+    "version": "0.1.0",
+    "rttiType": "SceneObject",
+    "expanded": true,
+    "type": "none",
+    "isAnimatorBound": false,
+    "modelGUID": "",
+    "createdEffectNodeKey": "effect_node_2D_foreground",
+    "disableSelection": false,
+    "hiddenInHierarchy": false,
+    "editorTags": []
+  },
+  {
+    "guid": {
+      "a": "2320a8a1-35bb-ab77-3bfa-25bbf845b675",
+      "b": ""
+    },
+    "objGuid": "Guid(4630468740779105738, 3950999620230792591)",
+    "extraType": "ScreenTransform",
+    "name": "Screen Transform",
+    "version": "0.1.0",
+    "rttiType": "ScreenTransform",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.0.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "horizontalConstraint": 2,
+    "verticalConstraint": 2,
+    "linkageScale": 0,
+    "linkageSize": 0
+  },
+  {
+    "guid": {
+      "a": "f94644b7-b490-6875-b257-fc58f1a9636f",
+      "b": ""
+    },
+    "objGuid": "Guid(4963216953027175917, 4438069404907536770)",
+    "extraType": "Text2D",
+    "name": "Text",
+    "version": "1.1.0",
+    "rttiType": "Text",
+    "editable": true,
+    "_lazyUpgrateVersion": "1.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "artTextNameDropdown": "00000000-0000-0000-0000-000000008000",
+    "boxDimension": 0,
+    "totalAnimationTime": 0,
+    "inAnimationAssetID": "",
+    "loopAnimationAssetID": "",
+    "outAnimationAssetID": "",
+    "inAnimationDuration": 1,
+    "loopAnimationDuration": 1,
+    "outAnimationDuration": 1,
+    "userEditable": false,
+    "maxInputWords": 0,
     "templateId": ""
   }
 ]

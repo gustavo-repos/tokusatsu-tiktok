@@ -47,6 +47,10 @@ let Level = class Level extends APJS.BasicScriptComponent {
         }
         deltaTime = Math.min(deltaTime, 0.25);
         this.accumulator += deltaTime;
+        if (Game_1.resetPressed) {
+            this.frameCounter = 0;
+            this.accumulator = 0;
+        }
         while (this.accumulator >= Game_1.fixedTime) {
             this.velocityX = 12 * Game_1.fixedTime;
             if (Game_1.leftPressed && Game_1.time > 0) {

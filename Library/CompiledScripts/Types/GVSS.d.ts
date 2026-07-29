@@ -1,49 +1,50 @@
 declare namespace APJS {
   /**
    * @class EffectUsageInfo
-   * @description Contains usage statistics for the current effect, including
-   *   aggregate user/post counts and per-user engagement metrics.
+   * @description Snapshot of the current effect's usage statistics.
+   * Fields default to `0` until usage data becomes available.
    */
   export class EffectUsageInfo {
     constructor();
     /**
-     * @description The total number of unique users who have used this effect.
+     * @description Total number of unique users who have used this effect.
+     * Read-only statistic; assigning to it has no effect on the underlying data.
+     * A non-negative integer, `0` until usage data is available.
      */
     public userCount: number;
     /**
-     * @description The total number of video posts created using this effect.
+     * @description Total number of posts published with this effect.
+     * Read-only statistic; assigning to it has no effect on the underlying data.
+     * A non-negative integer, `0` until usage data is available.
      */
     public postCount: number;
     /**
-     * @description The number of times the current user has used this effect.
+     * @description Total number of times the current user has used this effect (cumulative across days).
+     * Read-only statistic; assigning to it has no effect on the underlying data.
+     * A non-negative integer, `0` until usage data is available.
      */
     public userUsageCount: number;
     /**
-     * @description The number of distinct days the current user has used this effect.
+     * @description Number of distinct calendar days on which the current user has used this effect.
+     * Each day is counted at most once regardless of how many times it was used that day.
+     * Read-only statistic; assigning to it has no effect on the underlying data.
+     * A non-negative integer, `0` until usage data is available.
      */
     public userUsageDays: number;
     /**
-     * @description The number of consecutive days the current user has used this effect.
+     * @description Current consecutive-day usage streak for the current user, in days.
+     * The streak counts back from the most recent usage day; a day with no usage breaks the streak
+     * and resets the count. Read-only statistic; assigning to it has no effect on the underlying data.
+     * A non-negative integer, `0` until usage data is available.
      */
     public userConsecutiveUsageDays: number;
   }
 
   /**
    * @class CloudDataManager
-   * @description Manages persistent cloud data storage for user scripts.
-   *   Provides methods to save and load key-value data that is synchronized
-   *   to the cloud on mobile and persisted to disk in the editor.
-   *
-   *   The data structure is defined once at construction time via a schema object.
-   *   The schema keys determine which fields are persisted, and the schema values
-   *   serve as initial defaults. Only `number` and `string` values are supported.
-   *   The manager maintains an internal cache that is updated on each save/load,
-   *   so missing keys always resolve to the most recently known value rather than
-   *   the original default.
-   *
-   *   **Note:** The total serialized data size must not exceed **1 KB** due to
-   *   cloud storage server-side limits. A save will fail if the data exceeds
-   *   this limit.
+   * @description Manages schema-based cloud key-value data for user scripts.
+   * The constructor schema defines which keys are persisted and their initial defaults.
+   * Only `number` and `string` values are supported. Total saved data must stay within `1 KB`.
    *
    * @example
    * ```typescript
@@ -59,36 +60,28 @@ declare namespace APJS {
   export class CloudDataManager {
     /**
      * Creates a new CloudDataManager with a defined data schema.
-     * @param schema - An object whose keys define the persisted fields and
-     *   whose values provide the initial defaults. Only `number` and `string`
-     *   values are supported. Only keys present in this schema will be saved
-     *   and loaded. The total serialized data must not exceed 1 KB.
-     *   Example: `new CloudDataManager({ score: 0, level: 1, name: '' })`
+     * @param schema - Keys define the persisted fields and values provide the initial defaults.
+     * Only schema keys participate in future save/load operations.
      */
     constructor(schema: {[key: string]: number | string});
 
     /**
-     * Returns the current effect's usage statistics.
-     * The data is populated by the system after initialization; values may
-     * be zero if called before the cloud data has finished loading.
-     * @returns An {@link EffectUsageInfo} instance with the latest usage stats.
+     * @description Returns the latest effect usage statistics snapshot.
+     * Values may still be `0` if the usage data has not finished loading yet.
+     * @returns An {@link EffectUsageInfo} instance with the current usage counters.
      */
     public getEffectUsageInfo(): EffectUsageInfo;
 
     /**
-     * Saves data to cloud storage. Only keys defined in the constructor
-     * schema are persisted; any extra keys in `data` are ignored. For schema
-     * keys not present in `data`, the last cached value is used.
-     * The internal cache is updated with the provided values.
-     * Only `number` and `string` values are accepted. The total serialized
-     * data size must not exceed **1 KB**; the save will fail otherwise.
-     * @param data - An object containing the key-value pairs to save.
-     *   Keys must match the schema defined in the constructor.
-     *   Values must be of type `number` or `string`.
-     * @param onSuccess - Optional. Called when the data has been successfully
-     *   written to the storage cache (the system syncs it to cloud/disk automatically).
-     * @param onFailure - Optional. Called with an error message string if the
-     *   save fails (e.g. data exceeds 1 KB or contains invalid value types).
+     * @description Saves data for the keys declared in the constructor schema.
+     * Extra keys in `data` are ignored. Schema keys omitted from `data` keep their most recently loaded
+     * or saved value. The save fails if a provided value is not `number` or `string`, or if the serialized
+     * payload exceeds `1 KB`.
+     * @param data - Partial key-value data to save.
+     * @param onSuccess - Optional callback invoked synchronously after the data has been validated
+     * and written to the local cache. Cloud synchronization happens asynchronously afterwards and is
+     * not signaled by this callback.
+     * @param onFailure - Optional callback invoked with an error message when saving fails.
      */
     public saveData(
       data: {[key: string]: number | string},
@@ -97,17 +90,12 @@ declare namespace APJS {
     ): void;
 
     /**
-     * Loads data from cloud storage. Waits for the cloud data to be available
-     * (fetched from network on mobile, or read from disk in the editor), then
-     * returns an object matching the constructor schema structure.
-     * Stored values override cached values; keys not yet persisted retain
-     * their last known cached value. The internal cache is updated with
-     * the loaded values.
-     * @param onSuccess - Called with the loaded data object. The object
-     *   contains exactly the keys defined in the constructor schema, with
-     *   values of type `number` or `string`.
-     * @param onFailure - Optional. Called with an error message string if the
-     *   load fails (e.g. network failure or timeout).
+     * @description Loads cloud data for the constructor schema.
+     * The callback waits until data is available, then receives an object containing exactly the schema keys.
+     * Stored values override the current cached values; keys with no stored value keep their current default or
+     * last known value.
+     * @param onSuccess - Called with the loaded schema-shaped data object.
+     * @param onFailure - Optional callback invoked with an error message when loading fails.
      */
     public loadData(
       onSuccess: (data: {[key: string]: number | string}) => void,

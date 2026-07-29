@@ -22,10 +22,12 @@
  * ```
  */
 declare function customNode(): (target: BaseUserConstructor<BasicScriptNode>) => void;
+
 /**
  * Decorator that marks a class as a script component.
  * Script components can be attached to scene objects to add custom behavior.
  * This decorator should be applied to classes that extend APJS.BasicScriptComponent.
+ * @param options - Optional component registration metadata.
  * @returns Class decorator function
  *
  * @example
@@ -39,9 +41,15 @@ declare function customNode(): (target: BaseUserConstructor<BasicScriptNode>) =>
  *     // Movement logic here
  *   }
  * }
+ *
+ * @component({ disallowMultiple: true })
+ * export class SingletonController extends APJS.BasicScriptComponent {
+ * }
  * ```
  */
-declare function component<T extends typeof APJS.BasicScriptComponent>(): (target: T) => void;
+declare function component<T extends typeof APJS.BasicScriptComponent>(
+	options?: APJS.UserComponentOptionalParams
+): (target: T) => void;
 /**
  * Decorator that marks a property as an input port for custom nodes.
  * Input ports allow data to flow into the node from other nodes in a visual scripting graph.

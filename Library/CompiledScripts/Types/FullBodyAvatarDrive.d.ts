@@ -48,20 +48,27 @@ declare namespace APJS {
   
   /**
    * @class FullBodyAvatarDrive
-   * @description Represents a dynamic component specifically designed for the FullBodyAvatarDrive.
+   * @description Runtime component that drives a humanoid avatar skeleton from the body-tracking
+   * result in the current effect.
+   * Use {@link followBody} to choose whether the avatar root follows tracked body motion or only
+   * receives bone rotations. Use {@link getBone} to access configured bone scene objects.
    */
   class FullBodyAvatarDrive extends DynamicComponent {
     protected constructor();
   
     /**
-     * @description Indicates whether the robot should follow the body's movements.
+     * @description Whether the avatar follows tracked body motion. Default: `true`.
+     * When `true`, the pelvis moves to the tracked position and losing tracking hides
+     * the renderers. When `false`, the avatar stays in place; tracked rotations are
+     * applied relative to the avatar root's orientation, and losing tracking keeps renderers
+     * visible.
      */
     followBody: boolean;
   
     /**
      * @description Retrieves the scene object associated with a specified bone name.
      * @param boneName - The name of the bone to retrieve the scene object for.
-     * @returns The scene object associated with the specified bone, or null if not found.
+     * @returns The configured scene object for that bone, or `null` if the bone is not bound in this component.
      */
     getBone(boneName: FullBodyBoneName): SceneObject | null;
   }

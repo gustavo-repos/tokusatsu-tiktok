@@ -19,12 +19,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Game = exports.snapX = exports.snapY = exports.checkRectOverlap = exports.getElementRect = exports.teleport = exports.move = exports.addTime = exports.startTimer = exports.setSubstate = exports.substate = exports.time = exports.conect = exports.fixedTime = exports.grounds = exports.solids = exports.platforms = exports.rightPressed = exports.leftPressed = exports.jumpPressed = exports.PPU = exports.gravity = void 0;
+exports.Game = exports.snapX = exports.snapY = exports.checkRectOverlap = exports.getElementRect = exports.teleport = exports.move = exports.addTime = exports.startTimer = exports.setSubstate = exports.substate = exports.time = exports.conect = exports.fixedTime = exports.grounds = exports.solids = exports.platforms = exports.resetPressed = exports.rightPressed = exports.leftPressed = exports.jumpPressed = exports.PPU = exports.gravity = void 0;
 exports.gravity = -65;
 exports.PPU = 32;
 exports.jumpPressed = false;
 exports.leftPressed = false;
 exports.rightPressed = false;
+exports.resetPressed = false;
 exports.fixedTime = 0.02;
 var isTimeRunning = false;
 exports.time = 35;
@@ -118,6 +119,35 @@ let Game = class Game extends APJS.BasicScriptComponent {
             const outputTouchPhase = touchInfo.phase;
             const outputTouchId = touchInfo.touchId;
             this.lastTouchPos = touchInfo.position;
+            const isInsideReset = this.checkPointInRect(this.screenTouchToUnits(this.lastTouchPos), this.buttonResetRect);
+            if (isInsideReset &&
+                outputTouchPhase == 0) {
+                exports.resetPressed = true;
+                this.resetButtonId = outputTouchId;
+            }
+            if (isInsideReset &&
+                outputTouchPhase == 1) {
+                exports.resetPressed = true;
+                this.resetButtonId = outputTouchId;
+            }
+            if (!isInsideReset &&
+                exports.resetPressed &&
+                outputTouchPhase == 1 &&
+                outputTouchId == this.resetButtonId) {
+                exports.resetPressed = false;
+            }
+            if (exports.resetPressed &&
+                outputTouchPhase == 2 &&
+                outputTouchId == this.resetButtonId) {
+                exports.resetPressed = false;
+                this.resetButtonId = -1;
+            }
+            if (outputTouchPhase == 3 &&
+                exports.resetPressed &&
+                outputTouchId == this.resetButtonId) {
+                exports.resetPressed = false;
+                this.resetButtonId = -1;
+            }
             const isInsideAction = this.checkPointInRect(this.screenTouchToUnits(this.lastTouchPos), this.buttonActionRect);
             if (isInsideAction &&
                 outputTouchPhase == 0) {
@@ -219,6 +249,7 @@ let Game = class Game extends APJS.BasicScriptComponent {
         this.buttonActionRect = getElementRect(this.getSceneObject().scene.findSceneObject('buttonAction'), 0);
         this.buttonLeftRect = getElementRect(this.getSceneObject().scene.findSceneObject('buttonLeft'), 0);
         this.buttonRightRect = getElementRect(this.getSceneObject().scene.findSceneObject('buttonRight'), 0);
+        this.buttonResetRect = getElementRect(this.getSceneObject().scene.findSceneObject('buttonReset'), 0);
         this.ground1 = this.getSceneObject().scene.findSceneObject('ground1');
         this.rightWall = this.getSceneObject().scene.findSceneObject('rightWall');
         this.leftWall = this.getSceneObject().scene.findSceneObject('leftWall');
@@ -236,6 +267,14 @@ let Game = class Game extends APJS.BasicScriptComponent {
     onUpdate(deltaTime) {
         deltaTime = Math.min(deltaTime, 0.25);
         this.accumulator += deltaTime;
+        if (exports.resetPressed) {
+            exports.time = 35;
+            exports.substate = 3;
+            this.accumulator = 0;
+            isTimeRunning = false;
+            exports.conect.name = 'conect';
+            //this.onStart()
+        }
         if (deltaTime > 0.2) {
             exports.leftPressed = false;
             exports.rightPressed = false;

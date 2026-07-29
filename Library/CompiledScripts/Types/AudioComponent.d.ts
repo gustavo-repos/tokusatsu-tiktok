@@ -2,13 +2,17 @@ declare namespace APJS {
   /**
    * @class AudioComponent
    * @extends DynamicComponent
-   * @description Audio component. Component that plays back audio.
+   * @description Audio playback component for a scene object.
+   * Use {@link play}, {@link pause}, {@link resume}, and {@link stop} to control playback.
+   * The component tracks completion through {@link isFinished}; {@link duration} returns `0`
+   * when no playable runtime audio instance is available yet.
    * @apjs_protected_constructor
    */
   class AudioComponent extends DynamicComponent {
     protected constructor();
     /**
-     * @description The number of times the audio should loop.
+     * @description Number of completed play passes before the component stops itself.
+     * Default: `1`.
      */
     loopCount: number;
     /**
@@ -20,32 +24,36 @@ declare namespace APJS {
 
     /**
      * @readonly
-     * @description Gets the duration of the audio in seconds.
+     * @description Gets the audio duration in seconds.
+     * Returns `0` when no runtime audio player is available (e.g. design-time / before initialization).
      */
     get duration(): number;
 
     /**
      * @readonly
-     * @description Whether the audio has finished playing.
+     * @description Whether playback has finished by reaching the configured loop count.
+     * A manual {@link stop} does not set this flag; {@link play} clears it before restarting.
      */
     get isFinished(): boolean;
     /**
-     * @description Pause audio playback.
+     * @description Pauses playback. Takes effect only when a runtime audio player is available,
+     * and does not check the current playback state.
      */
     pause(): void;
   
     /**
-     * @description Start audio playback.
+     * @description Starts playback from the beginning, resetting the loop counter and clearing the
+     * finished state. Calling it again restarts from the beginning. Requires a runtime audio player.
      */
     play(): void;
   
     /**
-     * @description Resume audio playback.
+     * @description Resumes playback after a pause if the runtime audio player is available.
      */
     resume(): void;
   
     /**
-     * @description Stop audio playback.
+     * @description Stops playback immediately.
      */
     stop(): void;
   }
@@ -70,14 +78,18 @@ declare namespace APJS {
   }
 
   /**
-   * @class AudioDetectionModule
+   * @namespace AudioDetectionModule
    * @description The module for audio detection to get the builder for the specified audio detection type.
    */
   namespace AudioDetectionModule {
     /**
-     * @description Get the builder for the specified audio detection type. Should be called in the onInit method.
+     * @description Gets a builder for the specified audio detection type. Call this in `onInit()`.
+     * The returned builder is the concrete subclass for the requested type:
+     * `Pitch` → `PitchDetectorBuilder`, `Beat` → `BeatDetectorBuilder`, `Onset` → `OnsetDetectorBuilder`,
+     * `Spectrum` → `SpectrumDetectorBuilder`, `Volume` → `VolumeDetectorBuilder`,
+     * `SoundEvent` → `SoundEventDetectorBuilder`, `Keyword` → `KeywordDetectorBuilder`.
      * @param type The audio detection type.
-     * @returns The builder for the specified audio detection type.
+     * @returns The builder for the specified type, or `null` if `type` is not a valid {@link AudioDetectionType} value.
      * @example
      * onInit(): void {
      *    const audioDetectionBuilder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.SoundEvent);
@@ -100,7 +112,9 @@ declare namespace APJS {
   /**
    * @version UNKNOWN
    * @class KeywordDetector
-   * @description Keyword detector.
+   * @description Runtime detector that matches configured target keywords from the selected audio source.
+   * It emits {@link KeywordEventType.KeywordHit} when one or more configured keywords are detected in the current
+   * update, and {@link KeywordEventType.KeywordMiss} otherwise.
    * @apjs_protected_constructor
    * @example
    * onInit() {
@@ -145,18 +159,26 @@ declare namespace APJS {
   class KeywordDetector implements IAudioDetector {
     /**
      * @description Whether the detector is enabled.
+     * Default: `true`. When set to `false`, no keyword events are emitted.
+     * The change takes effect on the next update.
      */
     enabled: boolean;
     
     /**
-     * @description The target keywords.
+     * @description The keyword list monitored by this detector.
+     * Assigning a new array replaces the previous list and applies immediately.
+     * Keywords are used as provided; empty strings are ignored.
+     * An empty array clears all targets, so no keyword can match.
      * @example
      * this.keywordDetector.targetKeywords = ["start", "stop"];
      */
     targetKeywords: string[];
 
     /**
-     * @description The event emitter.
+     * @description Event emitter for keyword detection results.
+     * While {@link enabled} is `true`, each update emits one event:
+     * `KeywordHit` when one or more target keywords match, with the matched keywords in `event.args[0]` as `string[]`;
+     * otherwise `KeywordMiss`, which carries no arguments.
      * @example
      * this.keywordDetector.eventEmitter.on(APJS.KeywordEventType.KeywordHit, (e) => {
      *   const words = e.args[0];
@@ -169,7 +191,8 @@ declare namespace APJS {
   /**
    * @version UNKNOWN
    * @class KeywordDetectorBuilder
-   * @description Keyword detector builder.
+   * @description Builder for creating {@link KeywordDetector} instances.
+   * Configure the detector source before calling {@link build}.
    * @apjs_protected_constructor
    * @example
    * const builder = APJS.AudioDetectionModule.getOrCreateAudioDetectionBuilder(APJS.AudioDetectionType.Keyword) as APJS.KeywordDetectorBuilder;
@@ -178,7 +201,10 @@ declare namespace APJS {
    */
   class KeywordDetectorBuilder extends AudioDetectorBuilder<KeywordDetector> {
     /**
-     * @description Build the KeywordDetector. Note that the detector should be built in OnInit, otherwise it will return null.
+     * @description Builds a {@link KeywordDetector} using the builder's current source configuration.
+     * Call this in `onInit()`. Returns `null` when keyword detection is unavailable or the configured source
+     * cannot provide an extractor node. Each successful call returns a new detector instance; calling it
+     * repeatedly does not reuse a previously built detector.
      * @returns {KeywordDetector | null}
      * @example
      * const detector = builder.build();

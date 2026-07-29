@@ -5,31 +5,28 @@ declare namespace APJS {
    * Configure generation inputs such as `prompt`, style-related properties, and dynamic properties, then toggle `play` to submit or stop generation.
    *
    * @example
-   * ```typescript
-   * const provider = texture.getControl() as APJS.AIDrawTextureProvider;
+   * const provider = texture.getControl() as AIDrawTextureProvider;
    * provider.prompt = 'oil painting cat';
    * provider.play = true;
-   * ```
    */
-  class AIDrawTextureProvider extends RenderTextureProvider implements IDynamicAsset{
-    protected constructor();
+  class AIDrawTextureProvider extends AIDrawAlgoScriptBase implements IDynamicAsset {
+    /**
+     * @description Starts or stops AI texture generation.
+     * Set to `true` to submit or continue generation with the current prompt and configuration.
+     * Set to `false` to stop generation requests for this provider.
+     */
+    set play(play: boolean);
   
     /**
-     * @description get prompt.
-     */
-    get prompt(): string;
-    /**
-     * @description set prompt.
-     * @param {string} value - New prompt string to set to
-     */
-    set prompt(value: string);
-    /**
-     * @description play.
+     * @description Whether AI texture generation is currently enabled for this provider.
+     * `true` means generation has been requested and the provider should keep running with the current configuration.
      */
     get play(): boolean;
-    /**
-     * @description play.
-     */
-    set play(value: boolean);
+  
+    get prompt(): string;
+  
+    set prompt(value: string);
+  
+    constructor(tex: effect.Amaz.RenderTexture);
   }
 }
