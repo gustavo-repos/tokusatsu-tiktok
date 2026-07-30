@@ -1,18 +1,18 @@
 [
   {
     "guid": {
-      "a": "068d35bb-1e6b-435b-bc4e-fb2091a2a14a",
+      "a": "c9a0eabf-649b-9353-3c54-600d0043b295",
       "b": ""
     },
     "extraType": "ResItemPNGImage",
-    "name": "energybar",
+    "name": "cam",
     "version": "0.2.0",
     "rttiType": "Texture",
     "authorizationInfo": "",
     "extendedInfo": {
       "isVisibleInInspector": true,
       "hideInPanel": false,
-      "expandInPanel": true
+      "expandInPanel": false
     },
     "compressionType": 0,
     "compressQuality": 0,
@@ -26,7 +26,7 @@
     "wrapModeR": 0,
     "premultiplyAlpha": false,
     "objGuid": "",
-    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\energybar.png",
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\cam.png",
     "references": []
   }
 ]

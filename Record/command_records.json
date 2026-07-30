@@ -6,7 +6,7 @@
         "startTime": 1785348919347
       },
       "end": {
-        "endTime": 1785376302701
+        "endTime": 1785379213951
       }
     }
   },
@@ -28989,6 +28989,1539 @@
                 },
                 "newValue": {
                   "guid": "2def30e5-026b-a254-2dd2-4bb710c29fee"
+                }
+              }
+            ]
+          }
+        },
+        "subCommands": []
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "AddAsset",
+        "data": {
+          "input": {
+            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\energybar.png"
+          },
+          "output": [
+            {
+              "guid": {
+                "type": "Guid",
+                "data": "773e14e4-f804-0301-6360-84f687b6930b",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "energybar"
+              },
+              "type": {
+                "type": "String",
+                "data": "Texture2D",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\energybar (14)\\energybar.png",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "width": {
+                "type": "Number",
+                "data": 104
+              },
+              "height": {
+                "type": "Number",
+                "data": 32
+              },
+              "artifactFileSize": {
+                "type": "Number",
+                "data": 129
+              },
+              "assetType": {
+                "type": "String",
+                "data": "PNG"
+              },
+              "compressionType": {
+                "type": "Enum",
+                "data": "Automatic",
+                "options": [
+                  "Automatic",
+                  "Manual",
+                  "None"
+                ]
+              },
+              "compressQuality": {
+                "type": "Enum",
+                "data": "High",
+                "options": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "compressMaxResolution": {
+                "type": "Enum",
+                "data": "Size512",
+                "options": [
+                  "Size1024",
+                  "Size512",
+                  "Size256",
+                  "Size128"
+                ]
+              },
+              "enableMipmap": {
+                "type": "Boolean",
+                "data": false
+              },
+              "filterMin": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMag": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMipmap": {
+                "type": "Enum",
+                "data": "None",
+                "options": [
+                  "None",
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "wrapModeS": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeT": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeR": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "premultiplyAlpha": {
+                "type": "Boolean",
+                "data": false
+              }
+            }
+          ]
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "asset",
+            "sourceId": "none",
+            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/energybar.png",
+            "target": "commands.data.input.path"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "SetComponent",
+        "data": {
+          "input": {
+            "guid": "b4cf57ba-f9c4-12b7-9ea3-9b8c89689792",
+            "properties": [
+              {
+                "property": "texture",
+                "value": {
+                  "type": "Texture",
+                  "data": {
+                    "guid": "773e14e4-f804-0301-6360-84f687b6930b"
+                  }
+                }
+              }
+            ]
+          },
+          "output": {
+            "componentType": "Image",
+            "guid": "b4cf57ba-f9c4-12b7-9ea3-9b8c89689792",
+            "changes": [
+              {
+                "property": "texture",
+                "oldValue": {
+                  "guid": "64611ec7-4d13-b02c-390f-da3f276d245d"
+                },
+                "newValue": {
+                  "guid": "773e14e4-f804-0301-6360-84f687b6930b"
+                }
+              }
+            ]
+          }
+        },
+        "subCommands": []
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "AddAsset",
+        "data": {
+          "input": {
+            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\energybar.png"
+          },
+          "output": [
+            {
+              "guid": {
+                "type": "Guid",
+                "data": "fdb8f4bf-2391-4caf-17d0-bec4800020f4",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "energybar"
+              },
+              "type": {
+                "type": "String",
+                "data": "Texture2D",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\energybar (15)\\energybar.png",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "width": {
+                "type": "Number",
+                "data": 122
+              },
+              "height": {
+                "type": "Number",
+                "data": 32
+              },
+              "artifactFileSize": {
+                "type": "Number",
+                "data": 133
+              },
+              "assetType": {
+                "type": "String",
+                "data": "PNG"
+              },
+              "compressionType": {
+                "type": "Enum",
+                "data": "Automatic",
+                "options": [
+                  "Automatic",
+                  "Manual",
+                  "None"
+                ]
+              },
+              "compressQuality": {
+                "type": "Enum",
+                "data": "High",
+                "options": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "compressMaxResolution": {
+                "type": "Enum",
+                "data": "Size512",
+                "options": [
+                  "Size1024",
+                  "Size512",
+                  "Size256",
+                  "Size128"
+                ]
+              },
+              "enableMipmap": {
+                "type": "Boolean",
+                "data": false
+              },
+              "filterMin": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMag": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMipmap": {
+                "type": "Enum",
+                "data": "None",
+                "options": [
+                  "None",
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "wrapModeS": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeT": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeR": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "premultiplyAlpha": {
+                "type": "Boolean",
+                "data": false
+              }
+            }
+          ]
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "asset",
+            "sourceId": "none",
+            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/energybar.png",
+            "target": "commands.data.input.path"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "SetComponent",
+        "data": {
+          "input": {
+            "guid": "b4cf57ba-f9c4-12b7-9ea3-9b8c89689792",
+            "properties": [
+              {
+                "property": "texture",
+                "value": {
+                  "type": "Texture",
+                  "data": {
+                    "guid": "fdb8f4bf-2391-4caf-17d0-bec4800020f4"
+                  }
+                }
+              }
+            ]
+          },
+          "output": {
+            "componentType": "Image",
+            "guid": "b4cf57ba-f9c4-12b7-9ea3-9b8c89689792",
+            "changes": [
+              {
+                "property": "texture",
+                "oldValue": {
+                  "guid": "773e14e4-f804-0301-6360-84f687b6930b"
+                },
+                "newValue": {
+                  "guid": "fdb8f4bf-2391-4caf-17d0-bec4800020f4"
+                }
+              }
+            ]
+          }
+        },
+        "subCommands": []
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "AddAsset",
+        "data": {
+          "input": {
+            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\energybar\\energybar1.png"
+          },
+          "output": [
+            {
+              "guid": {
+                "type": "Guid",
+                "data": "ff090fcd-eafd-e280-ee2d-759e12f26094",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "energybar1"
+              },
+              "type": {
+                "type": "String",
+                "data": "Texture2D",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\energybar1\\energybar1.png",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "width": {
+                "type": "Number",
+                "data": 122
+              },
+              "height": {
+                "type": "Number",
+                "data": 32
+              },
+              "artifactFileSize": {
+                "type": "Number",
+                "data": 139
+              },
+              "assetType": {
+                "type": "String",
+                "data": "PNG"
+              },
+              "compressionType": {
+                "type": "Enum",
+                "data": "Automatic",
+                "options": [
+                  "Automatic",
+                  "Manual",
+                  "None"
+                ]
+              },
+              "compressQuality": {
+                "type": "Enum",
+                "data": "High",
+                "options": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "compressMaxResolution": {
+                "type": "Enum",
+                "data": "Size512",
+                "options": [
+                  "Size1024",
+                  "Size512",
+                  "Size256",
+                  "Size128"
+                ]
+              },
+              "enableMipmap": {
+                "type": "Boolean",
+                "data": false
+              },
+              "filterMin": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMag": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMipmap": {
+                "type": "Enum",
+                "data": "None",
+                "options": [
+                  "None",
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "wrapModeS": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeT": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeR": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "premultiplyAlpha": {
+                "type": "Boolean",
+                "data": false
+              }
+            }
+          ]
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "asset",
+            "sourceId": "none",
+            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/energybar/energybar1.png",
+            "target": "commands.data.input.path"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "AddAsset",
+        "data": {
+          "input": {
+            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\energybar\\energybar2.png"
+          },
+          "output": [
+            {
+              "guid": {
+                "type": "Guid",
+                "data": "445f5b25-1776-7126-b451-87fa41dfce0e",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "energybar2"
+              },
+              "type": {
+                "type": "String",
+                "data": "Texture2D",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\energybar2\\energybar2.png",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "width": {
+                "type": "Number",
+                "data": 122
+              },
+              "height": {
+                "type": "Number",
+                "data": 32
+              },
+              "artifactFileSize": {
+                "type": "Number",
+                "data": 137
+              },
+              "assetType": {
+                "type": "String",
+                "data": "PNG"
+              },
+              "compressionType": {
+                "type": "Enum",
+                "data": "Automatic",
+                "options": [
+                  "Automatic",
+                  "Manual",
+                  "None"
+                ]
+              },
+              "compressQuality": {
+                "type": "Enum",
+                "data": "High",
+                "options": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "compressMaxResolution": {
+                "type": "Enum",
+                "data": "Size512",
+                "options": [
+                  "Size1024",
+                  "Size512",
+                  "Size256",
+                  "Size128"
+                ]
+              },
+              "enableMipmap": {
+                "type": "Boolean",
+                "data": false
+              },
+              "filterMin": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMag": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMipmap": {
+                "type": "Enum",
+                "data": "None",
+                "options": [
+                  "None",
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "wrapModeS": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeT": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeR": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "premultiplyAlpha": {
+                "type": "Boolean",
+                "data": false
+              }
+            }
+          ]
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "asset",
+            "sourceId": "none",
+            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/energybar/energybar2.png",
+            "target": "commands.data.input.path"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "AddAsset",
+        "data": {
+          "input": {
+            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\energybar\\energybar3.png"
+          },
+          "output": [
+            {
+              "guid": {
+                "type": "Guid",
+                "data": "a9d02877-1449-6f79-b3c3-ff0d272b53de",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "energybar3"
+              },
+              "type": {
+                "type": "String",
+                "data": "Texture2D",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\energybar3\\energybar3.png",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "width": {
+                "type": "Number",
+                "data": 122
+              },
+              "height": {
+                "type": "Number",
+                "data": 32
+              },
+              "artifactFileSize": {
+                "type": "Number",
+                "data": 137
+              },
+              "assetType": {
+                "type": "String",
+                "data": "PNG"
+              },
+              "compressionType": {
+                "type": "Enum",
+                "data": "Automatic",
+                "options": [
+                  "Automatic",
+                  "Manual",
+                  "None"
+                ]
+              },
+              "compressQuality": {
+                "type": "Enum",
+                "data": "High",
+                "options": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "compressMaxResolution": {
+                "type": "Enum",
+                "data": "Size512",
+                "options": [
+                  "Size1024",
+                  "Size512",
+                  "Size256",
+                  "Size128"
+                ]
+              },
+              "enableMipmap": {
+                "type": "Boolean",
+                "data": false
+              },
+              "filterMin": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMag": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMipmap": {
+                "type": "Enum",
+                "data": "None",
+                "options": [
+                  "None",
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "wrapModeS": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeT": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeR": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "premultiplyAlpha": {
+                "type": "Boolean",
+                "data": false
+              }
+            }
+          ]
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "asset",
+            "sourceId": "none",
+            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/energybar/energybar3.png",
+            "target": "commands.data.input.path"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "AddAsset",
+        "data": {
+          "input": {
+            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\energybar\\energybar4.png"
+          },
+          "output": [
+            {
+              "guid": {
+                "type": "Guid",
+                "data": "b106cae7-00df-7b93-7f1a-fdf1c270b69c",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "energybar4"
+              },
+              "type": {
+                "type": "String",
+                "data": "Texture2D",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\energybar4\\energybar4.png",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "width": {
+                "type": "Number",
+                "data": 122
+              },
+              "height": {
+                "type": "Number",
+                "data": 32
+              },
+              "artifactFileSize": {
+                "type": "Number",
+                "data": 137
+              },
+              "assetType": {
+                "type": "String",
+                "data": "PNG"
+              },
+              "compressionType": {
+                "type": "Enum",
+                "data": "Automatic",
+                "options": [
+                  "Automatic",
+                  "Manual",
+                  "None"
+                ]
+              },
+              "compressQuality": {
+                "type": "Enum",
+                "data": "High",
+                "options": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "compressMaxResolution": {
+                "type": "Enum",
+                "data": "Size512",
+                "options": [
+                  "Size1024",
+                  "Size512",
+                  "Size256",
+                  "Size128"
+                ]
+              },
+              "enableMipmap": {
+                "type": "Boolean",
+                "data": false
+              },
+              "filterMin": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMag": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMipmap": {
+                "type": "Enum",
+                "data": "None",
+                "options": [
+                  "None",
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "wrapModeS": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeT": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeR": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "premultiplyAlpha": {
+                "type": "Boolean",
+                "data": false
+              }
+            }
+          ]
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "asset",
+            "sourceId": "none",
+            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/energybar/energybar4.png",
+            "target": "commands.data.input.path"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "AddAsset",
+        "data": {
+          "input": {
+            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\energybar\\energybar5.png"
+          },
+          "output": [
+            {
+              "guid": {
+                "type": "Guid",
+                "data": "29b46522-2e85-4df0-8dc8-f372a4a20854",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "energybar5"
+              },
+              "type": {
+                "type": "String",
+                "data": "Texture2D",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\energybar5\\energybar5.png",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "width": {
+                "type": "Number",
+                "data": 122
+              },
+              "height": {
+                "type": "Number",
+                "data": 32
+              },
+              "artifactFileSize": {
+                "type": "Number",
+                "data": 139
+              },
+              "assetType": {
+                "type": "String",
+                "data": "PNG"
+              },
+              "compressionType": {
+                "type": "Enum",
+                "data": "Automatic",
+                "options": [
+                  "Automatic",
+                  "Manual",
+                  "None"
+                ]
+              },
+              "compressQuality": {
+                "type": "Enum",
+                "data": "High",
+                "options": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "compressMaxResolution": {
+                "type": "Enum",
+                "data": "Size512",
+                "options": [
+                  "Size1024",
+                  "Size512",
+                  "Size256",
+                  "Size128"
+                ]
+              },
+              "enableMipmap": {
+                "type": "Boolean",
+                "data": false
+              },
+              "filterMin": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMag": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMipmap": {
+                "type": "Enum",
+                "data": "None",
+                "options": [
+                  "None",
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "wrapModeS": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeT": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeR": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "premultiplyAlpha": {
+                "type": "Boolean",
+                "data": false
+              }
+            }
+          ]
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "asset",
+            "sourceId": "none",
+            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/energybar/energybar5.png",
+            "target": "commands.data.input.path"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "AddAsset",
+        "data": {
+          "input": {
+            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\energybar\\energybar6.png"
+          },
+          "output": [
+            {
+              "guid": {
+                "type": "Guid",
+                "data": "a1861221-c34b-a52e-eb2f-9fd9dadb5eec",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "energybar6"
+              },
+              "type": {
+                "type": "String",
+                "data": "Texture2D",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\energybar6\\energybar6.png",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "width": {
+                "type": "Number",
+                "data": 122
+              },
+              "height": {
+                "type": "Number",
+                "data": 32
+              },
+              "artifactFileSize": {
+                "type": "Number",
+                "data": 133
+              },
+              "assetType": {
+                "type": "String",
+                "data": "PNG"
+              },
+              "compressionType": {
+                "type": "Enum",
+                "data": "Automatic",
+                "options": [
+                  "Automatic",
+                  "Manual",
+                  "None"
+                ]
+              },
+              "compressQuality": {
+                "type": "Enum",
+                "data": "High",
+                "options": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "compressMaxResolution": {
+                "type": "Enum",
+                "data": "Size512",
+                "options": [
+                  "Size1024",
+                  "Size512",
+                  "Size256",
+                  "Size128"
+                ]
+              },
+              "enableMipmap": {
+                "type": "Boolean",
+                "data": false
+              },
+              "filterMin": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMag": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMipmap": {
+                "type": "Enum",
+                "data": "None",
+                "options": [
+                  "None",
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "wrapModeS": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeT": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeR": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "premultiplyAlpha": {
+                "type": "Boolean",
+                "data": false
+              }
+            }
+          ]
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "asset",
+            "sourceId": "none",
+            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/energybar/energybar6.png",
+            "target": "commands.data.input.path"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "AddAsset",
+        "data": {
+          "input": {
+            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\cam.png"
+          },
+          "output": [
+            {
+              "guid": {
+                "type": "Guid",
+                "data": "c9a0eabf-649b-9353-3c54-600d0043b295",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "cam"
+              },
+              "type": {
+                "type": "String",
+                "data": "Texture2D",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\cam\\cam.png",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.2.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "width": {
+                "type": "Number",
+                "data": 74
+              },
+              "height": {
+                "type": "Number",
+                "data": 56
+              },
+              "artifactFileSize": {
+                "type": "Number",
+                "data": 186
+              },
+              "assetType": {
+                "type": "String",
+                "data": "PNG"
+              },
+              "compressionType": {
+                "type": "Enum",
+                "data": "Automatic",
+                "options": [
+                  "Automatic",
+                  "Manual",
+                  "None"
+                ]
+              },
+              "compressQuality": {
+                "type": "Enum",
+                "data": "High",
+                "options": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "compressMaxResolution": {
+                "type": "Enum",
+                "data": "Size512",
+                "options": [
+                  "Size1024",
+                  "Size512",
+                  "Size256",
+                  "Size128"
+                ]
+              },
+              "enableMipmap": {
+                "type": "Boolean",
+                "data": false
+              },
+              "filterMin": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMag": {
+                "type": "Enum",
+                "data": "Linear",
+                "options": [
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "filterMipmap": {
+                "type": "Enum",
+                "data": "None",
+                "options": [
+                  "None",
+                  "Nearest",
+                  "Linear"
+                ]
+              },
+              "wrapModeS": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeT": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "wrapModeR": {
+                "type": "Enum",
+                "data": "Repeat",
+                "options": [
+                  "Repeat",
+                  "Clamp",
+                  "Mirror"
+                ]
+              },
+              "premultiplyAlpha": {
+                "type": "Boolean",
+                "data": false
+              }
+            }
+          ]
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "asset",
+            "sourceId": "none",
+            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/cam.png",
+            "target": "commands.data.input.path"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "none",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "SetComponent",
+        "data": {
+          "input": {
+            "guid": "cffdac27-c4d2-86fe-e4a7-c5af023aca0b",
+            "properties": [
+              {
+                "property": "texture",
+                "value": {
+                  "type": "Texture",
+                  "data": {
+                    "guid": "c9a0eabf-649b-9353-3c54-600d0043b295"
+                  }
+                }
+              }
+            ]
+          },
+          "output": {
+            "componentType": "Image",
+            "guid": "cffdac27-c4d2-86fe-e4a7-c5af023aca0b",
+            "changes": [
+              {
+                "property": "texture",
+                "oldValue": {
+                  "guid": "493d3649-d5a2-12eb-a74d-0e2392e49440"
+                },
+                "newValue": {
+                  "guid": "c9a0eabf-649b-9353-3c54-600d0043b295"
                 }
               }
             ]
