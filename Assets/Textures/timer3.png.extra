@@ -1,0 +1,32 @@
+[
+  {
+    "guid": {
+      "a": "9207020d-a04e-f2b8-d840-0d5db2e2e534",
+      "b": ""
+    },
+    "extraType": "ResItemPNGImage",
+    "name": "timer3",
+    "version": "0.2.0",
+    "rttiType": "Texture",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "compressionType": 0,
+    "compressQuality": 0,
+    "compressMaxResolution": 512,
+    "enableMipmap": false,
+    "filterMin": 1,
+    "filterMag": 1,
+    "filterMipmap": 0,
+    "wrapModeS": 0,
+    "wrapModeT": 0,
+    "wrapModeR": 0,
+    "premultiplyAlpha": false,
+    "objGuid": "",
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\timer\\timer3.png",
+    "references": []
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "guid": {
+      "a": "320fe5f0-f945-9141-c910-0b2c37401fbc",
+      "b": ""
+    },
+    "extraType": "ResItemPNGImage",
+    "name": "time_bonus",
+    "version": "0.2.0",
+    "rttiType": "Texture",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "compressionType": 0,
+    "compressQuality": 0,
+    "compressMaxResolution": 512,
+    "enableMipmap": false,
+    "filterMin": 1,
+    "filterMag": 1,
+    "filterMipmap": 0,
+    "wrapModeS": 0,
+    "wrapModeT": 0,
+    "wrapModeR": 0,
+    "premultiplyAlpha": false,
+    "objGuid": "",
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\time_bonus.png",
+    "references": []
+  }
+]

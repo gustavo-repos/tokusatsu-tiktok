@@ -1,0 +1,32 @@
+[
+  {
+    "guid": {
+      "a": "0eebe7cd-4c28-2289-ee1a-6aa30ca34979",
+      "b": ""
+    },
+    "extraType": "ResItemPNGImage",
+    "name": "energybar5",
+    "version": "0.2.0",
+    "rttiType": "Texture",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "compressionType": 0,
+    "compressQuality": 0,
+    "compressMaxResolution": 512,
+    "enableMipmap": false,
+    "filterMin": 1,
+    "filterMag": 1,
+    "filterMipmap": 0,
+    "wrapModeS": 0,
+    "wrapModeT": 0,
+    "wrapModeR": 0,
+    "premultiplyAlpha": false,
+    "objGuid": "",
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\energybar\\energybar5.png",
+    "references": []
+  }
+]

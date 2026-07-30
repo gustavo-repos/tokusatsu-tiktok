@@ -93,11 +93,40 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
                 (0, Game_1.setSubstate)(4);
                 this.points++;
                 // conect.name = this.points.toString()
-                this.scenePoints.name = this.points.toString();
+                //this.scenePoints.name = this.points.toString()
+                if (this.points == 3) {
+                    this.scenePoints.name = 'energybar1';
+                }
+                else if (this.points == 6) {
+                    this.scenePoints.name = 'energybar2';
+                }
+                else if (this.points == 9) {
+                    this.scenePoints.name = 'energybar3';
+                }
+                else if (this.points == 12) {
+                    this.scenePoints.name = 'energybar4';
+                }
+                else if (this.points == 15) {
+                    this.scenePoints.name = 'energybar5';
+                }
+                else if (this.points == 18) {
+                    this.scenePoints.name = 'energybar6';
+                }
                 this.enemyScene.name = 'hit';
                 this.enemyWasHit = true;
                 this.spawnTimer = 1;
                 this.spawnInterval = 3;
+                if (this.points == 8) {
+                    (0, Game_1.addTime)(15);
+                    // adicionar visual tempo aumentando!
+                }
+                else if (this.points == 12) {
+                    (0, Game_1.addTime)(10);
+                    // adicionar visual tempo aumentando!
+                }
+                else if (this.points == 18) {
+                    // adiocionar o KO!
+                }
             }
             if (this.spawnTimer >= this.spawnInterval) {
                 //console.log(this.spawnTimer, this.spawnInterval)
@@ -111,16 +140,12 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
                     this.spawnInterval = 2.5;
                 }
                 else if (this.points == 8) {
-                    this.spawnInterval = 2.3;
-                    (0, Game_1.addTime)(15);
-                    //time =+ 15
-                    // adicionar visual tempo aumentando!
+                    // this.spawnInterval = 2.3
+                    this.spawnInterval = 2.0;
                 }
                 else if (this.points == 12) {
-                    this.spawnInterval = 2;
-                    (0, Game_1.addTime)(10);
-                    //time =+ 10
-                    // adicionar visual tempo aumentando!
+                    // this.spawnInterval = 2
+                    this.spawnInterval = 1.6;
                 }
                 else if (this.points == 25) {
                     // adiocionar o KO!

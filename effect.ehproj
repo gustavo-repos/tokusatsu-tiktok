@@ -1,6 +1,6 @@
 {
   "name": "Untitled",
-  "lastModified": "Wed, 29 Jul 2026 16:33:06 GMT",
+  "lastModified": "Thu, 30 Jul 2026 01:51:41 GMT",
   "version": "5.13.0",
   "renderNames": {
     "0": "Default Layer",
@@ -68,9 +68,9 @@
     "62": "Layer 62",
     "63": "Layer 63"
   },
-  "durationToCreate": 15023909548,
-  "durationCreation": 1064968261,
-  "durationBackground": 879251124,
+  "durationToCreate": 15057424908,
+  "durationCreation": 1092361169,
+  "durationBackground": 898912243,
   "effectHint": "",
   "templateID": "templateID_none",
   "overwriteBuiltinGAN": 1,
@@ -97,16 +97,16 @@
   "fromNewUserGuide": false,
   "soundStartTime": 0,
   "selectedIdList": [
-    "editor:6336345d-9b9b-2e1e-5f9b-e528ef32c5d5"
+    "amz:Guid(5478930354289198841, 1145536775684870566)"
   ],
   "lastSceneView": 0,
   "autoResetEffect": false,
-  "effectSize": 1804471,
+  "effectSize": 1845977,
   "effectPackagePath": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\submit\\package\\effect.zip",
   "perfTested": true,
   "effectUploadResult": {
-    "uri": "/obj/tiktok-effect-public-us/effects/effect/Yc38B8pe578MjWiYKeDP8X_f666af8c49a7119d4435f7cb3a66ab49",
-    "url": "https://lf16-effect.tiktokcdn.com//obj/tiktok-effect-public-us/effects/effect/Yc38B8pe578MjWiYKeDP8X_f666af8c49a7119d4435f7cb3a66ab49"
+    "uri": "/obj/tiktok-effect-public-us/effects/effect/cz5eNvQyUdLpra3bdRjfmV_16bf9c53203a223f7568512fa3a357b0",
+    "url": "https://lf16-effect.tiktokcdn.com//obj/tiktok-effect-public-us/effects/effect/cz5eNvQyUdLpra3bdRjfmV_16bf9c53203a223f7568512fa3a357b0"
   },
   "soundSelectedDuration": 0
 }

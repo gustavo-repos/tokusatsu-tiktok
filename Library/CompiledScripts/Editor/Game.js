@@ -284,7 +284,22 @@ let Game = class Game extends APJS.BasicScriptComponent {
         while (this.accumulator >= exports.fixedTime) {
             if (isTimeRunning && exports.time >= 0) {
                 exports.time -= exports.fixedTime;
-                exports.conect.name = Math.round(exports.time).toString();
+                //conect.name = Math.round(time).toString()
+                if (exports.time >= 27) {
+                    exports.conect.name = 'time0';
+                }
+                else if (exports.time >= 19) {
+                    exports.conect.name = 'time1';
+                }
+                else if (exports.time >= 11) {
+                    exports.conect.name = 'time2';
+                }
+                else if (exports.time >= 1) {
+                    exports.conect.name = 'time3';
+                }
+                else {
+                    exports.conect.name = 'time4';
+                }
             }
             this.accumulator -= exports.fixedTime;
         }

@@ -297,7 +297,18 @@ export class Game extends APJS.BasicScriptComponent {
 
       if (isTimeRunning && time >= 0) {
         time -= fixedTime
-        conect.name = Math.round(time).toString()
+        //conect.name = Math.round(time).toString()
+        if (time >= 27) {
+          conect.name = 'time0'
+        } else if (time >= 19) {
+          conect.name = 'time1'
+        } else if (time >= 11) {
+          conect.name = 'time2'
+        } else if (time >= 1) {
+          conect.name = 'time3'
+        } else {
+          conect.name = 'time4'
+        }
       }
       this.accumulator -= fixedTime
     }
