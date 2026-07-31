@@ -12,6 +12,12 @@ const {
 } = require('./OrionDecorators');
 
 "use strict";
+/*
+gameState
+0 running
+1 gameover
+2 win
+*/
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -19,7 +25,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Game = exports.snapX = exports.snapY = exports.checkRectOverlap = exports.getElementRect = exports.teleport = exports.move = exports.addTime = exports.startTimer = exports.setSubstate = exports.substate = exports.time = exports.conect = exports.fixedTime = exports.grounds = exports.solids = exports.platforms = exports.resetPressed = exports.rightPressed = exports.leftPressed = exports.jumpPressed = exports.PPU = exports.gravity = void 0;
+exports.Game = exports.snapX = exports.snapY = exports.checkRectOverlap = exports.getElementRect = exports.teleport = exports.move = exports.addTime = exports.startTimer = exports.setSubstate = exports.setGameState = exports.substate = exports.time = exports.conect = exports.fixedTime = exports.grounds = exports.solids = exports.platforms = exports.resetPressed = exports.rightPressed = exports.leftPressed = exports.jumpPressed = exports.PPU = exports.gravity = exports.gameState = void 0;
+exports.gameState = 0;
 exports.gravity = -65;
 exports.PPU = 32;
 exports.jumpPressed = false;
@@ -30,6 +37,10 @@ exports.fixedTime = 0.02;
 var isTimeRunning = false;
 exports.time = 35;
 exports.substate = 3;
+function setGameState(x) {
+    exports.gameState = x;
+}
+exports.setGameState = setGameState;
 function setSubstate(x) {
     exports.substate = x;
 }
@@ -246,6 +257,7 @@ let Game = class Game extends APJS.BasicScriptComponent {
         return ((Math.abs(point[0] - rect[0]) <= hx) && (Math.abs(point[1] - rect[1]) <= hy));
     }
     onStart() {
+        this.gameRunning = this.getSceneObject().scene.findSceneObject('gameRunning');
         this.buttonActionRect = getElementRect(this.getSceneObject().scene.findSceneObject('buttonAction'), 0);
         this.buttonLeftRect = getElementRect(this.getSceneObject().scene.findSceneObject('buttonLeft'), 0);
         this.buttonRightRect = getElementRect(this.getSceneObject().scene.findSceneObject('buttonRight'), 0);
@@ -268,11 +280,13 @@ let Game = class Game extends APJS.BasicScriptComponent {
         deltaTime = Math.min(deltaTime, 0.25);
         this.accumulator += deltaTime;
         if (exports.resetPressed) {
+            exports.gameState = 0;
             exports.time = 35;
             exports.substate = 3;
             this.accumulator = 0;
             isTimeRunning = false;
             exports.conect.name = 'conect';
+            this.gameRunning.name = 'gameRunning';
             //this.onStart()
         }
         if (deltaTime > 0.2) {
@@ -280,9 +294,13 @@ let Game = class Game extends APJS.BasicScriptComponent {
             exports.rightPressed = false;
         }
         while (this.accumulator >= exports.fixedTime) {
-            if (isTimeRunning && exports.time >= 0) {
+            if (isTimeRunning && exports.gameState == 0) {
                 exports.time -= exports.fixedTime;
                 //conect.name = Math.round(time).toString()
+                if (exports.time <= 0) {
+                    setGameState(1);
+                    this.gameRunning.name = 'gameover';
+                }
                 if (exports.time >= 27) {
                     exports.conect.name = 'time0';
                 }

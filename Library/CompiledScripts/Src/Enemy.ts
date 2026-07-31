@@ -1,4 +1,5 @@
-import { fixedTime, teleport, PPU, checkRectOverlap, getElementRect, conect, startTimer, addTime, setSubstate, substate, resetPressed } from "Game"
+import { fixedTime, teleport, PPU, checkRectOverlap, getElementRect, conect, 
+startTimer, addTime, setSubstate, substate, resetPressed, time, setGameState, gameState } from "Game"
 
 // export var time = 35
 // export var startTimer = false
@@ -6,15 +7,15 @@ import { fixedTime, teleport, PPU, checkRectOverlap, getElementRect, conect, sta
 @component()
 export class Enemy extends APJS.BasicScriptComponent {
 
+  gameRunning: any
   accumulator = 0
   spawnTimer = 0
   spawnInterval = 3
   playerAttackingTimer = 0
   playerAttackingInterval = 0.4
-  // time = 35
-  //startTimer = false
-  // spawnSpots = [[117 / PPU, 104 / PPU], [396 / PPU, 104 / PPU], [-396 / PPU, 104 / PPU], [-117 / PPU, 104 / PPU], [-256 / PPU, 333 / PPU], [256 / PPU, 333 / PPU]]
-  spawnSpots = [[117 / PPU, 114 / PPU], [396 / PPU, 114 / PPU], [-396 / PPU, 114 / PPU], [-117 / PPU, 114 / PPU], [-256 / PPU, 343 / PPU], [256 / PPU, 343 / PPU]]
+  //spawnSpots = [[117 / PPU, 114 / PPU], [396 / PPU, 114 / PPU], [-396 / PPU, 114 / PPU], [-117 / PPU, 114 / PPU], [-256 / PPU, 343 / PPU], [256 / PPU, 343 / PPU]]
+  spawnSpots = [[117 / PPU, 114 / PPU], [396 / PPU, 114 / PPU]]
+
   currentSpot: any
   transform: any
   playerObj: any
@@ -46,6 +47,7 @@ export class Enemy extends APJS.BasicScriptComponent {
   }
 
   onStart() {
+    this.gameRunning = this.getSceneObject().scene.findSceneObject('gameRunning')
     this.playerObj = this.getSceneObject().scene.findSceneObject('player')
     this.transform = this.playerObj.getComponent('ScreenTransform') as APJS.ScreenTransform
     this.playerWidth = this.transform.sizeDelta.x / PPU
@@ -68,6 +70,7 @@ export class Enemy extends APJS.BasicScriptComponent {
       this.enemyWasHit = false
       this.points = 0
       this.scenePoints.name = 'points'
+      this.gameRunning.name = 'gameRunning'
     }
     
 
@@ -94,36 +97,31 @@ export class Enemy extends APJS.BasicScriptComponent {
         //this.scenePoints.name = this.points.toString()
         if (this.points == 3) {
           this.scenePoints.name = 'energybar1'
+          setGameState(2)
+          this.gameRunning.name = 'win'
         } else if (this.points == 6) {
           this.scenePoints.name = 'energybar2'
         } else if (this.points == 9) {
           this.scenePoints.name = 'energybar3'
+          addTime(15)
         } else if (this.points == 12) {
           this.scenePoints.name = 'energybar4'
+          addTime(10)
         } else if (this.points == 15) {
           this.scenePoints.name = 'energybar5'
         } else if (this.points == 18) {
           this.scenePoints.name = 'energybar6'
+          setGameState(2)
+          this.gameRunning.name = 'win'
+          // KO!
         }
         this.enemyScene.name = 'hit'
         this.enemyWasHit = true
         this.spawnTimer = 1
         this.spawnInterval = 3
-
-        if (this.points == 8) {
-          addTime(15)
-          // adicionar visual tempo aumentando!
-        } else if (this.points == 12) {
-          addTime(10)
-          // adicionar visual tempo aumentando!
-        } else if (this.points == 18) {
-          // adiocionar o KO!
-        }
       } 
 
-      if (this.spawnTimer >= this.spawnInterval) {
-        //console.log(this.spawnTimer, this.spawnInterval)
-        // this.currentSpot = this.getRandomItem(this.spawnSpots)
+      if (this.spawnTimer >= this.spawnInterval && gameState == 0) {
         this.setCurrentSpot(this.spawnSpots)
         teleport(this.getSceneObject(), this.currentSpot[0], this.currentSpot[1])
         this.spawnTimer = 0
@@ -139,7 +137,6 @@ export class Enemy extends APJS.BasicScriptComponent {
           // this.spawnInterval = 2
           this.spawnInterval = 1.6
         } else if (this.points == 25) {
-          // adiocionar o KO!
         }
       }
   

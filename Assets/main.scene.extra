@@ -711,6 +711,87 @@
   },
   {
     "guid": {
+      "a": "f79b49ed-0007-18a6-9f16-0c11f307309a",
+      "b": ""
+    },
+    "objGuid": "Guid(5762813953718385082, 14977400799028044687)",
+    "extraType": "Entity",
+    "name": "Timeline",
+    "version": "0.1.0",
+    "rttiType": "SceneObject",
+    "expanded": true,
+    "type": "none",
+    "isAnimatorBound": false,
+    "modelGUID": "",
+    "createdEffectNodeKey": "effect_node_utility",
+    "disableSelection": false,
+    "hiddenInHierarchy": false,
+    "editorTags": []
+  },
+  {
+    "guid": {
+      "a": "9dee6c85-7af6-f463-ac0c-0edbe900273f",
+      "b": ""
+    },
+    "objGuid": "Guid(4652742424617242536, 16705668744762344867)",
+    "extraType": "Transform",
+    "name": "Transform",
+    "version": "0.1.0",
+    "rttiType": "Transform",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.0.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "eulerAngle": [
+      0,
+      0,
+      0
+    ],
+    "linkage": 0
+  },
+  {
+    "guid": {
+      "a": "647448a7-19a3-d3f0-33b0-d82a6b050f83",
+      "b": ""
+    },
+    "objGuid": "Guid(5263573331428209697, 141726458201392777)",
+    "extraType": "TimelinePlayer",
+    "name": "Timeline",
+    "version": "0.2.0",
+    "rttiType": "TimelinePlayer",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.2.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "tracksWithMissingTarget": [],
+    "bindings": []
+  },
+  {
+    "guid": {
+      "a": "0d69e7c8-a2ee-a3ae-7409-47f792c3bcc3",
+      "b": ""
+    },
+    "objGuid": "Guid(4759475313030750715, 3776557337341484173)",
+    "extraType": "Animator",
+    "name": "Animation",
+    "version": "0.2.0",
+    "rttiType": "Animator",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.0.0",
+    "extendedInfo": {
+      "isVisibleInInspector": false,
+      "expanded": false
+    },
+    "runningAnimazIdx": -1,
+    "animationsListEditor": [],
+    "autoPlay": true
+  },
+  {
+    "guid": {
       "a": "008d727d-2f2f-fb80-fcf5-2337183e4d8d",
       "b": ""
     },
@@ -1750,6 +1831,75 @@
   },
   {
     "guid": {
+      "a": "c1991052-035a-c3c2-2b85-b417a6ff2694",
+      "b": ""
+    },
+    "objGuid": "Guid(5647130856212298110, 17860199670269414051)",
+    "extraType": "Entity",
+    "name": "2D Text (1)",
+    "version": "0.1.0",
+    "rttiType": "SceneObject",
+    "expanded": true,
+    "type": "none",
+    "isAnimatorBound": false,
+    "modelGUID": "",
+    "createdEffectNodeKey": "effect_node_2D_foreground",
+    "disableSelection": false,
+    "hiddenInHierarchy": false,
+    "editorTags": []
+  },
+  {
+    "guid": {
+      "a": "bac84a05-790e-85ed-bad7-a5b8cbfda49d",
+      "b": ""
+    },
+    "objGuid": "Guid(5351211254819297888, 10363705907576276667)",
+    "extraType": "ScreenTransform",
+    "name": "Screen Transform",
+    "version": "0.1.0",
+    "rttiType": "ScreenTransform",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "horizontalConstraint": 2,
+    "verticalConstraint": 2,
+    "linkageScale": 0,
+    "linkageSize": 0
+  },
+  {
+    "guid": {
+      "a": "d4bf06a4-00fa-5fef-2dc0-8733c43ba87c",
+      "b": ""
+    },
+    "objGuid": "Guid(5580037062203788724, 16550869268570618505)",
+    "extraType": "Text2D",
+    "name": "Text",
+    "version": "1.1.0",
+    "rttiType": "Text",
+    "editable": true,
+    "_lazyUpgrateVersion": "1.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "artTextNameDropdown": "00000000-0000-0000-0000-000000008000",
+    "boxDimension": 0,
+    "totalAnimationTime": 0,
+    "inAnimationAssetID": "",
+    "loopAnimationAssetID": "",
+    "outAnimationAssetID": "",
+    "inAnimationDuration": 1,
+    "loopAnimationDuration": 1,
+    "outAnimationDuration": 1,
+    "userEditable": false,
+    "maxInputWords": 0,
+    "templateId": ""
+  },
+  {
+    "guid": {
       "a": "5f0003f2-4576-3feb-fb60-90b8b2a92be1",
       "b": ""
     },
@@ -1888,6 +2038,253 @@
   },
   {
     "guid": {
+      "a": "93da5e84-79ff-4f53-5dab-cd36138ad3ed",
+      "b": ""
+    },
+    "objGuid": "Guid(5035296442098284285, 12273570320864177538)",
+    "extraType": "Entity",
+    "name": "cam",
+    "version": "0.1.0",
+    "rttiType": "SceneObject",
+    "expanded": true,
+    "type": "none",
+    "isAnimatorBound": false,
+    "modelGUID": "",
+    "createdEffectNodeKey": "effect_node_2D_foreground",
+    "disableSelection": false,
+    "hiddenInHierarchy": false,
+    "editorTags": []
+  },
+  {
+    "guid": {
+      "a": "86b7d555-76a4-4b34-ef74-bbfd45d6deea",
+      "b": ""
+    },
+    "objGuid": "Guid(5713292443169965352, 4688785060223696799)",
+    "extraType": "ScreenTransform",
+    "name": "Screen Transform",
+    "version": "0.1.0",
+    "rttiType": "ScreenTransform",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "horizontalConstraint": 2,
+    "verticalConstraint": 2,
+    "linkageScale": 0,
+    "linkageSize": 0
+  },
+  {
+    "guid": {
+      "a": "cffdac27-c4d2-86fe-e4a7-c5af023aca0b",
+      "b": ""
+    },
+    "objGuid": "Guid(4849406549288422430, 7830495877210444938)",
+    "extraType": "Image",
+    "name": "Image",
+    "version": "0.1.0",
+    "rttiType": "Image",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "sharedMaterial": "00000000-0000-0000-0000-000000000132",
+    "segBlendMode": "Normal_v2",
+    "segRadius": 0.5,
+    "segSoftness": 0.5,
+    "blendMode": "Normal",
+    "drawMode": "Normal",
+    "filledType": 0,
+    "startPoint": 0,
+    "filledRange": 1,
+    "ellipseX": 1,
+    "ellipseY": 1,
+    "alphaNOPM": true
+  },
+  {
+    "guid": {
+      "a": "b0192e09-6b30-3d98-c5e6-71150c25cd70",
+      "b": ""
+    },
+    "objGuid": "Guid(5463018944111224297, 9241268358473683092)",
+    "extraType": "Entity",
+    "name": "hud",
+    "version": "0.1.0",
+    "rttiType": "SceneObject",
+    "expanded": true,
+    "type": "none",
+    "isAnimatorBound": false,
+    "modelGUID": "",
+    "createdEffectNodeKey": "effect_node_2D_foreground",
+    "disableSelection": false,
+    "hiddenInHierarchy": false,
+    "editorTags": []
+  },
+  {
+    "guid": {
+      "a": "71dc2fd5-1c43-f2f5-6b47-ff83c5aff574",
+      "b": ""
+    },
+    "objGuid": "Guid(5323532722689542960, 14718680470946271145)",
+    "extraType": "ScreenTransform",
+    "name": "Screen Transform",
+    "version": "0.1.0",
+    "rttiType": "ScreenTransform",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "horizontalConstraint": 2,
+    "verticalConstraint": 2,
+    "linkageScale": 0,
+    "linkageSize": 0
+  },
+  {
+    "guid": {
+      "a": "a501dbbf-8609-acda-e8a2-a52606e36273",
+      "b": ""
+    },
+    "objGuid": "Guid(5119971726034512743, 10394989817616561084)",
+    "extraType": "Entity",
+    "name": "timer",
+    "version": "0.1.0",
+    "rttiType": "SceneObject",
+    "expanded": true,
+    "type": "none",
+    "isAnimatorBound": false,
+    "modelGUID": "",
+    "createdEffectNodeKey": "effect_node_2D_foreground",
+    "disableSelection": false,
+    "hiddenInHierarchy": false,
+    "editorTags": []
+  },
+  {
+    "guid": {
+      "a": "1ae769db-8089-34cb-5faa-a8b59f69fa50",
+      "b": ""
+    },
+    "objGuid": "Guid(4812643453015923699, 9765874319884062853)",
+    "extraType": "ScreenTransform",
+    "name": "Screen Transform",
+    "version": "0.1.0",
+    "rttiType": "ScreenTransform",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "horizontalConstraint": 2,
+    "verticalConstraint": 2,
+    "linkageScale": 0,
+    "linkageSize": 0
+  },
+  {
+    "guid": {
+      "a": "2c76b391-58de-75d6-cee8-9b97de601217",
+      "b": ""
+    },
+    "objGuid": "Guid(5350784694469052996, 5979683142594392222)",
+    "extraType": "Image",
+    "name": "Image",
+    "version": "0.1.0",
+    "rttiType": "Image",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "sharedMaterial": "00000000-0000-0000-0000-000000000132",
+    "segBlendMode": "Normal_v2",
+    "segRadius": 0.5,
+    "segSoftness": 0.5,
+    "blendMode": "Normal",
+    "drawMode": "Normal",
+    "filledType": 0,
+    "startPoint": 0,
+    "filledRange": 1,
+    "ellipseX": 1,
+    "ellipseY": 1,
+    "alphaNOPM": true
+  },
+  {
+    "guid": {
+      "a": "88a9ad7d-e723-f44b-3d1f-6b49a13202e0",
+      "b": ""
+    },
+    "objGuid": "Guid(5478930354289198841, 1145536775684870566)",
+    "extraType": "Entity",
+    "name": "energyBar",
+    "version": "0.1.0",
+    "rttiType": "SceneObject",
+    "expanded": true,
+    "type": "none",
+    "isAnimatorBound": false,
+    "modelGUID": "",
+    "createdEffectNodeKey": "effect_node_2D_foreground",
+    "disableSelection": false,
+    "hiddenInHierarchy": false,
+    "editorTags": []
+  },
+  {
+    "guid": {
+      "a": "0cefffc9-833f-7d21-8a74-9f5dc0975210",
+      "b": ""
+    },
+    "objGuid": "Guid(5307098743476926400, 3385474400084929671)",
+    "extraType": "ScreenTransform",
+    "name": "Screen Transform",
+    "version": "0.1.0",
+    "rttiType": "ScreenTransform",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "horizontalConstraint": 2,
+    "verticalConstraint": 2,
+    "linkageScale": 0,
+    "linkageSize": 0
+  },
+  {
+    "guid": {
+      "a": "b4cf57ba-f9c4-12b7-9ea3-9b8c89689792",
+      "b": ""
+    },
+    "objGuid": "Guid(4717355574986828590, 5688131794368666034)",
+    "extraType": "Image",
+    "name": "Image",
+    "version": "0.1.0",
+    "rttiType": "Image",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "sharedMaterial": "00000000-0000-0000-0000-000000000132",
+    "segBlendMode": "Normal_v2",
+    "segRadius": 0.5,
+    "segSoftness": 0.5,
+    "blendMode": "Normal",
+    "drawMode": "Normal",
+    "filledType": 0,
+    "startPoint": 0,
+    "filledRange": 1,
+    "ellipseX": 1,
+    "ellipseY": 1,
+    "alphaNOPM": true
+  },
+  {
+    "guid": {
       "a": "649f9982-4cdd-c968-5771-d043ca33b277",
       "b": ""
     },
@@ -1896,7 +2293,7 @@
     "name": "player",
     "version": "0.1.0",
     "rttiType": "SceneObject",
-    "expanded": false,
+    "expanded": true,
     "type": "none",
     "isAnimatorBound": false,
     "modelGUID": "",
@@ -2070,6 +2467,75 @@
       "expanded": true
     },
     "audioRef": "aa503c18-1d65-72db-7090-5222e3d8c55b"
+  },
+  {
+    "guid": {
+      "a": "cdd85604-7741-e57f-ba26-5d015f2d99a5",
+      "b": ""
+    },
+    "objGuid": "Guid(5418109179415795437, 16151471374154213788)",
+    "extraType": "Entity",
+    "name": "finalMessage",
+    "version": "0.1.0",
+    "rttiType": "SceneObject",
+    "expanded": true,
+    "type": "none",
+    "isAnimatorBound": false,
+    "modelGUID": "",
+    "createdEffectNodeKey": "effect_node_2D_foreground",
+    "disableSelection": false,
+    "hiddenInHierarchy": false,
+    "editorTags": []
+  },
+  {
+    "guid": {
+      "a": "b05ac209-15c8-da0e-a296-a8b4ab6b39f7",
+      "b": ""
+    },
+    "objGuid": "Guid(5348452261135251232, 8732269021296147356)",
+    "extraType": "ScreenTransform",
+    "name": "Screen Transform",
+    "version": "0.1.0",
+    "rttiType": "ScreenTransform",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "horizontalConstraint": 2,
+    "verticalConstraint": 2,
+    "linkageScale": 0,
+    "linkageSize": 0
+  },
+  {
+    "guid": {
+      "a": "15a92d80-64a2-b8c9-73b7-22df1b0c02c3",
+      "b": ""
+    },
+    "objGuid": "Guid(4895443903464913198, 7744235206997090690)",
+    "extraType": "Image",
+    "name": "Image",
+    "version": "0.1.0",
+    "rttiType": "Image",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "sharedMaterial": "00000000-0000-0000-0000-000000000132",
+    "segBlendMode": "Normal_v2",
+    "segRadius": 0.5,
+    "segSoftness": 0.5,
+    "blendMode": "Normal",
+    "drawMode": "Normal",
+    "filledType": 0,
+    "startPoint": 0,
+    "filledRange": 1,
+    "ellipseX": 1,
+    "ellipseY": 1,
+    "alphaNOPM": true
   },
   {
     "guid": {
@@ -2251,75 +2717,6 @@
   },
   {
     "guid": {
-      "a": "c1991052-035a-c3c2-2b85-b417a6ff2694",
-      "b": ""
-    },
-    "objGuid": "Guid(5647130856212298110, 17860199670269414051)",
-    "extraType": "Entity",
-    "name": "2D Text (1)",
-    "version": "0.1.0",
-    "rttiType": "SceneObject",
-    "expanded": true,
-    "type": "none",
-    "isAnimatorBound": false,
-    "modelGUID": "",
-    "createdEffectNodeKey": "effect_node_2D_foreground",
-    "disableSelection": false,
-    "hiddenInHierarchy": false,
-    "editorTags": []
-  },
-  {
-    "guid": {
-      "a": "bac84a05-790e-85ed-bad7-a5b8cbfda49d",
-      "b": ""
-    },
-    "objGuid": "Guid(5351211254819297888, 10363705907576276667)",
-    "extraType": "ScreenTransform",
-    "name": "Screen Transform",
-    "version": "0.1.0",
-    "rttiType": "ScreenTransform",
-    "editable": true,
-    "_lazyUpgrateVersion": "0.1.0",
-    "extendedInfo": {
-      "isVisibleInInspector": true,
-      "expanded": true
-    },
-    "horizontalConstraint": 2,
-    "verticalConstraint": 2,
-    "linkageScale": 0,
-    "linkageSize": 0
-  },
-  {
-    "guid": {
-      "a": "d4bf06a4-00fa-5fef-2dc0-8733c43ba87c",
-      "b": ""
-    },
-    "objGuid": "Guid(5580037062203788724, 16550869268570618505)",
-    "extraType": "Text2D",
-    "name": "Text",
-    "version": "1.1.0",
-    "rttiType": "Text",
-    "editable": true,
-    "_lazyUpgrateVersion": "1.1.0",
-    "extendedInfo": {
-      "isVisibleInInspector": true,
-      "expanded": true
-    },
-    "artTextNameDropdown": "00000000-0000-0000-0000-000000008000",
-    "boxDimension": 0,
-    "totalAnimationTime": 0,
-    "inAnimationAssetID": "",
-    "loopAnimationAssetID": "",
-    "outAnimationAssetID": "",
-    "inAnimationDuration": 1,
-    "loopAnimationDuration": 1,
-    "outAnimationDuration": 1,
-    "userEditable": false,
-    "maxInputWords": 0,
-    "templateId": ""
-  },
-  {
-    "guid": {
       "a": "5f25aa41-c9b1-f0dc-724e-3e67a169e98d",
       "b": ""
     },
@@ -2386,184 +2783,6 @@
     "userEditable": false,
     "maxInputWords": 0,
     "templateId": ""
-  },
-  {
-    "guid": {
-      "a": "88a9ad7d-e723-f44b-3d1f-6b49a13202e0",
-      "b": ""
-    },
-    "objGuid": "Guid(5478930354289198841, 1145536775684870566)",
-    "extraType": "Entity",
-    "name": "energyBar",
-    "version": "0.1.0",
-    "rttiType": "SceneObject",
-    "expanded": true,
-    "type": "none",
-    "isAnimatorBound": false,
-    "modelGUID": "",
-    "createdEffectNodeKey": "effect_node_2D_foreground",
-    "disableSelection": false,
-    "hiddenInHierarchy": false,
-    "editorTags": []
-  },
-  {
-    "guid": {
-      "a": "0cefffc9-833f-7d21-8a74-9f5dc0975210",
-      "b": ""
-    },
-    "objGuid": "Guid(5307098743476926400, 3385474400084929671)",
-    "extraType": "ScreenTransform",
-    "name": "Screen Transform",
-    "version": "0.1.0",
-    "rttiType": "ScreenTransform",
-    "editable": true,
-    "_lazyUpgrateVersion": "0.1.0",
-    "extendedInfo": {
-      "isVisibleInInspector": true,
-      "expanded": true
-    },
-    "horizontalConstraint": 2,
-    "verticalConstraint": 2,
-    "linkageScale": 0,
-    "linkageSize": 0
-  },
-  {
-    "guid": {
-      "a": "b4cf57ba-f9c4-12b7-9ea3-9b8c89689792",
-      "b": ""
-    },
-    "objGuid": "Guid(4717355574986828590, 5688131794368666034)",
-    "extraType": "Image",
-    "name": "Image",
-    "version": "0.1.0",
-    "rttiType": "Image",
-    "editable": true,
-    "_lazyUpgrateVersion": "0.1.0",
-    "extendedInfo": {
-      "isVisibleInInspector": true,
-      "expanded": true
-    },
-    "sharedMaterial": "00000000-0000-0000-0000-000000000132",
-    "segBlendMode": "Normal_v2",
-    "segRadius": 0.5,
-    "segSoftness": 0.5,
-    "blendMode": "Normal",
-    "drawMode": "Normal",
-    "filledType": 0,
-    "startPoint": 0,
-    "filledRange": 1,
-    "ellipseX": 1,
-    "ellipseY": 1,
-    "alphaNOPM": true
-  },
-  {
-    "guid": {
-      "a": "a501dbbf-8609-acda-e8a2-a52606e36273",
-      "b": ""
-    },
-    "objGuid": "Guid(5119971726034512743, 10394989817616561084)",
-    "extraType": "Entity",
-    "name": "timer",
-    "version": "0.1.0",
-    "rttiType": "SceneObject",
-    "expanded": true,
-    "type": "none",
-    "isAnimatorBound": false,
-    "modelGUID": "",
-    "createdEffectNodeKey": "effect_node_2D_foreground",
-    "disableSelection": false,
-    "hiddenInHierarchy": false,
-    "editorTags": []
-  },
-  {
-    "guid": {
-      "a": "1ae769db-8089-34cb-5faa-a8b59f69fa50",
-      "b": ""
-    },
-    "objGuid": "Guid(4812643453015923699, 9765874319884062853)",
-    "extraType": "ScreenTransform",
-    "name": "Screen Transform",
-    "version": "0.1.0",
-    "rttiType": "ScreenTransform",
-    "editable": true,
-    "_lazyUpgrateVersion": "0.1.0",
-    "extendedInfo": {
-      "isVisibleInInspector": true,
-      "expanded": true
-    },
-    "horizontalConstraint": 2,
-    "verticalConstraint": 2,
-    "linkageScale": 0,
-    "linkageSize": 0
-  },
-  {
-    "guid": {
-      "a": "2c76b391-58de-75d6-cee8-9b97de601217",
-      "b": ""
-    },
-    "objGuid": "Guid(5350784694469052996, 5979683142594392222)",
-    "extraType": "Image",
-    "name": "Image",
-    "version": "0.1.0",
-    "rttiType": "Image",
-    "editable": true,
-    "_lazyUpgrateVersion": "0.1.0",
-    "extendedInfo": {
-      "isVisibleInInspector": true,
-      "expanded": true
-    },
-    "sharedMaterial": "00000000-0000-0000-0000-000000000132",
-    "segBlendMode": "Normal_v2",
-    "segRadius": 0.5,
-    "segSoftness": 0.5,
-    "blendMode": "Normal",
-    "drawMode": "Normal",
-    "filledType": 0,
-    "startPoint": 0,
-    "filledRange": 1,
-    "ellipseX": 1,
-    "ellipseY": 1,
-    "alphaNOPM": true
-  },
-  {
-    "guid": {
-      "a": "b0192e09-6b30-3d98-c5e6-71150c25cd70",
-      "b": ""
-    },
-    "objGuid": "Guid(5463018944111224297, 9241268358473683092)",
-    "extraType": "Entity",
-    "name": "hud",
-    "version": "0.1.0",
-    "rttiType": "SceneObject",
-    "expanded": true,
-    "type": "none",
-    "isAnimatorBound": false,
-    "modelGUID": "",
-    "createdEffectNodeKey": "effect_node_2D_foreground",
-    "disableSelection": false,
-    "hiddenInHierarchy": false,
-    "editorTags": []
-  },
-  {
-    "guid": {
-      "a": "71dc2fd5-1c43-f2f5-6b47-ff83c5aff574",
-      "b": ""
-    },
-    "objGuid": "Guid(5323532722689542960, 14718680470946271145)",
-    "extraType": "ScreenTransform",
-    "name": "Screen Transform",
-    "version": "0.1.0",
-    "rttiType": "ScreenTransform",
-    "editable": true,
-    "_lazyUpgrateVersion": "0.1.0",
-    "extendedInfo": {
-      "isVisibleInInspector": true,
-      "expanded": true
-    },
-    "horizontalConstraint": 2,
-    "verticalConstraint": 2,
-    "linkageScale": 0,
-    "linkageSize": 0
   },
   {
     "guid": {
@@ -2636,12 +2855,12 @@
   },
   {
     "guid": {
-      "a": "93da5e84-79ff-4f53-5dab-cd36138ad3ed",
+      "a": "9a661f00-5de6-bcbc-2c0f-d1d2927970ce",
       "b": ""
     },
-    "objGuid": "Guid(5035296442098284285, 12273570320864177538)",
+    "objGuid": "Guid(4780729436699426021, 17758761821303845540)",
     "extraType": "Entity",
-    "name": "cam",
+    "name": "gameRunning",
     "version": "0.1.0",
     "rttiType": "SceneObject",
     "expanded": true,
@@ -2655,16 +2874,16 @@
   },
   {
     "guid": {
-      "a": "86b7d555-76a4-4b34-ef74-bbfd45d6deea",
+      "a": "b2902739-e24e-3a84-a183-bf347de2dde0",
       "b": ""
     },
-    "objGuid": "Guid(5713292443169965352, 4688785060223696799)",
+    "objGuid": "Guid(4806579170370908017, 2194633807562466209)",
     "extraType": "ScreenTransform",
     "name": "Screen Transform",
     "version": "0.1.0",
     "rttiType": "ScreenTransform",
     "editable": true,
-    "_lazyUpgrateVersion": "0.1.0",
+    "_lazyUpgrateVersion": "0.0.0",
     "extendedInfo": {
       "isVisibleInInspector": true,
       "expanded": true
@@ -2676,31 +2895,60 @@
   },
   {
     "guid": {
-      "a": "cffdac27-c4d2-86fe-e4a7-c5af023aca0b",
+      "a": "0522c2f1-8e76-1f75-ec21-f943483e707e",
       "b": ""
     },
-    "objGuid": "Guid(4849406549288422430, 7830495877210444938)",
-    "extraType": "Image",
-    "name": "Image",
+    "objGuid": "Guid(4876956744227187420, 15500252627720280253)",
+    "extraType": "Entity",
+    "name": "finalSound",
     "version": "0.1.0",
-    "rttiType": "Image",
+    "rttiType": "SceneObject",
+    "expanded": true,
+    "type": "none",
+    "isAnimatorBound": false,
+    "modelGUID": "",
+    "createdEffectNodeKey": "effect_node_2D_foreground",
+    "disableSelection": false,
+    "hiddenInHierarchy": false,
+    "editorTags": []
+  },
+  {
+    "guid": {
+      "a": "b2aaf62a-9f84-8c89-655e-acbd54ac6d18",
+      "b": ""
+    },
+    "objGuid": "Guid(5747430467043162573, 11661322190035239597)",
+    "extraType": "ScreenTransform",
+    "name": "Screen Transform",
+    "version": "0.1.0",
+    "rttiType": "ScreenTransform",
     "editable": true,
-    "_lazyUpgrateVersion": "0.1.0",
+    "_lazyUpgrateVersion": "0.0.0",
     "extendedInfo": {
       "isVisibleInInspector": true,
       "expanded": true
     },
-    "sharedMaterial": "00000000-0000-0000-0000-000000000132",
-    "segBlendMode": "Normal_v2",
-    "segRadius": 0.5,
-    "segSoftness": 0.5,
-    "blendMode": "Normal",
-    "drawMode": "Normal",
-    "filledType": 0,
-    "startPoint": 0,
-    "filledRange": 1,
-    "ellipseX": 1,
-    "ellipseY": 1,
-    "alphaNOPM": true
+    "horizontalConstraint": 2,
+    "verticalConstraint": 2,
+    "linkageScale": 0,
+    "linkageSize": 0
+  },
+  {
+    "guid": {
+      "a": "89bc4b49-b6e8-6786-88a3-81f23bfd6edd",
+      "b": ""
+    },
+    "objGuid": "Guid(4768568089581543333, 3362390751812461239)",
+    "extraType": "AudioComponent",
+    "name": "Audio Player",
+    "version": "0.2.0",
+    "rttiType": "AudioComponent",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.2.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "audioRef": "42a570cf-1d54-4cad-3cd7-494822226c27"
   }
 ]

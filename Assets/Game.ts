@@ -1,3 +1,11 @@
+/* 
+gameState
+0 running
+1 gameover
+2 win
+*/
+
+export var gameState = 0
 export const gravity = -65
 export const PPU = 32
 export var jumpPressed = false  
@@ -12,6 +20,10 @@ export var conect: any
 var isTimeRunning = false
 export var time = 35
 export var substate = 3
+
+export function setGameState (x: number) {
+  gameState = x
+}
 
 export function setSubstate (x: number) {
   substate = x
@@ -94,6 +106,7 @@ export function snapX (character: any, obstacle: any, world: any) {
 @component()
 export class Game extends APJS.BasicScriptComponent {
 
+  gameRunning: any
   accumulator = 0
   lastTouchPos?: { x: number, y: number }
   buttonActionRect: any  
@@ -254,6 +267,7 @@ export class Game extends APJS.BasicScriptComponent {
   }
 
   onStart() {
+    this.gameRunning = this.getSceneObject().scene.findSceneObject('gameRunning')
     this.buttonActionRect = getElementRect(this.getSceneObject().scene.findSceneObject('buttonAction'), 0)
     this.buttonLeftRect = getElementRect(this.getSceneObject().scene.findSceneObject('buttonLeft'), 0)
     this.buttonRightRect = getElementRect(this.getSceneObject().scene.findSceneObject('buttonRight'), 0)
@@ -280,11 +294,13 @@ export class Game extends APJS.BasicScriptComponent {
     this.accumulator += deltaTime
 
     if (resetPressed) {
+      gameState = 0
       time = 35
       substate = 3
       this.accumulator = 0
       isTimeRunning = false
       conect.name = 'conect'
+      this.gameRunning.name = 'gameRunning'
       //this.onStart()
     }
 
@@ -295,9 +311,13 @@ export class Game extends APJS.BasicScriptComponent {
 
     while (this.accumulator >= fixedTime) {
 
-      if (isTimeRunning && time >= 0) {
+      if (isTimeRunning && gameState == 0) {
         time -= fixedTime
         //conect.name = Math.round(time).toString()
+        if (time <= 0) {
+          setGameState(1) 
+          this.gameRunning.name = 'gameover'
+        }
         if (time >= 27) {
           conect.name = 'time0'
         } else if (time >= 19) {

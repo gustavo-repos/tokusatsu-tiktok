@@ -1,0 +1,46 @@
+%YAML 1.1
+--- !TextureDelegate &1
+name: !<str> restart_gif
+guid: {a: 5198483090712822455, b: 17495244022972780446}
+serializedProperty:
+  __class: ScriptSerializedProperty
+  name: !<str> ""
+  guid: {a: 5085308641387126765, b: 10049213181218704560}
+  properties:
+    __class: Map
+    JSClassName: !<str> GifTextureProvider
+    fps: 12.5
+    gifAsset: {localId: 1, path: a137ed44-e685-2649-d873-dd2e488a119e--a137ed44-e685-2649-d873-dd2e488a119e.gifasset}
+    loopCount: -1
+width: 0
+height: 0
+depth: 0
+internalFormat:
+  __class: InternalFormat
+  value: RGBA8
+dataType:
+  __class: DataType
+  value: U8norm
+builtinType:
+  __class: BuiltInTextureType
+  value: NORAML
+enableMipmap: true
+filterMin:
+  __class: FilterMode
+  value: LINEAR
+filterMag:
+  __class: FilterMode
+  value: LINEAR
+filterMipmap:
+  __class: FilterMipmapMode
+  value: NONE
+wrapModeS:
+  __class: WrapMode
+  value: CLAMP
+wrapModeT:
+  __class: WrapMode
+  value: CLAMP
+wrapModeR:
+  __class: WrapMode
+  value: CLAMP
+maxAnisotropy: 1

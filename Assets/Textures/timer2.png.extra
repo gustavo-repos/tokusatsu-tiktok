@@ -1,7 +1,7 @@
 [
   {
     "guid": {
-      "a": "e7d2f9c6-cc4b-2a7e-39de-c4e127117aa9",
+      "a": "5f378d3f-62e2-6f94-ff50-dc88ebfaee8c",
       "b": ""
     },
     "extraType": "ResItemPNGImage",
@@ -12,7 +12,7 @@
     "extendedInfo": {
       "isVisibleInInspector": true,
       "hideInPanel": false,
-      "expandInPanel": false
+      "expandInPanel": true
     },
     "compressionType": 0,
     "compressQuality": 0,

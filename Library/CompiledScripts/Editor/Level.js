@@ -55,7 +55,7 @@ let Level = class Level extends APJS.BasicScriptComponent {
         }
         while (this.accumulator >= Game_1.fixedTime) {
             this.velocityX = 12 * Game_1.fixedTime;
-            if (Game_1.leftPressed && Game_1.time > 0) {
+            if (Game_1.leftPressed && Game_1.gameState == 0) {
                 for (let i = 0; i < Game_1.solids.length; i++) {
                     if ((0, Game_1.checkRectOverlap)(this.getPlayerBodyRect(), (0, Game_1.getElementRect)(Game_1.solids[i], this.velocityX))) {
                         (0, Game_1.snapX)(this.playerObj, Game_1.solids[i], this.getSceneObject());
@@ -66,7 +66,7 @@ let Level = class Level extends APJS.BasicScriptComponent {
                 }
                 (0, Game_1.move)(this.getSceneObject(), this.velocityX, 0);
             }
-            if (Game_1.rightPressed && Game_1.time > 0) {
+            if (Game_1.rightPressed && Game_1.gameState == 0) {
                 for (let i = 0; i < Game_1.solids.length; i++) {
                     if ((0, Game_1.checkRectOverlap)(this.getPlayerBodyRect(), (0, Game_1.getElementRect)(Game_1.solids[i], -this.velocityX))) {
                         (0, Game_1.snapX)(this.playerObj, Game_1.solids[i], this.getSceneObject());

@@ -1,6 +1,7 @@
 import { gravity, move, jumpPressed, checkRectOverlap, getElementRect, snapY, PPU, platforms, 
 leftPressed, rightPressed, fixedTime, conect, time, substate, setSubstate, 
-resetPressed} from "Game"
+resetPressed,
+gameState} from "Game"
 
 /* 
 state:
@@ -46,34 +47,29 @@ export class Player extends APJS.BasicScriptComponent {
   getPlayerCoreRect (nextValue: number) {
     var centerX = this.getSceneObject().getTransform().getWorldPosition().x
     var centerY = nextValue
-    // return [centerX, centerY, this.width * 0.4, this.height * 0.875]
     return [centerX, centerY, this.width * 0.55, this.height * 0.9]
   }
 
   substateHandle () {
-    if (time > 0) {
-      if (substate != 4) {
-        if (this.state == 0) {
-          if (leftPressed || rightPressed) {
-            setSubstate(1)
-          } else {
-            setSubstate(0)
-          }
+    
+    if (substate != 4) {
+      if (this.state == 0) {
+        if (leftPressed || rightPressed) {
+          if (gameState == 0) setSubstate(1)
         } else {
-          if (this.velocityY >= 0) {
-            setSubstate(2)
-          } else {
-            setSubstate(3)
-          }
+          setSubstate(0)
         }
+      } else {
+        if (this.velocityY >= 0) { setSubstate(2) } else { setSubstate(3) }
       }
+    }
 
+    if (gameState == 0) {
       if (leftPressed) {
         this.playerSprite.getComponent('Image').flipX = true
       } else if (rightPressed) {
         this.playerSprite.getComponent('Image').flipX = false
       }
-
     }
   }
 
@@ -137,7 +133,7 @@ export class Player extends APJS.BasicScriptComponent {
 
       if (this.velocityY < -30) this.velocityY = -30
 
-      if (jumpPressed && this.state == 0 && !this.jumpCycle && time > 0) {
+      if (jumpPressed && this.state == 0 && !this.jumpCycle && gameState == 0) {
         this.velocityY = this.jumpPower
         this.jumpCycle = true
         this.state = 1 

@@ -54,29 +54,29 @@ let Player = class Player extends APJS.BasicScriptComponent {
     getPlayerCoreRect(nextValue) {
         var centerX = this.getSceneObject().getTransform().getWorldPosition().x;
         var centerY = nextValue;
-        // return [centerX, centerY, this.width * 0.4, this.height * 0.875]
         return [centerX, centerY, this.width * 0.55, this.height * 0.9];
     }
     substateHandle() {
-        if (Game_1.time > 0) {
-            if (Game_1.substate != 4) {
-                if (this.state == 0) {
-                    if (Game_1.leftPressed || Game_1.rightPressed) {
+        if (Game_1.substate != 4) {
+            if (this.state == 0) {
+                if (Game_1.leftPressed || Game_1.rightPressed) {
+                    if (Game_1.gameState == 0)
                         (0, Game_1.setSubstate)(1);
-                    }
-                    else {
-                        (0, Game_1.setSubstate)(0);
-                    }
                 }
                 else {
-                    if (this.velocityY >= 0) {
-                        (0, Game_1.setSubstate)(2);
-                    }
-                    else {
-                        (0, Game_1.setSubstate)(3);
-                    }
+                    (0, Game_1.setSubstate)(0);
                 }
             }
+            else {
+                if (this.velocityY >= 0) {
+                    (0, Game_1.setSubstate)(2);
+                }
+                else {
+                    (0, Game_1.setSubstate)(3);
+                }
+            }
+        }
+        if (Game_1.gameState == 0) {
             if (Game_1.leftPressed) {
                 this.playerSprite.getComponent('Image').flipX = true;
             }
@@ -140,7 +140,7 @@ let Player = class Player extends APJS.BasicScriptComponent {
                 this.velocityY += Game_1.gravity * Game_1.fixedTime;
             if (this.velocityY < -30)
                 this.velocityY = -30;
-            if (Game_1.jumpPressed && this.state == 0 && !this.jumpCycle && Game_1.time > 0) {
+            if (Game_1.jumpPressed && this.state == 0 && !this.jumpCycle && Game_1.gameState == 0) {
                 this.velocityY = this.jumpPower;
                 this.jumpCycle = true;
                 this.state = 1;

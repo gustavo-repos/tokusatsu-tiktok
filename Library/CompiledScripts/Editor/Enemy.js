@@ -33,10 +33,8 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
         this.spawnInterval = 3;
         this.playerAttackingTimer = 0;
         this.playerAttackingInterval = 0.4;
-        // time = 35
-        //startTimer = false
-        // spawnSpots = [[117 / PPU, 104 / PPU], [396 / PPU, 104 / PPU], [-396 / PPU, 104 / PPU], [-117 / PPU, 104 / PPU], [-256 / PPU, 333 / PPU], [256 / PPU, 333 / PPU]]
-        this.spawnSpots = [[117 / Game_1.PPU, 114 / Game_1.PPU], [396 / Game_1.PPU, 114 / Game_1.PPU], [-396 / Game_1.PPU, 114 / Game_1.PPU], [-117 / Game_1.PPU, 114 / Game_1.PPU], [-256 / Game_1.PPU, 343 / Game_1.PPU], [256 / Game_1.PPU, 343 / Game_1.PPU]];
+        //spawnSpots = [[117 / PPU, 114 / PPU], [396 / PPU, 114 / PPU], [-396 / PPU, 114 / PPU], [-117 / PPU, 114 / PPU], [-256 / PPU, 343 / PPU], [256 / PPU, 343 / PPU]]
+        this.spawnSpots = [[117 / Game_1.PPU, 114 / Game_1.PPU], [396 / Game_1.PPU, 114 / Game_1.PPU]];
         this.enemyWasHit = false;
         this.points = 0;
     }
@@ -59,6 +57,7 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
         }
     }
     onStart() {
+        this.gameRunning = this.getSceneObject().scene.findSceneObject('gameRunning');
         this.playerObj = this.getSceneObject().scene.findSceneObject('player');
         this.transform = this.playerObj.getComponent('ScreenTransform');
         this.playerWidth = this.transform.sizeDelta.x / Game_1.PPU;
@@ -78,6 +77,7 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
             this.enemyWasHit = false;
             this.points = 0;
             this.scenePoints.name = 'points';
+            this.gameRunning.name = 'gameRunning';
         }
         while (this.accumulator >= Game_1.fixedTime) {
             this.spawnTimer += Game_1.fixedTime;
@@ -98,41 +98,35 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
                 //this.scenePoints.name = this.points.toString()
                 if (this.points == 3) {
                     this.scenePoints.name = 'energybar1';
+                    (0, Game_1.setGameState)(2);
+                    this.gameRunning.name = 'win';
                 }
                 else if (this.points == 6) {
                     this.scenePoints.name = 'energybar2';
                 }
                 else if (this.points == 9) {
                     this.scenePoints.name = 'energybar3';
+                    (0, Game_1.addTime)(15);
                 }
                 else if (this.points == 12) {
                     this.scenePoints.name = 'energybar4';
+                    (0, Game_1.addTime)(10);
                 }
                 else if (this.points == 15) {
                     this.scenePoints.name = 'energybar5';
                 }
                 else if (this.points == 18) {
                     this.scenePoints.name = 'energybar6';
+                    (0, Game_1.setGameState)(2);
+                    this.gameRunning.name = 'win';
+                    // KO!
                 }
                 this.enemyScene.name = 'hit';
                 this.enemyWasHit = true;
                 this.spawnTimer = 1;
                 this.spawnInterval = 3;
-                if (this.points == 8) {
-                    (0, Game_1.addTime)(15);
-                    // adicionar visual tempo aumentando!
-                }
-                else if (this.points == 12) {
-                    (0, Game_1.addTime)(10);
-                    // adicionar visual tempo aumentando!
-                }
-                else if (this.points == 18) {
-                    // adiocionar o KO!
-                }
             }
-            if (this.spawnTimer >= this.spawnInterval) {
-                //console.log(this.spawnTimer, this.spawnInterval)
-                // this.currentSpot = this.getRandomItem(this.spawnSpots)
+            if (this.spawnTimer >= this.spawnInterval && Game_1.gameState == 0) {
                 this.setCurrentSpot(this.spawnSpots);
                 (0, Game_1.teleport)(this.getSceneObject(), this.currentSpot[0], this.currentSpot[1]);
                 this.spawnTimer = 0;
@@ -150,7 +144,6 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
                     this.spawnInterval = 1.6;
                 }
                 else if (this.points == 25) {
-                    // adiocionar o KO!
                 }
             }
             this.accumulator -= Game_1.fixedTime;

@@ -1,0 +1,21 @@
+[
+  {
+    "guid": {
+      "a": "a137ed44-e685-2649-d873-dd2e488a119e",
+      "b": ""
+    },
+    "extraType": "ResItemGif",
+    "name": "restart_gif",
+    "version": "0.1.0",
+    "rttiType": "GifAsset",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "objGuid": "",
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\restart button\\restart_gif.gif",
+    "references": []
+  }
+]
