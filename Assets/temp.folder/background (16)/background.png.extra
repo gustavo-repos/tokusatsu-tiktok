@@ -1,0 +1,32 @@
+[
+  {
+    "guid": {
+      "a": "c3fa1ddb-45c8-8720-ba20-bc3e8265e8cb",
+      "b": ""
+    },
+    "extraType": "ResItemPNGImage",
+    "name": "background",
+    "version": "0.2.0",
+    "rttiType": "Texture",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "compressionType": 0,
+    "compressQuality": 0,
+    "compressMaxResolution": 512,
+    "enableMipmap": false,
+    "filterMin": 1,
+    "filterMag": 1,
+    "filterMipmap": 0,
+    "wrapModeS": 0,
+    "wrapModeT": 0,
+    "wrapModeR": 0,
+    "premultiplyAlpha": false,
+    "objGuid": "",
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\background.png",
+    "references": []
+  }
+]

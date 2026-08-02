@@ -1,0 +1,46 @@
+%YAML 1.1
+--- !TextureDelegate &1
+name: !<str> explosion
+guid: {a: 4875206160891949200, b: 4382798840060254611}
+serializedProperty:
+  __class: ScriptSerializedProperty
+  name: !<str> ""
+  guid: {a: 4770361226318495386, b: 10160436765359552397}
+  properties:
+    __class: Map
+    JSClassName: !<str> GifTextureProvider
+    fps: 8.333333333333334
+    gifAsset: {localId: 1, path: 7b87f9d7-e78f-7d84-8cdf-aa3913d6939b--7b87f9d7-e78f-7d84-8cdf-aa3913d6939b.gifasset}
+    loopCount: -1
+width: 80
+height: 80
+depth: 1
+internalFormat:
+  __class: InternalFormat
+  value: RGBA8
+dataType:
+  __class: DataType
+  value: U8norm
+builtinType:
+  __class: BuiltInTextureType
+  value: NORAML
+enableMipmap: true
+filterMin:
+  __class: FilterMode
+  value: LINEAR
+filterMag:
+  __class: FilterMode
+  value: LINEAR
+filterMipmap:
+  __class: FilterMipmapMode
+  value: NONE
+wrapModeS:
+  __class: WrapMode
+  value: CLAMP
+wrapModeT:
+  __class: WrapMode
+  value: CLAMP
+wrapModeR:
+  __class: WrapMode
+  value: CLAMP
+maxAnisotropy: 1

@@ -71,6 +71,7 @@ export class Enemy extends APJS.BasicScriptComponent {
       this.points = 0
       this.scenePoints.name = 'points'
       this.gameRunning.name = 'gameRunning'
+      this.enemyScene.name = 'enemy'
     }
     
 
@@ -99,6 +100,7 @@ export class Enemy extends APJS.BasicScriptComponent {
           this.scenePoints.name = 'energybar1'
           setGameState(2)
           this.gameRunning.name = 'win'
+          this.enemyScene.name = 'enemy'
         } else if (this.points == 6) {
           this.scenePoints.name = 'energybar2'
         } else if (this.points == 9) {
@@ -112,6 +114,7 @@ export class Enemy extends APJS.BasicScriptComponent {
         } else if (this.points == 18) {
           this.scenePoints.name = 'energybar6'
           setGameState(2)
+          this.enemyScene.name = 'enemy'
           this.gameRunning.name = 'win'
           // KO!
         }

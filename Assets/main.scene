@@ -993,7 +993,7 @@ entities:
         letters:
           - __class: Letter
             name: !<str> ""
-            guid: {a: 5243160974918672996, b: 13290664556326540959}
+            guid: {a: 5715850744325271579, b: 4095082011413480368}
             utf8: !<str> 0
             initialPosition: {x: -370.0868, y: 102.7952}
             position: {x: -370.0868, y: 102.7952}
@@ -1872,7 +1872,7 @@ entities:
           __class: LightProbeBlendMode
           value: OFF
         entirePingPong: false
-        texture: {localId: 1, path: 263cce44-b944-197d-7f3e-a0ce7f106bbf--263cce44-b944-197d-7f3e-a0ce7f106bbf.png}
+        texture: {localId: 1, path: a7ae6e6b-3acc-168d-ef9f-99bd63b0352f--a7ae6e6b-3acc-168d-ef9f-99bd63b0352f.png}
         opacity: 1
         color: {r: 1, g: 1, b: 1, a: 1}
         size: {x: 10, y: 10}
@@ -1898,64 +1898,6 @@ entities:
           _startPoint: 0
         batchingEnabled: false
         reservedField: {x: -1, y: -1, z: -1, w: -1}
-    layer: 0
-  - __class: Entity
-    name: !<str> Timeline
-    guid: {a: 5762813953718385082, b: 14977400799028044687}
-    scene: {localId: 1}
-    selfvisible: true
-    components:
-      - {localId: 4}
-      - __class: DynamicComponent
-        name: !<str> TimelinePlayer
-        guid: {a: 5263573331428209697, b: 141726458201392777}
-        serializedProperty:
-          __class: ScriptSerializedProperty
-          name: !<str> ""
-          guid: {a: 4811518252913302393, b: 13608096163384357307}
-          properties:
-            __class: Map
-            autoPlay: true
-            initialValues:
-              __class: ScriptCustomObject
-              name: !<str> ""
-              guid: {a: 5281057396994042161, b: 9688716165589017753}
-              serializedProperty:
-                __class: ScriptSerializedProperty
-                name: !<str> ""
-                guid: {a: 5123233562927785503, b: 7217963229233132991}
-                properties:
-                  __class: Map
-                  __scriptClassName: !<str> TimelineInitialValues
-            isAudioMobilePreview: false
-            m_playMode: 0
-            sceneBindings:
-              __class: ScriptCustomObject
-              name: !<str> ""
-              guid: {a: 4619616393380393956, b: 15125223204255487639}
-              serializedProperty:
-                __class: ScriptSerializedProperty
-                name: !<str> ""
-                guid: {a: 4959360092956234571, b: 15673050616367476412}
-                properties:
-                  __class: Map
-                  __scriptClassName: !<str> SceneBindings
-            timelineAsset: {localId: 1, path: 28de3e91-8597-3470-3984-6e8487b3c7c7}
-        enabled: true
-        className: !<str> TimelinePlayer
-      - __class: Animator
-        name: !<str> ""
-        guid: {a: 4759475313030750715, b: 3776557337341484173}
-        enabled: true
-        runningWrapModes:
-          __class: Map
-          Guid(4866849253140095348, 2416567522494897303): 0
-        cullingMode:
-          __class: AnimatorCullingMode
-          value: CULL_UPDATE_PROPERTY
-        seekModeEnabled: false
-        version: 2
-        skipUpdateInSeekMode: false
     layer: 0
   - __class: Entity
     name: !<str> gameRunning
@@ -2030,18 +1972,6 @@ localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
 children:
   - {localId: 2}
-  - {localId: 4}
-mobility:
-  __class: Mobility
-  value: Dynamic
---- !Transform &4
-name: !<str> ""
-guid: {a: 4652742424617242536, b: 16705668744762344867}
-enabled: true
-localPosition: {x: 0, y: 0, z: 0}
-localScale: {x: 1, y: 1, z: 1}
-localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 3}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2542,7 +2472,7 @@ mobility:
   __class: Mobility
   value: Dynamic
 anchoredPosition: {x: 0, y: 320}
-sizeDelta: {x: 404, y: 98}
+sizeDelta: {x: 332, y: 110}
 pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32

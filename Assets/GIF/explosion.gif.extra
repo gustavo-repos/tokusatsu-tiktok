@@ -1,0 +1,21 @@
+[
+  {
+    "guid": {
+      "a": "7b87f9d7-e78f-7d84-8cdf-aa3913d6939b",
+      "b": ""
+    },
+    "extraType": "ResItemGif",
+    "name": "explosion",
+    "version": "0.1.0",
+    "rttiType": "GifAsset",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "objGuid": "",
+    "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\explosion\\v2\\explosion.gif",
+    "references": []
+  }
+]

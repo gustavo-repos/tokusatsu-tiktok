@@ -1,0 +1,26 @@
+[
+  {
+    "guid": {
+      "a": "7554eb19-a098-7b27-1012-5c34b2ed2d21",
+      "b": ""
+    },
+    "extraType": "ResItemGifTexture",
+    "name": "explosion",
+    "version": "0.1.0",
+    "rttiType": "Texture",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "objGuid": "",
+    "resourceFilePath": "C:\\Users\\gbroc\\AppData\\Local\\Effect House\\Plugins\\Gif@2.0.30\\resources\\builtinJSAssets\\default.gifTex",
+    "references": [
+      {
+        "guid": "7b87f9d7-e78f-7d84-8cdf-aa3913d6939b",
+        "propertyName": "gifAsset"
+      }
+    ]
+  }
+]

@@ -711,87 +711,6 @@
   },
   {
     "guid": {
-      "a": "f79b49ed-0007-18a6-9f16-0c11f307309a",
-      "b": ""
-    },
-    "objGuid": "Guid(5762813953718385082, 14977400799028044687)",
-    "extraType": "Entity",
-    "name": "Timeline",
-    "version": "0.1.0",
-    "rttiType": "SceneObject",
-    "expanded": true,
-    "type": "none",
-    "isAnimatorBound": false,
-    "modelGUID": "",
-    "createdEffectNodeKey": "effect_node_utility",
-    "disableSelection": false,
-    "hiddenInHierarchy": false,
-    "editorTags": []
-  },
-  {
-    "guid": {
-      "a": "9dee6c85-7af6-f463-ac0c-0edbe900273f",
-      "b": ""
-    },
-    "objGuid": "Guid(4652742424617242536, 16705668744762344867)",
-    "extraType": "Transform",
-    "name": "Transform",
-    "version": "0.1.0",
-    "rttiType": "Transform",
-    "editable": true,
-    "_lazyUpgrateVersion": "0.0.0",
-    "extendedInfo": {
-      "isVisibleInInspector": true,
-      "expanded": true
-    },
-    "eulerAngle": [
-      0,
-      0,
-      0
-    ],
-    "linkage": 0
-  },
-  {
-    "guid": {
-      "a": "647448a7-19a3-d3f0-33b0-d82a6b050f83",
-      "b": ""
-    },
-    "objGuid": "Guid(5263573331428209697, 141726458201392777)",
-    "extraType": "TimelinePlayer",
-    "name": "Timeline",
-    "version": "0.2.0",
-    "rttiType": "TimelinePlayer",
-    "editable": true,
-    "_lazyUpgrateVersion": "0.2.0",
-    "extendedInfo": {
-      "isVisibleInInspector": true,
-      "expanded": true
-    },
-    "tracksWithMissingTarget": [],
-    "bindings": []
-  },
-  {
-    "guid": {
-      "a": "0d69e7c8-a2ee-a3ae-7409-47f792c3bcc3",
-      "b": ""
-    },
-    "objGuid": "Guid(4759475313030750715, 3776557337341484173)",
-    "extraType": "Animator",
-    "name": "Animation",
-    "version": "0.2.0",
-    "rttiType": "Animator",
-    "editable": true,
-    "_lazyUpgrateVersion": "0.0.0",
-    "extendedInfo": {
-      "isVisibleInInspector": false,
-      "expanded": false
-    },
-    "runningAnimazIdx": -1,
-    "animationsListEditor": [],
-    "autoPlay": true
-  },
-  {
-    "guid": {
       "a": "008d727d-2f2f-fb80-fcf5-2337183e4d8d",
       "b": ""
     },
@@ -1006,7 +925,7 @@
     "version": "0.1.0",
     "rttiType": "ScreenTransform",
     "editable": true,
-    "_lazyUpgrateVersion": "0.0.0",
+    "_lazyUpgrateVersion": "0.1.0",
     "extendedInfo": {
       "isVisibleInInspector": true,
       "expanded": true
