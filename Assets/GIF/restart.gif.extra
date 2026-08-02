@@ -12,7 +12,7 @@
     "extendedInfo": {
       "isVisibleInInspector": true,
       "hideInPanel": false,
-      "expandInPanel": false
+      "expandInPanel": true
     },
     "objGuid": "",
     "resourceFilePath": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\restart.gif",

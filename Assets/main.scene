@@ -76,7 +76,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 7}
+      - {localId: 4}
       - __class: EffectNode
         name: !<str> ""
         guid: {a: 5179512159411564407, b: 1816014713895482537}
@@ -100,7 +100,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 8}
+      - {localId: 5}
       - __class: Camera
         name: !<str> ""
         guid: {a: 4860389329801242506, b: 11742810738154098093}
@@ -141,7 +141,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 9}
+      - {localId: 6}
       - __class: DynamicComponent
         name: !<str> ""
         guid: {a: 4753261776438865189, b: 5359631064809737651}
@@ -154,7 +154,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 30}
+      - {localId: 27}
       - __class: DynamicComponent
         name: !<str> ""
         guid: {a: 5308798257118479979, b: 5540792121267704742}
@@ -167,7 +167,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 10}
+      - {localId: 7}
       - __class: DynamicComponent
         name: !<str> ""
         guid: {a: 4789947173379879193, b: 12588764304601491647}
@@ -180,7 +180,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 15}
+      - {localId: 12}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 5304750919099680299, b: 9382801189077179832}
@@ -226,7 +226,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 16}
+      - {localId: 13}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 4743431548412150227, b: 1896593103245873033}
@@ -272,7 +272,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 17}
+      - {localId: 14}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 5578574220674581337, b: 14256414699892512145}
@@ -318,7 +318,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 21}
+      - {localId: 18}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 4781062826596309745, b: 10697487470343274134}
@@ -364,7 +364,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 22}
+      - {localId: 19}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 4619151084457168078, b: 11421144444545708418}
@@ -410,7 +410,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 24}
+      - {localId: 21}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 4918149476501256780, b: 12266725931849093292}
@@ -456,7 +456,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 31}
+      - {localId: 28}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 4661349979996608857, b: 10046916648553032359}
@@ -502,7 +502,7 @@ entities:
     scene: {localId: 1}
     selfvisible: false
     components:
-      - {localId: 34}
+      - {localId: 31}
       - __class: Text
         name: !<str> ""
         guid: {a: 5576148866695085322, b: 17723773357375490480}
@@ -542,12 +542,12 @@ entities:
           __class: LightProbeBlendMode
           value: OFF
         entirePingPong: false
-        activeTextStyle: {localId: 41}
+        activeTextStyle: {localId: 38}
         str: !<str> ""
         richStr: !<str> ""
-        typeSettingParam: {localId: 44}
-        canvas: {localId: 45}
-        globalBackground: {localId: 46}
+        typeSettingParam: {localId: 41}
+        canvas: {localId: 42}
+        globalBackground: {localId: 43}
         textLocale:
           __class: TextLocale
           value: RTLLocale
@@ -592,7 +592,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 35}
+      - {localId: 32}
     layer: 0
   - __class: Entity
     name: !<str> jumpSoundOff
@@ -600,7 +600,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 32}
+      - {localId: 29}
       - __class: DynamicComponent
         name: !<str> AudioComponent
         guid: {a: 5568520672470226878, b: 17523560649993808277}
@@ -626,7 +626,7 @@ entities:
     scene: {localId: 1}
     selfvisible: false
     components:
-      - {localId: 11}
+      - {localId: 8}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 5164794486741972361, b: 13169084470192420013}
@@ -639,7 +639,7 @@ entities:
           __class: LightProbeBlendMode
           value: OFF
         entirePingPong: false
-        texture: {localId: 1, path: 211ea076-30f2-007c-6a45-adb98a518113--211ea076-30f2-007c-6a45-adb98a518113.png}
+        texture: {localId: 1, path: 0e4b9e66-6113-227e-23c0-787ceb78c558--0e4b9e66-6113-227e-23c0-787ceb78c558.png}
         opacity: 1
         color: {r: 0.55, g: 0.55, b: 0.55, a: 1}
         size: {x: 10, y: 10}
@@ -672,7 +672,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 18}
+      - {localId: 15}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 5733898320939786104, b: 5224120970673051033}
@@ -718,7 +718,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 19}
+      - {localId: 16}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 4762048792340468011, b: 2556890614771902342}
@@ -764,7 +764,7 @@ entities:
     scene: {localId: 1}
     selfvisible: false
     components:
-      - {localId: 13}
+      - {localId: 10}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 5464735525688910239, b: 8327825311834450078}
@@ -810,7 +810,7 @@ entities:
     scene: {localId: 1}
     selfvisible: false
     components:
-      - {localId: 14}
+      - {localId: 11}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 5166309394953455296, b: 13395853285651125681}
@@ -856,7 +856,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 20}
+      - {localId: 17}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 4947984676355533579, b: 9770039232725210293}
@@ -925,7 +925,7 @@ entities:
     scene: {localId: 1}
     selfvisible: false
     components:
-      - {localId: 36}
+      - {localId: 33}
       - __class: Text
         name: !<str> ""
         guid: {a: 5631401115819563297, b: 15929641405994617011}
@@ -965,7 +965,7 @@ entities:
           __class: LightProbeBlendMode
           value: OFF
         entirePingPong: false
-        activeTextStyle: {localId: 47}
+        activeTextStyle: {localId: 44}
         letters:
           - __class: Letter
             name: !<str> ""
@@ -978,12 +978,12 @@ entities:
             anchor: {x: 0, y: 0}
             extraMatrix: {__class: Matrix4x4f, values: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
             instanceColor: {r: 1, g: 1, b: 1, a: 1}
-            letterStyle: {localId: 47}
+            letterStyle: {localId: 44}
         str: !<str> 0
         richStr: !<str> 0
-        typeSettingParam: {localId: 50}
-        canvas: {localId: 51}
-        globalBackground: {localId: 52}
+        typeSettingParam: {localId: 47}
+        canvas: {localId: 48}
+        globalBackground: {localId: 49}
         textLocale:
           __class: TextLocale
           value: RTLLocale
@@ -1028,7 +1028,7 @@ entities:
     scene: {localId: 1}
     selfvisible: false
     components:
-      - {localId: 37}
+      - {localId: 34}
       - __class: Text
         name: !<str> ""
         guid: {a: 4963216953027175917, b: 4438069404907536770}
@@ -1068,7 +1068,7 @@ entities:
           __class: LightProbeBlendMode
           value: OFF
         entirePingPong: false
-        activeTextStyle: {localId: 53}
+        activeTextStyle: {localId: 50}
         letters:
           - __class: Letter
             name: !<str> ""
@@ -1081,7 +1081,7 @@ entities:
             anchor: {x: 0, y: 0}
             extraMatrix: {__class: Matrix4x4f, values: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
             instanceColor: {r: 1, g: 1, b: 1, a: 1}
-            letterStyle: {localId: 53}
+            letterStyle: {localId: 50}
           - __class: Letter
             name: !<str> ""
             guid: {a: 5758678262628155953, b: 10381451962933553567}
@@ -1093,7 +1093,7 @@ entities:
             anchor: {x: 0, y: 0}
             extraMatrix: {__class: Matrix4x4f, values: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
             instanceColor: {r: 1, g: 1, b: 1, a: 1}
-            letterStyle: {localId: 53}
+            letterStyle: {localId: 50}
           - __class: Letter
             name: !<str> ""
             guid: {a: 5261803232922506276, b: 13153832045074022067}
@@ -1105,7 +1105,7 @@ entities:
             anchor: {x: 0, y: 0}
             extraMatrix: {__class: Matrix4x4f, values: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
             instanceColor: {r: 1, g: 1, b: 1, a: 1}
-            letterStyle: {localId: 53}
+            letterStyle: {localId: 50}
           - __class: Letter
             name: !<str> ""
             guid: {a: 4744210049114331150, b: 9808951220518682767}
@@ -1117,7 +1117,7 @@ entities:
             anchor: {x: 0, y: 0}
             extraMatrix: {__class: Matrix4x4f, values: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
             instanceColor: {r: 1, g: 1, b: 1, a: 1}
-            letterStyle: {localId: 53}
+            letterStyle: {localId: 50}
           - __class: Letter
             name: !<str> ""
             guid: {a: 4686296086188092501, b: 8162260334887867286}
@@ -1129,7 +1129,7 @@ entities:
             anchor: {x: 0, y: 0}
             extraMatrix: {__class: Matrix4x4f, values: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
             instanceColor: {r: 1, g: 1, b: 1, a: 1}
-            letterStyle: {localId: 53}
+            letterStyle: {localId: 50}
           - __class: Letter
             name: !<str> ""
             guid: {a: 4684976167549659172, b: 462317624935360897}
@@ -1141,12 +1141,12 @@ entities:
             anchor: {x: 0, y: 0}
             extraMatrix: {__class: Matrix4x4f, values: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
             instanceColor: {r: 1, g: 1, b: 1, a: 1}
-            letterStyle: {localId: 53}
+            letterStyle: {localId: 50}
         str: !<str> pontos
         richStr: !<str> pontos
-        typeSettingParam: {localId: 56}
-        canvas: {localId: 57}
-        globalBackground: {localId: 58}
+        typeSettingParam: {localId: 53}
+        canvas: {localId: 54}
+        globalBackground: {localId: 55}
         textLocale:
           __class: TextLocale
           value: RTLLocale
@@ -1191,7 +1191,7 @@ entities:
     scene: {localId: 1}
     selfvisible: false
     components:
-      - {localId: 23}
+      - {localId: 20}
       - __class: Text
         name: !<str> ""
         guid: {a: 5580037062203788724, b: 16550869268570618505}
@@ -1231,7 +1231,7 @@ entities:
           __class: LightProbeBlendMode
           value: OFF
         entirePingPong: false
-        activeTextStyle: {localId: 59}
+        activeTextStyle: {localId: 56}
         letters:
           - __class: Letter
             name: !<str> ""
@@ -1244,7 +1244,7 @@ entities:
             anchor: {x: 0, y: 0}
             extraMatrix: {__class: Matrix4x4f, values: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
             instanceColor: {r: 1, g: 1, b: 1, a: 1}
-            letterStyle: {localId: 59}
+            letterStyle: {localId: 56}
           - __class: Letter
             name: !<str> ""
             guid: {a: 5081068279033570769, b: 862626077869737876}
@@ -1256,7 +1256,7 @@ entities:
             anchor: {x: 0, y: 0}
             extraMatrix: {__class: Matrix4x4f, values: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
             instanceColor: {r: 1, g: 1, b: 1, a: 1}
-            letterStyle: {localId: 59}
+            letterStyle: {localId: 56}
           - __class: Letter
             name: !<str> ""
             guid: {a: 4742428355925924224, b: 5965718571656795544}
@@ -1268,7 +1268,7 @@ entities:
             anchor: {x: 0, y: 0}
             extraMatrix: {__class: Matrix4x4f, values: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
             instanceColor: {r: 1, g: 1, b: 1, a: 1}
-            letterStyle: {localId: 59}
+            letterStyle: {localId: 56}
           - __class: Letter
             name: !<str> ""
             guid: {a: 5297255990046655582, b: 9738306125605453991}
@@ -1280,7 +1280,7 @@ entities:
             anchor: {x: 0, y: 0}
             extraMatrix: {__class: Matrix4x4f, values: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
             instanceColor: {r: 1, g: 1, b: 1, a: 1}
-            letterStyle: {localId: 59}
+            letterStyle: {localId: 56}
           - __class: Letter
             name: !<str> ""
             guid: {a: 4662072433407179662, b: 4343251165422702754}
@@ -1292,12 +1292,12 @@ entities:
             anchor: {x: 0, y: 0}
             extraMatrix: {__class: Matrix4x4f, values: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]}
             instanceColor: {r: 1, g: 1, b: 1, a: 1}
-            letterStyle: {localId: 59}
+            letterStyle: {localId: 56}
         str: !<str> tempo
         richStr: !<str> tempo
-        typeSettingParam: {localId: 62}
-        canvas: {localId: 63}
-        globalBackground: {localId: 64}
+        typeSettingParam: {localId: 59}
+        canvas: {localId: 60}
+        globalBackground: {localId: 61}
         textLocale:
           __class: TextLocale
           value: RTLLocale
@@ -1342,7 +1342,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 25}
+      - {localId: 22}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 4958776096186339648, b: 16515489667721940159}
@@ -1388,7 +1388,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 29}
+      - {localId: 26}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 4717355574986828590, b: 5688131794368666034}
@@ -1434,7 +1434,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 28}
+      - {localId: 25}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 5350784694469052996, b: 5979683142594392222}
@@ -1480,7 +1480,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 27}
+      - {localId: 24}
     layer: 0
   - __class: Entity
     name: !<str> Screen Image
@@ -1488,7 +1488,7 @@ entities:
     scene: {localId: 1}
     selfvisible: false
     components:
-      - {localId: 38}
+      - {localId: 35}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 5024472960289209507, b: 4967178106576392122}
@@ -1534,7 +1534,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 26}
+      - {localId: 23}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 4849406549288422430, b: 7830495877210444938}
@@ -1580,7 +1580,7 @@ entities:
     scene: {localId: 1}
     selfvisible: false
     components:
-      - {localId: 33}
+      - {localId: 30}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 4895443903464913198, b: 7744235206997090690}
@@ -1626,7 +1626,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 39}
+      - {localId: 36}
     layer: 0
   - __class: Entity
     name: !<str> finalSound
@@ -1634,7 +1634,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 40}
+      - {localId: 37}
       - __class: DynamicComponent
         name: !<str> AudioComponent
         guid: {a: 4768568089581543333, b: 3362390751812461239}
@@ -1660,7 +1660,7 @@ entities:
     scene: {localId: 1}
     selfvisible: true
     components:
-      - {localId: 12}
+      - {localId: 9}
       - __class: ImageRenderer
         name: !<str> ""
         guid: {a: 5651587330065527629, b: 13308797269447138732}
@@ -1742,7 +1742,7 @@ children:
 mobility:
   __class: Mobility
   value: Dynamic
---- !Transform &7
+--- !Transform &4
 name: !<str> ""
 guid: {a: 4619002350393818366, b: 4696691284767234215}
 enabled: true
@@ -1750,49 +1750,49 @@ localPosition: {x: 0, y: 0, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
 children:
-  - {localId: 8}
+  - {localId: 5}
 mobility:
   __class: Mobility
   value: Dynamic
---- !Transform &8
+--- !Transform &5
 name: !<str> ""
 guid: {a: 4960682689134011367, b: 15883833711964902054}
 enabled: true
 localPosition: {x: 0, y: 0, z: 40}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 7}
+parent: {localId: 4}
 children:
-  - {localId: 9}
+  - {localId: 6}
+  - {localId: 30}
+  - {localId: 31}
+  - {localId: 32}
   - {localId: 33}
   - {localId: 34}
   - {localId: 35}
   - {localId: 36}
   - {localId: 37}
-  - {localId: 38}
-  - {localId: 39}
-  - {localId: 40}
 mobility:
   __class: Mobility
   value: Dynamic
---- !ScreenTransform &9
+--- !ScreenTransform &6
 name: !<str> ""
 guid: {a: 5269216579965796706, b: 7379059567495009974}
 enabled: true
 localPosition: {x: 0, y: 0, z: -40}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 8}
+parent: {localId: 5}
 children:
-  - {localId: 10}
+  - {localId: 7}
+  - {localId: 18}
+  - {localId: 19}
+  - {localId: 20}
   - {localId: 21}
   - {localId: 22}
   - {localId: 23}
   - {localId: 24}
-  - {localId: 25}
-  - {localId: 26}
   - {localId: 27}
-  - {localId: 30}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -1802,24 +1802,24 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &10
+--- !ScreenTransform &7
 name: !<str> ""
 guid: {a: 4654773068911655943, b: 15001424100289205391}
 enabled: true
 localPosition: {x: 0, y: 0, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 9}
+parent: {localId: 6}
 children:
+  - {localId: 8}
+  - {localId: 10}
   - {localId: 11}
+  - {localId: 12}
   - {localId: 13}
   - {localId: 14}
   - {localId: 15}
   - {localId: 16}
   - {localId: 17}
-  - {localId: 18}
-  - {localId: 19}
-  - {localId: 20}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -1829,16 +1829,16 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &11
+--- !ScreenTransform &8
 name: !<str> ""
 guid: {a: 4925558708625245955, b: 3355290396927761073}
 enabled: true
 localPosition: {x: -0.2525291, y: 0, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 10}
+parent: {localId: 7}
 children:
-  - {localId: 12}
+  - {localId: 9}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -1848,14 +1848,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &12
+--- !ScreenTransform &9
 name: !<str> ""
 guid: {a: 5617676795542940450, b: 16942580022583343767}
 enabled: true
 localPosition: {x: 0.03282928, y: 8.112122, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 11}
+parent: {localId: 8}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -1865,14 +1865,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &13
+--- !ScreenTransform &10
 name: !<str> ""
 guid: {a: 5613761158327072298, b: 10671217050699751565}
 enabled: true
 localPosition: {x: 8, y: 4.6875, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 10}
+parent: {localId: 7}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -1882,14 +1882,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &14
+--- !ScreenTransform &11
 name: !<str> ""
 guid: {a: 5503885230814079112, b: 17652960217739638922}
 enabled: true
 localPosition: {x: -8, y: 4.6875, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 10}
+parent: {localId: 7}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -1899,14 +1899,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &15
+--- !ScreenTransform &12
 name: !<str> ""
 guid: {a: 5282148652107027760, b: 18421962801260601484}
 enabled: true
 localPosition: {x: 0, y: -4.0625, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 10}
+parent: {localId: 7}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -1916,14 +1916,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &16
+--- !ScreenTransform &13
 name: !<str> ""
 guid: {a: 4812445798424311393, b: 4080499101558076326}
 enabled: true
 localPosition: {x: 17.34375, y: 8.6875, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 10}
+parent: {localId: 7}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -1933,14 +1933,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &17
+--- !ScreenTransform &14
 name: !<str> ""
 guid: {a: 4769394058436803562, b: 16503252304127183783}
 enabled: true
 localPosition: {x: -17.34375, y: 8.6875, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 10}
+parent: {localId: 7}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -1950,14 +1950,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &18
+--- !ScreenTransform &15
 name: !<str> ""
 guid: {a: 4706877767190751782, b: 3002194710011549061}
 enabled: true
 localPosition: {x: 7.96875, y: 2.5, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 10}
+parent: {localId: 7}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -1967,14 +1967,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &19
+--- !ScreenTransform &16
 name: !<str> ""
 guid: {a: 5081537259726539535, b: 2135274998428573360}
 enabled: true
 localPosition: {x: -7.96875, y: 2.5, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 10}
+parent: {localId: 7}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -1984,14 +1984,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &20
+--- !ScreenTransform &17
 name: !<str> ""
 guid: {a: 5020114334332045583, b: 1431375307433573256}
 enabled: true
 localPosition: {x: 16.875, y: 25.625, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 10}
+parent: {localId: 7}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2001,14 +2001,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &21
+--- !ScreenTransform &18
 name: !<str> ""
 guid: {a: 4728878609163286489, b: 4019606330005609133}
 enabled: true
 localPosition: {x: -7.8125, y: -7.0625, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 9}
+parent: {localId: 6}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2018,14 +2018,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &22
+--- !ScreenTransform &19
 name: !<str> ""
 guid: {a: 5021649390023792316, b: 6088811561511845518}
 enabled: true
 localPosition: {x: -2.5, y: -7.0625, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 9}
+parent: {localId: 6}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2035,14 +2035,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &23
+--- !ScreenTransform &20
 name: !<str> ""
 guid: {a: 5351211254819297888, b: 10363705907576276667}
 enabled: true
 localPosition: {x: 6.25, y: 13.51125, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 9}
+parent: {localId: 6}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2052,14 +2052,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: true
---- !ScreenTransform &24
+--- !ScreenTransform &21
 name: !<str> ""
 guid: {a: 5205520391376246475, b: 14186192760954813081}
 enabled: true
 localPosition: {x: 6, y: -7.0625, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 9}
+parent: {localId: 6}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2069,14 +2069,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &25
+--- !ScreenTransform &22
 name: !<str> ""
 guid: {a: 5027656683655857728, b: 3078846365007901583}
 enabled: true
 localPosition: {x: -8.4375, y: 14.0625, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 9}
+parent: {localId: 6}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2086,14 +2086,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &26
+--- !ScreenTransform &23
 name: !<str> ""
 guid: {a: 5713292443169965352, b: 4688785060223696799}
 enabled: true
 localPosition: {x: -5, y: 14.0625, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 9}
+parent: {localId: 6}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2103,17 +2103,17 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &27
+--- !ScreenTransform &24
 name: !<str> ""
 guid: {a: 5323532722689542960, b: 14718680470946271145}
 enabled: true
 localPosition: {x: 0, y: 14.0625, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 9}
+parent: {localId: 6}
 children:
-  - {localId: 28}
-  - {localId: 29}
+  - {localId: 25}
+  - {localId: 26}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2123,14 +2123,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &28
+--- !ScreenTransform &25
 name: !<str> ""
 guid: {a: 4812643453015923699, b: 9765874319884062853}
 enabled: true
 localPosition: {x: 3.75, y: 0, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 27}
+parent: {localId: 24}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2140,14 +2140,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &29
+--- !ScreenTransform &26
 name: !<str> ""
 guid: {a: 5307098743476926400, b: 3385474400084929671}
 enabled: true
 localPosition: {x: 0, y: 0, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 27}
+parent: {localId: 24}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2157,17 +2157,17 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &30
+--- !ScreenTransform &27
 name: !<str> ""
 guid: {a: 5319447856542598811, b: 7973654975223511206}
 enabled: true
 localPosition: {x: 0, y: 23.4375, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 9}
+parent: {localId: 6}
 children:
-  - {localId: 31}
-  - {localId: 32}
+  - {localId: 28}
+  - {localId: 29}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2177,14 +2177,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &31
+--- !ScreenTransform &28
 name: !<str> ""
 guid: {a: 5492106056015460617, b: 5736305920398105501}
 enabled: true
 localPosition: {x: 0, y: 0, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 30}
+parent: {localId: 27}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2194,14 +2194,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &32
+--- !ScreenTransform &29
 name: !<str> ""
 guid: {a: 5070580427024147332, b: 7800322828993583273}
 enabled: true
 localPosition: {x: 0, y: 0, z: 0}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 30}
+parent: {localId: 27}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2211,14 +2211,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &33
+--- !ScreenTransform &30
 name: !<str> ""
 guid: {a: 5348452261135251232, b: 8732269021296147356}
 enabled: true
 localPosition: {x: 0, y: 10, z: -40}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 8}
+parent: {localId: 5}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2228,14 +2228,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &34
+--- !ScreenTransform &31
 name: !<str> ""
 guid: {a: 4922478133938013346, b: 7401067506452431490}
 enabled: true
 localPosition: {x: 6.25, y: 14.0625, z: -40}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 8}
+parent: {localId: 5}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2245,14 +2245,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: true
---- !ScreenTransform &35
+--- !ScreenTransform &32
 name: !<str> ""
 guid: {a: 5244102127024588290, b: 12436489592359835788}
 enabled: true
 localPosition: {x: 0, y: 0, z: -40}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 8}
+parent: {localId: 5}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2262,14 +2262,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &36
+--- !ScreenTransform &33
 name: !<str> ""
 guid: {a: 5560088415377956593, b: 1779829870700826295}
 enabled: true
 localPosition: {x: 9.375, y: 14.0625, z: -40}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 8}
+parent: {localId: 5}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2279,14 +2279,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: true
---- !ScreenTransform &37
+--- !ScreenTransform &34
 name: !<str> ""
 guid: {a: 4630468740779105738, b: 3950999620230792591}
 enabled: true
 localPosition: {x: 6.25, y: 14.93344, z: -40}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 8}
+parent: {localId: 5}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2296,14 +2296,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: true
---- !ScreenTransform &38
+--- !ScreenTransform &35
 name: !<str> ""
 guid: {a: 5188004823716449482, b: 7793057540673609151}
 enabled: true
 localPosition: {x: 6.238525, y: 13.65785, z: -40}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 8}
+parent: {localId: 5}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2313,14 +2313,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &39
+--- !ScreenTransform &36
 name: !<str> ""
 guid: {a: 4806579170370908017, b: 2194633807562466209}
 enabled: true
 localPosition: {x: 0, y: 0, z: -40}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 8}
+parent: {localId: 5}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2330,14 +2330,14 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !ScreenTransform &40
+--- !ScreenTransform &37
 name: !<str> ""
 guid: {a: 5747430467043162573, b: 11661322190035239597}
 enabled: true
 localPosition: {x: 0, y: 0, z: -40}
 localScale: {x: 1, y: 1, z: 1}
 localOrientation: {w: 1, x: 0, y: 0, z: 0}
-parent: {localId: 8}
+parent: {localId: 5}
 mobility:
   __class: Mobility
   value: Dynamic
@@ -2347,7 +2347,7 @@ pivot: {x: 0.5, y: 0.5}
 anchors: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
 pixelsPerUnit: 32
 enablePivotMatrix: false
---- !LetterStyle &41
+--- !LetterStyle &38
 name: !<str> ""
 guid: {a: 5294562716295061598, b: 12326753849335750274}
 version: 101
@@ -2365,16 +2365,16 @@ fontDecoration:
   value: NONE
 decorationWidth: 0.03999999910593033
 decorationOffset: 0.1500000059604645
-fill: {localId: 42}
+fill: {localId: 39}
 effectStyleId: !<str> ""
 effectStylePath: !<str> ""
 effectStyleParams: !<str> ""
 innerShadows:
-  - {localId: 43}
+  - {localId: 40}
 letterBgColorRGBA: {r: 0, g: 0, b: 0, a: 1}
 letterBgAlpha: 0
 selected: false
---- !LetterStyleLayer &42
+--- !LetterStyleLayer &39
 name: !<str> ""
 guid: {a: 5182562074311462303, b: 371205595946520231}
 serializedProperty:
@@ -2425,7 +2425,7 @@ shadowDistance: 0
 shadowAngle: -45
 shadowFeather: -1
 shadowDiffuse: -1
---- !LetterStyleLayer &43
+--- !LetterStyleLayer &40
 name: !<str> ""
 guid: {a: 4908020830857935420, b: 361757783263007393}
 serializedProperty:
@@ -2476,7 +2476,7 @@ shadowDistance: 0.05000000074505806
 shadowAngle: -30
 shadowFeather: 0
 shadowDiffuse: -1
---- !TextTypeSettingParam &44
+--- !TextTypeSettingParam &41
 name: !<str> ""
 guid: {a: 4947406169875160433, b: 3629394680841306274}
 textAdaptiveCanvasEnabled: false
@@ -2529,7 +2529,7 @@ layoutMode:
   __class: LayoutMode
   value: FixedSize
 autoLayoutMaxHeight: -1
---- !TextCanvas &45
+--- !TextCanvas &42
 name: !<str> ""
 guid: {a: 4690744535248315614, b: 3519381611388286113}
 textRect: {x: -700, y: -0, w: 1400, h: 0}
@@ -2550,7 +2550,7 @@ canvasStyle:
   __class: CanvasStyle
   value: BoundingBox
 pixelTextRect: {x: -700, y: -0, w: 1400, h: 0}
---- !TextBackground &46
+--- !TextBackground &43
 name: !<str> ""
 guid: {a: 4832402196367689853, b: 3205078593500380843}
 enabled: true
@@ -2591,7 +2591,7 @@ gradientAngle: 90
 gradientStyle:
   __class: GradientStyle
   value: Linear
---- !LetterStyle &47
+--- !LetterStyle &44
 name: !<str> ""
 guid: {a: 5737727452958540167, b: 11542030902459896753}
 version: 101
@@ -2609,16 +2609,16 @@ fontDecoration:
   value: NONE
 decorationWidth: 0.03999999910593033
 decorationOffset: 0.1500000059604645
-fill: {localId: 48}
+fill: {localId: 45}
 effectStyleId: !<str> ""
 effectStylePath: !<str> ""
 effectStyleParams: !<str> ""
 innerShadows:
-  - {localId: 49}
+  - {localId: 46}
 letterBgColorRGBA: {r: 0, g: 0, b: 0, a: 1}
 letterBgAlpha: 0
 selected: false
---- !LetterStyleLayer &48
+--- !LetterStyleLayer &45
 name: !<str> ""
 guid: {a: 5398921588408296449, b: 1539463773487346863}
 serializedProperty:
@@ -2669,7 +2669,7 @@ shadowDistance: 0
 shadowAngle: -45
 shadowFeather: -1
 shadowDiffuse: -1
---- !LetterStyleLayer &49
+--- !LetterStyleLayer &46
 name: !<str> ""
 guid: {a: 5290931564309315040, b: 3197826913536893585}
 serializedProperty:
@@ -2720,7 +2720,7 @@ shadowDistance: 0.05000000074505806
 shadowAngle: -30
 shadowFeather: 0
 shadowDiffuse: -1
---- !TextTypeSettingParam &50
+--- !TextTypeSettingParam &47
 name: !<str> ""
 guid: {a: 5539613242581861802, b: 17661545710755162259}
 textAdaptiveCanvasEnabled: false
@@ -2773,7 +2773,7 @@ layoutMode:
   __class: LayoutMode
   value: FixedSize
 autoLayoutMaxHeight: -1
---- !TextCanvas &51
+--- !TextCanvas &48
 name: !<str> ""
 guid: {a: 5279503536223583773, b: 4772335770734250915}
 textRect: {x: -700, y: -504.2882, w: 1400, h: 1008.576}
@@ -2794,7 +2794,7 @@ canvasStyle:
   __class: CanvasStyle
   value: BoundingBox
 pixelTextRect: {x: -700, y: -504.2882, w: 1400, h: 1008.576}
---- !TextBackground &52
+--- !TextBackground &49
 name: !<str> ""
 guid: {a: 5453930169372183635, b: 8868346028412814494}
 enabled: true
@@ -2835,7 +2835,7 @@ gradientAngle: 90
 gradientStyle:
   __class: GradientStyle
   value: Linear
---- !LetterStyle &53
+--- !LetterStyle &50
 name: !<str> ""
 guid: {a: 4908603529024845228, b: 13615885094000374181}
 version: 101
@@ -2853,16 +2853,16 @@ fontDecoration:
   value: NONE
 decorationWidth: 0.03999999910593033
 decorationOffset: 0.1500000059604645
-fill: {localId: 54}
+fill: {localId: 51}
 effectStyleId: !<str> ""
 effectStylePath: !<str> ""
 effectStyleParams: !<str> ""
 innerShadows:
-  - {localId: 55}
+  - {localId: 52}
 letterBgColorRGBA: {r: 0, g: 0, b: 0, a: 1}
 letterBgAlpha: 0
 selected: false
---- !LetterStyleLayer &54
+--- !LetterStyleLayer &51
 name: !<str> ""
 guid: {a: 4674758753985892106, b: 4128786528354300336}
 serializedProperty:
@@ -2913,7 +2913,7 @@ shadowDistance: 0
 shadowAngle: -45
 shadowFeather: -1
 shadowDiffuse: -1
---- !LetterStyleLayer &55
+--- !LetterStyleLayer &52
 name: !<str> ""
 guid: {a: 5669414720777589194, b: 754796648019226509}
 serializedProperty:
@@ -2964,7 +2964,7 @@ shadowDistance: 0.05000000074505806
 shadowAngle: -30
 shadowFeather: 0
 shadowDiffuse: -1
---- !TextTypeSettingParam &56
+--- !TextTypeSettingParam &53
 name: !<str> ""
 guid: {a: 4726390971001430265, b: 796192662036473500}
 textAdaptiveCanvasEnabled: false
@@ -3017,7 +3017,7 @@ layoutMode:
   __class: LayoutMode
   value: FixedSize
 autoLayoutMaxHeight: -1
---- !TextCanvas &57
+--- !TextCanvas &54
 name: !<str> ""
 guid: {a: 5588159365111198946, b: 6775386083653413529}
 textRect: {x: -7200, y: -292.8125, w: 14400, h: 585.6249}
@@ -3038,7 +3038,7 @@ canvasStyle:
   __class: CanvasStyle
   value: BoundingBox
 pixelTextRect: {x: -7200, y: -292.8125, w: 14400, h: 585.6249}
---- !TextBackground &58
+--- !TextBackground &55
 name: !<str> ""
 guid: {a: 5333222169488688080, b: 16233825722148951439}
 enabled: true
@@ -3079,7 +3079,7 @@ gradientAngle: 90
 gradientStyle:
   __class: GradientStyle
   value: Linear
---- !LetterStyle &59
+--- !LetterStyle &56
 name: !<str> ""
 guid: {a: 4807574691576713234, b: 7829384048432442263}
 version: 101
@@ -3097,16 +3097,16 @@ fontDecoration:
   value: NONE
 decorationWidth: 0.03999999910593033
 decorationOffset: 0.1500000059604645
-fill: {localId: 60}
+fill: {localId: 57}
 effectStyleId: !<str> ""
 effectStylePath: !<str> ""
 effectStyleParams: !<str> ""
 innerShadows:
-  - {localId: 61}
+  - {localId: 58}
 letterBgColorRGBA: {r: 0, g: 0, b: 0, a: 1}
 letterBgAlpha: 0
 selected: false
---- !LetterStyleLayer &60
+--- !LetterStyleLayer &57
 name: !<str> ""
 guid: {a: 5218508472476178638, b: 4473820599976207243}
 serializedProperty:
@@ -3157,7 +3157,7 @@ shadowDistance: 0
 shadowAngle: -45
 shadowFeather: -1
 shadowDiffuse: -1
---- !LetterStyleLayer &61
+--- !LetterStyleLayer &58
 name: !<str> ""
 guid: {a: 5498628875017083902, b: 7378383564927113635}
 serializedProperty:
@@ -3208,7 +3208,7 @@ shadowDistance: 0.05000000074505806
 shadowAngle: -30
 shadowFeather: 0
 shadowDiffuse: -1
---- !TextTypeSettingParam &62
+--- !TextTypeSettingParam &59
 name: !<str> ""
 guid: {a: 4784953966619241728, b: 9614335315446928318}
 textAdaptiveCanvasEnabled: false
@@ -3261,7 +3261,7 @@ layoutMode:
   __class: LayoutMode
   value: FixedSize
 autoLayoutMaxHeight: -1
---- !TextCanvas &63
+--- !TextCanvas &60
 name: !<str> ""
 guid: {a: 5093868504802689651, b: 11171930874761121183}
 textRect: {x: -7200, y: -292.8125, w: 14400, h: 585.6249}
@@ -3282,7 +3282,7 @@ canvasStyle:
   __class: CanvasStyle
   value: BoundingBox
 pixelTextRect: {x: -7200, y: -292.8125, w: 14400, h: 585.6249}
---- !TextBackground &64
+--- !TextBackground &61
 name: !<str> ""
 guid: {a: 4903568497136387840, b: 2288833161205938852}
 enabled: true

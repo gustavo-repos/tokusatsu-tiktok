@@ -1,6 +1,6 @@
 {
   "name": "Untitled",
-  "lastModified": "Sun, 02 Aug 2026 17:24:50 GMT",
+  "lastModified": "Sun, 02 Aug 2026 22:11:50 GMT",
   "version": "5.13.0",
   "renderNames": {
     "0": "Default Layer",
@@ -68,9 +68,9 @@
     "62": "Layer 62",
     "63": "Layer 63"
   },
-  "durationToCreate": 15372613173,
-  "durationCreation": 1169557188,
-  "durationBackground": 941052124,
+  "durationToCreate": 15389833391,
+  "durationCreation": 1172987579,
+  "durationBackground": 943417518,
   "effectHint": "",
   "templateID": "templateID_none",
   "overwriteBuiltinGAN": 1,
@@ -97,7 +97,7 @@
   "fromNewUserGuide": false,
   "soundStartTime": 0,
   "selectedIdList": [
-    "editor:b3c4cdec-69bb-723c-70d6-a1d0af0db08b"
+    "editor:0e4b9e66-6113-227e-23c0-787ceb78c558"
   ],
   "lastSceneView": 0,
   "autoResetEffect": false,
