@@ -1531,7 +1531,7 @@
     "name": "hud",
     "version": "0.1.0",
     "rttiType": "SceneObject",
-    "expanded": false,
+    "expanded": true,
     "type": "none",
     "isAnimatorBound": false,
     "modelGUID": "",
@@ -1709,7 +1709,7 @@
     "name": "player",
     "version": "0.1.0",
     "rttiType": "SceneObject",
-    "expanded": false,
+    "expanded": true,
     "type": "none",
     "isAnimatorBound": false,
     "modelGUID": "",
@@ -1930,6 +1930,75 @@
       "b": ""
     },
     "objGuid": "Guid(4895443903464913198, 7744235206997090690)",
+    "extraType": "Image",
+    "name": "Image",
+    "version": "0.1.0",
+    "rttiType": "Image",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "sharedMaterial": "00000000-0000-0000-0000-000000000132",
+    "segBlendMode": "Normal_v2",
+    "segRadius": 0.5,
+    "segSoftness": 0.5,
+    "blendMode": "Normal",
+    "drawMode": "Normal",
+    "filledType": 0,
+    "startPoint": 0,
+    "filledRange": 1,
+    "ellipseX": 1,
+    "ellipseY": 1,
+    "alphaNOPM": true
+  },
+  {
+    "guid": {
+      "a": "7b29896b-f0c4-433a-d508-c9034a479c77",
+      "b": ""
+    },
+    "objGuid": "Guid(5172644204053427117, 8127365104742710406)",
+    "extraType": "Entity",
+    "name": "finalEnemy",
+    "version": "0.1.0",
+    "rttiType": "SceneObject",
+    "expanded": true,
+    "type": "none",
+    "isAnimatorBound": false,
+    "modelGUID": "",
+    "createdEffectNodeKey": "effect_node_2D_foreground",
+    "disableSelection": false,
+    "hiddenInHierarchy": false,
+    "editorTags": []
+  },
+  {
+    "guid": {
+      "a": "43b74309-da1e-b32d-e142-91e22be3d03c",
+      "b": ""
+    },
+    "objGuid": "Guid(5546558221575485082, 8351138351934472122)",
+    "extraType": "ScreenTransform",
+    "name": "Screen Transform",
+    "version": "0.1.0",
+    "rttiType": "ScreenTransform",
+    "editable": true,
+    "_lazyUpgrateVersion": "0.1.0",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "expanded": true
+    },
+    "horizontalConstraint": 2,
+    "verticalConstraint": 2,
+    "linkageScale": 0,
+    "linkageSize": 0
+  },
+  {
+    "guid": {
+      "a": "3068c58b-73a3-a023-351c-35cca9c3f51c",
+      "b": ""
+    },
+    "objGuid": "Guid(5013610094890216261, 14881479944359752334)",
     "extraType": "Image",
     "name": "Image",
     "version": "0.1.0",

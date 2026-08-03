@@ -98,9 +98,11 @@ export class Enemy extends APJS.BasicScriptComponent {
         //this.scenePoints.name = this.points.toString()
         if (this.points == 3) {
           this.scenePoints.name = 'energybar1'
+
           setGameState(2)
           this.gameRunning.name = 'win'
           this.enemyScene.name = 'enemy'
+
         } else if (this.points == 6) {
           this.scenePoints.name = 'energybar2'
         } else if (this.points == 9) {

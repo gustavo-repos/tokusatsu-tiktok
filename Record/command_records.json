@@ -3,10 +3,10 @@
   "context": {
     "snapshot": {
       "start": {
-        "startTime": 1785705293905
+        "startTime": 1785773576808
       },
       "end": {
-        "endTime": 1785708710766
+        "endTime": 1785775332210
       }
     }
   },
@@ -819,7 +819,7 @@
                                     "texture": {
                                       "type": "Texture",
                                       "data": {
-                                        "guid": "211ea076-30f2-007c-6a45-adb98a518113"
+                                        "guid": "0e4b9e66-6113-227e-23c0-787ceb78c558"
                                       }
                                     },
                                     "segTex": {
@@ -8245,7 +8245,359 @@
                           "type": "Boolean",
                           "data": false
                         },
-                        "children": [],
+                        "children": [
+                          {
+                            "guid": {
+                              "type": "Guid",
+                              "data": "7b29896b-f0c4-433a-d508-c9034a479c77",
+                              "readonly": true
+                            },
+                            "name": {
+                              "type": "String",
+                              "data": "finalEnemy"
+                            },
+                            "visible": {
+                              "type": "Boolean",
+                              "data": true
+                            },
+                            "children": [],
+                            "components": [
+                              {
+                                "type": {
+                                  "type": "String",
+                                  "data": "ScreenTransform",
+                                  "readonly": true
+                                },
+                                "guid": {
+                                  "type": "Guid",
+                                  "data": "43b74309-da1e-b32d-e142-91e22be3d03c",
+                                  "readonly": true
+                                },
+                                "name": {
+                                  "type": "String",
+                                  "data": "Screen Transform",
+                                  "readonly": true
+                                },
+                                "version": {
+                                  "type": "Version",
+                                  "data": "0.1.0",
+                                  "readonly": true
+                                },
+                                "enabled": {
+                                  "type": "Boolean",
+                                  "data": true
+                                },
+                                "horizontalConstraint": {
+                                  "type": "Enum",
+                                  "data": "FIXED",
+                                  "options": [
+                                    "STRETCH",
+                                    "FIXED",
+                                    "LEFT",
+                                    "RIGHT",
+                                    "LEFT_AND_FIXED",
+                                    "RIGHT_AND_FIXED",
+                                    "LEFT_AND_RIGHT",
+                                    "INVALID"
+                                  ]
+                                },
+                                "verticalConstraint": {
+                                  "type": "Enum",
+                                  "data": "FIXED",
+                                  "options": [
+                                    "STRETCH",
+                                    "FIXED",
+                                    "BOTTOM",
+                                    "TOP",
+                                    "BOTTOM_AND_FIXED",
+                                    "TOP_AND_FIXED",
+                                    "BOTTOM_AND_TOP",
+                                    "INVALID"
+                                  ]
+                                },
+                                "offsets": {
+                                  "type": "Vector4f",
+                                  "data": {
+                                    "x": 232,
+                                    "y": 328,
+                                    "z": -48,
+                                    "w": 48
+                                  }
+                                },
+                                "anchoredPosition": {
+                                  "type": "Vector2f",
+                                  "data": {
+                                    "x": 280,
+                                    "y": 0
+                                  }
+                                },
+                                "sizeDelta": {
+                                  "type": "Vector2f",
+                                  "data": {
+                                    "x": 96,
+                                    "y": 96
+                                  }
+                                },
+                                "pivot": {
+                                  "type": "Vector2f",
+                                  "data": {
+                                    "x": 0.5,
+                                    "y": 0.5
+                                  }
+                                },
+                                "rotation": {
+                                  "type": "Number",
+                                  "data": 0
+                                },
+                                "scale": {
+                                  "type": "Vector2f",
+                                  "data": {
+                                    "x": 1,
+                                    "y": 1
+                                  }
+                                },
+                                "pixelsPerUnit": {
+                                  "type": "Number",
+                                  "data": 32
+                                },
+                                "anchors": {
+                                  "type": "Vector4f",
+                                  "data": {
+                                    "x": 0.5,
+                                    "y": 0.5,
+                                    "z": 0.5,
+                                    "w": 0.5
+                                  }
+                                }
+                              },
+                              {
+                                "type": {
+                                  "type": "String",
+                                  "data": "Image",
+                                  "readonly": true
+                                },
+                                "guid": {
+                                  "type": "Guid",
+                                  "data": "3068c58b-73a3-a023-351c-35cca9c3f51c",
+                                  "readonly": true
+                                },
+                                "name": {
+                                  "type": "String",
+                                  "data": "Image",
+                                  "readonly": true
+                                },
+                                "version": {
+                                  "type": "Version",
+                                  "data": "0.1.0",
+                                  "readonly": true
+                                },
+                                "enabled": {
+                                  "type": "Boolean",
+                                  "data": true
+                                },
+                                "sharedMaterial": {
+                                  "type": "Material",
+                                  "data": {
+                                    "guid": "00000000-0000-0000-0000-000000000132"
+                                  }
+                                },
+                                "texture": {
+                                  "type": "Texture",
+                                  "data": {
+                                    "guid": "00000000-0000-0000-0000-00000000006b"
+                                  }
+                                },
+                                "segTex": {
+                                  "type": "Texture",
+                                  "data": {
+                                    "guid": "undefined"
+                                  }
+                                },
+                                "segBlendMode": {
+                                  "type": "Enum",
+                                  "data": "NORMAL",
+                                  "options": [
+                                    "DISABLED",
+                                    "NORMAL",
+                                    "MULTIPLY",
+                                    "SCREEN",
+                                    "AVERAGE",
+                                    "LINEAR_DODGE_HARD",
+                                    "ALPHA_PREMULTIPLY",
+                                    "GLASS",
+                                    "TRANSMISSION",
+                                    "COLOR_BURN",
+                                    "LINEAR_BURN",
+                                    "COLOR_DODGE",
+                                    "OVERLAY",
+                                    "SOFT_LIGHT",
+                                    "HARD_LIGHT",
+                                    "VIVID_LIGHT",
+                                    "LINEAR_LIGHT",
+                                    "PIN_LIGHT",
+                                    "HARD_MIX",
+                                    "DIFFERENCE",
+                                    "EXCLUSION",
+                                    "DISSOLVE",
+                                    "DARKER_COLOR",
+                                    "LIGHTER_COLOR",
+                                    "SUBTRACT",
+                                    "DIVIDE",
+                                    "HUE",
+                                    "SATURATION",
+                                    "COLOR",
+                                    "LUMINOSITY",
+                                    "COLORED_GLASS",
+                                    "ALPHA_TEST",
+                                    "LINEAR_DODGE",
+                                    "DARKEN",
+                                    "LIGHTEN",
+                                    "MULTIPLY_SOFT",
+                                    "SCREEN_SOFT",
+                                    "AVERAGE_SOFT",
+                                    "FROM_SHADER",
+                                    "NORMAL_LEGACY",
+                                    "TRANSPARENT_LEGACY",
+                                    "COLORED_GLASS_LEGACY",
+                                    "GLASS_LEGACY",
+                                    "DARKEN_LEGACY",
+                                    "MULTIPLY_LEGACY",
+                                    "COLOR_BURN_LEGACY",
+                                    "LIGHTEN_LEGACY",
+                                    "SCREEN_LEGACY",
+                                    "COLOR_DODGE_LEGACY",
+                                    "LINEAR_DODGE_LEGACY",
+                                    "OVERLAY_LEGACY",
+                                    "SOFT_LIGHT_LEGACY",
+                                    "DIFFERENCE_LEGACY",
+                                    "EXCLUSION_LEGACY",
+                                    "PARTICLE_ADD_LEGACY",
+                                    "PARTICLE_NORMAL_LEGACY",
+                                    "PARTICLE_PREMULTIPLY_NORMAL_LEGACY",
+                                    "PARTICLE_PREMULTIPLY_ADD_LEGACY",
+                                    "GAN_TRANSPARENT_LEGACY",
+                                    "PREMULTIPLY_ALPHA_LEGACY",
+                                    "FACEMASK_ADD"
+                                  ]
+                                },
+                                "segRadius": {
+                                  "type": "Number",
+                                  "data": 0.5
+                                },
+                                "segSoftness": {
+                                  "type": "Number",
+                                  "data": 0.5
+                                },
+                                "blendMode": {
+                                  "type": "Enum",
+                                  "data": "Normal",
+                                  "options": [
+                                    "Normal",
+                                    "Darken",
+                                    "Multiply",
+                                    "ColorBurn",
+                                    "LinearBurn",
+                                    "Lighten",
+                                    "Screen",
+                                    "ColorDodge",
+                                    "LinearDodge",
+                                    "Overlay",
+                                    "SoftLight",
+                                    "HardLight",
+                                    "VividLight",
+                                    "LinearLight",
+                                    "PinLight",
+                                    "HardMix",
+                                    "Difference",
+                                    "Exclusion"
+                                  ]
+                                },
+                                "opacity": {
+                                  "type": "Number",
+                                  "data": 1
+                                },
+                                "color": {
+                                  "type": "Color",
+                                  "data": {
+                                    "r": 1,
+                                    "g": 1,
+                                    "b": 1,
+                                    "a": 1
+                                  }
+                                },
+                                "size": {
+                                  "type": "Vector2f",
+                                  "data": {
+                                    "x": 10,
+                                    "y": 10
+                                  }
+                                },
+                                "pivot": {
+                                  "type": "Vector2f",
+                                  "data": {
+                                    "x": 0.5,
+                                    "y": 0.5
+                                  }
+                                },
+                                "flipX": {
+                                  "type": "Boolean",
+                                  "data": false
+                                },
+                                "flipY": {
+                                  "type": "Boolean",
+                                  "data": false
+                                },
+                                "drawMode": {
+                                  "type": "Enum",
+                                  "data": "Normal",
+                                  "options": [
+                                    "Normal",
+                                    "Tiled",
+                                    "Filled",
+                                    "Ellipse"
+                                  ]
+                                },
+                                "stretchMode": {
+                                  "type": "Enum",
+                                  "data": "Fit",
+                                  "options": [
+                                    "Fit",
+                                    "FitWidth",
+                                    "FitHeight",
+                                    "Stretch",
+                                    "Fill",
+                                    "FillAndCut"
+                                  ]
+                                },
+                                "filledType": {
+                                  "type": "Enum",
+                                  "data": "Horizontal",
+                                  "options": [
+                                    "Horizontal",
+                                    "Vertical",
+                                    "Radial"
+                                  ]
+                                },
+                                "startPoint": {
+                                  "type": "Number",
+                                  "data": 0
+                                },
+                                "filledRange": {
+                                  "type": "Number",
+                                  "data": 1
+                                },
+                                "ellipseX": {
+                                  "type": "Number",
+                                  "data": 1
+                                },
+                                "ellipseY": {
+                                  "type": "Number",
+                                  "data": 1
+                                }
+                              }
+                            ]
+                          }
+                        ],
                         "components": [
                           {
                             "type": {
@@ -8303,8 +8655,8 @@
                             "offsets": {
                               "type": "Vector4f",
                               "data": {
-                                "x": -166,
-                                "y": 166,
+                                "x": -236,
+                                "y": 96,
                                 "z": 265,
                                 "w": 375
                               }
@@ -8312,7 +8664,7 @@
                             "anchoredPosition": {
                               "type": "Vector2f",
                               "data": {
-                                "x": 0,
+                                "x": -70,
                                 "y": 320
                               }
                             },
@@ -8389,7 +8741,7 @@
                             "texture": {
                               "type": "Texture",
                               "data": {
-                                "guid": "a7ae6e6b-3acc-168d-ef9f-99bd63b0352f"
+                                "guid": "0f0c7fae-619f-fc02-1fbc-027fe8269032"
                               }
                             },
                             "segTex": {
@@ -11816,7 +12168,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Animated Textures\\idle.animTex",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Animated Textures\\idle.animTex",
                 "readonly": true
               },
               "version": {
@@ -11875,7 +12227,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Animated Textures\\walk.animTex",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Animated Textures\\walk.animTex",
                 "readonly": true
               },
               "version": {
@@ -11934,7 +12286,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Audio\\crack_long.mp3",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Audio\\crack_long.mp3",
                 "readonly": true
               },
               "version": {
@@ -11987,7 +12339,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Audio\\hit.mp3",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Audio\\hit.mp3",
                 "readonly": true
               },
               "version": {
@@ -12040,7 +12392,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Audio\\jump.mp3",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Audio\\jump.mp3",
                 "readonly": true
               },
               "version": {
@@ -12093,7 +12445,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Enemy.ts",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Enemy.ts",
                 "readonly": true
               },
               "version": {
@@ -12120,7 +12472,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Game.ts",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Game.ts",
                 "readonly": true
               },
               "version": {
@@ -12147,7 +12499,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\attacking.gifTex",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF Texture\\attacking.gifTex",
                 "readonly": true
               },
               "version": {
@@ -12178,6 +12530,51 @@
             {
               "guid": {
                 "type": "Guid",
+                "data": "d5eb7e0a-529d-7db3-611a-cdef0cc255c7",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "dizzy"
+              },
+              "type": {
+                "type": "String",
+                "data": "GifTexture",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF Texture\\dizzy.gifTex",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.1.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "gifAsset": {
+                "type": "GifAsset",
+                "data": {
+                  "guid": "0267a565-d28b-896f-8f0b-e8669f8edeaf"
+                }
+              },
+              "loopCount": {
+                "type": "Number",
+                "data": -1
+              },
+              "fps": {
+                "type": "Number",
+                "data": 7.143
+              },
+              "duration": {
+                "type": "Number",
+                "data": 1.82
+              }
+            },
+            {
+              "guid": {
+                "type": "Guid",
                 "data": "7554eb19-a098-7b27-1012-5c34b2ed2d21",
                 "readonly": true
               },
@@ -12192,7 +12589,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\explosion.gifTex",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF Texture\\explosion.gifTex",
                 "readonly": true
               },
               "version": {
@@ -12237,7 +12634,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\ko_gif.gifTex",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF Texture\\ko_gif.gifTex",
                 "readonly": true
               },
               "version": {
@@ -12282,7 +12679,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\restart.gifTex",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF Texture\\restart.gifTex",
                 "readonly": true
               },
               "version": {
@@ -12327,7 +12724,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\restart_gif.gifTex",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF Texture\\restart_gif.gifTex",
                 "readonly": true
               },
               "version": {
@@ -12372,7 +12769,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\timeup_gif.gifTex",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF Texture\\timeup_gif.gifTex",
                 "readonly": true
               },
               "version": {
@@ -12417,7 +12814,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Level.ts",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Level.ts",
                 "readonly": true
               },
               "version": {
@@ -12444,7 +12841,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Player.ts",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Player.ts",
                 "readonly": true
               },
               "version": {
@@ -12471,7 +12868,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Subgraphs\\game over check.ssubgraph",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Subgraphs\\game over check.ssubgraph",
                 "readonly": true
               },
               "version": {
@@ -12498,7 +12895,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Subgraphs\\if the game is not over.ssubgraph",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Subgraphs\\if the game is not over.ssubgraph",
                 "readonly": true
               },
               "version": {
@@ -12525,7 +12922,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\3.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\3.png",
                 "readonly": true
               },
               "version": {
@@ -12656,7 +13053,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\attacking.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\attacking.png",
                 "readonly": true
               },
               "version": {
@@ -12787,7 +13184,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\back2.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\back2.png",
                 "readonly": true
               },
               "version": {
@@ -12904,7 +13301,7 @@
             {
               "guid": {
                 "type": "Guid",
-                "data": "211ea076-30f2-007c-6a45-adb98a518113",
+                "data": "0e4b9e66-6113-227e-23c0-787ceb78c558",
                 "readonly": true
               },
               "name": {
@@ -12918,7 +13315,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\background.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\background.png",
                 "readonly": true
               },
               "version": {
@@ -12937,7 +13334,7 @@
               },
               "artifactFileSize": {
                 "type": "Number",
-                "data": 324
+                "data": 326
               },
               "assetType": {
                 "type": "String",
@@ -13049,7 +13446,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\button_arrow.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\button_arrow.png",
                 "readonly": true
               },
               "version": {
@@ -13180,7 +13577,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\button_jump.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\button_jump.png",
                 "readonly": true
               },
               "version": {
@@ -13311,7 +13708,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\cam.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\cam.png",
                 "readonly": true
               },
               "version": {
@@ -13442,7 +13839,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\cenario.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\cenario.png",
                 "readonly": true
               },
               "version": {
@@ -13573,7 +13970,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\enemy.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\enemy.png",
                 "readonly": true
               },
               "version": {
@@ -13704,7 +14101,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\energybar.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\energybar.png",
                 "readonly": true
               },
               "version": {
@@ -13835,7 +14232,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\energybar1.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\energybar1.png",
                 "readonly": true
               },
               "version": {
@@ -13966,7 +14363,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\energybar2.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\energybar2.png",
                 "readonly": true
               },
               "version": {
@@ -14097,7 +14494,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\energybar3.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\energybar3.png",
                 "readonly": true
               },
               "version": {
@@ -14228,7 +14625,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\energybar4.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\energybar4.png",
                 "readonly": true
               },
               "version": {
@@ -14359,7 +14756,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\energybar5.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\energybar5.png",
                 "readonly": true
               },
               "version": {
@@ -14490,7 +14887,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\energybar6.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\energybar6.png",
                 "readonly": true
               },
               "version": {
@@ -14621,7 +15018,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\ground.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\ground.png",
                 "readonly": true
               },
               "version": {
@@ -14752,7 +15149,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\hit_enemy.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\hit_enemy.png",
                 "readonly": true
               },
               "version": {
@@ -14883,7 +15280,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\hit_enemy1.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\hit_enemy1.png",
                 "readonly": true
               },
               "version": {
@@ -15014,7 +15411,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\hit_enemy2.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\hit_enemy2.png",
                 "readonly": true
               },
               "version": {
@@ -15145,7 +15542,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\idle_1.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\idle_1.png",
                 "readonly": true
               },
               "version": {
@@ -15276,7 +15673,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\idle_2.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\idle_2.png",
                 "readonly": true
               },
               "version": {
@@ -15407,7 +15804,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\jump.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\jump.png",
                 "readonly": true
               },
               "version": {
@@ -15538,7 +15935,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\ko.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\ko.png",
                 "readonly": true
               },
               "version": {
@@ -15669,7 +16066,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\paws.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\paws.png",
                 "readonly": true
               },
               "version": {
@@ -15800,7 +16197,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\platform.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\platform.png",
                 "readonly": true
               },
               "version": {
@@ -15931,7 +16328,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\portal.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\portal.png",
                 "readonly": true
               },
               "version": {
@@ -16062,7 +16459,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\restart.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\restart.png",
                 "readonly": true
               },
               "version": {
@@ -16193,7 +16590,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\restart2.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\restart2.png",
                 "readonly": true
               },
               "version": {
@@ -16324,7 +16721,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\restart_blink.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\restart_blink.png",
                 "readonly": true
               },
               "version": {
@@ -16455,7 +16852,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\timer0.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\timer0.png",
                 "readonly": true
               },
               "version": {
@@ -16586,7 +16983,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\timer1.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\timer1.png",
                 "readonly": true
               },
               "version": {
@@ -16717,7 +17114,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\timer2.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\timer2.png",
                 "readonly": true
               },
               "version": {
@@ -16848,7 +17245,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\timer3.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\timer3.png",
                 "readonly": true
               },
               "version": {
@@ -16979,7 +17376,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\timer4.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\timer4.png",
                 "readonly": true
               },
               "version": {
@@ -17110,7 +17507,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\timeup.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\timeup.png",
                 "readonly": true
               },
               "version": {
@@ -17241,7 +17638,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\time_bonus.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\time_bonus.png",
                 "readonly": true
               },
               "version": {
@@ -17372,7 +17769,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\tongue.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\tongue.png",
                 "readonly": true
               },
               "version": {
@@ -17503,7 +17900,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\wall.png",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\wall.png",
                 "readonly": true
               },
               "version": {
@@ -17634,7 +18031,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\idle.otextureseq",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\idle.otextureseq",
                 "readonly": true
               },
               "version": {
@@ -17709,7 +18106,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\walk.otextureseq",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\walk.otextureseq",
                 "readonly": true
               },
               "version": {
@@ -17784,7 +18181,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\attacking.gif",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\attacking.gif",
                 "readonly": true
               },
               "version": {
@@ -17807,6 +18204,43 @@
             {
               "guid": {
                 "type": "Guid",
+                "data": "0267a565-d28b-896f-8f0b-e8669f8edeaf",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "dizzy"
+              },
+              "type": {
+                "type": "String",
+                "data": "GifAsset",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\dizzy.gif",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.1.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "resolution": {
+                "type": "String",
+                "data": "210 x 210",
+                "readonly": true
+              },
+              "sizeStr": {
+                "type": "String",
+                "data": "14.05 KB",
+                "readonly": true
+              }
+            },
+            {
+              "guid": {
+                "type": "Guid",
                 "data": "f6fdc978-299e-22dc-2121-8f0345556f5a",
                 "readonly": true
               },
@@ -17821,7 +18255,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\enemy.gif",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\enemy.gif",
                 "readonly": true
               },
               "version": {
@@ -17858,7 +18292,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\explosion.gif",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\explosion.gif",
                 "readonly": true
               },
               "version": {
@@ -17895,7 +18329,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\ko_gif.gif",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\ko_gif.gif",
                 "readonly": true
               },
               "version": {
@@ -17932,7 +18366,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\restart.gif",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\restart.gif",
                 "readonly": true
               },
               "version": {
@@ -17969,7 +18403,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\restart_gif.gif",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\restart_gif.gif",
                 "readonly": true
               },
               "version": {
@@ -18006,7 +18440,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\timeup_gif.gif",
+                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\timeup_gif.gif",
                 "readonly": true
               },
               "version": {
@@ -18025,1227 +18459,8 @@
                 "data": "3.79 KB",
                 "readonly": true
               }
-            },
-            {
-              "guid": {
-                "type": "Guid",
-                "data": "28de3e91-8597-3470-3984-6e8487b3c7c7",
-                "readonly": true
-              },
-              "name": {
-                "type": "String",
-                "data": "Timeline"
-              },
-              "type": {
-                "type": "String",
-                "data": "TimelineAsset",
-                "readonly": true
-              },
-              "filePath": {
-                "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Timeline.timeline",
-                "readonly": true
-              },
-              "version": {
-                "type": "Version",
-                "data": "0.1.0",
-                "readonly": true
-              },
-              "subAssets": []
             }
           ]
-        },
-        "subCommands": []
-      }
-    },
-    {
-      "actionId": "none",
-      "actionType": "do",
-      "source": "API",
-      "commands": {
-        "name": "AddAsset",
-        "data": {
-          "input": {
-            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\background.png"
-          },
-          "output": [
-            {
-              "guid": {
-                "type": "Guid",
-                "data": "8bfc53d9-27d3-5860-5d24-8969716d57d7",
-                "readonly": true
-              },
-              "name": {
-                "type": "String",
-                "data": "background"
-              },
-              "type": {
-                "type": "String",
-                "data": "Texture2D",
-                "readonly": true
-              },
-              "filePath": {
-                "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\background\\background.png",
-                "readonly": true
-              },
-              "version": {
-                "type": "Version",
-                "data": "0.2.0",
-                "readonly": true
-              },
-              "subAssets": [],
-              "width": {
-                "type": "Number",
-                "data": 198
-              },
-              "height": {
-                "type": "Number",
-                "data": 168
-              },
-              "artifactFileSize": {
-                "type": "Number",
-                "data": 336
-              },
-              "assetType": {
-                "type": "String",
-                "data": "PNG"
-              },
-              "compressionType": {
-                "type": "Enum",
-                "data": "Automatic",
-                "options": [
-                  "Automatic",
-                  "Manual",
-                  "None"
-                ]
-              },
-              "compressQuality": {
-                "type": "Enum",
-                "data": "High",
-                "options": [
-                  "High",
-                  "Medium",
-                  "Low"
-                ]
-              },
-              "compressMaxResolution": {
-                "type": "Enum",
-                "data": "Size512",
-                "options": [
-                  "Size1024",
-                  "Size512",
-                  "Size256",
-                  "Size128"
-                ]
-              },
-              "enableMipmap": {
-                "type": "Boolean",
-                "data": false
-              },
-              "filterMin": {
-                "type": "Enum",
-                "data": "Linear",
-                "options": [
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "filterMag": {
-                "type": "Enum",
-                "data": "Linear",
-                "options": [
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "filterMipmap": {
-                "type": "Enum",
-                "data": "None",
-                "options": [
-                  "None",
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "wrapModeS": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "wrapModeT": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "wrapModeR": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "premultiplyAlpha": {
-                "type": "Boolean",
-                "data": false
-              }
-            }
-          ]
-        },
-        "subCommands": []
-      },
-      "context": {
-        "dependencies": [
-          {
-            "type": "asset",
-            "sourceId": "none",
-            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/background.png",
-            "target": "commands.data.input.path"
-          }
-        ]
-      }
-    },
-    {
-      "actionId": "none",
-      "actionType": "do",
-      "source": "API",
-      "commands": {
-        "name": "SetComponent",
-        "data": {
-          "input": {
-            "guid": "1bc56e63-2276-fa30-c2a3-e922a18d4fa2",
-            "properties": [
-              {
-                "property": "texture",
-                "value": {
-                  "type": "Texture",
-                  "data": {
-                    "guid": "8bfc53d9-27d3-5860-5d24-8969716d57d7"
-                  }
-                }
-              }
-            ]
-          },
-          "output": {
-            "componentType": "Image",
-            "guid": "1bc56e63-2276-fa30-c2a3-e922a18d4fa2",
-            "changes": [
-              {
-                "property": "texture",
-                "oldValue": {
-                  "guid": "211ea076-30f2-007c-6a45-adb98a518113"
-                },
-                "newValue": {
-                  "guid": "8bfc53d9-27d3-5860-5d24-8969716d57d7"
-                }
-              }
-            ]
-          }
-        },
-        "subCommands": []
-      },
-      "context": {
-        "dependencies": [
-          {
-            "type": "guid",
-            "sourceId": "GetScene",
-            "source": "commands.data.output.renderGroups[1].sceneObjects[0].children[0].children[0].children[0].components[1].guid.data",
-            "target": "commands.data.input.guid"
-          }
-        ]
-      }
-    },
-    {
-      "actionId": "none",
-      "actionType": "do",
-      "source": "API",
-      "commands": {
-        "name": "AddAsset",
-        "data": {
-          "input": {
-            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\background.png"
-          },
-          "output": [
-            {
-              "guid": {
-                "type": "Guid",
-                "data": "19406086-f349-3096-cb38-8f734c599968",
-                "readonly": true
-              },
-              "name": {
-                "type": "String",
-                "data": "background"
-              },
-              "type": {
-                "type": "String",
-                "data": "Texture2D",
-                "readonly": true
-              },
-              "filePath": {
-                "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\background (1)\\background.png",
-                "readonly": true
-              },
-              "version": {
-                "type": "Version",
-                "data": "0.2.0",
-                "readonly": true
-              },
-              "subAssets": [],
-              "width": {
-                "type": "Number",
-                "data": 198
-              },
-              "height": {
-                "type": "Number",
-                "data": 168
-              },
-              "artifactFileSize": {
-                "type": "Number",
-                "data": 343
-              },
-              "assetType": {
-                "type": "String",
-                "data": "PNG"
-              },
-              "compressionType": {
-                "type": "Enum",
-                "data": "Automatic",
-                "options": [
-                  "Automatic",
-                  "Manual",
-                  "None"
-                ]
-              },
-              "compressQuality": {
-                "type": "Enum",
-                "data": "High",
-                "options": [
-                  "High",
-                  "Medium",
-                  "Low"
-                ]
-              },
-              "compressMaxResolution": {
-                "type": "Enum",
-                "data": "Size512",
-                "options": [
-                  "Size1024",
-                  "Size512",
-                  "Size256",
-                  "Size128"
-                ]
-              },
-              "enableMipmap": {
-                "type": "Boolean",
-                "data": false
-              },
-              "filterMin": {
-                "type": "Enum",
-                "data": "Linear",
-                "options": [
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "filterMag": {
-                "type": "Enum",
-                "data": "Linear",
-                "options": [
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "filterMipmap": {
-                "type": "Enum",
-                "data": "None",
-                "options": [
-                  "None",
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "wrapModeS": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "wrapModeT": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "wrapModeR": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "premultiplyAlpha": {
-                "type": "Boolean",
-                "data": false
-              }
-            }
-          ]
-        },
-        "subCommands": []
-      },
-      "context": {
-        "dependencies": [
-          {
-            "type": "asset",
-            "sourceId": "none",
-            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/background.png",
-            "target": "commands.data.input.path"
-          }
-        ]
-      }
-    },
-    {
-      "actionId": "none",
-      "actionType": "do",
-      "source": "API",
-      "commands": {
-        "name": "SetComponent",
-        "data": {
-          "input": {
-            "guid": "1bc56e63-2276-fa30-c2a3-e922a18d4fa2",
-            "properties": [
-              {
-                "property": "texture",
-                "value": {
-                  "type": "Texture",
-                  "data": {
-                    "guid": "19406086-f349-3096-cb38-8f734c599968"
-                  }
-                }
-              }
-            ]
-          },
-          "output": {
-            "componentType": "Image",
-            "guid": "1bc56e63-2276-fa30-c2a3-e922a18d4fa2",
-            "changes": [
-              {
-                "property": "texture",
-                "oldValue": {
-                  "guid": "8bfc53d9-27d3-5860-5d24-8969716d57d7"
-                },
-                "newValue": {
-                  "guid": "19406086-f349-3096-cb38-8f734c599968"
-                }
-              }
-            ]
-          }
-        },
-        "subCommands": []
-      }
-    },
-    {
-      "actionId": "none",
-      "actionType": "do",
-      "source": "API",
-      "commands": {
-        "name": "AddAsset",
-        "data": {
-          "input": {
-            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\background.png"
-          },
-          "output": [
-            {
-              "guid": {
-                "type": "Guid",
-                "data": "ef66c37b-502f-b6f6-84ad-53df5649f78e",
-                "readonly": true
-              },
-              "name": {
-                "type": "String",
-                "data": "background"
-              },
-              "type": {
-                "type": "String",
-                "data": "Texture2D",
-                "readonly": true
-              },
-              "filePath": {
-                "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\background (2)\\background.png",
-                "readonly": true
-              },
-              "version": {
-                "type": "Version",
-                "data": "0.2.0",
-                "readonly": true
-              },
-              "subAssets": [],
-              "width": {
-                "type": "Number",
-                "data": 198
-              },
-              "height": {
-                "type": "Number",
-                "data": 168
-              },
-              "artifactFileSize": {
-                "type": "Number",
-                "data": 330
-              },
-              "assetType": {
-                "type": "String",
-                "data": "PNG"
-              },
-              "compressionType": {
-                "type": "Enum",
-                "data": "Automatic",
-                "options": [
-                  "Automatic",
-                  "Manual",
-                  "None"
-                ]
-              },
-              "compressQuality": {
-                "type": "Enum",
-                "data": "High",
-                "options": [
-                  "High",
-                  "Medium",
-                  "Low"
-                ]
-              },
-              "compressMaxResolution": {
-                "type": "Enum",
-                "data": "Size512",
-                "options": [
-                  "Size1024",
-                  "Size512",
-                  "Size256",
-                  "Size128"
-                ]
-              },
-              "enableMipmap": {
-                "type": "Boolean",
-                "data": false
-              },
-              "filterMin": {
-                "type": "Enum",
-                "data": "Linear",
-                "options": [
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "filterMag": {
-                "type": "Enum",
-                "data": "Linear",
-                "options": [
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "filterMipmap": {
-                "type": "Enum",
-                "data": "None",
-                "options": [
-                  "None",
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "wrapModeS": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "wrapModeT": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "wrapModeR": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "premultiplyAlpha": {
-                "type": "Boolean",
-                "data": false
-              }
-            }
-          ]
-        },
-        "subCommands": []
-      },
-      "context": {
-        "dependencies": [
-          {
-            "type": "asset",
-            "sourceId": "none",
-            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/background.png",
-            "target": "commands.data.input.path"
-          }
-        ]
-      }
-    },
-    {
-      "actionId": "none",
-      "actionType": "do",
-      "source": "API",
-      "commands": {
-        "name": "SetComponent",
-        "data": {
-          "input": {
-            "guid": "1bc56e63-2276-fa30-c2a3-e922a18d4fa2",
-            "properties": [
-              {
-                "property": "texture",
-                "value": {
-                  "type": "Texture",
-                  "data": {
-                    "guid": "ef66c37b-502f-b6f6-84ad-53df5649f78e"
-                  }
-                }
-              }
-            ]
-          },
-          "output": {
-            "componentType": "Image",
-            "guid": "1bc56e63-2276-fa30-c2a3-e922a18d4fa2",
-            "changes": [
-              {
-                "property": "texture",
-                "oldValue": {
-                  "guid": "19406086-f349-3096-cb38-8f734c599968"
-                },
-                "newValue": {
-                  "guid": "ef66c37b-502f-b6f6-84ad-53df5649f78e"
-                }
-              }
-            ]
-          }
-        },
-        "subCommands": []
-      }
-    },
-    {
-      "actionId": "none",
-      "actionType": "do",
-      "source": "API",
-      "commands": {
-        "name": "AddAsset",
-        "data": {
-          "input": {
-            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\background.png"
-          },
-          "output": [
-            {
-              "guid": {
-                "type": "Guid",
-                "data": "ab8de013-cf46-945d-8578-cffca783ad19",
-                "readonly": true
-              },
-              "name": {
-                "type": "String",
-                "data": "background"
-              },
-              "type": {
-                "type": "String",
-                "data": "Texture2D",
-                "readonly": true
-              },
-              "filePath": {
-                "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\background (3)\\background.png",
-                "readonly": true
-              },
-              "version": {
-                "type": "Version",
-                "data": "0.2.0",
-                "readonly": true
-              },
-              "subAssets": [],
-              "width": {
-                "type": "Number",
-                "data": 198
-              },
-              "height": {
-                "type": "Number",
-                "data": 168
-              },
-              "artifactFileSize": {
-                "type": "Number",
-                "data": 324
-              },
-              "assetType": {
-                "type": "String",
-                "data": "PNG"
-              },
-              "compressionType": {
-                "type": "Enum",
-                "data": "Automatic",
-                "options": [
-                  "Automatic",
-                  "Manual",
-                  "None"
-                ]
-              },
-              "compressQuality": {
-                "type": "Enum",
-                "data": "High",
-                "options": [
-                  "High",
-                  "Medium",
-                  "Low"
-                ]
-              },
-              "compressMaxResolution": {
-                "type": "Enum",
-                "data": "Size512",
-                "options": [
-                  "Size1024",
-                  "Size512",
-                  "Size256",
-                  "Size128"
-                ]
-              },
-              "enableMipmap": {
-                "type": "Boolean",
-                "data": false
-              },
-              "filterMin": {
-                "type": "Enum",
-                "data": "Linear",
-                "options": [
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "filterMag": {
-                "type": "Enum",
-                "data": "Linear",
-                "options": [
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "filterMipmap": {
-                "type": "Enum",
-                "data": "None",
-                "options": [
-                  "None",
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "wrapModeS": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "wrapModeT": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "wrapModeR": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "premultiplyAlpha": {
-                "type": "Boolean",
-                "data": false
-              }
-            }
-          ]
-        },
-        "subCommands": []
-      },
-      "context": {
-        "dependencies": [
-          {
-            "type": "asset",
-            "sourceId": "none",
-            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/background.png",
-            "target": "commands.data.input.path"
-          }
-        ]
-      }
-    },
-    {
-      "actionId": "none",
-      "actionType": "do",
-      "source": "API",
-      "commands": {
-        "name": "SetComponent",
-        "data": {
-          "input": {
-            "guid": "1bc56e63-2276-fa30-c2a3-e922a18d4fa2",
-            "properties": [
-              {
-                "property": "texture",
-                "value": {
-                  "type": "Texture",
-                  "data": {
-                    "guid": "ab8de013-cf46-945d-8578-cffca783ad19"
-                  }
-                }
-              }
-            ]
-          },
-          "output": {
-            "componentType": "Image",
-            "guid": "1bc56e63-2276-fa30-c2a3-e922a18d4fa2",
-            "changes": [
-              {
-                "property": "texture",
-                "oldValue": {
-                  "guid": "ef66c37b-502f-b6f6-84ad-53df5649f78e"
-                },
-                "newValue": {
-                  "guid": "ab8de013-cf46-945d-8578-cffca783ad19"
-                }
-              }
-            ]
-          }
-        },
-        "subCommands": []
-      }
-    },
-    {
-      "actionId": "none",
-      "actionType": "do",
-      "source": "API",
-      "commands": {
-        "name": "AddAsset",
-        "data": {
-          "input": {
-            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\background.png"
-          },
-          "output": [
-            {
-              "guid": {
-                "type": "Guid",
-                "data": "b1f90b43-7ef5-6590-3cda-cb3175479d13",
-                "readonly": true
-              },
-              "name": {
-                "type": "String",
-                "data": "background"
-              },
-              "type": {
-                "type": "String",
-                "data": "Texture2D",
-                "readonly": true
-              },
-              "filePath": {
-                "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\background (4)\\background.png",
-                "readonly": true
-              },
-              "version": {
-                "type": "Version",
-                "data": "0.2.0",
-                "readonly": true
-              },
-              "subAssets": [],
-              "width": {
-                "type": "Number",
-                "data": 198
-              },
-              "height": {
-                "type": "Number",
-                "data": 168
-              },
-              "artifactFileSize": {
-                "type": "Number",
-                "data": 317
-              },
-              "assetType": {
-                "type": "String",
-                "data": "PNG"
-              },
-              "compressionType": {
-                "type": "Enum",
-                "data": "Automatic",
-                "options": [
-                  "Automatic",
-                  "Manual",
-                  "None"
-                ]
-              },
-              "compressQuality": {
-                "type": "Enum",
-                "data": "High",
-                "options": [
-                  "High",
-                  "Medium",
-                  "Low"
-                ]
-              },
-              "compressMaxResolution": {
-                "type": "Enum",
-                "data": "Size512",
-                "options": [
-                  "Size1024",
-                  "Size512",
-                  "Size256",
-                  "Size128"
-                ]
-              },
-              "enableMipmap": {
-                "type": "Boolean",
-                "data": false
-              },
-              "filterMin": {
-                "type": "Enum",
-                "data": "Linear",
-                "options": [
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "filterMag": {
-                "type": "Enum",
-                "data": "Linear",
-                "options": [
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "filterMipmap": {
-                "type": "Enum",
-                "data": "None",
-                "options": [
-                  "None",
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "wrapModeS": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "wrapModeT": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "wrapModeR": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "premultiplyAlpha": {
-                "type": "Boolean",
-                "data": false
-              }
-            }
-          ]
-        },
-        "subCommands": []
-      },
-      "context": {
-        "dependencies": [
-          {
-            "type": "asset",
-            "sourceId": "none",
-            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/background.png",
-            "target": "commands.data.input.path"
-          }
-        ]
-      }
-    },
-    {
-      "actionId": "none",
-      "actionType": "do",
-      "source": "API",
-      "commands": {
-        "name": "SetComponent",
-        "data": {
-          "input": {
-            "guid": "1bc56e63-2276-fa30-c2a3-e922a18d4fa2",
-            "properties": [
-              {
-                "property": "texture",
-                "value": {
-                  "type": "Texture",
-                  "data": {
-                    "guid": "b1f90b43-7ef5-6590-3cda-cb3175479d13"
-                  }
-                }
-              }
-            ]
-          },
-          "output": {
-            "componentType": "Image",
-            "guid": "1bc56e63-2276-fa30-c2a3-e922a18d4fa2",
-            "changes": [
-              {
-                "property": "texture",
-                "oldValue": {
-                  "guid": "ab8de013-cf46-945d-8578-cffca783ad19"
-                },
-                "newValue": {
-                  "guid": "b1f90b43-7ef5-6590-3cda-cb3175479d13"
-                }
-              }
-            ]
-          }
-        },
-        "subCommands": []
-      }
-    },
-    {
-      "actionId": "none",
-      "actionType": "do",
-      "source": "API",
-      "commands": {
-        "name": "AddAsset",
-        "data": {
-          "input": {
-            "path": "C:\\Documentos\\Tiktok\\projeto tokusatso\\images\\background.png"
-          },
-          "output": [
-            {
-              "guid": {
-                "type": "Guid",
-                "data": "0e4b9e66-6113-227e-23c0-787ceb78c558",
-                "readonly": true
-              },
-              "name": {
-                "type": "String",
-                "data": "background"
-              },
-              "type": {
-                "type": "String",
-                "data": "Texture2D",
-                "readonly": true
-              },
-              "filePath": {
-                "type": "String",
-                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\temp.folder\\background (5)\\background.png",
-                "readonly": true
-              },
-              "version": {
-                "type": "Version",
-                "data": "0.2.0",
-                "readonly": true
-              },
-              "subAssets": [],
-              "width": {
-                "type": "Number",
-                "data": 198
-              },
-              "height": {
-                "type": "Number",
-                "data": 168
-              },
-              "artifactFileSize": {
-                "type": "Number",
-                "data": 326
-              },
-              "assetType": {
-                "type": "String",
-                "data": "PNG"
-              },
-              "compressionType": {
-                "type": "Enum",
-                "data": "Automatic",
-                "options": [
-                  "Automatic",
-                  "Manual",
-                  "None"
-                ]
-              },
-              "compressQuality": {
-                "type": "Enum",
-                "data": "High",
-                "options": [
-                  "High",
-                  "Medium",
-                  "Low"
-                ]
-              },
-              "compressMaxResolution": {
-                "type": "Enum",
-                "data": "Size512",
-                "options": [
-                  "Size1024",
-                  "Size512",
-                  "Size256",
-                  "Size128"
-                ]
-              },
-              "enableMipmap": {
-                "type": "Boolean",
-                "data": false
-              },
-              "filterMin": {
-                "type": "Enum",
-                "data": "Linear",
-                "options": [
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "filterMag": {
-                "type": "Enum",
-                "data": "Linear",
-                "options": [
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "filterMipmap": {
-                "type": "Enum",
-                "data": "None",
-                "options": [
-                  "None",
-                  "Nearest",
-                  "Linear"
-                ]
-              },
-              "wrapModeS": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "wrapModeT": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "wrapModeR": {
-                "type": "Enum",
-                "data": "Repeat",
-                "options": [
-                  "Repeat",
-                  "Clamp",
-                  "Mirror"
-                ]
-              },
-              "premultiplyAlpha": {
-                "type": "Boolean",
-                "data": false
-              }
-            }
-          ]
-        },
-        "subCommands": []
-      },
-      "context": {
-        "dependencies": [
-          {
-            "type": "asset",
-            "sourceId": "none",
-            "source": "%External%C:/Documentos/Tiktok/projeto tokusatso/images/background.png",
-            "target": "commands.data.input.path"
-          }
-        ]
-      }
-    },
-    {
-      "actionId": "none",
-      "actionType": "do",
-      "source": "API",
-      "commands": {
-        "name": "SetComponent",
-        "data": {
-          "input": {
-            "guid": "1bc56e63-2276-fa30-c2a3-e922a18d4fa2",
-            "properties": [
-              {
-                "property": "texture",
-                "value": {
-                  "type": "Texture",
-                  "data": {
-                    "guid": "0e4b9e66-6113-227e-23c0-787ceb78c558"
-                  }
-                }
-              }
-            ]
-          },
-          "output": {
-            "componentType": "Image",
-            "guid": "1bc56e63-2276-fa30-c2a3-e922a18d4fa2",
-            "changes": [
-              {
-                "property": "texture",
-                "oldValue": {
-                  "guid": "b1f90b43-7ef5-6590-3cda-cb3175479d13"
-                },
-                "newValue": {
-                  "guid": "0e4b9e66-6113-227e-23c0-787ceb78c558"
-                }
-              }
-            ]
-          }
         },
         "subCommands": []
       }
