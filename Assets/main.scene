@@ -521,7 +521,7 @@ entities:
           properties:
             __class: Map
             autoPlay: false
-            isMobilePreview: false
+            isMobilePreview: true
             loopCount: 1
             mute: false
             playMode: !<str> Once
@@ -728,7 +728,7 @@ entities:
           properties:
             __class: Map
             autoPlay: false
-            isMobilePreview: false
+            isMobilePreview: true
             loopCount: 1
             mute: false
             playMode: !<str> Once
@@ -1103,7 +1103,7 @@ entities:
           properties:
             __class: Map
             autoPlay: false
-            isMobilePreview: false
+            isMobilePreview: true
             loopCount: 1
             mute: false
             playMode: !<str> Once
@@ -1210,7 +1210,7 @@ config:
   RTInputDeferredCopy: true
 msaa:
   __class: MSAAMode
-  value: _4X
+  value: NONE
 jsScriptSystems:
   - !<str> js/AmazingProRuntime.js
   - !<str> js/Graph/GraphSystem.js
