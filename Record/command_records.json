@@ -3,10 +3,10 @@
   "context": {
     "snapshot": {
       "start": {
-        "startTime": 1785773576808
+        "startTime": 1785777471330
       },
       "end": {
-        "endTime": 1785775332210
+        "endTime": 1785780093533
       }
     }
   },
@@ -12168,7 +12168,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Animated Textures\\idle.animTex",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Animated Textures\\idle.animTex",
                 "readonly": true
               },
               "version": {
@@ -12227,7 +12227,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Animated Textures\\walk.animTex",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Animated Textures\\walk.animTex",
                 "readonly": true
               },
               "version": {
@@ -12286,7 +12286,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Audio\\crack_long.mp3",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Audio\\crack_long.mp3",
                 "readonly": true
               },
               "version": {
@@ -12339,7 +12339,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Audio\\hit.mp3",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Audio\\hit.mp3",
                 "readonly": true
               },
               "version": {
@@ -12392,7 +12392,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Audio\\jump.mp3",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Audio\\jump.mp3",
                 "readonly": true
               },
               "version": {
@@ -12445,7 +12445,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Enemy.ts",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Enemy.ts",
                 "readonly": true
               },
               "version": {
@@ -12472,7 +12472,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Game.ts",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Game.ts",
                 "readonly": true
               },
               "version": {
@@ -12499,7 +12499,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF Texture\\attacking.gifTex",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\attacking.gifTex",
                 "readonly": true
               },
               "version": {
@@ -12544,7 +12544,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF Texture\\dizzy.gifTex",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\dizzy.gifTex",
                 "readonly": true
               },
               "version": {
@@ -12589,7 +12589,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF Texture\\explosion.gifTex",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\explosion.gifTex",
                 "readonly": true
               },
               "version": {
@@ -12634,7 +12634,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF Texture\\ko_gif.gifTex",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\ko_gif.gifTex",
                 "readonly": true
               },
               "version": {
@@ -12665,6 +12665,51 @@
             {
               "guid": {
                 "type": "Guid",
+                "data": "28b3efe6-3863-be25-a4db-adbe64c65280",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "ko_red"
+              },
+              "type": {
+                "type": "String",
+                "data": "GifTexture",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\ko_red.gifTex",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.1.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "gifAsset": {
+                "type": "GifAsset",
+                "data": {
+                  "guid": "59f06140-5d15-d14e-9945-8ccc74872467"
+                }
+              },
+              "loopCount": {
+                "type": "Number",
+                "data": -1
+              },
+              "fps": {
+                "type": "Number",
+                "data": 3.333
+              },
+              "duration": {
+                "type": "Number",
+                "data": 0.6
+              }
+            },
+            {
+              "guid": {
+                "type": "Guid",
                 "data": "a68540f5-914d-d82f-cf75-e244335faea7",
                 "readonly": true
               },
@@ -12679,7 +12724,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF Texture\\restart.gifTex",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\restart.gifTex",
                 "readonly": true
               },
               "version": {
@@ -12724,7 +12769,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF Texture\\restart_gif.gifTex",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\restart_gif.gifTex",
                 "readonly": true
               },
               "version": {
@@ -12769,7 +12814,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF Texture\\timeup_gif.gifTex",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF Texture\\timeup_gif.gifTex",
                 "readonly": true
               },
               "version": {
@@ -12814,7 +12859,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Level.ts",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Level.ts",
                 "readonly": true
               },
               "version": {
@@ -12841,7 +12886,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Player.ts",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Player.ts",
                 "readonly": true
               },
               "version": {
@@ -12868,7 +12913,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Subgraphs\\game over check.ssubgraph",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Subgraphs\\game over check.ssubgraph",
                 "readonly": true
               },
               "version": {
@@ -12895,7 +12940,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Subgraphs\\if the game is not over.ssubgraph",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Subgraphs\\if the game is not over.ssubgraph",
                 "readonly": true
               },
               "version": {
@@ -12922,7 +12967,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\3.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\3.png",
                 "readonly": true
               },
               "version": {
@@ -13053,7 +13098,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\attacking.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\attacking.png",
                 "readonly": true
               },
               "version": {
@@ -13184,7 +13229,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\back2.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\back2.png",
                 "readonly": true
               },
               "version": {
@@ -13315,7 +13360,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\background.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\background.png",
                 "readonly": true
               },
               "version": {
@@ -13446,7 +13491,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\button_arrow.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\button_arrow.png",
                 "readonly": true
               },
               "version": {
@@ -13577,7 +13622,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\button_jump.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\button_jump.png",
                 "readonly": true
               },
               "version": {
@@ -13708,7 +13753,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\cam.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\cam.png",
                 "readonly": true
               },
               "version": {
@@ -13839,7 +13884,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\cenario.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\cenario.png",
                 "readonly": true
               },
               "version": {
@@ -13970,7 +14015,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\enemy.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\enemy.png",
                 "readonly": true
               },
               "version": {
@@ -14101,7 +14146,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\energybar.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\energybar.png",
                 "readonly": true
               },
               "version": {
@@ -14232,7 +14277,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\energybar1.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\energybar1.png",
                 "readonly": true
               },
               "version": {
@@ -14363,7 +14408,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\energybar2.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\energybar2.png",
                 "readonly": true
               },
               "version": {
@@ -14494,7 +14539,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\energybar3.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\energybar3.png",
                 "readonly": true
               },
               "version": {
@@ -14625,7 +14670,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\energybar4.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\energybar4.png",
                 "readonly": true
               },
               "version": {
@@ -14756,7 +14801,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\energybar5.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\energybar5.png",
                 "readonly": true
               },
               "version": {
@@ -14887,7 +14932,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\energybar6.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\energybar6.png",
                 "readonly": true
               },
               "version": {
@@ -15018,7 +15063,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\ground.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\ground.png",
                 "readonly": true
               },
               "version": {
@@ -15149,7 +15194,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\hit_enemy.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\hit_enemy.png",
                 "readonly": true
               },
               "version": {
@@ -15280,7 +15325,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\hit_enemy1.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\hit_enemy1.png",
                 "readonly": true
               },
               "version": {
@@ -15411,7 +15456,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\hit_enemy2.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\hit_enemy2.png",
                 "readonly": true
               },
               "version": {
@@ -15542,7 +15587,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\idle_1.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\idle_1.png",
                 "readonly": true
               },
               "version": {
@@ -15673,7 +15718,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\idle_2.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\idle_2.png",
                 "readonly": true
               },
               "version": {
@@ -15804,7 +15849,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\jump.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\jump.png",
                 "readonly": true
               },
               "version": {
@@ -15935,7 +15980,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\ko.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\ko.png",
                 "readonly": true
               },
               "version": {
@@ -16066,7 +16111,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\paws.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\paws.png",
                 "readonly": true
               },
               "version": {
@@ -16197,7 +16242,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\platform.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\platform.png",
                 "readonly": true
               },
               "version": {
@@ -16328,7 +16373,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\portal.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\portal.png",
                 "readonly": true
               },
               "version": {
@@ -16459,7 +16504,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\restart.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\restart.png",
                 "readonly": true
               },
               "version": {
@@ -16590,7 +16635,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\restart2.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\restart2.png",
                 "readonly": true
               },
               "version": {
@@ -16721,7 +16766,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\restart_blink.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\restart_blink.png",
                 "readonly": true
               },
               "version": {
@@ -16852,7 +16897,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\timer0.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\timer0.png",
                 "readonly": true
               },
               "version": {
@@ -16983,7 +17028,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\timer1.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\timer1.png",
                 "readonly": true
               },
               "version": {
@@ -17114,7 +17159,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\timer2.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\timer2.png",
                 "readonly": true
               },
               "version": {
@@ -17245,7 +17290,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\timer3.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\timer3.png",
                 "readonly": true
               },
               "version": {
@@ -17376,7 +17421,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\timer4.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\timer4.png",
                 "readonly": true
               },
               "version": {
@@ -17507,7 +17552,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\timeup.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\timeup.png",
                 "readonly": true
               },
               "version": {
@@ -17638,7 +17683,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\time_bonus.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\time_bonus.png",
                 "readonly": true
               },
               "version": {
@@ -17769,7 +17814,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\tongue.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\tongue.png",
                 "readonly": true
               },
               "version": {
@@ -17900,7 +17945,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\wall.png",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\wall.png",
                 "readonly": true
               },
               "version": {
@@ -18031,7 +18076,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\idle.otextureseq",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\idle.otextureseq",
                 "readonly": true
               },
               "version": {
@@ -18106,7 +18151,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\Textures\\walk.otextureseq",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\Textures\\walk.otextureseq",
                 "readonly": true
               },
               "version": {
@@ -18181,7 +18226,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\attacking.gif",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\attacking.gif",
                 "readonly": true
               },
               "version": {
@@ -18218,7 +18263,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\dizzy.gif",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\dizzy.gif",
                 "readonly": true
               },
               "version": {
@@ -18255,7 +18300,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\enemy.gif",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\enemy.gif",
                 "readonly": true
               },
               "version": {
@@ -18292,7 +18337,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\explosion.gif",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\explosion.gif",
                 "readonly": true
               },
               "version": {
@@ -18329,7 +18374,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\ko_gif.gif",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\ko_gif.gif",
                 "readonly": true
               },
               "version": {
@@ -18352,6 +18397,43 @@
             {
               "guid": {
                 "type": "Guid",
+                "data": "59f06140-5d15-d14e-9945-8ccc74872467",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "ko_red"
+              },
+              "type": {
+                "type": "String",
+                "data": "GifAsset",
+                "readonly": true
+              },
+              "filePath": {
+                "type": "String",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\ko_red.gif",
+                "readonly": true
+              },
+              "version": {
+                "type": "Version",
+                "data": "0.1.0",
+                "readonly": true
+              },
+              "subAssets": [],
+              "resolution": {
+                "type": "String",
+                "data": "416 x 110",
+                "readonly": true
+              },
+              "sizeStr": {
+                "type": "String",
+                "data": "3.58 KB",
+                "readonly": true
+              }
+            },
+            {
+              "guid": {
+                "type": "Guid",
                 "data": "3a1ba8ae-94b0-7a50-feb4-bb5ee5ee4e5d",
                 "readonly": true
               },
@@ -18366,7 +18448,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\restart.gif",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\restart.gif",
                 "readonly": true
               },
               "version": {
@@ -18403,7 +18485,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\restart_gif.gif",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\restart_gif.gif",
                 "readonly": true
               },
               "version": {
@@ -18440,7 +18522,7 @@
               },
               "filePath": {
                 "type": "String",
-                "data": "C:\\Users\\gbroc\\AppData\\Roaming\\EffectHouse\\Instances\\Instance1\\Backup\\1785773278607_7\\Assets\\GIF\\timeup_gif.gif",
+                "data": "C:\\Documentos\\Tiktok\\projeto tokusatso\\tokusatso\\Assets\\GIF\\timeup_gif.gif",
                 "readonly": true
               },
               "version": {
@@ -18463,6 +18545,2765 @@
           ]
         },
         "subCommands": []
+      }
+    },
+    {
+      "actionId": "402eb148-2291-fd94-46e9-0af48c6f2cab",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "SetSceneObject",
+        "data": {
+          "input": {
+            "guid": "933b1eb9-84ae-f999-9009-b7bf7e64ffbe",
+            "properties": [
+              {
+                "property": "enabled",
+                "value": {
+                  "type": "Boolean",
+                  "data": true
+                }
+              }
+            ]
+          },
+          "output": {
+            "guid": "933b1eb9-84ae-f999-9009-b7bf7e64ffbe",
+            "changes": [
+              {
+                "property": "enabled",
+                "oldValue": false,
+                "newValue": true
+              }
+            ]
+          }
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "guid",
+            "sourceId": "GetScene",
+            "source": "commands.data.output.renderGroups[1].sceneObjects[0].children[0].children[0].children[1].guid.data",
+            "target": "commands.data.input.guid"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "f6eb3f05-3df4-07ea-5d7b-59d06c9a7567",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "DeleteSceneObject",
+        "data": {
+          "input": {
+            "guid": [
+              "933b1eb9-84ae-f999-9009-b7bf7e64ffbe"
+            ]
+          },
+          "output": {
+            "deletedSceneObjectInfo": {
+              "guid": {
+                "type": "Guid",
+                "data": "933b1eb9-84ae-f999-9009-b7bf7e64ffbe",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "Screen Image"
+              },
+              "visible": {
+                "type": "Boolean",
+                "data": true
+              },
+              "children": [],
+              "components": [
+                {
+                  "type": {
+                    "type": "String",
+                    "data": "ScreenTransform",
+                    "readonly": true
+                  },
+                  "guid": {
+                    "type": "Guid",
+                    "data": "4c34ffb6-7e75-de5e-4882-077b4c84b680",
+                    "readonly": true
+                  },
+                  "name": {
+                    "type": "String",
+                    "data": "Screen Transform",
+                    "readonly": true
+                  },
+                  "version": {
+                    "type": "Version",
+                    "data": "0.1.0",
+                    "readonly": true
+                  },
+                  "enabled": {
+                    "type": "Boolean",
+                    "data": true
+                  },
+                  "horizontalConstraint": {
+                    "type": "Enum",
+                    "data": "FIXED",
+                    "options": [
+                      "STRETCH",
+                      "FIXED",
+                      "LEFT",
+                      "RIGHT",
+                      "LEFT_AND_FIXED",
+                      "RIGHT_AND_FIXED",
+                      "LEFT_AND_RIGHT",
+                      "INVALID"
+                    ]
+                  },
+                  "verticalConstraint": {
+                    "type": "Enum",
+                    "data": "FIXED",
+                    "options": [
+                      "STRETCH",
+                      "FIXED",
+                      "BOTTOM",
+                      "TOP",
+                      "BOTTOM_AND_FIXED",
+                      "TOP_AND_FIXED",
+                      "BOTTOM_AND_TOP",
+                      "INVALID"
+                    ]
+                  },
+                  "offsets": {
+                    "type": "Vector4f",
+                    "data": {
+                      "x": 0,
+                      "y": 512,
+                      "z": -106,
+                      "w": 406
+                    }
+                  },
+                  "anchoredPosition": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 256,
+                      "y": 150
+                    }
+                  },
+                  "sizeDelta": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 512,
+                      "y": 512
+                    }
+                  },
+                  "pivot": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 0.5,
+                      "y": 0.5
+                    }
+                  },
+                  "rotation": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "scale": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 1,
+                      "y": 1
+                    }
+                  },
+                  "pixelsPerUnit": {
+                    "type": "Number",
+                    "data": 32
+                  },
+                  "anchors": {
+                    "type": "Vector4f",
+                    "data": {
+                      "x": 0.5,
+                      "y": 0.5,
+                      "z": 0.5,
+                      "w": 0.5
+                    }
+                  }
+                },
+                {
+                  "type": {
+                    "type": "String",
+                    "data": "Image",
+                    "readonly": true
+                  },
+                  "guid": {
+                    "type": "Guid",
+                    "data": "6023c504-0a52-584c-8736-2fbe02b7a64a",
+                    "readonly": true
+                  },
+                  "name": {
+                    "type": "String",
+                    "data": "Image",
+                    "readonly": true
+                  },
+                  "version": {
+                    "type": "Version",
+                    "data": "0.1.0",
+                    "readonly": true
+                  },
+                  "enabled": {
+                    "type": "Boolean",
+                    "data": true
+                  },
+                  "sharedMaterial": {
+                    "type": "Material",
+                    "data": {
+                      "guid": "00000000-0000-0000-0000-000000000132"
+                    }
+                  },
+                  "texture": {
+                    "type": "Texture",
+                    "data": {
+                      "guid": "fd01ece0-2aeb-caf5-8f7e-a5a5805c34eb"
+                    }
+                  },
+                  "segTex": {
+                    "type": "Texture",
+                    "data": {
+                      "guid": "undefined"
+                    }
+                  },
+                  "segBlendMode": {
+                    "type": "Enum",
+                    "data": "NORMAL",
+                    "options": [
+                      "DISABLED",
+                      "NORMAL",
+                      "MULTIPLY",
+                      "SCREEN",
+                      "AVERAGE",
+                      "LINEAR_DODGE_HARD",
+                      "ALPHA_PREMULTIPLY",
+                      "GLASS",
+                      "TRANSMISSION",
+                      "COLOR_BURN",
+                      "LINEAR_BURN",
+                      "COLOR_DODGE",
+                      "OVERLAY",
+                      "SOFT_LIGHT",
+                      "HARD_LIGHT",
+                      "VIVID_LIGHT",
+                      "LINEAR_LIGHT",
+                      "PIN_LIGHT",
+                      "HARD_MIX",
+                      "DIFFERENCE",
+                      "EXCLUSION",
+                      "DISSOLVE",
+                      "DARKER_COLOR",
+                      "LIGHTER_COLOR",
+                      "SUBTRACT",
+                      "DIVIDE",
+                      "HUE",
+                      "SATURATION",
+                      "COLOR",
+                      "LUMINOSITY",
+                      "COLORED_GLASS",
+                      "ALPHA_TEST",
+                      "LINEAR_DODGE",
+                      "DARKEN",
+                      "LIGHTEN",
+                      "MULTIPLY_SOFT",
+                      "SCREEN_SOFT",
+                      "AVERAGE_SOFT",
+                      "FROM_SHADER",
+                      "NORMAL_LEGACY",
+                      "TRANSPARENT_LEGACY",
+                      "COLORED_GLASS_LEGACY",
+                      "GLASS_LEGACY",
+                      "DARKEN_LEGACY",
+                      "MULTIPLY_LEGACY",
+                      "COLOR_BURN_LEGACY",
+                      "LIGHTEN_LEGACY",
+                      "SCREEN_LEGACY",
+                      "COLOR_DODGE_LEGACY",
+                      "LINEAR_DODGE_LEGACY",
+                      "OVERLAY_LEGACY",
+                      "SOFT_LIGHT_LEGACY",
+                      "DIFFERENCE_LEGACY",
+                      "EXCLUSION_LEGACY",
+                      "PARTICLE_ADD_LEGACY",
+                      "PARTICLE_NORMAL_LEGACY",
+                      "PARTICLE_PREMULTIPLY_NORMAL_LEGACY",
+                      "PARTICLE_PREMULTIPLY_ADD_LEGACY",
+                      "GAN_TRANSPARENT_LEGACY",
+                      "PREMULTIPLY_ALPHA_LEGACY",
+                      "FACEMASK_ADD"
+                    ]
+                  },
+                  "segRadius": {
+                    "type": "Number",
+                    "data": 0.5
+                  },
+                  "segSoftness": {
+                    "type": "Number",
+                    "data": 0.5
+                  },
+                  "blendMode": {
+                    "type": "Enum",
+                    "data": "Normal",
+                    "options": [
+                      "Normal",
+                      "Darken",
+                      "Multiply",
+                      "ColorBurn",
+                      "LinearBurn",
+                      "Lighten",
+                      "Screen",
+                      "ColorDodge",
+                      "LinearDodge",
+                      "Overlay",
+                      "SoftLight",
+                      "HardLight",
+                      "VividLight",
+                      "LinearLight",
+                      "PinLight",
+                      "HardMix",
+                      "Difference",
+                      "Exclusion"
+                    ]
+                  },
+                  "opacity": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "color": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0.863,
+                      "g": 0.298,
+                      "b": 0.298,
+                      "a": 1
+                    }
+                  },
+                  "size": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 10,
+                      "y": 10
+                    }
+                  },
+                  "pivot": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 0.5,
+                      "y": 0.5
+                    }
+                  },
+                  "flipX": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "flipY": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "drawMode": {
+                    "type": "Enum",
+                    "data": "Normal",
+                    "options": [
+                      "Normal",
+                      "Tiled",
+                      "Filled",
+                      "Ellipse"
+                    ]
+                  },
+                  "stretchMode": {
+                    "type": "Enum",
+                    "data": "Fit",
+                    "options": [
+                      "Fit",
+                      "FitWidth",
+                      "FitHeight",
+                      "Stretch",
+                      "Fill",
+                      "FillAndCut"
+                    ]
+                  },
+                  "filledType": {
+                    "type": "Enum",
+                    "data": "Horizontal",
+                    "options": [
+                      "Horizontal",
+                      "Vertical",
+                      "Radial"
+                    ]
+                  },
+                  "startPoint": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "filledRange": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "ellipseX": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "ellipseY": {
+                    "type": "Number",
+                    "data": 1
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "subCommands": [
+          {
+            "name": "DeleteSceneObject",
+            "data": {
+              "input": {
+                "guid": "933b1eb9-84ae-f999-9009-b7bf7e64ffbe"
+              }
+            },
+            "subCommands": [
+              {
+                "name": "DeleteComponent",
+                "data": {
+                  "input": {
+                    "guid": "4c34ffb6-7e75-de5e-4882-077b4c84b680"
+                  }
+                },
+                "subCommands": []
+              },
+              {
+                "name": "DeleteComponent",
+                "data": {
+                  "input": {
+                    "guid": "6023c504-0a52-584c-8736-2fbe02b7a64a"
+                  }
+                },
+                "subCommands": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "98284209-581e-bfde-fed8-37d5d01a67ef",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "SetSceneObject",
+        "data": {
+          "input": {
+            "guid": "0f0ed0b4-ba66-93dd-06b5-a55f2fcbf967",
+            "properties": [
+              {
+                "property": "enabled",
+                "value": {
+                  "type": "Boolean",
+                  "data": true
+                }
+              }
+            ]
+          },
+          "output": {
+            "guid": "0f0ed0b4-ba66-93dd-06b5-a55f2fcbf967",
+            "changes": [
+              {
+                "property": "enabled",
+                "oldValue": false,
+                "newValue": true
+              }
+            ]
+          }
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "guid",
+            "sourceId": "GetScene",
+            "source": "commands.data.output.renderGroups[1].sceneObjects[0].children[0].children[0].children[2].guid.data",
+            "target": "commands.data.input.guid"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "273a3cbc-a20b-9eec-a8e3-3b19cdc04e76",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "DeleteSceneObject",
+        "data": {
+          "input": {
+            "guid": [
+              "0f0ed0b4-ba66-93dd-06b5-a55f2fcbf967"
+            ]
+          },
+          "output": {
+            "deletedSceneObjectInfo": {
+              "guid": {
+                "type": "Guid",
+                "data": "0f0ed0b4-ba66-93dd-06b5-a55f2fcbf967",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "Screen Image (2)"
+              },
+              "visible": {
+                "type": "Boolean",
+                "data": true
+              },
+              "children": [],
+              "components": [
+                {
+                  "type": {
+                    "type": "String",
+                    "data": "ScreenTransform",
+                    "readonly": true
+                  },
+                  "guid": {
+                    "type": "Guid",
+                    "data": "976ee2c1-105e-7385-47ee-d63886b5d978",
+                    "readonly": true
+                  },
+                  "name": {
+                    "type": "String",
+                    "data": "Screen Transform",
+                    "readonly": true
+                  },
+                  "version": {
+                    "type": "Version",
+                    "data": "0.1.0",
+                    "readonly": true
+                  },
+                  "enabled": {
+                    "type": "Boolean",
+                    "data": true
+                  },
+                  "horizontalConstraint": {
+                    "type": "Enum",
+                    "data": "FIXED",
+                    "options": [
+                      "STRETCH",
+                      "FIXED",
+                      "LEFT",
+                      "RIGHT",
+                      "LEFT_AND_FIXED",
+                      "RIGHT_AND_FIXED",
+                      "LEFT_AND_RIGHT",
+                      "INVALID"
+                    ]
+                  },
+                  "verticalConstraint": {
+                    "type": "Enum",
+                    "data": "FIXED",
+                    "options": [
+                      "STRETCH",
+                      "FIXED",
+                      "BOTTOM",
+                      "TOP",
+                      "BOTTOM_AND_FIXED",
+                      "TOP_AND_FIXED",
+                      "BOTTOM_AND_TOP",
+                      "INVALID"
+                    ]
+                  },
+                  "offsets": {
+                    "type": "Vector4f",
+                    "data": {
+                      "x": -512,
+                      "y": 0,
+                      "z": -106,
+                      "w": 406
+                    }
+                  },
+                  "anchoredPosition": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": -256,
+                      "y": 150
+                    }
+                  },
+                  "sizeDelta": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 512,
+                      "y": 512
+                    }
+                  },
+                  "pivot": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 0.5,
+                      "y": 0.5
+                    }
+                  },
+                  "rotation": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "scale": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 1,
+                      "y": 1
+                    }
+                  },
+                  "pixelsPerUnit": {
+                    "type": "Number",
+                    "data": 32
+                  },
+                  "anchors": {
+                    "type": "Vector4f",
+                    "data": {
+                      "x": 0.5,
+                      "y": 0.5,
+                      "z": 0.5,
+                      "w": 0.5
+                    }
+                  }
+                },
+                {
+                  "type": {
+                    "type": "String",
+                    "data": "Image",
+                    "readonly": true
+                  },
+                  "guid": {
+                    "type": "Guid",
+                    "data": "fc3c430e-74c2-5f6a-7f12-baa5739e98e5",
+                    "readonly": true
+                  },
+                  "name": {
+                    "type": "String",
+                    "data": "Image",
+                    "readonly": true
+                  },
+                  "version": {
+                    "type": "Version",
+                    "data": "0.1.0",
+                    "readonly": true
+                  },
+                  "enabled": {
+                    "type": "Boolean",
+                    "data": true
+                  },
+                  "sharedMaterial": {
+                    "type": "Material",
+                    "data": {
+                      "guid": "00000000-0000-0000-0000-000000000132"
+                    }
+                  },
+                  "texture": {
+                    "type": "Texture",
+                    "data": {
+                      "guid": "fd01ece0-2aeb-caf5-8f7e-a5a5805c34eb"
+                    }
+                  },
+                  "segTex": {
+                    "type": "Texture",
+                    "data": {
+                      "guid": "undefined"
+                    }
+                  },
+                  "segBlendMode": {
+                    "type": "Enum",
+                    "data": "NORMAL",
+                    "options": [
+                      "DISABLED",
+                      "NORMAL",
+                      "MULTIPLY",
+                      "SCREEN",
+                      "AVERAGE",
+                      "LINEAR_DODGE_HARD",
+                      "ALPHA_PREMULTIPLY",
+                      "GLASS",
+                      "TRANSMISSION",
+                      "COLOR_BURN",
+                      "LINEAR_BURN",
+                      "COLOR_DODGE",
+                      "OVERLAY",
+                      "SOFT_LIGHT",
+                      "HARD_LIGHT",
+                      "VIVID_LIGHT",
+                      "LINEAR_LIGHT",
+                      "PIN_LIGHT",
+                      "HARD_MIX",
+                      "DIFFERENCE",
+                      "EXCLUSION",
+                      "DISSOLVE",
+                      "DARKER_COLOR",
+                      "LIGHTER_COLOR",
+                      "SUBTRACT",
+                      "DIVIDE",
+                      "HUE",
+                      "SATURATION",
+                      "COLOR",
+                      "LUMINOSITY",
+                      "COLORED_GLASS",
+                      "ALPHA_TEST",
+                      "LINEAR_DODGE",
+                      "DARKEN",
+                      "LIGHTEN",
+                      "MULTIPLY_SOFT",
+                      "SCREEN_SOFT",
+                      "AVERAGE_SOFT",
+                      "FROM_SHADER",
+                      "NORMAL_LEGACY",
+                      "TRANSPARENT_LEGACY",
+                      "COLORED_GLASS_LEGACY",
+                      "GLASS_LEGACY",
+                      "DARKEN_LEGACY",
+                      "MULTIPLY_LEGACY",
+                      "COLOR_BURN_LEGACY",
+                      "LIGHTEN_LEGACY",
+                      "SCREEN_LEGACY",
+                      "COLOR_DODGE_LEGACY",
+                      "LINEAR_DODGE_LEGACY",
+                      "OVERLAY_LEGACY",
+                      "SOFT_LIGHT_LEGACY",
+                      "DIFFERENCE_LEGACY",
+                      "EXCLUSION_LEGACY",
+                      "PARTICLE_ADD_LEGACY",
+                      "PARTICLE_NORMAL_LEGACY",
+                      "PARTICLE_PREMULTIPLY_NORMAL_LEGACY",
+                      "PARTICLE_PREMULTIPLY_ADD_LEGACY",
+                      "GAN_TRANSPARENT_LEGACY",
+                      "PREMULTIPLY_ALPHA_LEGACY",
+                      "FACEMASK_ADD"
+                    ]
+                  },
+                  "segRadius": {
+                    "type": "Number",
+                    "data": 0.5
+                  },
+                  "segSoftness": {
+                    "type": "Number",
+                    "data": 0.5
+                  },
+                  "blendMode": {
+                    "type": "Enum",
+                    "data": "Normal",
+                    "options": [
+                      "Normal",
+                      "Darken",
+                      "Multiply",
+                      "ColorBurn",
+                      "LinearBurn",
+                      "Lighten",
+                      "Screen",
+                      "ColorDodge",
+                      "LinearDodge",
+                      "Overlay",
+                      "SoftLight",
+                      "HardLight",
+                      "VividLight",
+                      "LinearLight",
+                      "PinLight",
+                      "HardMix",
+                      "Difference",
+                      "Exclusion"
+                    ]
+                  },
+                  "opacity": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "color": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0.34,
+                      "g": 0.863,
+                      "b": 0.298,
+                      "a": 1
+                    }
+                  },
+                  "size": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 10,
+                      "y": 10
+                    }
+                  },
+                  "pivot": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 0.5,
+                      "y": 0.5
+                    }
+                  },
+                  "flipX": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "flipY": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "drawMode": {
+                    "type": "Enum",
+                    "data": "Normal",
+                    "options": [
+                      "Normal",
+                      "Tiled",
+                      "Filled",
+                      "Ellipse"
+                    ]
+                  },
+                  "stretchMode": {
+                    "type": "Enum",
+                    "data": "Fit",
+                    "options": [
+                      "Fit",
+                      "FitWidth",
+                      "FitHeight",
+                      "Stretch",
+                      "Fill",
+                      "FillAndCut"
+                    ]
+                  },
+                  "filledType": {
+                    "type": "Enum",
+                    "data": "Horizontal",
+                    "options": [
+                      "Horizontal",
+                      "Vertical",
+                      "Radial"
+                    ]
+                  },
+                  "startPoint": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "filledRange": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "ellipseX": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "ellipseY": {
+                    "type": "Number",
+                    "data": 1
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "subCommands": [
+          {
+            "name": "DeleteSceneObject",
+            "data": {
+              "input": {
+                "guid": "0f0ed0b4-ba66-93dd-06b5-a55f2fcbf967"
+              }
+            },
+            "subCommands": [
+              {
+                "name": "DeleteComponent",
+                "data": {
+                  "input": {
+                    "guid": "976ee2c1-105e-7385-47ee-d63886b5d978"
+                  }
+                },
+                "subCommands": []
+              },
+              {
+                "name": "DeleteComponent",
+                "data": {
+                  "input": {
+                    "guid": "fc3c430e-74c2-5f6a-7f12-baa5739e98e5"
+                  }
+                },
+                "subCommands": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "b04f0859-fc3e-3585-06e5-61a1c114f4e1",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "SetSceneObject",
+        "data": {
+          "input": {
+            "guid": "c1991052-035a-c3c2-2b85-b417a6ff2694",
+            "properties": [
+              {
+                "property": "enabled",
+                "value": {
+                  "type": "Boolean",
+                  "data": true
+                }
+              }
+            ]
+          },
+          "output": {
+            "guid": "c1991052-035a-c3c2-2b85-b417a6ff2694",
+            "changes": [
+              {
+                "property": "enabled",
+                "oldValue": false,
+                "newValue": true
+              }
+            ]
+          }
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "guid",
+            "sourceId": "GetScene",
+            "source": "commands.data.output.renderGroups[1].sceneObjects[0].children[0].children[3].guid.data",
+            "target": "commands.data.input.guid"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "0a3295ae-e6ca-afa3-f7f7-3f5f9fdc9b1d",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "SetSceneObject",
+        "data": {
+          "input": {
+            "guid": "c1991052-035a-c3c2-2b85-b417a6ff2694",
+            "properties": [
+              {
+                "property": "enabled",
+                "value": {
+                  "type": "Boolean",
+                  "data": false
+                }
+              }
+            ]
+          },
+          "output": {
+            "guid": "c1991052-035a-c3c2-2b85-b417a6ff2694",
+            "changes": [
+              {
+                "property": "enabled",
+                "oldValue": true,
+                "newValue": false
+              }
+            ]
+          }
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "guid",
+            "sourceId": "b04f0859-fc3e-3585-06e5-61a1c114f4e1",
+            "source": "commands.data.output.guid",
+            "target": "commands.data.input.guid"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "be4c1fd0-f0b9-276f-41c7-896e57b9b83d",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "DeleteSceneObject",
+        "data": {
+          "input": {
+            "guid": [
+              "c1991052-035a-c3c2-2b85-b417a6ff2694"
+            ]
+          },
+          "output": {
+            "deletedSceneObjectInfo": {
+              "guid": {
+                "type": "Guid",
+                "data": "c1991052-035a-c3c2-2b85-b417a6ff2694",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "2D Text (1)"
+              },
+              "visible": {
+                "type": "Boolean",
+                "data": false
+              },
+              "children": [],
+              "components": [
+                {
+                  "type": {
+                    "type": "String",
+                    "data": "ScreenTransform",
+                    "readonly": true
+                  },
+                  "guid": {
+                    "type": "Guid",
+                    "data": "bac84a05-790e-85ed-bad7-a5b8cbfda49d",
+                    "readonly": true
+                  },
+                  "name": {
+                    "type": "String",
+                    "data": "Screen Transform",
+                    "readonly": true
+                  },
+                  "version": {
+                    "type": "Version",
+                    "data": "0.1.0",
+                    "readonly": true
+                  },
+                  "enabled": {
+                    "type": "Boolean",
+                    "data": true
+                  },
+                  "horizontalConstraint": {
+                    "type": "Enum",
+                    "data": "FIXED",
+                    "options": [
+                      "STRETCH",
+                      "FIXED",
+                      "LEFT",
+                      "RIGHT",
+                      "LEFT_AND_FIXED",
+                      "RIGHT_AND_FIXED",
+                      "LEFT_AND_RIGHT",
+                      "INVALID"
+                    ]
+                  },
+                  "verticalConstraint": {
+                    "type": "Enum",
+                    "data": "FIXED",
+                    "options": [
+                      "STRETCH",
+                      "FIXED",
+                      "BOTTOM",
+                      "TOP",
+                      "BOTTOM_AND_FIXED",
+                      "TOP_AND_FIXED",
+                      "BOTTOM_AND_TOP",
+                      "INVALID"
+                    ]
+                  },
+                  "offsets": {
+                    "type": "Vector4f",
+                    "data": {
+                      "x": -160,
+                      "y": 560,
+                      "z": -207.64,
+                      "w": 1072.36
+                    }
+                  },
+                  "anchoredPosition": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 200,
+                      "y": 432.36
+                    }
+                  },
+                  "sizeDelta": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 720,
+                      "y": 1280
+                    }
+                  },
+                  "pivot": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 0.5,
+                      "y": 0.5
+                    }
+                  },
+                  "rotation": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "scale": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 1,
+                      "y": 1
+                    }
+                  },
+                  "pixelsPerUnit": {
+                    "type": "Number",
+                    "data": 32
+                  },
+                  "anchors": {
+                    "type": "Vector4f",
+                    "data": {
+                      "x": 0.5,
+                      "y": 0.5,
+                      "z": 0.5,
+                      "w": 0.5
+                    }
+                  }
+                },
+                {
+                  "type": {
+                    "type": "String",
+                    "data": "Text2D",
+                    "readonly": true
+                  },
+                  "guid": {
+                    "type": "Guid",
+                    "data": "d4bf06a4-00fa-5fef-2dc0-8733c43ba87c",
+                    "readonly": true
+                  },
+                  "name": {
+                    "type": "String",
+                    "data": "Text",
+                    "readonly": true
+                  },
+                  "version": {
+                    "type": "Version",
+                    "data": "1.1.0",
+                    "readonly": true
+                  },
+                  "enabled": {
+                    "type": "Boolean",
+                    "data": true
+                  },
+                  "input": {
+                    "type": "String",
+                    "data": "tempo"
+                  },
+                  "textAdaptiveCanvasEnabled": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "fontSize": {
+                    "type": "Number",
+                    "data": 36
+                  },
+                  "fontType": {
+                    "type": "String",
+                    "data": "Classic.ttf"
+                  },
+                  "bold": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "italic": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "underline": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "writingDirection": {
+                    "type": "Enum",
+                    "data": "HORIZONTAL",
+                    "options": [
+                      "HORIZONTAL",
+                      "VERTICAL"
+                    ]
+                  },
+                  "lineBreakType": {
+                    "type": "Enum",
+                    "data": "AutoLineBreak",
+                    "options": [
+                      "AutoLineBreak",
+                      "CutOff",
+                      "Clamp",
+                      "Shrink"
+                    ]
+                  },
+                  "autoFontSizeMin": {
+                    "type": "Number",
+                    "data": 24
+                  },
+                  "autoFontSizeMax": {
+                    "type": "Number",
+                    "data": 96
+                  },
+                  "verticalAlignment": {
+                    "type": "Enum",
+                    "data": "CENTER",
+                    "options": [
+                      "TOP",
+                      "CENTER",
+                      "BOTTOM"
+                    ]
+                  },
+                  "horizontalAlignment": {
+                    "type": "Enum",
+                    "data": "CENTER",
+                    "options": [
+                      "LEFT",
+                      "CENTER",
+                      "RIGHT",
+                      "JUSTIFY"
+                    ]
+                  },
+                  "letterSpacing": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "lineSpacing": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "artText": {
+                    "type": "ArtTextAsset",
+                    "data": {
+                      "guid": "00000000-0000-0000-0000-000000008000"
+                    }
+                  },
+                  "letterFillMode": {
+                    "type": "Enum",
+                    "data": "SOLID",
+                    "options": [
+                      "SOLID",
+                      "GRADIENT",
+                      "TEXTURE"
+                    ]
+                  },
+                  "color": {
+                    "type": "Color",
+                    "data": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1,
+                      "a": 1
+                    }
+                  },
+                  "letterAlpha": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "letterGradientQuality": {
+                    "type": "Enum",
+                    "data": "TwoColor",
+                    "options": [
+                      "TwoColor",
+                      "ThreeColor"
+                    ]
+                  },
+                  "letterGradientColor1": {
+                    "type": "Color",
+                    "data": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1,
+                      "a": 1
+                    }
+                  },
+                  "letterGradientColor2": {
+                    "type": "Color",
+                    "data": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1,
+                      "a": 1
+                    }
+                  },
+                  "letterGradientColor3": {
+                    "type": "Color",
+                    "data": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1,
+                      "a": 1
+                    }
+                  },
+                  "letterGradientColorPos1": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterGradientColorPos2": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "letterGradientColorPos3": {
+                    "type": "Number",
+                    "data": 0.5
+                  },
+                  "letterGradientAngle": {
+                    "type": "Number",
+                    "data": 90
+                  },
+                  "letterGradientRangeMode": {
+                    "type": "Enum",
+                    "data": "ALL",
+                    "options": [
+                      "CHARACTER",
+                      "ALL"
+                    ]
+                  },
+                  "letterTexture": {
+                    "type": "Texture2D",
+                    "data": {
+                      "guid": "00000000-0000-0000-0000-00000000001c"
+                    }
+                  },
+                  "letterTextureScale": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "letterTextureOffsetX": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterTextureOffsetY": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "textFillArea": {
+                    "type": "Enum",
+                    "data": "Rect",
+                    "options": [
+                      "Rect",
+                      "Character"
+                    ]
+                  },
+                  "letterTextureFlipX": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "letterTextureFlipY": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "letterTextureAlpha": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "letterTextureAngle": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterTextureRange": {
+                    "type": "Number",
+                    "data": -1
+                  },
+                  "backgroundEnable": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "letterBgAlpha": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "letterBgFillMode": {
+                    "type": "Enum",
+                    "data": "SOLID",
+                    "options": [
+                      "SOLID",
+                      "TEXTURE",
+                      "GRADIENT"
+                    ]
+                  },
+                  "letterBgGradientQuality": {
+                    "type": "Enum",
+                    "data": "TwoColor",
+                    "options": [
+                      "TwoColor",
+                      "ThreeColor"
+                    ]
+                  },
+                  "letterBgColor": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "letterBgGradientColor1": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "letterBgGradientColor2": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "letterBgGradientColor3": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "letterBgGradientColorPos1": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterBgGradientColorPos2": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "letterBgGradientColorPos3": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterBgGradientAngle": {
+                    "type": "Number",
+                    "data": 90
+                  },
+                  "letterBgTexture": {
+                    "type": "Texture2D",
+                    "data": {
+                      "guid": "00000000-0000-0000-0000-00000000001d"
+                    }
+                  },
+                  "letterBgTextureScale": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "letterBgTextureOffsetX": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterBgTextureOffsetY": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterBgWidthCustomized": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterBgHeightCustomized": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterBgRoundRadiusScale": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "innerShadowEnable": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "innerShadowFillMode": {
+                    "type": "Enum",
+                    "data": "SOLID",
+                    "options": [
+                      "SOLID",
+                      "GRADIENT",
+                      "TEXTURE"
+                    ]
+                  },
+                  "innerShadowGradientQuality": {
+                    "type": "Enum",
+                    "data": "TwoColor",
+                    "options": [
+                      "TwoColor",
+                      "ThreeColor"
+                    ]
+                  },
+                  "innerShadowColorRGBA": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "innerShadowGradientColor1": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "innerShadowGradientColor2": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "innerShadowGradientColor3": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "innerShadowGradientColorPos1": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "innerShadowGradientColorPos2": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "innerShadowGradientColorPos3": {
+                    "type": "Number",
+                    "data": 0.5
+                  },
+                  "innerShadowGradientAngle": {
+                    "type": "Number",
+                    "data": 90
+                  },
+                  "innerShadowGradientRangeMode": {
+                    "type": "Enum",
+                    "data": "ALL",
+                    "options": [
+                      "CHARACTER",
+                      "ALL"
+                    ]
+                  },
+                  "innerShadowTexture": {
+                    "type": "Texture2D",
+                    "data": {
+                      "guid": "00000000-0000-0000-0000-00000000001d"
+                    }
+                  },
+                  "innerShadowTextureScale": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "innerShadowTextureOffsetX": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "innerShadowTextureOffsetY": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "innerShadowAlpha": {
+                    "type": "Number",
+                    "data": 0.9
+                  },
+                  "innerShdadowTextFillArea": {
+                    "type": "Enum",
+                    "data": "Rect",
+                    "options": [
+                      "Rect",
+                      "Character"
+                    ]
+                  },
+                  "innerShadowTextureFlipX": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "innerShadowTextureFlipY": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "innerShadowTextureAlpha": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "innerShadowTextureAngle": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "innerShadowTextureRange": {
+                    "type": "Number",
+                    "data": -1
+                  },
+                  "innerShadowDistance": {
+                    "type": "Number",
+                    "data": 5
+                  },
+                  "innerShadowAngle": {
+                    "type": "Number",
+                    "data": -30
+                  },
+                  "innerShadowSmooth": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "glow": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "bloomEnable": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "bloomOption": {
+                    "type": "Enum",
+                    "data": "OutWard",
+                    "options": [
+                      "OutWard",
+                      "Stroke"
+                    ]
+                  },
+                  "bloomColor": {
+                    "type": "Color",
+                    "data": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1,
+                      "a": 1
+                    }
+                  },
+                  "bloomRtSizeCoeff": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "glowIntensity": {
+                    "type": "Number",
+                    "data": 0.5
+                  },
+                  "glowRange": {
+                    "type": "Number",
+                    "data": 0.5
+                  },
+                  "glowHorizontalAngle": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "glowVerticalAngle": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "strokes": {
+                    "type": "Vector",
+                    "data": []
+                  },
+                  "shadows": {
+                    "type": "Vector",
+                    "data": []
+                  },
+                  "boxDimension": {
+                    "type": "Enum",
+                    "data": "Dynamic",
+                    "options": [
+                      "Dynamic",
+                      "FixedWidth",
+                      "FixedSize"
+                    ]
+                  },
+                  "bendType": {
+                    "type": "Enum",
+                    "data": "None",
+                    "options": [
+                      "None",
+                      "OnPath",
+                      "OnArc"
+                    ]
+                  },
+                  "arcAngle": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "layoutMode": {
+                    "type": "Enum",
+                    "data": "FixedSize",
+                    "options": [
+                      "AutoSize",
+                      "AutoHeight",
+                      "AutoWidth",
+                      "FixedSize"
+                    ]
+                  },
+                  "inAnimationAssetID": {
+                    "type": "String",
+                    "data": ""
+                  },
+                  "loopAnimationAssetID": {
+                    "type": "String",
+                    "data": ""
+                  },
+                  "outAnimationAssetID": {
+                    "type": "String",
+                    "data": ""
+                  },
+                  "inAnimationDuration": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "loopAnimationDuration": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "outAnimationDuration": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "userEditable": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "maxInputWords": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "richStr": {
+                    "type": "String",
+                    "data": "tempo"
+                  },
+                  "templateId": {
+                    "type": "String",
+                    "data": ""
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "subCommands": [
+          {
+            "name": "DeleteSceneObject",
+            "data": {
+              "input": {
+                "guid": "c1991052-035a-c3c2-2b85-b417a6ff2694"
+              }
+            },
+            "subCommands": [
+              {
+                "name": "DeleteComponent",
+                "data": {
+                  "input": {
+                    "guid": "bac84a05-790e-85ed-bad7-a5b8cbfda49d"
+                  }
+                },
+                "subCommands": []
+              },
+              {
+                "name": "DeleteComponent",
+                "data": {
+                  "input": {
+                    "guid": "d4bf06a4-00fa-5fef-2dc0-8733c43ba87c"
+                  }
+                },
+                "subCommands": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "00102f39-b1b2-40e6-3aec-c5dc807f915a",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "SetSceneObject",
+        "data": {
+          "input": {
+            "guid": "5ca22082-d019-afbe-8f11-9459e879be3f",
+            "properties": [
+              {
+                "property": "enabled",
+                "value": {
+                  "type": "Boolean",
+                  "data": true
+                }
+              }
+            ]
+          },
+          "output": {
+            "guid": "5ca22082-d019-afbe-8f11-9459e879be3f",
+            "changes": [
+              {
+                "property": "enabled",
+                "oldValue": false,
+                "newValue": true
+              }
+            ]
+          }
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "guid",
+            "sourceId": "GetScene",
+            "source": "commands.data.output.renderGroups[1].sceneObjects[0].children[2].guid.data",
+            "target": "commands.data.input.guid"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "07e8b4e0-5eb4-e81f-5a1d-2fae77229cc0",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "SetSceneObject",
+        "data": {
+          "input": {
+            "guid": "5ca22082-d019-afbe-8f11-9459e879be3f",
+            "properties": [
+              {
+                "property": "enabled",
+                "value": {
+                  "type": "Boolean",
+                  "data": false
+                }
+              }
+            ]
+          },
+          "output": {
+            "guid": "5ca22082-d019-afbe-8f11-9459e879be3f",
+            "changes": [
+              {
+                "property": "enabled",
+                "oldValue": true,
+                "newValue": false
+              }
+            ]
+          }
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "guid",
+            "sourceId": "00102f39-b1b2-40e6-3aec-c5dc807f915a",
+            "source": "commands.data.output.guid",
+            "target": "commands.data.input.guid"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "9af3c660-48b7-a27d-6b4d-14567f1620b3",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "DeleteSceneObject",
+        "data": {
+          "input": {
+            "guid": [
+              "5ca22082-d019-afbe-8f11-9459e879be3f"
+            ]
+          },
+          "output": {
+            "deletedSceneObjectInfo": {
+              "guid": {
+                "type": "Guid",
+                "data": "5ca22082-d019-afbe-8f11-9459e879be3f",
+                "readonly": true
+              },
+              "name": {
+                "type": "String",
+                "data": "time"
+              },
+              "visible": {
+                "type": "Boolean",
+                "data": false
+              },
+              "children": [],
+              "components": [
+                {
+                  "type": {
+                    "type": "String",
+                    "data": "ScreenTransform",
+                    "readonly": true
+                  },
+                  "guid": {
+                    "type": "Guid",
+                    "data": "0d210fe5-1577-afcb-ca20-4c348b33303f",
+                    "readonly": true
+                  },
+                  "name": {
+                    "type": "String",
+                    "data": "Screen Transform",
+                    "readonly": true
+                  },
+                  "version": {
+                    "type": "Version",
+                    "data": "0.1.0",
+                    "readonly": true
+                  },
+                  "enabled": {
+                    "type": "Boolean",
+                    "data": true
+                  },
+                  "horizontalConstraint": {
+                    "type": "Enum",
+                    "data": "FIXED",
+                    "options": [
+                      "STRETCH",
+                      "FIXED",
+                      "LEFT",
+                      "RIGHT",
+                      "LEFT_AND_FIXED",
+                      "RIGHT_AND_FIXED",
+                      "LEFT_AND_RIGHT",
+                      "INVALID"
+                    ]
+                  },
+                  "verticalConstraint": {
+                    "type": "Enum",
+                    "data": "FIXED",
+                    "options": [
+                      "STRETCH",
+                      "FIXED",
+                      "BOTTOM",
+                      "TOP",
+                      "BOTTOM_AND_FIXED",
+                      "TOP_AND_FIXED",
+                      "BOTTOM_AND_TOP",
+                      "INVALID"
+                    ]
+                  },
+                  "offsets": {
+                    "type": "Vector4f",
+                    "data": {
+                      "x": 165,
+                      "y": 235,
+                      "z": -190,
+                      "w": 1090
+                    }
+                  },
+                  "anchoredPosition": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 200,
+                      "y": 450
+                    }
+                  },
+                  "sizeDelta": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 70,
+                      "y": 1280
+                    }
+                  },
+                  "pivot": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 0.5,
+                      "y": 0.5
+                    }
+                  },
+                  "rotation": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "scale": {
+                    "type": "Vector2f",
+                    "data": {
+                      "x": 1,
+                      "y": 1
+                    }
+                  },
+                  "pixelsPerUnit": {
+                    "type": "Number",
+                    "data": 32
+                  },
+                  "anchors": {
+                    "type": "Vector4f",
+                    "data": {
+                      "x": 0.5,
+                      "y": 0.5,
+                      "z": 0.5,
+                      "w": 0.5
+                    }
+                  }
+                },
+                {
+                  "type": {
+                    "type": "String",
+                    "data": "Text2D",
+                    "readonly": true
+                  },
+                  "guid": {
+                    "type": "Guid",
+                    "data": "51c2dd55-7f04-4460-c3ae-ef0924c91432",
+                    "readonly": true
+                  },
+                  "name": {
+                    "type": "String",
+                    "data": "Text",
+                    "readonly": true
+                  },
+                  "version": {
+                    "type": "Version",
+                    "data": "1.1.0",
+                    "readonly": true
+                  },
+                  "enabled": {
+                    "type": "Boolean",
+                    "data": true
+                  },
+                  "input": {
+                    "type": "String",
+                    "data": ""
+                  },
+                  "textAdaptiveCanvasEnabled": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "fontSize": {
+                    "type": "Number",
+                    "data": 42
+                  },
+                  "fontType": {
+                    "type": "String",
+                    "data": "Classic.ttf"
+                  },
+                  "bold": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "italic": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "underline": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "writingDirection": {
+                    "type": "Enum",
+                    "data": "HORIZONTAL",
+                    "options": [
+                      "HORIZONTAL",
+                      "VERTICAL"
+                    ]
+                  },
+                  "lineBreakType": {
+                    "type": "Enum",
+                    "data": "AutoLineBreak",
+                    "options": [
+                      "AutoLineBreak",
+                      "CutOff",
+                      "Clamp",
+                      "Shrink"
+                    ]
+                  },
+                  "autoFontSizeMin": {
+                    "type": "Number",
+                    "data": 24
+                  },
+                  "autoFontSizeMax": {
+                    "type": "Number",
+                    "data": 96
+                  },
+                  "verticalAlignment": {
+                    "type": "Enum",
+                    "data": "CENTER",
+                    "options": [
+                      "TOP",
+                      "CENTER",
+                      "BOTTOM"
+                    ]
+                  },
+                  "horizontalAlignment": {
+                    "type": "Enum",
+                    "data": "LEFT",
+                    "options": [
+                      "LEFT",
+                      "CENTER",
+                      "RIGHT",
+                      "JUSTIFY"
+                    ]
+                  },
+                  "letterSpacing": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "lineSpacing": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "artText": {
+                    "type": "ArtTextAsset",
+                    "data": {
+                      "guid": "00000000-0000-0000-0000-000000008000"
+                    }
+                  },
+                  "letterFillMode": {
+                    "type": "Enum",
+                    "data": "SOLID",
+                    "options": [
+                      "SOLID",
+                      "GRADIENT",
+                      "TEXTURE"
+                    ]
+                  },
+                  "color": {
+                    "type": "Color",
+                    "data": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1,
+                      "a": 1
+                    }
+                  },
+                  "letterAlpha": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "letterGradientQuality": {
+                    "type": "Enum",
+                    "data": "TwoColor",
+                    "options": [
+                      "TwoColor",
+                      "ThreeColor"
+                    ]
+                  },
+                  "letterGradientColor1": {
+                    "type": "Color",
+                    "data": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1,
+                      "a": 1
+                    }
+                  },
+                  "letterGradientColor2": {
+                    "type": "Color",
+                    "data": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1,
+                      "a": 1
+                    }
+                  },
+                  "letterGradientColor3": {
+                    "type": "Color",
+                    "data": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1,
+                      "a": 1
+                    }
+                  },
+                  "letterGradientColorPos1": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterGradientColorPos2": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "letterGradientColorPos3": {
+                    "type": "Number",
+                    "data": 0.5
+                  },
+                  "letterGradientAngle": {
+                    "type": "Number",
+                    "data": 90
+                  },
+                  "letterGradientRangeMode": {
+                    "type": "Enum",
+                    "data": "ALL",
+                    "options": [
+                      "CHARACTER",
+                      "ALL"
+                    ]
+                  },
+                  "letterTexture": {
+                    "type": "Texture2D",
+                    "data": {
+                      "guid": "00000000-0000-0000-0000-00000000001c"
+                    }
+                  },
+                  "letterTextureScale": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "letterTextureOffsetX": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterTextureOffsetY": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "textFillArea": {
+                    "type": "Enum",
+                    "data": "Rect",
+                    "options": [
+                      "Rect",
+                      "Character"
+                    ]
+                  },
+                  "letterTextureFlipX": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "letterTextureFlipY": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "letterTextureAlpha": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "letterTextureAngle": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterTextureRange": {
+                    "type": "Number",
+                    "data": -1
+                  },
+                  "backgroundEnable": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "letterBgAlpha": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "letterBgFillMode": {
+                    "type": "Enum",
+                    "data": "SOLID",
+                    "options": [
+                      "SOLID",
+                      "TEXTURE",
+                      "GRADIENT"
+                    ]
+                  },
+                  "letterBgGradientQuality": {
+                    "type": "Enum",
+                    "data": "TwoColor",
+                    "options": [
+                      "TwoColor",
+                      "ThreeColor"
+                    ]
+                  },
+                  "letterBgColor": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "letterBgGradientColor1": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "letterBgGradientColor2": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "letterBgGradientColor3": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "letterBgGradientColorPos1": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterBgGradientColorPos2": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "letterBgGradientColorPos3": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterBgGradientAngle": {
+                    "type": "Number",
+                    "data": 90
+                  },
+                  "letterBgTexture": {
+                    "type": "Texture2D",
+                    "data": {
+                      "guid": "00000000-0000-0000-0000-00000000001d"
+                    }
+                  },
+                  "letterBgTextureScale": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "letterBgTextureOffsetX": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterBgTextureOffsetY": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterBgWidthCustomized": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterBgHeightCustomized": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "letterBgRoundRadiusScale": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "innerShadowEnable": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "innerShadowFillMode": {
+                    "type": "Enum",
+                    "data": "SOLID",
+                    "options": [
+                      "SOLID",
+                      "GRADIENT",
+                      "TEXTURE"
+                    ]
+                  },
+                  "innerShadowGradientQuality": {
+                    "type": "Enum",
+                    "data": "TwoColor",
+                    "options": [
+                      "TwoColor",
+                      "ThreeColor"
+                    ]
+                  },
+                  "innerShadowColorRGBA": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "innerShadowGradientColor1": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "innerShadowGradientColor2": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "innerShadowGradientColor3": {
+                    "type": "Color",
+                    "data": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  },
+                  "innerShadowGradientColorPos1": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "innerShadowGradientColorPos2": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "innerShadowGradientColorPos3": {
+                    "type": "Number",
+                    "data": 0.5
+                  },
+                  "innerShadowGradientAngle": {
+                    "type": "Number",
+                    "data": 90
+                  },
+                  "innerShadowGradientRangeMode": {
+                    "type": "Enum",
+                    "data": "ALL",
+                    "options": [
+                      "CHARACTER",
+                      "ALL"
+                    ]
+                  },
+                  "innerShadowTexture": {
+                    "type": "Texture2D",
+                    "data": {
+                      "guid": "00000000-0000-0000-0000-00000000001d"
+                    }
+                  },
+                  "innerShadowTextureScale": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "innerShadowTextureOffsetX": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "innerShadowTextureOffsetY": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "innerShadowAlpha": {
+                    "type": "Number",
+                    "data": 0.9
+                  },
+                  "innerShdadowTextFillArea": {
+                    "type": "Enum",
+                    "data": "Rect",
+                    "options": [
+                      "Rect",
+                      "Character"
+                    ]
+                  },
+                  "innerShadowTextureFlipX": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "innerShadowTextureFlipY": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "innerShadowTextureAlpha": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "innerShadowTextureAngle": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "innerShadowTextureRange": {
+                    "type": "Number",
+                    "data": -1
+                  },
+                  "innerShadowDistance": {
+                    "type": "Number",
+                    "data": 5
+                  },
+                  "innerShadowAngle": {
+                    "type": "Number",
+                    "data": -30
+                  },
+                  "innerShadowSmooth": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "glow": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "bloomEnable": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "bloomOption": {
+                    "type": "Enum",
+                    "data": "OutWard",
+                    "options": [
+                      "OutWard",
+                      "Stroke"
+                    ]
+                  },
+                  "bloomColor": {
+                    "type": "Color",
+                    "data": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1,
+                      "a": 1
+                    }
+                  },
+                  "bloomRtSizeCoeff": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "glowIntensity": {
+                    "type": "Number",
+                    "data": 0.5
+                  },
+                  "glowRange": {
+                    "type": "Number",
+                    "data": 0.5
+                  },
+                  "glowHorizontalAngle": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "glowVerticalAngle": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "strokes": {
+                    "type": "Vector",
+                    "data": []
+                  },
+                  "shadows": {
+                    "type": "Vector",
+                    "data": []
+                  },
+                  "boxDimension": {
+                    "type": "Enum",
+                    "data": "FixedSize",
+                    "options": [
+                      "Dynamic",
+                      "FixedWidth",
+                      "FixedSize"
+                    ]
+                  },
+                  "bendType": {
+                    "type": "Enum",
+                    "data": "None",
+                    "options": [
+                      "None",
+                      "OnPath",
+                      "OnArc"
+                    ]
+                  },
+                  "arcAngle": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "layoutMode": {
+                    "type": "Enum",
+                    "data": "FixedSize",
+                    "options": [
+                      "AutoSize",
+                      "AutoHeight",
+                      "AutoWidth",
+                      "FixedSize"
+                    ]
+                  },
+                  "inAnimationAssetID": {
+                    "type": "String",
+                    "data": ""
+                  },
+                  "loopAnimationAssetID": {
+                    "type": "String",
+                    "data": ""
+                  },
+                  "outAnimationAssetID": {
+                    "type": "String",
+                    "data": ""
+                  },
+                  "inAnimationDuration": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "loopAnimationDuration": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "outAnimationDuration": {
+                    "type": "Number",
+                    "data": 1
+                  },
+                  "userEditable": {
+                    "type": "Boolean",
+                    "data": false
+                  },
+                  "maxInputWords": {
+                    "type": "Number",
+                    "data": 0
+                  },
+                  "richStr": {
+                    "type": "String",
+                    "data": ""
+                  },
+                  "templateId": {
+                    "type": "String",
+                    "data": ""
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "subCommands": [
+          {
+            "name": "DeleteSceneObject",
+            "data": {
+              "input": {
+                "guid": "5ca22082-d019-afbe-8f11-9459e879be3f"
+              }
+            },
+            "subCommands": [
+              {
+                "name": "DeleteComponent",
+                "data": {
+                  "input": {
+                    "guid": "0d210fe5-1577-afcb-ca20-4c348b33303f"
+                  }
+                },
+                "subCommands": []
+              },
+              {
+                "name": "DeleteComponent",
+                "data": {
+                  "input": {
+                    "guid": "51c2dd55-7f04-4460-c3ae-ef0924c91432"
+                  }
+                },
+                "subCommands": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "6c215823-d025-c9b2-090c-7997b4822647",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "SetSceneObject",
+        "data": {
+          "input": {
+            "guid": "303f5b5c-957e-da15-1bcc-c087ed64c141",
+            "properties": [
+              {
+                "property": "enabled",
+                "value": {
+                  "type": "Boolean",
+                  "data": true
+                }
+              }
+            ]
+          },
+          "output": {
+            "guid": "303f5b5c-957e-da15-1bcc-c087ed64c141",
+            "changes": [
+              {
+                "property": "enabled",
+                "oldValue": false,
+                "newValue": true
+              }
+            ]
+          }
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "guid",
+            "sourceId": "GetScene",
+            "source": "commands.data.output.renderGroups[1].sceneObjects[0].children[4].guid.data",
+            "target": "commands.data.input.guid"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "40d299b3-018d-ab60-b940-a7d9fcb735c9",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "SetSceneObject",
+        "data": {
+          "input": {
+            "guid": "303f5b5c-957e-da15-1bcc-c087ed64c141",
+            "properties": [
+              {
+                "property": "enabled",
+                "value": {
+                  "type": "Boolean",
+                  "data": false
+                }
+              }
+            ]
+          },
+          "output": {
+            "guid": "303f5b5c-957e-da15-1bcc-c087ed64c141",
+            "changes": [
+              {
+                "property": "enabled",
+                "oldValue": true,
+                "newValue": false
+              }
+            ]
+          }
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "guid",
+            "sourceId": "6c215823-d025-c9b2-090c-7997b4822647",
+            "source": "commands.data.output.guid",
+            "target": "commands.data.input.guid"
+          }
+        ]
+      }
+    },
+    {
+      "actionId": "715b8e1f-659b-5bbd-c9e7-2ca095e1602d",
+      "actionType": "do",
+      "source": "API",
+      "commands": {
+        "name": "SetSceneObject",
+        "data": {
+          "input": {
+            "guid": "5f25aa41-c9b1-f0dc-724e-3e67a169e98d",
+            "properties": [
+              {
+                "property": "enabled",
+                "value": {
+                  "type": "Boolean",
+                  "data": true
+                }
+              }
+            ]
+          },
+          "output": {
+            "guid": "5f25aa41-c9b1-f0dc-724e-3e67a169e98d",
+            "changes": [
+              {
+                "property": "enabled",
+                "oldValue": false,
+                "newValue": true
+              }
+            ]
+          }
+        },
+        "subCommands": []
+      },
+      "context": {
+        "dependencies": [
+          {
+            "type": "guid",
+            "sourceId": "GetScene",
+            "source": "commands.data.output.renderGroups[1].sceneObjects[0].children[5].guid.data",
+            "target": "commands.data.input.guid"
+          }
+        ]
       }
     }
   ]

@@ -14,7 +14,6 @@ export class Level extends APJS.BasicScriptComponent {
   getPlayerBodyRect () {
     var center = this.playerObj.getTransform().getWorldPosition()
     if (center) {
-      // return [center.x, center.y, this.playerWidth * 0.8, this.playerHeight * 0.875]
       return [center.x, center.y, this.playerWidth * 0.6, this.playerHeight * 0.85]
     }
   }
@@ -45,7 +44,6 @@ export class Level extends APJS.BasicScriptComponent {
       for (let i = 0; i < solids.length; i++) {
         if (checkRectOverlap(this.getPlayerBodyRect(), getElementRect(solids[i], this.velocityX))) {
           snapX(this.playerObj, solids[i], this.getSceneObject())
-          // console.log('snapX')
           this.velocityX = 0
           break
         }

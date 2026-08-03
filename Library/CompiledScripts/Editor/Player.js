@@ -131,7 +131,6 @@ let Player = class Player extends APJS.BasicScriptComponent {
             this.velocityY = 0;
             this.frameCounter = 0;
             this.accumulator = 0;
-            //this.onStart()
         }
         while (this.accumulator >= Game_1.fixedTime) {
             this.substateHandle();
@@ -154,8 +153,6 @@ let Player = class Player extends APJS.BasicScriptComponent {
                 this.jumpSound.name = 'jumpSoundOff';
             }
             if (this.state == 0) {
-                // this.leftLimit = getElementRect(this.landedIn, 0)[0] - (getElementRect(this.landedIn, 0)[2] / 2) - (this.width * 0.2)
-                // this.rightLimit = getElementRect(this.landedIn, 0)[0] + (getElementRect(this.landedIn, 0)[2] / 2) + (this.width * 0.2)
                 this.leftLimit = (0, Game_1.getElementRect)(this.landedIn, 0)[0] - ((0, Game_1.getElementRect)(this.landedIn, 0)[2] / 2) - (this.width * 0.3);
                 this.rightLimit = (0, Game_1.getElementRect)(this.landedIn, 0)[0] + ((0, Game_1.getElementRect)(this.landedIn, 0)[2] / 2) + (this.width * 0.3);
                 if (this.playerX < this.leftLimit || this.playerX > this.rightLimit) {

@@ -1,9 +1,6 @@
 import { fixedTime, teleport, PPU, checkRectOverlap, getElementRect, conect, 
 startTimer, addTime, setSubstate, substate, resetPressed, time, setGameState, gameState } from "Game"
 
-// export var time = 35
-// export var startTimer = false
-
 @component()
 export class Enemy extends APJS.BasicScriptComponent {
 
@@ -13,8 +10,8 @@ export class Enemy extends APJS.BasicScriptComponent {
   spawnInterval = 3
   playerAttackingTimer = 0
   playerAttackingInterval = 0.4
-  //spawnSpots = [[117 / PPU, 114 / PPU], [396 / PPU, 114 / PPU], [-396 / PPU, 114 / PPU], [-117 / PPU, 114 / PPU], [-256 / PPU, 343 / PPU], [256 / PPU, 343 / PPU]]
-  spawnSpots = [[117 / PPU, 114 / PPU], [396 / PPU, 114 / PPU]]
+  spawnSpots = [[117 / PPU, 114 / PPU], [396 / PPU, 114 / PPU], [-396 / PPU, 114 / PPU], [-117 / PPU, 114 / PPU], [-256 / PPU, 343 / PPU], [256 / PPU, 343 / PPU]]
+  //spawnSpots = [[117 / PPU, 114 / PPU], [396 / PPU, 114 / PPU]]
 
   currentSpot: any
   transform: any
@@ -94,15 +91,11 @@ export class Enemy extends APJS.BasicScriptComponent {
         startTimer()
         setSubstate(4)
         this.points++ 
-        // conect.name = this.points.toString()
-        //this.scenePoints.name = this.points.toString()
         if (this.points == 3) {
           this.scenePoints.name = 'energybar1'
-
-          setGameState(2)
-          this.gameRunning.name = 'win'
-          this.enemyScene.name = 'enemy'
-
+          // setGameState(2)
+          // this.gameRunning.name = 'win'
+          // this.enemyScene.name = 'enemy'
         } else if (this.points == 6) {
           this.scenePoints.name = 'energybar2'
         } else if (this.points == 9) {
@@ -136,10 +129,8 @@ export class Enemy extends APJS.BasicScriptComponent {
         if (this.points == 4) {
           this.spawnInterval = 2.5
         } else if (this.points == 8) {
-          // this.spawnInterval = 2.3
           this.spawnInterval = 2.0
         } else if (this.points == 12) {
-          // this.spawnInterval = 2
           this.spawnInterval = 1.6
         } else if (this.points == 25) {
         }

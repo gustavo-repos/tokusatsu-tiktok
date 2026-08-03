@@ -121,7 +121,6 @@ export class Player extends APJS.BasicScriptComponent {
       this.velocityY = 0
       this.frameCounter = 0
       this.accumulator = 0
-      //this.onStart()
     }
 
     while (this.accumulator >= fixedTime) {
@@ -147,8 +146,6 @@ export class Player extends APJS.BasicScriptComponent {
       }
 
       if (this.state == 0) {
-        // this.leftLimit = getElementRect(this.landedIn, 0)[0] - (getElementRect(this.landedIn, 0)[2] / 2) - (this.width * 0.2)
-        // this.rightLimit = getElementRect(this.landedIn, 0)[0] + (getElementRect(this.landedIn, 0)[2] / 2) + (this.width * 0.2)
         this.leftLimit = getElementRect(this.landedIn, 0)[0] - (getElementRect(this.landedIn, 0)[2] / 2) - (this.width * 0.3)
         this.rightLimit = getElementRect(this.landedIn, 0)[0] + (getElementRect(this.landedIn, 0)[2] / 2) + (this.width * 0.3)
         if (this.playerX < this.leftLimit || this.playerX > this.rightLimit) {

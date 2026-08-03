@@ -30,7 +30,6 @@ export function setSubstate (x: number) {
 }
 
 export function startTimer() {
-  //console.log('startTimer')
   if (!isTimeRunning) isTimeRunning = true
 }
 
@@ -93,11 +92,9 @@ export function snapX (character: any, obstacle: any, world: any) {
   const obsW = obstacle.getComponent('ScreenTransform').sizeDelta.x / PPU
   const charW = character.getComponent('ScreenTransform').sizeDelta.x / PPU
   if (charPosX > obsWorldPosX) {
-    // levelPos.x = -(obsLocalPosX + (obsW * 0.5) + (charW * 0.4))
     levelPos.x = -(obsLocalPosX + (obsW * 0.5) + (charW * 0.3))
     level.localPosition = levelPos
   } else {
-    // levelPos.x = -obsLocalPosX + (obsW * 0.5) + (charW * 0.4)
     levelPos.x = -obsLocalPosX + (obsW * 0.5) + (charW * 0.3)
     level.localPosition = levelPos
   }
@@ -313,7 +310,6 @@ export class Game extends APJS.BasicScriptComponent {
 
       if (isTimeRunning && gameState == 0) {
         time -= fixedTime
-        //conect.name = Math.round(time).toString()
         if (time <= 0) {
           setGameState(1) 
           this.gameRunning.name = 'gameover'

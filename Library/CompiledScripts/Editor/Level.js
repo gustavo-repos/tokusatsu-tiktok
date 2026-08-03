@@ -32,7 +32,6 @@ let Level = class Level extends APJS.BasicScriptComponent {
     getPlayerBodyRect() {
         var center = this.playerObj.getTransform().getWorldPosition();
         if (center) {
-            // return [center.x, center.y, this.playerWidth * 0.8, this.playerHeight * 0.875]
             return [center.x, center.y, this.playerWidth * 0.6, this.playerHeight * 0.85];
         }
     }
@@ -59,7 +58,6 @@ let Level = class Level extends APJS.BasicScriptComponent {
                 for (let i = 0; i < Game_1.solids.length; i++) {
                     if ((0, Game_1.checkRectOverlap)(this.getPlayerBodyRect(), (0, Game_1.getElementRect)(Game_1.solids[i], this.velocityX))) {
                         (0, Game_1.snapX)(this.playerObj, Game_1.solids[i], this.getSceneObject());
-                        // console.log('snapX')
                         this.velocityX = 0;
                         break;
                     }

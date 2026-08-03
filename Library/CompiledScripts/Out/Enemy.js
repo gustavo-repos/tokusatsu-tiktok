@@ -21,8 +21,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Enemy = void 0;
 const Game_1 = require("Game");
-// export var time = 35
-// export var startTimer = false
 let Enemy = class Enemy extends APJS.BasicScriptComponent {
     constructor() {
         super(...arguments);
@@ -31,8 +29,7 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
         this.spawnInterval = 3;
         this.playerAttackingTimer = 0;
         this.playerAttackingInterval = 0.4;
-        //spawnSpots = [[117 / PPU, 114 / PPU], [396 / PPU, 114 / PPU], [-396 / PPU, 114 / PPU], [-117 / PPU, 114 / PPU], [-256 / PPU, 343 / PPU], [256 / PPU, 343 / PPU]]
-        this.spawnSpots = [[117 / Game_1.PPU, 114 / Game_1.PPU], [396 / Game_1.PPU, 114 / Game_1.PPU]];
+        this.spawnSpots = [[117 / Game_1.PPU, 114 / Game_1.PPU], [396 / Game_1.PPU, 114 / Game_1.PPU], [-396 / Game_1.PPU, 114 / Game_1.PPU], [-117 / Game_1.PPU, 114 / Game_1.PPU], [-256 / Game_1.PPU, 343 / Game_1.PPU], [256 / Game_1.PPU, 343 / Game_1.PPU]];
         this.enemyWasHit = false;
         this.points = 0;
     }
@@ -93,13 +90,11 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
                 (0, Game_1.startTimer)();
                 (0, Game_1.setSubstate)(4);
                 this.points++;
-                // conect.name = this.points.toString()
-                //this.scenePoints.name = this.points.toString()
                 if (this.points == 3) {
                     this.scenePoints.name = 'energybar1';
-                    (0, Game_1.setGameState)(2);
-                    this.gameRunning.name = 'win';
-                    this.enemyScene.name = 'enemy';
+                    // setGameState(2)
+                    // this.gameRunning.name = 'win'
+                    // this.enemyScene.name = 'enemy'
                 }
                 else if (this.points == 6) {
                     this.scenePoints.name = 'energybar2';
@@ -137,11 +132,9 @@ let Enemy = class Enemy extends APJS.BasicScriptComponent {
                     this.spawnInterval = 2.5;
                 }
                 else if (this.points == 8) {
-                    // this.spawnInterval = 2.3
                     this.spawnInterval = 2.0;
                 }
                 else if (this.points == 12) {
-                    // this.spawnInterval = 2
                     this.spawnInterval = 1.6;
                 }
                 else if (this.points == 25) {

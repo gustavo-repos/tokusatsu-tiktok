@@ -46,7 +46,6 @@ function setSubstate(x) {
 }
 exports.setSubstate = setSubstate;
 function startTimer() {
-    //console.log('startTimer')
     if (!isTimeRunning)
         isTimeRunning = true;
 }
@@ -110,12 +109,10 @@ function snapX(character, obstacle, world) {
     const obsW = obstacle.getComponent('ScreenTransform').sizeDelta.x / exports.PPU;
     const charW = character.getComponent('ScreenTransform').sizeDelta.x / exports.PPU;
     if (charPosX > obsWorldPosX) {
-        // levelPos.x = -(obsLocalPosX + (obsW * 0.5) + (charW * 0.4))
         levelPos.x = -(obsLocalPosX + (obsW * 0.5) + (charW * 0.3));
         level.localPosition = levelPos;
     }
     else {
-        // levelPos.x = -obsLocalPosX + (obsW * 0.5) + (charW * 0.4)
         levelPos.x = -obsLocalPosX + (obsW * 0.5) + (charW * 0.3);
         level.localPosition = levelPos;
     }
@@ -296,7 +293,6 @@ let Game = class Game extends APJS.BasicScriptComponent {
         while (this.accumulator >= exports.fixedTime) {
             if (isTimeRunning && exports.gameState == 0) {
                 exports.time -= exports.fixedTime;
-                //conect.name = Math.round(time).toString()
                 if (exports.time <= 0) {
                     setGameState(1);
                     this.gameRunning.name = 'gameover';

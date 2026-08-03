@@ -12,9 +12,9 @@ serializedProperty:
     fps: 3.333333333333333
     gifAsset: {localId: 1, path: 59f06140-5d15-d14e-9945-8ccc74872467--59f06140-5d15-d14e-9945-8ccc74872467.gifasset}
     loopCount: -1
-width: 416
-height: 110
-depth: 1
+width: 0
+height: 0
+depth: 0
 internalFormat:
   __class: InternalFormat
   value: RGBA8
